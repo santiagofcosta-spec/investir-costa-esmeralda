@@ -574,14 +574,14 @@ function renderSoja(){
   if(!S0||!S0.cidades){ $('sKpis').innerHTML=`<p class="note">${L('Cotações da soja ainda não carregadas.','Cotizaciones de soja aún no cargadas.')}</p>`; return; }
   montarFiltroSoja();
   const I=infoCidade(selUF,selNome), c=I.det, nomeH=esc(I.nome), mesoH=esc(I.meso||'—'), nomeC=`${nomeH}/${I.uf}`;
-  const loc=c?ofertasLocais(c):[], melhor=loc.length?loc.reduce((a,b)=>b.preco>a.preco?b:a):null;
+  const loc=c?ofertasLocais(c):[], todas=c?(c.ofertas||[]):[], melhor=(loc.length?loc:todas).length?(loc.length?loc:todas).reduce((a,b)=>b.preco>a.preco?b:a):null;
   const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor);
   const linkGD=`https://www.graodireto.com.br/ofertas/soja/${I.uf.toLowerCase()}/${slugGD(I.nome)}/`;
   if(!I.existe) { $('sAviso').hidden=false; $('sAviso').textContent=L(`Não encontramos "${selNome}" em ${UF_NOMES[selUF]}. Escolha um nome da lista.`,`No encontramos "${selNome}" en ${UF_NOMES[selUF]}. Elija un nombre de la lista.`); }
   else $('sAviso').hidden=true;
   // KPIs
   const kp=[];
-  if(melhor) kp.push([L('Melhor oferta em ','Mejor oferta en ')+nomeC,sc(melhor.preco),`${fmtEntrega(melhor.entrega)} · ${melhor.fob?'FOB':'CIF'}`,'up']);
+  if(melhor) kp.push([loc.length?L('Melhor oferta em ','Mejor oferta en ')+nomeC:L('Melhor oferta próxima','Mejor oferta cercana'),sc(melhor.preco),`${loc.length?'':melhor.cidade+' · '}${fmtEntrega(melhor.entrega)} · ${melhor.fob?'FOB':'CIF'}`,'up']);
   if(I.cot) kp.push([L('Cotação da cidade','Cotización de la ciudad'),sc(I.cot.preco),`${I.cot.tipo||''} · ${fmtDia(I.cot.data)} · ${(I.cot.var>=0?'▲ +':'▼ ')}${(I.cot.var||0).toLocaleString('pt-BR',{maximumFractionDigits:2})}%`,'up']);
   if(I.reg) kp.push([L('Cotação da região','Cotización de la región'),sc(I.reg.preco??I.reg.valor),`${I.reg.nome} · ${(I.reg.data||'').includes('-')?fmtDia(I.reg.data):(I.reg.data||'')}`]);
   if(loc.length) kp.push([L('Média das ofertas na cidade','Promedio de ofertas en la ciudad'),sc(loc.reduce((a,b)=>a+b.preco,0)/loc.length),L(`${loc.length} ofertas de compradores`,`${loc.length} ofertas de compradores`)]);
