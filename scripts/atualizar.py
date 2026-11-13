@@ -51,7 +51,7 @@ def sem_acento(s):
 
 # ---------------------------------------------------------------- Banco Central
 def atualizar_bcb(d):
-    series = {"selic": 4189, "cdi": 4391, "ipca": 433, "igpm": 189, "incc": 192, "ivgr": 21340}
+    series = {"selic": 4189, "cdi": 4391, "ipca": 433, "igpm": 189, "incc": 192, "ivgr": 21340, "usd": 3698}
     inicio = "2016-01"
     brutos = {}
     for nome, cod in series.items():

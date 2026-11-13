@@ -162,24 +162,36 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 .print-head p{font-size:11px;color:#4f625d}
 </style>
 <style>html{color-scheme:light} body{margin:0} [hidden]{display:none!important} img{max-width:100%}</style>
+<style>
+.lang{position:absolute;top:14px;right:max(16px,env(safe-area-inset-right,0px));display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:999px;padding:3px;z-index:2}
+.lang a{color:#c3e2dc;text-decoration:none;font:600 12px var(--f-body);padding:4px 10px;border-radius:999px}
+.lang a[aria-current="true"]{background:#eaf6f3;color:#08413d}
+.callout.warn{border-left-color:var(--bad);background:var(--bad-bg)}
+ul.rules{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted);max-width:90ch}
+tr.sel td{background:var(--surface2);font-weight:600}
+.tabs button{padding:12px 12px}
+</style>
 </head>
 <body>
 <div class="wrap">
   <div class="print-only print-head">
-    <h1 id="printTitle">Simulação de investimento imobiliário · Costa Esmeralda (SC)</h1>
+    <h1 id="printTitle"></h1>
     <p id="printSub"></p>
     <p id="printPrem" style="margin-top:4px"></p>
   </div>
   <header class="hero">
     <canvas class="waves" id="waves" aria-hidden="true"></canvas>
+    <div class="lang no-print" role="group" aria-label="Idioma">
+      <a href="?lang=pt" id="lang-pt">PT</a><a href="?lang=es" id="lang-es">ES</a>
+    </div>
     <div class="hero-in">
       <div>
         <span class="eyebrow">Costa Esmeralda · Porto Belo · Itapema · Bombinhas</span>
-        <h1 id="heroTitle">Quem comprou aqui em 2020 viu o metro quadrado <em>dobrar</em>.</h1>
-        <p class="lead">Dados oficiais do FipeZap, do Banco Central e do Sinduscon mostrando quanto o imóvel no litoral catarinense rendeu contra a renda fixa e a inflação, e uma calculadora para projetar o seu caso.</p>
+        <h1 id="heroTitle"></h1>
+        <p class="lead" data-es="Datos oficiales de FipeZap, del Banco Central de Brasil y del Sinduscon que muestran cuánto rindió el inmueble en el litoral de Santa Catarina frente a la renta fija y la inflación, y una calculadora para proyectar su caso.">Dados oficiais do FipeZap, do Banco Central e do Sinduscon mostrando quanto o imóvel no litoral catarinense rendeu contra a renda fixa e a inflação, e uma calculadora para projetar o seu caso.</p>
       </div>
-      <div class="thesis" aria-label="R$ 100 aplicados em dezembro de 2020">
-        <span class="lb" id="heroLb">R$ 100 aplicados em dez/2020 viraram:</span>
+      <div class="thesis">
+        <span class="lb" id="heroLb"></span>
         <div id="thesisBars"></div>
         <span class="stamp" id="stamp"></span>
       </div>
@@ -187,163 +199,182 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
   </header>
 
   <nav class="tabs" role="tablist">
-    <button role="tab" aria-selected="true" data-tab="why" id="t-why">Por que investir</button>
-    <button role="tab" aria-selected="false" data-tab="sim" id="t-sim">Simulador de investimento</button>
-    <button role="tab" aria-selected="false" data-tab="planta" id="t-planta">Na planta</button>
-    <button role="tab" aria-selected="false" data-tab="idx" id="t-idx">Índices do Brasil</button>
-    <button role="tab" aria-selected="false" data-tab="corr" id="t-corr">Correção de valor</button>
+    <button role="tab" data-tab="why" data-es="Por qué invertir">Por que investir</button>
+    <button role="tab" data-tab="sim" data-es="Simulador">Simulador</button>
+    <button role="tab" data-tab="avista" data-es="Inversor al contado">Investidor à vista</button>
+    <button role="tab" data-tab="planta" data-es="En pozo">Na planta</button>
+    <button role="tab" data-tab="holding" data-es="Persona física x Holding">PF x Holding</button>
+    <button role="tab" data-tab="idx" data-es="Índices de Brasil">Índices do Brasil</button>
+    <button role="tab" data-tab="corr" data-es="Valor actualizado">Correção de valor</button>
   </nav>
 
   <!-- ============ POR QUE INVESTIR ============ -->
   <section id="p-why" class="stack">
     <div class="kpis reveal" id="kpisWhy"></div>
-
     <div class="reasons reveal" id="reasons"></div>
-
     <div class="panel reveal">
-      <div class="ph"><h2>Valorização acumulada: litoral de SC x renda fixa x inflação</h2><span class="note">Base 100 em dez/2020</span></div>
-      <div class="chartbox"><canvas id="chAcum" aria-label="Valorização acumulada desde dezembro de 2020"></canvas></div>
-      <p class="note" style="margin-top:8px">Imóveis: preço médio de venda residencial (FipeZap), sem contar aluguel. CDI bruto, antes do IR. CUB/SC: só os pontos com valor oficial publicado, ligados no gráfico.</p>
+      <div class="ph"><h2 data-es="Valorización acumulada: litoral de SC x renta fija x inflación">Valorização acumulada: litoral de SC x renda fixa x inflação</h2><span class="note" data-es="Base 100 en dic/2020">Base 100 em dez/2020</span></div>
+      <div class="chartbox"><canvas id="chAcum"></canvas></div>
+      <p class="note" style="margin-top:8px" data-es="Inmuebles: precio medio de venta residencial (FipeZap), sin contar alquiler. CDI bruto, antes de impuestos. CUB/SC: solo puntos con valor oficial publicado.">Imóveis: preço médio de venda residencial (FipeZap), sem contar aluguel. CDI bruto, antes do IR. CUB/SC: só os pontos com valor oficial publicado, ligados no gráfico.</p>
     </div>
-
     <div class="two reveal">
-      <div class="panel">
-        <div class="ph"><h2>Valorização ano a ano</h2></div>
-        <div class="chartbox sm"><canvas id="chAnual" aria-label="Valorização anual por cidade e índices"></canvas></div>
-      </div>
-      <div class="panel">
-        <div class="ph"><h2>Preço médio do m² (FipeZap)</h2><span class="note">R$/m², dezembro de cada ano</span></div>
-        <div class="chartbox sm"><canvas id="chM2" aria-label="Preço médio do metro quadrado"></canvas></div>
-      </div>
+      <div class="panel"><div class="ph"><h2 data-es="Valorización año a año">Valorização ano a ano</h2></div><div class="chartbox sm"><canvas id="chAnual"></canvas></div></div>
+      <div class="panel"><div class="ph"><h2 data-es="Precio medio del m² (FipeZap)">Preço médio do m² (FipeZap)</h2><span class="note" data-es="R$/m², diciembre de cada año">R$/m², dezembro de cada ano</span></div><div class="chartbox sm"><canvas id="chM2"></canvas></div></div>
     </div>
-
     <div class="panel reveal">
-      <div class="ph"><h2>Ranking: valorização anual composta desde dez/2020</h2></div>
+      <div class="ph"><h2 data-es="Ranking: valorización anual compuesta desde dic/2020">Ranking: valorização anual composta desde dez/2020</h2></div>
       <div class="tblwrap"><table id="tblRank"></table></div>
     </div>
-
     <div class="two reveal">
       <div class="panel">
-        <div class="ph"><h2>CUB/SC: o custo de construir sobe todo mês</h2><span class="note">R$/m², residencial médio</span></div>
-        <div class="chartbox sm"><canvas id="chCub" aria-label="CUB Santa Catarina mensal"></canvas></div>
-        <p class="note" style="margin-top:8px">Cada mês que passa, um imóvel novo fica mais caro de construir. Isso sustenta o preço de quem já tem o imóvel pronto.</p>
+        <div class="ph"><h2 data-es="CUB/SC: construir es más caro cada mes">CUB/SC: o custo de construir sobe todo mês</h2><span class="note" data-es="R$/m², residencial medio">R$/m², residencial médio</span></div>
+        <div class="chartbox sm"><canvas id="chCub"></canvas></div>
+        <p class="note" style="margin-top:8px" data-es="Cada mes que pasa, un inmueble nuevo cuesta más construirlo. Eso sostiene el precio del inmueble ya terminado.">Cada mês que passa, um imóvel novo fica mais caro de construir. Isso sustenta o preço de quem já tem o imóvel pronto.</p>
       </div>
       <div class="panel">
-        <div class="ph"><h2>CUB/SC por padrão de obra</h2><span class="note" id="cubRef"></span></div>
+        <div class="ph"><h2 data-es="CUB/SC por tipo de obra">CUB/SC por padrão de obra</h2><span class="note" id="cubRef"></span></div>
         <div class="tblwrap"><table id="tblCubPad"></table></div>
         <div class="callout" style="margin-top:12px" id="cubCallout"></div>
       </div>
     </div>
-
     <div class="panel reveal">
-      <div class="ph"><h2>Uma região que não para de crescer</h2><span class="note">População residente, IBGE</span></div>
+      <div class="ph"><h2 data-es="Una región que no para de crecer">Uma região que não para de crescer</h2><span class="note" data-es="Población residente, IBGE">População residente, IBGE</span></div>
       <div class="pop" id="popKpis"></div>
       <div class="two" style="margin-top:16px">
-        <div class="chartbox sm"><canvas id="chPop" aria-label="População por cidade, 2010, 2022 e 2025"></canvas></div>
-        <div>
-          <h3>Crescimento da população 2010 → 2022 (Censo)</h3>
-          <div class="chartbox sm"><canvas id="chPopCresc" aria-label="Crescimento populacional comparado"></canvas></div>
-        </div>
+        <div class="chartbox sm"><canvas id="chPop"></canvas></div>
+        <div><h3 data-es="Crecimiento de la población 2010 → 2022 (censo)">Crescimento da população 2010 → 2022 (Censo)</h3><div class="chartbox sm"><canvas id="chPopCresc"></canvas></div></div>
       </div>
-      <h3 style="margin-top:16px">Localização (a partir de Porto Belo, distâncias aproximadas por estrada)</h3>
+      <h3 style="margin-top:16px" data-es="Ubicación (desde Porto Belo, distancias aproximadas por ruta)">Localização (a partir de Porto Belo, distâncias aproximadas por estrada)</h3>
       <div class="loc">
         <div><span>Itapema</span><b>~10 km</b></div>
         <div><span>Bombinhas</span><b>~12 km</b></div>
         <div><span>Balneário Camboriú</span><b>~30 km</b></div>
-        <div><span>Aeroporto de Navegantes</span><b>~50 km</b></div>
-        <div><span>Florianópolis (aeroporto)</span><b>~70 km</b></div>
-        <div><span>Acesso</span><b>BR-101</b></div>
+        <div><span data-es="Aeropuerto de Navegantes">Aeroporto de Navegantes</span><b>~50 km</b></div>
+        <div><span data-es="Florianópolis (aeropuerto)">Florianópolis (aeroporto)</span><b>~70 km</b></div>
+        <div><span data-es="Acceso">Acesso</span><b>BR-101</b></div>
       </div>
-      <p class="note" style="margin-top:10px">Fonte: IBGE, Censos 2010 e 2022 e estimativa populacional 2025. Mais gente morando na região significa mais demanda por compra e por aluguel o ano todo, não só na temporada.</p>
+      <p class="note" style="margin-top:10px" data-es="Fuente: IBGE, censos 2010 y 2022 y estimación 2025. Más habitantes significa más demanda de compra y de alquiler todo el año, no solo en temporada.">Fonte: IBGE, Censos 2010 e 2022 e estimativa populacional 2025. Mais gente morando na região significa mais demanda por compra e por aluguel o ano todo, não só na temporada.</p>
     </div>
-
     <div class="panel reveal">
-      <h2>E Porto Belo?</h2>
-      <p style="margin-top:8px;max-width:80ch">Porto Belo e Bombinhas ainda não têm índice oficial próprio: o FipeZap acompanha 56 cidades e, na Costa Esmeralda, só Itapema entra na pesquisa. Como Porto Belo fica colada em Itapema e disputa o mesmo comprador, usamos Itapema como referência regional. No simulador você coloca o preço real do imóvel que está apresentando.</p>
+      <h2 data-es="¿Y Porto Belo?">E Porto Belo?</h2>
+      <p style="margin-top:8px;max-width:80ch" data-es="Porto Belo y Bombinhas todavía no tienen un índice oficial propio: FipeZap sigue 56 ciudades y, en la Costa Esmeralda, solo Itapema forma parte. Como Porto Belo es vecina de Itapema y compite por el mismo comprador, usamos Itapema como referencia regional. En el simulador usted ingresa el precio real del inmueble.">Porto Belo e Bombinhas ainda não têm índice oficial próprio: o FipeZap acompanha 56 cidades e, na Costa Esmeralda, só Itapema entra na pesquisa. Como Porto Belo fica colada em Itapema e disputa o mesmo comprador, usamos Itapema como referência regional. No simulador você coloca o preço real do imóvel que está apresentando.</p>
     </div>
   </section>
 
   <!-- ============ SIMULADOR ============ -->
   <section id="p-sim" class="grid" hidden>
     <form class="panel inputs" id="form" onsubmit="return false">
-      <fieldset><legend>Imóvel e compra</legend>
-        <div class="f"><label for="valor">Valor do imóvel</label><div class="in"><span>R$</span><input id="valor" type="number" step="1000" value="900000"></div></div>
-        <div class="f"><label for="entrada">Entrada<small>Igual ao valor = compra à vista</small></label><div class="in"><span>R$</span><input id="entrada" type="number" step="1000" value="270000"></div></div>
-        <div class="f"><label for="custos">ITBI + cartório + registro</label><div class="in"><input id="custos" type="number" step="0.1" value="4"><span>%</span></div></div>
+      <fieldset><legend data-es="Inmueble y compra">Imóvel e compra</legend>
+        <div class="f"><label for="valor" data-es="Valor del inmueble">Valor do imóvel</label><div class="in"><span>R$</span><input id="valor" type="number" step="1000" value="900000"></div></div>
+        <div class="f"><label for="entrada" data-es="Anticipo<small>Igual al valor = compra al contado</small>">Entrada<small>Igual ao valor = compra à vista</small></label><div class="in"><span>R$</span><input id="entrada" type="number" step="1000" value="270000"></div></div>
+        <div class="f"><label for="custos" data-es="ITBI + escribanía + registro">ITBI + cartório + registro</label><div class="in"><input id="custos" type="number" step="0.1" value="4"><span>%</span></div></div>
       </fieldset>
-      <fieldset><legend>Financiamento</legend>
-        <div class="f"><label for="juros">Juros (CET) ao ano</label><div class="in"><input id="juros" type="number" step="0.1" value="12"><span>%</span></div></div>
-        <div class="f"><label for="prazo">Prazo</label><div class="in"><input id="prazo" type="number" step="12" value="360"><span>meses</span></div></div>
-        <div class="f"><label for="sistema">Sistema</label><div class="in"><select id="sistema"><option value="SAC">SAC</option><option value="PRICE">Price</option></select></div></div>
+      <fieldset><legend data-es="Financiación">Financiamento</legend>
+        <div class="f"><label for="juros" data-es="Interés anual (CET)">Juros (CET) ao ano</label><div class="in"><input id="juros" type="number" step="0.1" value="12"><span>%</span></div></div>
+        <div class="f"><label for="prazo" data-es="Plazo">Prazo</label><div class="in"><input id="prazo" type="number" step="12" value="360"><span data-es="meses">meses</span></div></div>
+        <div class="f"><label for="sistema" data-es="Sistema">Sistema</label><div class="in"><select id="sistema"><option value="SAC">SAC</option><option value="PRICE">Price</option></select></div></div>
       </fieldset>
-      <fieldset><legend>Aluguel e despesas</legend>
-        <div class="seg" id="modoAluguel" role="group" aria-label="Tipo de aluguel">
-          <button type="button" data-m="anual" aria-pressed="false">Aluguel anual</button>
-          <button type="button" data-m="temporada" aria-pressed="true">Temporada (diárias)</button>
+      <fieldset><legend data-es="Alquiler y gastos">Aluguel e despesas</legend>
+        <div class="seg" id="modoAluguel" role="group">
+          <button type="button" data-m="anual" aria-pressed="false" data-es="Alquiler anual">Aluguel anual</button>
+          <button type="button" data-m="temporada" aria-pressed="true" data-es="Temporada (diarias)">Temporada (diárias)</button>
         </div>
         <input type="hidden" id="modo" value="temporada">
         <div id="grpAnual" class="inputs" style="gap:10px" hidden>
-          <div class="f"><label for="aluguel">Aluguel por mês</label><div class="in"><span>R$</span><input id="aluguel" type="number" step="50" value="4500"></div></div>
-          <div class="f"><label for="vacancia">Vacância</label><div class="in"><input id="vacancia" type="number" step="1" value="8"><span>%</span></div></div>
+          <div class="f"><label for="aluguel" data-es="Alquiler mensual">Aluguel por mês</label><div class="in"><span>R$</span><input id="aluguel" type="number" step="50" value="4500"></div></div>
+          <div class="f"><label for="vacancia" data-es="Vacancia">Vacância</label><div class="in"><input id="vacancia" type="number" step="1" value="8"><span>%</span></div></div>
         </div>
         <div id="grpTemp" class="inputs" style="gap:10px">
-          <div class="f"><label for="diariaAlta">Diária na alta temporada</label><div class="in"><span>R$</span><input id="diariaAlta" type="number" step="10" value="800"></div></div>
-          <div class="f"><label for="ocupAlta">Ocupação na alta</label><div class="in"><input id="ocupAlta" type="number" step="1" value="70"><span>%</span></div></div>
-          <div class="f"><label for="mesesAlta">Meses de alta<small>Contados a partir de dezembro</small></label><div class="in"><input id="mesesAlta" type="number" step="1" min="0" max="12" value="3"><span>meses</span></div></div>
-          <div class="f"><label for="diariaBaixa">Diária no resto do ano</label><div class="in"><span>R$</span><input id="diariaBaixa" type="number" step="10" value="350"></div></div>
-          <div class="f"><label for="ocupBaixa">Ocupação no resto do ano</label><div class="in"><input id="ocupBaixa" type="number" step="1" value="30"><span>%</span></div></div>
+          <div class="f"><label for="diariaAlta" data-es="Diaria en temporada alta">Diária na alta temporada</label><div class="in"><span>R$</span><input id="diariaAlta" type="number" step="10" value="800"></div></div>
+          <div class="f"><label for="ocupAlta" data-es="Ocupación en temporada alta">Ocupação na alta</label><div class="in"><input id="ocupAlta" type="number" step="1" value="70"><span>%</span></div></div>
+          <div class="f"><label for="mesesAlta" data-es="Meses de temporada alta<small>Contados desde diciembre</small>">Meses de alta<small>Contados a partir de dezembro</small></label><div class="in"><input id="mesesAlta" type="number" step="1" min="0" max="12" value="3"><span data-es="meses">meses</span></div></div>
+          <div class="f"><label for="diariaBaixa" data-es="Diaria el resto del año">Diária no resto do ano</label><div class="in"><span>R$</span><input id="diariaBaixa" type="number" step="10" value="350"></div></div>
+          <div class="f"><label for="ocupBaixa" data-es="Ocupación el resto del año">Ocupação no resto do ano</label><div class="in"><input id="ocupBaixa" type="number" step="1" value="30"><span>%</span></div></div>
           <p class="note" id="tempResumo"></p>
         </div>
-        <div class="f"><label for="reajAluguel">Reajuste do aluguel/diária ao ano</label><div class="in"><input id="reajAluguel" type="number" step="0.1" value="4.5"><span>%</span></div></div>
-        <div class="f"><label for="adm">Administração / plataforma<small>Airbnb, gestão e limpeza na temporada</small></label><div class="in"><input id="adm" type="number" step="0.5" value="20"><span>%</span></div></div>
-        <div class="f"><label for="desp">Despesas do proprietário<small>IPTU, manutenção, seguro (mês)</small></label><div class="in"><span>R$</span><input id="desp" type="number" step="10" value="400"></div></div>
-        <div class="f"><label for="irAluguel">IR sobre aluguel (efetivo)</label><div class="in"><input id="irAluguel" type="number" step="0.5" value="10"><span>%</span></div></div>
+        <div class="f"><label for="reajAluguel" data-es="Reajuste anual del alquiler/diaria">Reajuste do aluguel/diária ao ano</label><div class="in"><input id="reajAluguel" type="number" step="0.1" value="4.5"><span>%</span></div></div>
+        <div class="f"><label for="adm" data-es="Administración / plataforma<small>Airbnb, gestión y limpieza en temporada</small>">Administração / plataforma<small>Airbnb, gestão e limpeza na temporada</small></label><div class="in"><input id="adm" type="number" step="0.5" value="20"><span>%</span></div></div>
+        <div class="f"><label for="desp" data-es="Gastos del propietario<small>IPTU, mantenimiento, seguro (mes)</small>">Despesas do proprietário<small>IPTU, manutenção, seguro (mês)</small></label><div class="in"><span>R$</span><input id="desp" type="number" step="10" value="400"></div></div>
+        <div class="f"><label for="irAluguel" data-es="Impuesto sobre el alquiler (efectivo)">IR sobre aluguel (efetivo)</label><div class="in"><input id="irAluguel" type="number" step="0.5" value="10"><span>%</span></div></div>
       </fieldset>
-      <fieldset><legend>Valorização e venda</legend>
-        <div class="seg" id="presets" role="group" aria-label="Cenário de valorização"></div>
-        <div class="f"><label for="valoriz">Valorização ao ano</label><div class="in"><input id="valoriz" type="number" step="0.1" value="6.5"><span>%</span></div></div>
-        <div class="f"><label for="anos">Horizonte (venda em)</label><div class="in"><input id="anos" type="number" step="1" min="1" max="35" value="10"><span>anos</span></div></div>
-        <div class="f"><label for="corretagem">Corretagem na venda</label><div class="in"><input id="corretagem" type="number" step="0.5" value="6"><span>%</span></div></div>
-        <label class="chk"><input type="checkbox" id="irGanho" checked> Cobrar IR de 15% sobre o ganho de capital na venda</label>
+      <fieldset><legend data-es="Valorización y venta">Valorização e venda</legend>
+        <div class="seg" id="presets" role="group"></div>
+        <div class="f"><label for="valoriz" data-es="Valorización anual">Valorização ao ano</label><div class="in"><input id="valoriz" type="number" step="0.1" value="6.5"><span>%</span></div></div>
+        <div class="f"><label for="anos" data-es="Horizonte (venta en)">Horizonte (venda em)</label><div class="in"><input id="anos" type="number" step="1" min="1" max="35" value="10"><span data-es="años">anos</span></div></div>
+        <div class="f"><label for="corretagem" data-es="Comisión inmobiliaria en la venta">Corretagem na venda</label><div class="in"><input id="corretagem" type="number" step="0.5" value="6"><span>%</span></div></div>
+        <label class="chk"><input type="checkbox" id="isento180"> <span data-es="Reinvertirá en otro inmueble residencial dentro de 180 días (exento de impuesto a la ganancia)">Vai reinvestir em outro imóvel residencial em até 180 dias (isento de IR sobre o ganho)</span></label>
       </fieldset>
-      <fieldset><legend>Renda fixa (média esperada no período)</legend>
-        <div class="f"><label for="cdi">CDI médio ao ano<small id="cdiHint"></small></label><div class="in"><input id="cdi" type="number" step="0.1" value="11.5"><span>%</span></div></div>
-        <div class="f"><label for="pctCdi">CDB rende</label><div class="in"><input id="pctCdi" type="number" step="1" value="100"><span>% CDI</span></div></div>
-        <div class="f"><label for="poup">Poupança ao ano<small id="poupHint"></small></label><div class="in"><input id="poup" type="number" step="0.1" value="7.5"><span>%</span></div></div>
-        <div class="f"><label for="ipca">IPCA médio ao ano<small id="ipcaHint"></small></label><div class="in"><input id="ipca" type="number" step="0.1" value="4.5"><span>%</span></div></div>
-        <div class="f"><label for="spread">Tesouro IPCA+ (taxa real)</label><div class="in"><span>IPCA+</span><input id="spread" type="number" step="0.1" value="6.5"><span>%</span></div></div>
+      <fieldset><legend data-es="Renta fija (promedio esperado)">Renda fixa (média esperada no período)</legend>
+        <div class="f"><label for="cdi" data-es="CDI promedio anual&lt;small id=&quot;cdiHint&quot;&gt;&lt;/small&gt;">CDI médio ao ano<small id="cdiHint"></small></label><div class="in"><input id="cdi" type="number" step="0.1" value="11.5"><span>%</span></div></div>
+        <div class="f"><label for="pctCdi" data-es="El CDB rinde">CDB rende</label><div class="in"><input id="pctCdi" type="number" step="1" value="100"><span>% CDI</span></div></div>
+        <div class="f"><label for="poup" data-es="Caja de ahorro (poupança) anual&lt;small id=&quot;poupHint&quot;&gt;&lt;/small&gt;">Poupança ao ano<small id="poupHint"></small></label><div class="in"><input id="poup" type="number" step="0.1" value="7.5"><span>%</span></div></div>
+        <div class="f"><label for="ipca" data-es="IPCA promedio anual&lt;small id=&quot;ipcaHint&quot;&gt;&lt;/small&gt;">IPCA médio ao ano<small id="ipcaHint"></small></label><div class="in"><input id="ipca" type="number" step="0.1" value="4.5"><span>%</span></div></div>
+        <div class="f"><label for="spread" data-es="Tesoro IPCA+ (tasa real)">Tesouro IPCA+ (taxa real)</label><div class="in"><span>IPCA+</span><input id="spread" type="number" step="0.1" value="6.5"><span>%</span></div></div>
       </fieldset>
     </form>
-
     <div class="stack">
       <div class="actions no-print">
-        <button class="btn" type="button" data-pdf>Gerar PDF da proposta</button>
-        <button class="btn ghost" type="button" data-link>Copiar link desta simulação</button>
+        <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
+        <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
         <span class="msg" data-msg aria-live="polite"></span>
       </div>
       <div class="verdict" id="verdict"></div>
       <div class="kpis" id="kpis"></div>
       <div class="panel">
-        <div class="ph"><h2>Patrimônio líquido ao longo do tempo</h2><span class="note">Se vendesse/resgatasse naquele ano, já sem dívida, custos e IR</span></div>
-        <div class="chartbox"><canvas id="chEvol" aria-label="Patrimônio por alternativa"></canvas></div>
+        <div class="ph"><h2 data-es="Patrimonio neto a lo largo del tiempo">Patrimônio líquido ao longo do tempo</h2><span class="note" data-es="Si vendiera/rescatara ese año, ya sin deuda, costos ni impuestos">Se vendesse/resgatasse naquele ano, já sem dívida, custos e IR</span></div>
+        <div class="chartbox"><canvas id="chEvol"></canvas></div>
       </div>
       <div class="panel">
-        <h2>Comparativo no fim do horizonte</h2>
-        <p class="note" style="margin:6px 0 10px">Mesmo dinheiro em cada alternativa: entrada + custos de compra, mais todo mês em que o imóvel pediu aporte do bolso. Sobras do aluguel são reinvestidas no CDI líquido.</p>
+        <h2 data-es="Comparativo al final del horizonte">Comparativo no fim do horizonte</h2>
+        <p class="note" style="margin:6px 0 10px" data-es="El mismo dinero en cada alternativa: anticipo + costos de compra, más cada mes en que el inmueble pidió aporte. Los excedentes del alquiler se reinvierten al CDI neto.">Mesmo dinheiro em cada alternativa: entrada + custos de compra, mais todo mês em que o imóvel pediu aporte do bolso. Sobras do aluguel são reinvestidas no CDI líquido.</p>
         <div class="tblwrap"><table id="tblComp"></table></div>
       </div>
       <div class="panel">
-        <h2>Sensibilidade: retorno anual (TIR) do imóvel</h2>
-        <p class="note" style="margin:6px 0 10px">Verde = supera o CDB líquido no mesmo prazo. Moldura = cenário escolhido.</p>
+        <h2 data-es="Impuesto a la ganancia de capital en la venta">Imposto sobre o ganho de capital na venda</h2>
+        <p class="note" style="margin:6px 0 10px" data-es="Regla actual para personas físicas en Brasil (Ley 11.196/2005 y Ley 13.259/2016): cuanto más tiempo conserva el inmueble, menor la parte de la ganancia que paga impuesto (factor de reducción). Alícuotas de 15% a 22,5%.">Regra atual para pessoa física (Lei 11.196/2005 e Lei 13.259/2016): quanto mais tempo com o imóvel, menor a parte do lucro que paga imposto (fator de redução). Alíquotas de 15% a 22,5%.</p>
+        <div class="tblwrap"><table id="tblGanho"></table></div>
+      </div>
+      <div class="panel">
+        <h2 data-es="Sensibilidad: retorno anual (TIR) del inmueble">Sensibilidade: retorno anual (TIR) do imóvel</h2>
+        <p class="note" style="margin:6px 0 10px" data-es="Verde = supera al CDB neto en el mismo plazo. Recuadro = escenario elegido.">Verde = supera o CDB líquido no mesmo prazo. Moldura = cenário escolhido.</p>
         <div class="tblwrap"><table id="tblSens"></table></div>
       </div>
       <div class="two">
-        <div class="panel"><h2 style="margin-bottom:8px">Fluxo do 1º ano (média por mês)</h2><div class="tblwrap"><table id="tblFluxo"></table></div></div>
+        <div class="panel"><h2 style="margin-bottom:8px" data-es="Flujo del 1er año (promedio mensual)">Fluxo do 1º ano (média por mês)</h2><div class="tblwrap"><table id="tblFluxo"></table></div></div>
         <div class="panel">
-          <div class="ph"><h2>Resumo para o cliente</h2><button class="btn" id="copy" type="button">Copiar texto</button></div>
+          <div class="ph"><h2 data-es="Resumen para el cliente">Resumo para o cliente</h2><button class="btn" id="copy" type="button" data-es="Copiar texto">Copiar texto</button></div>
           <p class="note" id="copyMsg" aria-live="polite"></p>
-          <textarea id="resumo" readonly aria-label="Resumo da simulação"></textarea>
+          <textarea id="resumo" readonly></textarea>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INVESTIDOR À VISTA ============ -->
+  <section id="p-avista" class="grid" hidden>
+    <form class="panel inputs" id="formAvista" onsubmit="return false">
+      <fieldset><legend data-es="Compra al contado">Compra à vista</legend>
+        <div class="f"><label for="desconto" data-es="Descuento negociado al contado">Desconto negociado à vista</label><div class="in"><input id="desconto" type="number" step="0.5" min="0" max="40" value="5"><span>%</span></div></div>
+      </fieldset>
+      <p class="note" id="avistaPrem"></p>
+      <button class="btn ghost" type="button" data-goto="sim" data-es="Ajustar supuestos en el Simulador">Ajustar premissas no Simulador</button>
+    </form>
+    <div class="stack">
+      <div class="actions no-print">
+        <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
+        <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
+        <span class="msg" data-msg aria-live="polite"></span>
+      </div>
+      <div class="verdict" id="aVerdict"></div>
+      <div class="kpis" id="aKpis"></div>
+      <div class="two">
+        <div class="panel"><h2 style="margin-bottom:8px" data-es="El poder del descuento al contado">O poder do desconto à vista</h2><div class="tblwrap"><table id="aDesc"></table></div></div>
+        <div class="panel"><h2 style="margin-bottom:8px" data-es="Al contado x financiado">À vista x financiado</h2><div class="tblwrap"><table id="aFin"></table></div></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2 data-es="El m² en dólares">O m² em dólar</h2><span class="note" data-es="Itapema, FipeZap ÷ dólar PTAX promedio del mes (Banco Central)">Itapema, FipeZap ÷ dólar PTAX médio do mês (Banco Central)</span></div>
+        <div class="kpis" id="usdKpis"></div>
+        <div class="chartbox sm" style="margin-top:12px"><canvas id="chUsd"></canvas></div>
       </div>
     </div>
   </section>
@@ -351,42 +382,91 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
   <!-- ============ NA PLANTA ============ -->
   <section id="p-planta" class="grid" hidden>
     <form class="panel inputs" id="formPlanta" onsubmit="return false">
-      <fieldset><legend>Lançamento</legend>
-        <div class="f"><label for="pValor">Valor de tabela</label><div class="in"><span>R$</span><input id="pValor" type="number" step="1000" value="850000"></div></div>
-        <div class="f"><label for="pMercado">Imóvel pronto parecido hoje<small>Mesmo bairro e padrão. Se a tabela é mais barata, o ganho aumenta</small></label><div class="in"><span>R$</span><input id="pMercado" type="number" step="1000" value="850000"></div></div>
-        <div class="f"><label for="pObra">Prazo até as chaves</label><div class="in"><input id="pObra" type="number" step="1" min="6" max="72" value="36"><span>meses</span></div></div>
+      <fieldset><legend data-es="Lanzamiento">Lançamento</legend>
+        <div class="f"><label for="pValor" data-es="Precio de lista">Valor de tabela</label><div class="in"><span>R$</span><input id="pValor" type="number" step="1000" value="850000"></div></div>
+        <div class="f"><label for="pMercado" data-es="Inmueble terminado similar hoy<small>Mismo barrio y estándar. Si la lista es más barata, la ganancia aumenta</small>">Imóvel pronto parecido hoje<small>Mesmo bairro e padrão. Se a tabela é mais barata, o ganho aumenta</small></label><div class="in"><span>R$</span><input id="pMercado" type="number" step="1000" value="850000"></div></div>
+        <div class="f"><label for="pObra" data-es="Plazo hasta la entrega">Prazo até as chaves</label><div class="in"><input id="pObra" type="number" step="1" min="6" max="72" value="36"><span data-es="meses">meses</span></div></div>
       </fieldset>
-      <fieldset><legend>Fluxo de pagamento</legend>
-        <div class="f"><label for="pEntrada">Entrada (ato)</label><div class="in"><input id="pEntrada" type="number" step="1" value="10"><span>%</span></div></div>
-        <div class="f"><label for="pMensais">Parcelas mensais<small>Soma de todas, durante a obra</small></label><div class="in"><input id="pMensais" type="number" step="1" value="30"><span>%</span></div></div>
-        <div class="f"><label for="pReforcos">Reforços anuais<small>Soma dos balões, um a cada 12 meses</small></label><div class="in"><input id="pReforcos" type="number" step="1" value="10"><span>%</span></div></div>
+      <fieldset><legend data-es="Plan de pagos">Fluxo de pagamento</legend>
+        <div class="f"><label for="pEntrada" data-es="Anticipo (firma)">Entrada (ato)</label><div class="in"><input id="pEntrada" type="number" step="1" value="10"><span>%</span></div></div>
+        <div class="f"><label for="pMensais" data-es="Cuotas mensuales<small>Suma de todas durante la obra</small>">Parcelas mensais<small>Soma de todas, durante a obra</small></label><div class="in"><input id="pMensais" type="number" step="1" value="30"><span>%</span></div></div>
+        <div class="f"><label for="pReforcos" data-es="Refuerzos anuales<small>Suma de los refuerzos, uno cada 12 meses</small>">Reforços anuais<small>Soma dos balões, um a cada 12 meses</small></label><div class="in"><input id="pReforcos" type="number" step="1" value="10"><span>%</span></div></div>
         <p class="note" id="pChavesTxt"></p>
-        <div class="f"><label for="pCorrecao">Correção das parcelas<small id="pCorrHint">CUB/INCC ao ano</small></label><div class="in"><input id="pCorrecao" type="number" step="0.1" value="6"><span>%</span></div></div>
+        <div class="f"><label for="pCorrecao" data-es="Ajuste de las cuotas&lt;small id=&quot;pCorrHint&quot;&gt;&lt;/small&gt;">Correção das parcelas<small id="pCorrHint"></small></label><div class="in"><input id="pCorrecao" type="number" step="0.1" value="6"><span>%</span></div></div>
       </fieldset>
-      <fieldset><legend>Valorização e venda na entrega</legend>
-        <div class="f"><label for="pValoriz">Valorização até a entrega<small>ao ano</small></label><div class="in"><input id="pValoriz" type="number" step="0.1" value="8"><span>%</span></div></div>
-        <div class="f"><label for="pCorretagem">Corretagem na venda</label><div class="in"><input id="pCorretagem" type="number" step="0.5" value="6"><span>%</span></div></div>
-        <label class="chk"><input type="checkbox" id="pIr" checked> Cobrar IR de 15% sobre o ganho</label>
-        <div class="f"><label for="pCdi">CDI médio ao ano<small>para comparar</small></label><div class="in"><input id="pCdi" type="number" step="0.1" value="11.5"><span>%</span></div></div>
+      <fieldset><legend data-es="Valorización y venta a la entrega">Valorização e venda na entrega</legend>
+        <div class="f"><label for="pValoriz" data-es="Valorización hasta la entrega<small>anual</small>">Valorização até a entrega<small>ao ano</small></label><div class="in"><input id="pValoriz" type="number" step="0.1" value="8"><span>%</span></div></div>
+        <div class="f"><label for="pCorretagem" data-es="Comisión en la venta">Corretagem na venda</label><div class="in"><input id="pCorretagem" type="number" step="0.5" value="6"><span>%</span></div></div>
+        <div class="f"><label for="pCdi" data-es="CDI promedio anual<small>para comparar</small>">CDI médio ao ano<small>para comparar</small></label><div class="in"><input id="pCdi" type="number" step="0.1" value="11.5"><span>%</span></div></div>
       </fieldset>
     </form>
     <div class="stack">
       <div class="actions no-print">
-        <button class="btn" type="button" data-pdf>Gerar PDF da proposta</button>
-        <button class="btn ghost" type="button" data-link>Copiar link desta simulação</button>
+        <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
+        <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
         <span class="msg" data-msg aria-live="polite"></span>
       </div>
       <div class="verdict" id="pVerdict"></div>
       <div class="kpis" id="pKpis"></div>
       <div class="panel">
-        <div class="ph"><h2>Valor do imóvel x quanto você pagou</h2><span class="note">Mês a mês, da compra até as chaves</span></div>
-        <div class="chartbox"><canvas id="chPlanta" aria-label="Valor do imóvel e total pago durante a obra"></canvas></div>
+        <div class="ph"><h2 data-es="Valor del inmueble x cuánto pagó">Valor do imóvel x quanto você pagou</h2><span class="note" data-es="Mes a mes, de la compra a la entrega">Mês a mês, da compra até as chaves</span></div>
+        <div class="chartbox"><canvas id="chPlanta"></canvas></div>
       </div>
       <div class="two">
-        <div class="panel"><h2 style="margin-bottom:8px">Resultado na entrega das chaves</h2><div class="tblwrap"><table id="pTbl"></table></div></div>
-        <div class="panel"><h2 style="margin-bottom:8px">Cronograma de pagamento</h2><div class="tblwrap"><table id="pCron"></table></div></div>
+        <div class="panel"><h2 style="margin-bottom:8px" data-es="Resultado a la entrega">Resultado na entrega das chaves</h2><div class="tblwrap"><table id="pTbl"></table></div></div>
+        <div class="panel"><h2 style="margin-bottom:8px" data-es="Cronograma de pagos">Cronograma de pagamento</h2><div class="tblwrap"><table id="pCron"></table></div></div>
       </div>
-      <p class="note">Considera venda do imóvel na entrega das chaves, com o comprador quitando o saldo. Parcelas corrigidas mês a mês pelo índice informado, como nos contratos de lançamento. Simulação ilustrativa.</p>
+      <p class="note" data-es="Considera la venta del inmueble a la entrega, con el comprador cancelando el saldo. Cuotas ajustadas mes a mes por el índice informado, como en los contratos de lanzamiento. Simulación ilustrativa.">Considera venda do imóvel na entrega das chaves, com o comprador quitando o saldo. Parcelas corrigidas mês a mês pelo índice informado, como nos contratos de lançamento. Simulação ilustrativa.</p>
+    </div>
+  </section>
+
+  <!-- ============ PF x HOLDING ============ -->
+  <section id="p-holding" class="grid" hidden>
+    <form class="panel inputs" id="formHolding" onsubmit="return false">
+      <fieldset><legend data-es="Patrimonio">Patrimônio</legend>
+        <div class="f"><label for="hValor" data-es="Valor de los inmuebles">Valor dos imóveis</label><div class="in"><span>R$</span><input id="hValor" type="number" step="10000" value="900000"></div></div>
+        <div class="f"><label for="hQtd" data-es="Cantidad de inmuebles">Quantidade de imóveis</label><div class="in"><input id="hQtd" type="number" step="1" min="1" value="1"></div></div>
+        <div class="f"><label for="hAluguel" data-es="Alquiler bruto por mes<small>Suma de todos los inmuebles</small>">Aluguel bruto por mês<small>Soma de todos os imóveis</small></label><div class="in"><span>R$</span><input id="hAluguel" type="number" step="100" value="6650"></div></div>
+        <div class="f"><label for="hAnos" data-es="Horizonte">Horizonte</label><div class="in"><input id="hAnos" type="number" step="1" min="1" max="40" value="15"><span data-es="años">anos</span></div></div>
+        <div class="f"><label for="hValoriz" data-es="Valorización anual">Valorização ao ano</label><div class="in"><input id="hValoriz" type="number" step="0.1" value="6"><span>%</span></div></div>
+      </fieldset>
+      <fieldset><legend data-es="Persona física">Pessoa física</legend>
+        <div class="f"><label for="hIrPf" data-es="Impuesto sobre el alquiler<small>27,5% es la alícuota de quien ya tiene otros ingresos</small>">IR sobre o aluguel<small>27,5% é a faixa de quem já tem outras rendas</small></label><div class="in"><input id="hIrPf" type="number" step="0.5" value="27.5"><span>%</span></div></div>
+        <div class="f"><label for="hHonor" data-es="Abogado y costas del sucesorio<small>Estimación, ajuste</small>">Advogado e custas do inventário<small>Estimativa, ajuste</small></label><div class="in"><input id="hHonor" type="number" step="0.5" value="5"><span>%</span></div></div>
+      </fieldset>
+      <fieldset><legend data-es="Holding (lucro presumido)">Holding (lucro presumido)</legend>
+        <div class="f"><label for="hRegistro" data-es="El inmueble queda registrado como&lt;small&gt;Stock: ~6,73% sobre la venta. Inversión: 34% sobre la ganancia&lt;/small&gt;">Imóvel fica registrado como<small>Estoque: ~6,73% sobre a venda. Investimento: 34% sobre o lucro</small></label><div class="in"><select id="hRegistro"><option value="estoque" data-es="Stock">Estoque</option><option value="invest" data-es="Inversión">Investimento</option></select></div></div>
+        <div class="f"><label for="hSocios" data-es="Socios que reciben utilidades">Sócios que recebem lucro</label><div class="in"><input id="hSocios" type="number" step="1" min="1" value="2"></div></div>
+        <div class="f"><label for="hAbertura" data-es="Apertura de la holding<small>Estimación, ajuste</small>">Abertura da holding<small>Estimativa, ajuste</small></label><div class="in"><span>R$</span><input id="hAbertura" type="number" step="500" value="6000"></div></div>
+        <div class="f"><label for="hContab" data-es="Contador por mes<small>Estimación, ajuste</small>">Contabilidade por mês<small>Estimativa, ajuste</small></label><div class="in"><span>R$</span><input id="hContab" type="number" step="50" value="700"></div></div>
+        <div class="f"><label for="hItbi" data-es="ITBI al aportar el inmueble<small>0% en general; hay ITBI si la actividad inmobiliaria es preponderante</small>">ITBI ao integralizar o imóvel<small>0% em regra; há ITBI se a atividade imobiliária for preponderante</small></label><div class="in"><input id="hItbi" type="number" step="0.5" value="0"><span>%</span></div></div>
+        <label class="chk"><input type="checkbox" id="hReforma" checked> <span data-es="Incluir reforma tributaria (IBS/CBS sobre el alquiler desde 2027)">Incluir reforma tributária (IBS/CBS sobre aluguel a partir de 2027)</span></label>
+        <label class="chk"><input type="checkbox" id="hDistVenda" checked> <span data-es="Distribuir el dinero de la venta a los socios (retención de 10% sobre más de R$ 50 mil/mes)">Distribuir o dinheiro da venda aos sócios (retenção de 10% acima de R$ 50 mil/mês)</span></label>
+      </fieldset>
+      <fieldset><legend data-es="Al final del horizonte">No fim do horizonte</legend>
+        <label class="chk"><input type="checkbox" id="hVende" checked> <span data-es="Vender los inmuebles">Vender os imóveis</span></label>
+        <label class="chk"><input type="checkbox" id="hSucessao" checked> <span data-es="Incluir la sucesión (herencia a los hijos)">Incluir a sucessão (herança para os filhos)</span></label>
+      </fieldset>
+    </form>
+    <div class="stack">
+      <div class="actions no-print">
+        <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
+        <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
+        <span class="msg" data-msg aria-live="polite"></span>
+      </div>
+      <div class="callout warn" data-es="<b>Simulación educativa.</b> Las reglas tributarias cambian y cada caso tiene detalles. Valide con su contador y abogado antes de decidir. Una holding <b>no protege contra deudas existentes ni fraude a acreedores</b>: organiza el patrimonio y la sucesión.">
+        <b>Simulação educativa.</b> As regras tributárias mudam e cada caso tem detalhes. Valide com seu contador e advogado antes de decidir. Holding <b>não protege contra dívidas que já existem nem contra fraude a credores</b>: ela organiza o patrimônio e a sucessão.
+      </div>
+      <div class="verdict" id="hVerdict"></div>
+      <div class="panel">
+        <div class="ph"><h2 data-es="Cuánto se va en impuestos y costos">Quanto vai em impostos e custos</h2><span class="note" id="hPeriodo"></span></div>
+        <div class="chartbox sm"><canvas id="chHolding"></canvas></div>
+      </div>
+      <div class="panel"><div class="tblwrap"><table id="hTbl"></table></div></div>
+      <div class="panel">
+        <h2 data-es="Reglas usadas">Regras usadas</h2>
+        <ul class="rules" id="hRegras"></ul>
+      </div>
     </div>
   </section>
 
@@ -394,29 +474,29 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
   <section id="p-idx" class="stack" hidden>
     <div class="kpis" id="ticker"></div>
     <div class="panel">
-      <div class="ph"><h2>Quanto R$ 100 viraram em cada indicador</h2><div class="seg" id="segStart" role="group" aria-label="Período"></div></div>
-      <div class="chartbox"><canvas id="chHist" aria-label="Rentabilidade acumulada por indicador"></canvas></div>
-      <p class="note" style="margin-top:8px">Imóveis Brasil = IVG-R do Banco Central (valor de garantia dos imóveis financiados). CDI bruto.</p>
+      <div class="ph"><h2 data-es="En qué se convirtieron R$ 100 en cada indicador">Quanto R$ 100 viraram em cada indicador</h2><div class="seg" id="segStart" role="group"></div></div>
+      <div class="chartbox"><canvas id="chHist"></canvas></div>
+      <p class="note" style="margin-top:8px" data-es="Inmuebles Brasil = IVG-R del Banco Central (valor de garantía de inmuebles financiados). CDI bruto.">Imóveis Brasil = IVG-R do Banco Central (valor de garantia dos imóveis financiados). CDI bruto.</p>
     </div>
     <div class="panel">
-      <h2>Rentabilidade acumulada e média anual</h2>
+      <h2 data-es="Rentabilidad acumulada y promedio anual">Rentabilidade acumulada e média anual</h2>
       <p class="note" id="histEnd" style="margin:6px 0 10px"></p>
       <div class="tblwrap"><table id="tblHist"></table></div>
     </div>
     <div class="two">
-      <div class="panel"><h2 style="margin-bottom:8px">Selic ao longo do tempo</h2><div class="chartbox sm"><canvas id="chSelic" aria-label="Selic"></canvas></div></div>
-      <div class="panel"><h2 style="margin-bottom:8px">Imóveis x inflação (12 meses)</h2><div class="chartbox sm"><canvas id="chVal" aria-label="Valorização 12 meses"></canvas></div></div>
+      <div class="panel"><h2 style="margin-bottom:8px" data-es="Tasa Selic en el tiempo">Selic ao longo do tempo</h2><div class="chartbox sm"><canvas id="chSelic"></canvas></div></div>
+      <div class="panel"><h2 style="margin-bottom:8px" data-es="Inmuebles x inflación (12 meses)">Imóveis x inflação (12 meses)</h2><div class="chartbox sm"><canvas id="chVal"></canvas></div></div>
     </div>
   </section>
 
   <!-- ============ CORREÇÃO ============ -->
   <section id="p-corr" class="grid" hidden>
     <form class="panel inputs" onsubmit="return false">
-      <fieldset><legend>Imóvel comprado no passado</legend>
-        <div class="f"><label for="cValor">Valor pago</label><div class="in"><span>R$</span><input id="cValor" type="number" step="1000" value="500000"></div></div>
-        <div class="f"><label for="cAno">Comprado em dezembro de</label><div class="in"><select id="cAno"></select></div></div>
+      <fieldset><legend data-es="Inmueble comprado en el pasado">Imóvel comprado no passado</legend>
+        <div class="f"><label for="cValor" data-es="Valor pagado">Valor pago</label><div class="in"><span>R$</span><input id="cValor" type="number" step="1000" value="500000"></div></div>
+        <div class="f"><label for="cAno" data-es="Comprado en diciembre de">Comprado em dezembro de</label><div class="in"><select id="cAno"></select></div></div>
       </fieldset>
-      <p class="note">Mostra ao proprietário quanto o imóvel valeria hoje pela valorização média de Itapema e o que teria rendido se o dinheiro tivesse ficado no CDI ou na poupança da inflação.</p>
+      <p class="note" data-es="Muestra al propietario cuánto valdría hoy el inmueble según la valorización media de Itapema y cuánto habría rendido el dinero en el CDI o en la inflación.">Mostra ao proprietário quanto o imóvel valeria hoje pela valorização média de Itapema e o que teria rendido se o dinheiro tivesse ficado no CDI ou na inflação.</p>
     </form>
     <div class="stack">
       <div class="kpis" id="corrKpis"></div>
@@ -426,17 +506,17 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 
   <section class="contato" aria-label="Contato">
     <div>
-      <h2>Quer ver isso para um imóvel específico?</h2>
+      <h2 data-es="¿Quiere ver esto para un inmueble específico?">Quer ver isso para um imóvel específico?</h2>
       <p id="contatoTxt"></p>
     </div>
-    <a class="btn" id="waBox" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+    <a class="btn" id="waBox" href="#" target="_blank" rel="noopener" data-es="Escribir por WhatsApp">Chamar no WhatsApp</a>
   </section>
 
-  <p class="note" style="margin-top:20px">Fontes: Índice FipeZAP (Fipe), informes mensais, preço médio residencial de venda. Banco Central do Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433/13522, IGP-M 189, INCC 192, poupança 195, IVG-R 21340). CUB/SC: Sinduscon Grande Florianópolis. População: IBGE. Simulação ilustrativa, não é promessa de rentabilidade. Rentabilidade passada não garante rentabilidade futura.</p>
+  <p class="note" style="margin-top:20px" data-es="Fuentes: Índice FipeZAP (Fipe), informes mensuales, precio medio residencial de venta. Banco Central de Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433, IGP-M 189, INCC 192, caja de ahorro 195, IVG-R 21340, dólar PTAX 3698). CUB/SC: Sinduscon Grande Florianópolis. Población: IBGE. Impuestos: Ley 11.196/2005, Ley 13.259/2016, Ley 15.270/2025, LC 214/2025, Ley SC 13.136/2004. Simulación ilustrativa, no es promesa de rentabilidad. Rentabilidad pasada no garantiza rentabilidad futura.">Fontes: Índice FipeZAP (Fipe), informes mensais, preço médio residencial de venda. Banco Central do Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433, IGP-M 189, INCC 192, poupança 195, IVG-R 21340, dólar PTAX 3698). CUB/SC: Sinduscon Grande Florianópolis. População: IBGE. Impostos: Lei 11.196/2005, Lei 13.259/2016, Lei 15.270/2025, LC 214/2025, Lei SC 13.136/2004. Simulação ilustrativa, não é promessa de rentabilidade. Rentabilidade passada não garante rentabilidade futura.</p>
 </div>
-<a class="wa" id="wa" href="#" target="_blank" rel="noopener" aria-label="Conversar no WhatsApp">
+<a class="wa" id="wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5 9.9 9.9 5.2 16 5.2s11 4.7 11 10.6-4.9 10.6-11 10.6zm6-7.9c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.6-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.5c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.8 5 .8.4 1.4.6 1.9.7.8.3 1.5.2 2.1.1.6-.1 2-.8 2.2-1.6.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.3z"/></svg>
-  <span id="waLabel">Fale com Santiago</span>
+  <span id="waLabel"></span>
 </a>
 <script src="dados/dados.js"></script>
 <script src="app.js"></script>
