@@ -607,7 +607,7 @@ function renderCustos(o,c){
   if(!o){ $('tblCustos').innerHTML=''; $('sSacas').innerHTML=''; return; }
   const p=o.preco, fet=num('sFethab'), fun=p*num('sFunrural')/100, fr=num('sFrete'), arm=num('sArmaz'), com=p*num('sComissao')/100, out=num('sOutros'), n=num('sProducao');
   const liq=p-fet-fun-fr-arm-com-out;
-  const lin=(t,v,cls='neg')=>`<tr><td>${t}</td><td class="${cls}">${v<0?'−':''}${brl2(Math.abs(v))}</td><td class="${cls}">${v<0?'−':''}${brl(Math.abs(v)*n)}</td></tr>`;
+  const lin=(t,v,cls='neg')=>{ if(cls==='neg'&&Math.abs(v)<0.005) cls=''; return `<tr><td>${t}</td><td class="${cls}">${v<0?'−':''}${brl2(Math.abs(v))}</td><td class="${cls}">${v<0?'−':''}${brl(Math.abs(v)*n)}</td></tr>`; };
   $('sCustoCid').textContent=`${c.nome}/${c.uf} · ${fmtEntrega(o.entrega)} · ${o.fob?'FOB':'CIF'}`;
   $('tblCustos').innerHTML=`<thead><tr><th></th><th>${L('Por saca','Por saca')}</th><th>${L(`Em ${n.toLocaleString('pt-BR')} sacas`,`En ${n.toLocaleString('pt-BR')} sacas`)}</th></tr></thead><tbody>`+
     lin(L('Preço bruto da oferta','Precio bruto de la oferta'),p,'')+
@@ -618,7 +618,7 @@ function renderCustos(o,c){
     lin(L('Comissão','Comisión'),-com)+
     lin(L('Outros custos','Otros costos'),-out)+
     `<tr class="total"><td>${L('Sobra para o produtor','Queda para el productor')}</td><td class="pos">${brl2(liq)}</td><td class="pos">${brl(liq*n)}</td></tr>`+
-    `<tr><td>${L('Custos sobre o preço bruto','Costos sobre el precio bruto')}</td><td>${pct((p-liq)/p)}</td><td>${L('por tonelada:','por tonelada:')} ${brl2(liq/0.06)}</td></tr></tbody>`;
+    `<tr><td>${L('Sobra por tonelada','Queda por tonelada')}</td><td colspan="2">${brl2(liq/0.06)}</td></tr><tr><td>${L('Custos sobre o preço bruto','Costos sobre el precio bruto')}</td><td colspan="2">${pct((p-liq)/p)}</td></tr></tbody>`;
   const m2=it[LAST]/liq, ap=num('valor');
   $('sSacas').innerHTML=L(`<b>Do campo para o litoral:</b> vendendo a ${brl2(liq)} líquidos por saca, <b>${Math.round(m2)} sacas</b> compram 1 m² em Itapema (${brl(it[LAST])}/m², FipeZap). ${n.toLocaleString('pt-BR')} sacas rendem ${brl(liq*n)}, o equivalente a <b>${(liq*n/it[LAST]).toLocaleString('pt-BR',{maximumFractionDigits:0})} m²</b> ou a ${pct(liq*n/ap,0)} de um imóvel de ${brl(ap)}.`,
     `<b>Del campo a la costa:</b> vendiendo a ${brl2(liq)} netos por saca, <b>${Math.round(m2)} sacas</b> compran 1 m² en Itapema (${brl(it[LAST])}/m², FipeZap). ${n.toLocaleString('pt-BR')} sacas rinden ${brl(liq*n)}, el equivalente a <b>${(liq*n/it[LAST]).toLocaleString('pt-BR',{maximumFractionDigits:0})} m²</b> o al ${pct(liq*n/ap,0)} de un inmueble de ${brl(ap)}.`);

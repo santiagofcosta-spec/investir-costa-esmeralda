@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manual · Investir na Costa Esmeralda</title>
+<meta name="description" content="Como usar o site Investir na Costa Esmeralda, aba por aba.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%2308413d%22/%3E%3Cpath d=%22M7 22l6-7 5 4 7-9%22 stroke=%22%233dd6bf%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Documento de leitura: coluna única de ~70 caracteres, sumário fixo à esquerda no desktop */
+:root{--bg:#f2f6f5;--surface:#fff;--ink:#10201d;--muted:#566b66;--line:#d6e2df;--sea:#0d6e66;--sea-deep:#08413d;--sand:#c9a86a;--chip:#eaf1ef;
+  --f-display:"Sora",ui-sans-serif,system-ui,sans-serif;--f-body:"Inter",ui-sans-serif,system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0b1513;--surface:#122220;--ink:#e4efec;--muted:#93aaa4;--line:#24403b;--sea:#3dbfab;--sea-deep:#0a2e2a;--chip:#172b28;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 var(--f-body)}
+header{background:var(--sea-deep);color:#eaf6f3}
+header .in{max-width:1100px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-left,0px)) 28px}
+header a{color:#9fd9cf}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.2}
+h1{font-size:clamp(1.6rem,4vw,2.3rem);margin:6px 0}
+h2{font-size:1.35rem;margin:40px 0 10px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:1.02rem;margin:22px 0 6px}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fd9cf}
+.wrap{max-width:1100px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-left,0px)) 80px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:40px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}nav.toc{position:static!important}}
+nav.toc{position:sticky;top:16px;align-self:start;font-size:13px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:4px 0}
+nav.toc a:hover{color:var(--sea)}
+main{max-width:72ch;min-width:0}
+p,li{color:var(--ink)}
+.note{color:var(--muted);font-size:13px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+td:first-child{font-weight:600;white-space:nowrap}
+.tbl{overflow-x:auto}
+code,.v{font-variant-numeric:tabular-nums;background:var(--chip);padding:1px 6px;border-radius:5px;font-family:var(--f-body);font-weight:600}
+.box{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--sand);border-radius:0 10px 10px 0;padding:12px 14px;margin:14px 0}
+.box.alerta{border-left-color:#b42318}
+ol li,ul li{margin:4px 0}
+a{color:var(--sea)}
+.top{display:inline-block;margin-top:10px;font-size:13px}
+@media print{header{background:none;color:#000}nav.toc{display:none}.wrap{display:block}h2{break-after:avoid}}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <span class="eyebrow">Investir na Costa Esmeralda</span>
+  <h1>Manual de uso, aba por aba</h1>
+  <p>Como preencher cada campo, o que cada número significa e como apresentar ao cliente. <a href="./">Abrir o site</a></p>
+</div></header>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sumário">
+  <a href="#comecar">Antes de começar</a>
+  <a href="#valores">Como digitar valores</a>
+  <a href="#botoes">Botões que aparecem em todas as abas</a>
+  <a href="#porque">1. Por que investir</a>
+  <a href="#simulador">2. Simulador</a>
+  <a href="#avista">3. Investidor à vista</a>
+  <a href="#planta">4. Na planta</a>
+  <a href="#holding">5. PF x Holding</a>
+  <a href="#soja">6. Soja</a>
+  <a href="#indices">7. Índices do Brasil</a>
+  <a href="#correcao">8. Correção de valor</a>
+  <a href="#dados">De onde vêm os dados</a>
+  <a href="#roteiro">Roteiro para apresentar ao cliente</a>
+  <a href="#glossario">Glossário</a>
+</nav>
+<main>
+
+<h2 id="comecar">Antes de começar</h2>
+<p>O endereço do site é <code>santiagofcosta-spec.github.io/investir-costa-esmeralda</code>. Ele funciona no celular e no computador, sem instalar nada.</p>
+<ul>
+  <li><b>Idioma:</b> no canto superior direito há o botão <b>PT / ES</b>. Para mandar a versão em espanhol direto, use o endereço terminado em <code>?lang=es</code>.</li>
+  <li><b>Dados atualizados:</b> no quadro do topo aparece <b>"● Banco Central ao vivo"</b> quando Selic, CDI, IPCA e dólar foram buscados naquele momento. Se o Banco Central estiver fora do ar, aparece a data dos últimos dados salvos e o site continua funcionando.</li>
+  <li><b>Nada é salvo no site:</b> o que você digita fica só na sua tela. Para guardar ou enviar uma simulação, use os botões <b>Copiar link</b> ou <b>Gerar PDF</b>.</li>
+</ul>
+
+<h2 id="valores">Como digitar valores</h2>
+<p>Os campos usam o padrão brasileiro: <b>ponto</b> separa os milhares e <b>vírgula</b> separa os centavos.</p>
+<div class="tbl"><table>
+  <tr><th>Tipo de campo</th><th>Exemplo de como aparece</th><th>Pode digitar assim</th></tr>
+  <tr><td>Dinheiro (R$)</td><td><span class="v">900.000,00</span></td><td><code>900000</code>, <code>900.000</code> ou <code>900.000,00</code></td></tr>
+  <tr><td>Percentual (%)</td><td><span class="v">5,3</span></td><td><code>5,3</code> ou <code>5.3</code></td></tr>
+  <tr><td>Prazos e quantidades</td><td><span class="v">360</span> meses · <span class="v">10.000</span> sacas</td><td><code>360</code> · <code>10000</code></td></tr>
+</table></div>
+<p>Ao sair do campo (clicar fora ou tocar em outro campo), o valor é arrumado sozinho no formato <span class="v">900.000,00</span>. Os resultados mudam na hora, enquanto você digita.</p>
+
+<h2 id="botoes">Botões que aparecem em todas as abas</h2>
+<table>
+  <tr><th>Botão</th><th>O que faz</th></tr>
+  <tr><td>Fale com Santiago</td><td>Botão verde fixo no canto da tela. Abre o WhatsApp <b>(47) 99217-6060</b> com uma mensagem pronta. Nas abas de simulação, a mensagem já leva os números e o link da simulação que o cliente montou.</td></tr>
+  <tr><td>Gerar PDF da proposta</td><td>Abre a tela de impressão do navegador. Escolha <b>"Salvar como PDF"</b> no destino. Sai uma página com seu nome, WhatsApp, data, premissas, resultados e gráficos.</td></tr>
+  <tr><td>Copiar link desta simulação</td><td>Copia um endereço que abre o site <b>já preenchido</b> com os números da tela, na mesma aba. Cole no WhatsApp do cliente.</td></tr>
+  <tr><td>Copiar texto</td><td>(Simulador) Copia o resumo em texto, pronto para colar em mensagem ou e-mail.</td></tr>
+</table>
+
+<h2 id="porque">1. Por que investir</h2>
+<p>É a aba de abertura, feita para mostrar ao cliente. Não tem nada para preencher.</p>
+<ul>
+  <li><b>Barras do topo:</b> quanto R$ 100 aplicados em dez/2020 viraram no imóvel em Itapema, no CDI e na inflação.</li>
+  <li><b>Números principais:</b> m² médio em Itapema (FipeZap), valorização desde 2020, ganho acima da inflação, CUB/SC e Selic.</li>
+  <li><b>Seis motivos para investir</b>, cada um com número e fonte.</li>
+  <li><b>Gráficos:</b> valorização acumulada (Itapema, Balneário Camboriú, Florianópolis, média do Brasil, CDI, IPCA, CUB), valorização ano a ano e preço do m².</li>
+  <li><b>Ranking</b> dos investimentos pelo rendimento médio ao ano.</li>
+  <li><b>CUB/SC:</b> quanto custa construir por m², mês a mês e por tipo de obra.</li>
+  <li><b>Crescimento da região:</b> população de Porto Belo, Bombinhas e Itapema (IBGE) e distâncias.</li>
+</ul>
+<div class="box"><b>Sobre Porto Belo e Bombinhas:</b> não têm índice oficial de preço. O FipeZap só cobre Itapema na Costa Esmeralda, por isso Itapema é usada como referência. A página explica isso ao cliente.</div>
+
+<h2 id="simulador">2. Simulador</h2>
+<p>Compara o imóvel com CDB, Tesouro IPCA+ e poupança, colocando <b>o mesmo dinheiro</b> em cada um.</p>
+<h3>Imóvel e compra</h3>
+<table>
+  <tr><th>Campo</th><th>Como preencher</th></tr>
+  <tr><td>Valor do imóvel</td><td>Preço de venda. Ex.: <span class="v">900.000,00</span></td></tr>
+  <tr><td>Entrada</td><td>Quanto o cliente paga do bolso. <b>Igual ao valor = compra à vista</b> (sem financiamento). Ex.: <span class="v">270.000,00</span></td></tr>
+  <tr><td>ITBI + cartório + registro</td><td>Custos de compra em %. Padrão <span class="v">4,0</span></td></tr>
+</table>
+<h3>Financiamento</h3>
+<table>
+  <tr><td>Juros (CET) ao ano</td><td>Custo efetivo total do banco. Ex.: <span class="v">12,0</span></td></tr>
+  <tr><td>Prazo</td><td>Em meses. Ex.: <span class="v">360</span></td></tr>
+  <tr><td>Sistema</td><td><b>SAC</b> (parcela cai com o tempo) ou <b>Price</b> (parcela fixa).</td></tr>
+</table>
+<h3>Aluguel e despesas</h3>
+<p>Escolha <b>Temporada (diárias)</b> ou <b>Aluguel anual</b>.</p>
+<table>
+  <tr><td>Diária na alta temporada</td><td>Ex.: <span class="v">800,00</span></td></tr>
+  <tr><td>Ocupação na alta</td><td>% de noites ocupadas. Ex.: <span class="v">70</span></td></tr>
+  <tr><td>Meses de alta</td><td>Contados a partir de dezembro. <span class="v">3</span> = dez, jan e fev.</td></tr>
+  <tr><td>Diária e ocupação no resto do ano</td><td>Ex.: <span class="v">350,00</span> e <span class="v">30</span></td></tr>
+  <tr><td>Aluguel por mês / Vacância</td><td>(Modo anual) Ex.: <span class="v">4.500,00</span> e <span class="v">8</span>% do tempo vazio.</td></tr>
+  <tr><td>Reajuste ao ano</td><td>Quanto o aluguel ou a diária sobe por ano. Ex.: <span class="v">4,5</span></td></tr>
+  <tr><td>Administração / plataforma</td><td>Imobiliária, Airbnb, limpeza. Temporada costuma ficar perto de <span class="v">20</span>%.</td></tr>
+  <tr><td>Despesas do proprietário</td><td>IPTU, manutenção, seguro, por mês. Ex.: <span class="v">400,00</span></td></tr>
+  <tr><td>IR sobre aluguel</td><td>Percentual efetivo. Quem tem outras rendas costuma pagar mais (até <span class="v">27,5</span>).</td></tr>
+</table>
+<h3>Valorização e venda</h3>
+<table>
+  <tr><td>Cenários</td><td>Botões <b>Conservador</b>, <b>Moderado</b> e <b>Otimista</b>, calculados com dados reais do FipeZap. Ou digite outro valor.</td></tr>
+  <tr><td>Horizonte</td><td>Em quantos anos o cliente vende. Ex.: <span class="v">10</span></td></tr>
+  <tr><td>Corretagem na venda</td><td>Padrão <span class="v">6,0</span>%</td></tr>
+  <tr><td>Reinvestir em 180 dias</td><td>Marque se o cliente vai comprar outro imóvel residencial em até 180 dias. Nesse caso o IR sobre o lucro é zero.</td></tr>
+</table>
+<h3>Renda fixa</h3>
+<p>CDI médio, % do CDI do CDB, poupança, IPCA e taxa do Tesouro IPCA+ <b>esperados para o período</b>. Abaixo de cada campo aparece o valor de hoje como referência.</p>
+<h3>Como ler os resultados</h3>
+<ul>
+  <li><b>Faixa verde ou vermelha:</b> quem rende mais e qual valorização faz o imóvel empatar com o CDB.</li>
+  <li><b>TIR:</b> retorno anual real do dinheiro do cliente. É o número para comparar com o CDI.</li>
+  <li><b>Imposto sobre o ganho de capital:</b> tabela mostrando quanto o cliente economiza de IR ficando mais tempo com o imóvel (fator de redução da Receita).</li>
+  <li><b>Sensibilidade:</b> retorno para várias valorizações e prazos. Verde = ganha do CDB.</li>
+</ul>
+
+<h2 id="avista">3. Investidor à vista</h2>
+<p>Usa as premissas do Simulador. Só tem um campo próprio:</p>
+<table><tr><td>Desconto negociado à vista</td><td>Ex.: <span class="v">5,0</span>%. O imóvel continua valendo o preço de mercado, então o desconto vira retorno.</td></tr></table>
+<ul>
+  <li><b>Renda líquida por mês</b> e comparação com o CDB.</li>
+  <li><b>Em quantos anos o aluguel paga o imóvel.</b></li>
+  <li><b>Poder do desconto:</b> retorno com 0%, 5%, 10%, 15% e 20% de desconto. Use na negociação.</li>
+  <li><b>À vista x financiado:</b> qual rende mais sobre o dinheiro do cliente.</li>
+  <li><b>m² em dólar:</b> bom argumento para estrangeiros (argentinos, uruguaios).</li>
+</ul>
+
+<h2 id="planta">4. Na planta</h2>
+<table>
+  <tr><td>Valor de tabela</td><td>Preço do lançamento. Ex.: <span class="v">850.000,00</span></td></tr>
+  <tr><td>Imóvel pronto parecido hoje</td><td><b>O campo mais importante.</b> Preço de um pronto no mesmo bairro e padrão. Se a tabela for mais barata, a diferença vira lucro na entrega. Ex.: <span class="v">950.000,00</span></td></tr>
+  <tr><td>Prazo até as chaves</td><td>Em meses. Ex.: <span class="v">36</span></td></tr>
+  <tr><td>Entrada, mensais, reforços</td><td>Em % do valor. O que sobra é pago nas chaves (aparece embaixo).</td></tr>
+  <tr><td>Correção das parcelas</td><td>Já vem com a alta do CUB/SC em 12 meses.</td></tr>
+  <tr><td>Valorização até a entrega</td><td>Ao ano. Vem com o ritmo recente de Itapema.</td></tr>
+</table>
+<p>O resultado considera vender na entrega das chaves: mostra quanto o cliente pagou, quanto recebe, o lucro e a comparação com o CDB.</p>
+
+<h2 id="holding">5. PF x Holding</h2>
+<div class="box alerta"><b>Simulação educativa.</b> Mostre a um contador antes de usar com clientes. Holding <b>não protege contra dívidas que já existem</b>: ela organiza o patrimônio e a sucessão.</div>
+<table>
+  <tr><td>Valor e quantidade de imóveis</td><td>Ex.: <span class="v">900.000,00</span> e <span class="v">1</span></td></tr>
+  <tr><td>Aluguel bruto por mês</td><td>Soma de todos os imóveis. Ex.: <span class="v">6.650,00</span></td></tr>
+  <tr><td>IR sobre o aluguel (PF)</td><td><span class="v">27,5</span> para quem já tem outras rendas.</td></tr>
+  <tr><td>Advogado do inventário</td><td>Estimativa em %, ajuste com orçamento real.</td></tr>
+  <tr><td>Imóvel registrado como</td><td><b>Estoque</b> (~6,73% sobre a venda) ou <b>Investimento</b> (34% sobre o lucro). Muda muito o resultado.</td></tr>
+  <tr><td>Abertura, contabilidade, ITBI</td><td>Custos da holding. Estimativas, ajuste.</td></tr>
+  <tr><td>Reforma tributária, dividendos</td><td>Deixe marcados: são as regras de 2026–2027.</td></tr>
+</table>
+
+<h2 id="soja">6. Soja</h2>
+<p>Preços da soja nas cidades do Mato Grosso e de Rondônia, com os custos da venda. Atualizado todo dia útil às 19h.</p>
+<h3>Escolher a cidade</h3>
+<ul>
+  <li>Use a caixa <b>"Escolha a cidade"</b> (17 cidades de MT e RO) ou os atalhos <b>Comodoro/MT</b> e <b>Vilhena/RO</b>.</li>
+  <li>Também dá para clicar numa linha da tabela <b>"Comparar cidades"</b>.</li>
+  <li>A cidade escolhida aparece em destaque: melhor oferta, média, gráfico e ofertas de compradores. Na tabela de ofertas, os compradores da própria cidade ficam destacados.</li>
+</ul>
+<div class="box"><b>Cotação no Mato Grosso:</b> o Grão Direto publica um preço por <b>região</b>. Comodoro, Sapezal e Sorriso, por exemplo, usam o mesmo preço da região Norte Mato-grossense. O que muda de uma cidade para outra são as <b>ofertas dos compradores</b>. Rondônia não tem cotação diária: o site mostra as ofertas e guarda a média de cada dia.</div>
+<h3>Tabela de custos: quanto sobra por saca</h3>
+<table>
+  <tr><td>Oferta usada no cálculo</td><td>Já vem com a melhor oferta da cidade. Pode trocar.</td></tr>
+  <tr><td>Fethab + entidade</td><td>Automático: <span class="v">3,23</span> R$/saca em MT (21,15% da UPF/MT de R$ 254,36 por tonelada). Em Rondônia, <span class="v">0,00</span>.</td></tr>
+  <tr><td>Funrural + Senar</td><td><span class="v">1,63</span>% para pessoa física desde abril de 2026.</td></tr>
+  <tr><td>Frete</td><td>Já vem com a estimativa do Grão Direto até o comprador. Troque pelo frete real se souber.</td></tr>
+  <tr><td>Secagem, armazenagem, comissão, outros</td><td>Preencha se houver. Ex.: <span class="v">1,50</span> R$/saca de secagem.</td></tr>
+  <tr><td>Sacas a vender</td><td>Ex.: <span class="v">10.000</span></td></tr>
+</table>
+<p>O resultado mostra o líquido por saca, por tonelada e no total, e quantos m² em Itapema essa venda compra. É o argumento <b>"do campo para o litoral"</b>.</p>
+
+<h2 id="indices">7. Índices do Brasil</h2>
+<p>Selic, CDI, IPCA, IGP-M, INCC e poupança, com gráficos desde 2016. Use os botões <b>1 ano / 3 anos / 5 anos / Desde 2016</b> para mudar o período.</p>
+
+<h2 id="correcao">8. Correção de valor</h2>
+<table>
+  <tr><td>Valor pago</td><td>Quanto o proprietário pagou. Ex.: <span class="v">500.000,00</span></td></tr>
+  <tr><td>Comprado em dezembro de</td><td>Ano da compra.</td></tr>
+</table>
+<p>Mostra quanto o imóvel valeria hoje pela valorização de Itapema e quanto o dinheiro teria rendido no CDI, IPCA ou IGP-M. É útil para captar imóvel: o proprietário vê quanto o imóvel valorizou.</p>
+
+<h2 id="dados">De onde vêm os dados</h2>
+<table>
+  <tr><th>Dado</th><th>Fonte</th><th>Atualização</th></tr>
+  <tr><td>Selic, CDI, IPCA, IGP-M, INCC, dólar, poupança</td><td>Banco Central</td><td>Toda vez que o site abre</td></tr>
+  <tr><td>Preço do m² (Itapema, BC, Floripa, Brasil)</td><td>Índice FipeZap</td><td>Mensal, automático</td></tr>
+  <tr><td>CUB/SC</td><td>Sinduscon Grande Florianópolis</td><td>Mensal, automático</td></tr>
+  <tr><td>Soja</td><td>Grão Direto</td><td>Todo dia útil às 19h</td></tr>
+  <tr><td>População</td><td>IBGE (Censos 2010 e 2022, estimativa 2025)</td><td>Fixo</td></tr>
+  <tr><td>Impostos</td><td>Leis citadas em cada aba</td><td>Revisar quando a lei mudar</td></tr>
+</table>
+<p class="note">As distâncias da seção Localização são aproximadas. Simulações são ilustrativas e não garantem rentabilidade.</p>
+
+<h2 id="roteiro">Roteiro para apresentar ao cliente</h2>
+<ol>
+  <li>Abra <b>Por que investir</b> e mostre as barras do topo: R$ 100 viraram R$ 213 em Itapema, contra R$ 188 no CDI.</li>
+  <li>Vá ao <b>Simulador</b>, coloque o valor e o aluguel do imóvel que está oferecendo e mostre a TIR e a valorização de empate.</li>
+  <li>Se o cliente compra à vista, abra <b>Investidor à vista</b> e mostre a renda por mês e o efeito do desconto.</li>
+  <li>Se é lançamento, use <b>Na planta</b>, preenchendo o preço de um pronto parecido.</li>
+  <li>Para cliente do agro, abra <b>Soja</b>, escolha a cidade dele e mostre quantas sacas compram o imóvel.</li>
+  <li>Feche com <b>Gerar PDF</b> ou <b>Copiar link</b> e envie pelo WhatsApp.</li>
+</ol>
+
+<h2 id="glossario">Glossário</h2>
+<table>
+  <tr><td>TIR</td><td>Taxa interna de retorno: rendimento anual equivalente do dinheiro investido, considerando quando cada valor entrou e saiu.</td></tr>
+  <tr><td>ROI</td><td>Retorno total sobre o dinheiro investido, no período todo.</td></tr>
+  <tr><td>Yield bruto</td><td>Aluguel do ano dividido pelo valor do imóvel.</td></tr>
+  <tr><td>Cap rate líquido</td><td>Aluguel do ano menos vacância, administração e despesas, dividido pelo valor do imóvel.</td></tr>
+  <tr><td>Fator de redução</td><td>Regra da Receita que diminui a parte do lucro tributada conforme o tempo com o imóvel.</td></tr>
+  <tr><td>CUB</td><td>Custo Unitário Básico: quanto custa construir 1 m², sem terreno.</td></tr>
+  <tr><td>FOB / CIF</td><td>FOB: o comprador busca a soja (frete por conta dele). CIF: o produtor entrega (frete por conta do produtor).</td></tr>
+  <tr><td>Fethab</td><td>Contribuição do Mato Grosso cobrada por tonelada de soja transportada.</td></tr>
+  <tr><td>Funrural</td><td>Contribuição previdenciária do produtor rural sobre a receita da venda.</td></tr>
+</table>
+<a class="top" href="#">Voltar ao topo</a> · <a class="top" href="./">Abrir o site</a>
+</main>
+</div>
+</body>
+</html>
