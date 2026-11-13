@@ -72,7 +72,9 @@ def atualizar_bcb(d):
         if m > 12:
             a, m = a + 1, 1
     def ultimo(cod):
-        return float(json.loads(baixar(f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.{cod}/dados/ultimos/1?formato=json"))[-1]["valor"])
+        # "ultimos/1" às vezes volta 304 vazio no BCB; pega 5 e escolhe a data mais recente
+        rs = json.loads(baixar(f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.{cod}/dados/ultimos/5?formato=json"))
+        return float(max(rs, key=lambda r: r["data"][6:] + r["data"][3:5] + r["data"][:2])["valor"])
     poup = [float(r["valor"]) for r in json.loads(baixar("https://api.bcb.gov.br/dados/serie/bcdata.sgs.195/dados/ultimos/20?formato=json"))]
     d["bcb"] = {
         "start": inicio,

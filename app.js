@@ -436,6 +436,8 @@ function renderCorr(){
 }
 
 /* ---------- Banco Central ao vivo ---------- */
+const chaveData=r=>r.data.split('/').reverse().join('');
+const maisRecente=rs=>rs.reduce((a,b)=>chaveData(b)>chaveData(a)?b:a);
 async function bcbAoVivoCarregar(){
   const ctrl=new AbortController(), timer=setTimeout(()=>ctrl.abort(),9000);
   const get=async u=>{const r=await fetch(u,{signal:ctrl.signal}); if(!r.ok) throw new Error(r.status); return r.json();};
@@ -443,7 +445,7 @@ async function bcbAoVivoCarregar(){
   const cods={selic:4189,cdi:4391,ipca:433,igpm:189,incc:192,ivgr:21340};
   try{
     const res=await Promise.all([...Object.values(cods).map(c=>get(`${base}${c}/dados?formato=json&dataInicial=01/01/2016`)),
-      get(`${base}432/dados/ultimos/1?formato=json`),get(`${base}4389/dados/ultimos/1?formato=json`),get(`${base}195/dados/ultimos/20?formato=json`)]);
+      get(`${base}432/dados/ultimos/5?formato=json`),get(`${base}4389/dados/ultimos/5?formato=json`),get(`${base}195/dados/ultimos/20?formato=json`)]);
     const brutos={}; Object.keys(cods).forEach((k,i)=>{brutos[k]={}; for(const r of res[i]){const [dd,mm,aa]=r.data.split('/'); brutos[k][`${aa}-${mm}`]=parseFloat(r.valor);}});
     const hoje=new Date(), atual=`${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}`;
     delete brutos.cdi[atual]; delete brutos.selic[atual];
@@ -451,7 +453,7 @@ async function bcbAoVivoCarregar(){
     const ms=[]; for(let y=2016,m=1; `${y}-${String(m).padStart(2,'0')}`<=fim; m++){ if(m>12){y++;m=1;} const k=`${y}-${String(m).padStart(2,'0')}`; if(k>fim) break; ms.push(k); }
     const poup=res[8].map(r=>parseFloat(r.valor));
     const nova={start:'2016-01',series:Object.fromEntries(Object.keys(cods).map(k=>[k,ms.map(m=>brutos[k][m]??null)])),poup_m:poup.reduce((a,b)=>a+b,0)/poup.length,
-      selicMeta:parseFloat(res[6].at(-1).valor),cdiAA:parseFloat(res[7].at(-1).valor)};
+      selicMeta:parseFloat(maisRecente(res[6]).valor),cdiAA:parseFloat(maisRecente(res[7]).valor)};
     if(nova.series.cdi.length<100||!isFinite(nova.selicMeta)) throw new Error('resposta incompleta');
     D.bcb=nova; bcbAoVivo=true; prepBCB(); hints(); hero(false); renders[tab]();
   }catch(e){ console.info('Banco Central indisponível, usando dados salvos:',e.message); }
