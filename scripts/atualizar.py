@@ -236,6 +236,21 @@ def gd_ofertas(pp):
     return out
 
 
+def atualizar_ultimas(c, dia):
+    """Guarda a última (e melhor) oferta vista para cada mês de entrega, mesmo depois que ela sai do Grão Direto."""
+    ult = c.setdefault("ultimas", {})
+    for o in c.get("ofertas", []):
+        k = o["entrega"][:7] if o.get("entrega") else "disp"
+        atual = ult.get(k)
+        if not atual or atual["visto"] < dia or o["preco"] > atual["preco"]:
+            if atual and atual["visto"] == dia and o["preco"] <= atual["preco"]:
+                continue
+            ult[k] = {"preco": o["preco"], "cidade": o["cidade"], "uf": o["uf"], "fob": o["fob"], "visto": dia}
+    mes = dia[:7]
+    for k in [k for k in ult if k != "disp" and k < mes]:  # entrega já passou
+        del ult[k]
+
+
 def atualizar_soja(d):
     import time
     s = d.setdefault("soja", {})
@@ -274,6 +289,7 @@ def atualizar_soja(d):
                 c["regiao"] = m.group(1)
         c["serie"] = [[k, serie[k]] for k in sorted(serie)][-600:]
         c["ofertas"] = gd_ofertas(pc)
+        atualizar_ultimas(c, dia)
         locais = [o["preco"] for o in c["ofertas"] if o["cidade"] == c["nome"]]
         hist = {h[0]: h for h in c.get("historico", [])}
         if locais:

@@ -1423,7 +1423,7 @@
     ]
    }
   ],
-  "atualizado": "2026-11-13 16:47",
+  "atualizado": "2026-11-13 17:06",
   "fonte": "Grão Direto (graodireto.com.br)",
   "cidades": {
    "comodoro": {
@@ -1547,7 +1547,51 @@
      ]
     ],
     "slug": "comodoro",
-    "ordem": 0
+    "ordem": 0,
+    "ultimas": {
+     "2027-01": {
+      "preco": 119.6,
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-02": {
+      "preco": 116.9,
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 118.3,
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 118.0,
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "disp": {
+      "preco": 100.0,
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 132.15,
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "vilhena": {
     "historico": [
@@ -1628,7 +1672,44 @@
      }
     ],
     "slug": "vilhena",
-    "ordem": 12
+    "ordem": 12,
+    "ultimas": {
+     "2027-01": {
+      "preco": 120.9,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 119.65,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 120.95,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "disp": {
+      "preco": 100.0,
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 133.35,
+      "cidade": "São Miguel do Guaporé",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "campos-de-julio": {
     "nome": "Campos de Júlio",
@@ -1751,7 +1832,37 @@
      ]
     ],
     "slug": "campos-de-julio",
-    "ordem": 1
+    "ordem": 1,
+    "ultimas": {
+     "disp": {
+      "preco": 100.0,
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 132.2,
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 118.8,
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 117.45,
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "sapezal": {
     "nome": "Sapezal",
@@ -1874,7 +1985,37 @@
      ]
     ],
     "slug": "sapezal",
-    "ordem": 2
+    "ordem": 2,
+    "ultimas": {
+     "disp": {
+      "preco": 100.0,
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 132.2,
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 118.2,
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 116.85,
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "campo-novo-do-parecis": {
     "nome": "Campo Novo do Parecis",
@@ -2006,7 +2147,37 @@
      ]
     ],
     "slug": "campo-novo-do-parecis",
-    "ordem": 3
+    "ordem": 3,
+    "ultimas": {
+     "disp": {
+      "preco": 130.0,
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 132.15,
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 118.3,
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 116.9,
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "diamantino": {
     "nome": "Diamantino",
@@ -2138,7 +2309,30 @@
      ]
     ],
     "slug": "diamantino",
-    "ordem": 4
+    "ordem": 4,
+    "ultimas": {
+     "disp": {
+      "preco": 130.0,
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 133.4,
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "fob": false,
+      "visto": "2026-11-13"
+     },
+     "2027-05": {
+      "preco": 125.65,
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "nova-mutum": {
     "nome": "Nova Mutum",
@@ -2270,7 +2464,30 @@
      ]
     ],
     "slug": "nova-mutum",
-    "ordem": 5
+    "ordem": 5,
+    "ultimas": {
+     "disp": {
+      "preco": 130.0,
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-05": {
+      "preco": 125.65,
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 133.4,
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "fob": false,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "lucas-do-rio-verde": {
     "nome": "Lucas do Rio Verde",
@@ -2438,7 +2655,37 @@
      ]
     ],
     "slug": "lucas-do-rio-verde",
-    "ordem": 6
+    "ordem": 6,
+    "ultimas": {
+     "disp": {
+      "preco": 130.0,
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 133.25,
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "fob": false,
+      "visto": "2026-11-13"
+     },
+     "2027-05": {
+      "preco": 125.5,
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "fob": false,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 121.45,
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "sorriso": {
     "nome": "Sorriso",
@@ -2570,7 +2817,37 @@
      ]
     ],
     "slug": "sorriso",
-    "ordem": 7
+    "ordem": 7,
+    "ultimas": {
+     "disp": {
+      "preco": 130.0,
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 140.9,
+      "cidade": "Matupá",
+      "uf": "MT",
+      "fob": false,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 122.05,
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 120.95,
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "sinop": {
     "nome": "Sinop",
@@ -2684,7 +2961,23 @@
      ]
     ],
     "slug": "sinop",
-    "ordem": 8
+    "ordem": 8,
+    "ultimas": {
+     "2026-12": {
+      "preco": 140.9,
+      "cidade": "Matupá",
+      "uf": "MT",
+      "fob": false,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 120.45,
+      "cidade": "Sinop",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "querencia": {
     "nome": "Querência",
@@ -2762,7 +3055,16 @@
      ]
     ],
     "slug": "querencia",
-    "ordem": 9
+    "ordem": 9,
+    "ultimas": {
+     "2027-03": {
+      "preco": 123.0,
+      "cidade": "Água Boa",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "primavera-do-leste": {
     "nome": "Primavera do Leste",
@@ -2858,7 +3160,30 @@
      ]
     ],
     "slug": "primavera-do-leste",
-    "ordem": 10
+    "ordem": 10,
+    "ultimas": {
+     "disp": {
+      "preco": 130.0,
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-05": {
+      "preco": 129.85,
+      "cidade": "Itiquira",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-06": {
+      "preco": 125.1,
+      "cidade": "Santa Rita do Trivelato",
+      "uf": "MT",
+      "fob": false,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "rondonopolis": {
     "nome": "Rondonópolis",
@@ -2981,7 +3306,44 @@
      ]
     ],
     "slug": "rondonopolis",
-    "ordem": 11
+    "ordem": 11,
+    "ultimas": {
+     "disp": {
+      "preco": 139.0,
+      "cidade": "Rio Verde de Mato Grosso",
+      "uf": "MS",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-05": {
+      "preco": 129.85,
+      "cidade": "Itiquira",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 129.05,
+      "cidade": "São Gabriel do Oeste",
+      "uf": "MS",
+      "fob": false,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 127.9,
+      "cidade": "São Gabriel do Oeste",
+      "uf": "MS",
+      "fob": false,
+      "visto": "2026-11-13"
+     },
+     "2027-02": {
+      "preco": 124.8,
+      "cidade": "São Gabriel do Oeste",
+      "uf": "MS",
+      "fob": false,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "cerejeiras": {
     "nome": "Cerejeiras",
@@ -3062,7 +3424,30 @@
      ]
     ],
     "slug": "cerejeiras",
-    "ordem": 13
+    "ordem": 13,
+    "ultimas": {
+     "disp": {
+      "preco": 113.1,
+      "cidade": "Juína",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2026-12": {
+      "preco": 129.5,
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-01": {
+      "preco": 120.2,
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "cabixi": {
     "nome": "Cabixi",
@@ -3134,7 +3519,30 @@
      ]
     ],
     "slug": "cabixi",
-    "ordem": 14
+    "ordem": 14,
+    "ultimas": {
+     "2026-12": {
+      "preco": 130.8,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 120.95,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-03": {
+      "preco": 119.6,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "chupinguaia": {
     "nome": "Chupinguaia",
@@ -3206,7 +3614,23 @@
      ]
     ],
     "slug": "chupinguaia",
-    "ordem": 15
+    "ordem": 15,
+    "ultimas": {
+     "2026-12": {
+      "preco": 133.35,
+      "cidade": "São Miguel do Guaporé",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 120.95,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    },
    "corumbiara": {
     "nome": "Corumbiara",
@@ -3270,7 +3694,23 @@
     ],
     "historico": [],
     "slug": "corumbiara",
-    "ordem": 16
+    "ordem": 16,
+    "ultimas": {
+     "2026-12": {
+      "preco": 133.35,
+      "cidade": "São Miguel do Guaporé",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 120.95,
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     }
+    }
    }
   },
   "estados": {

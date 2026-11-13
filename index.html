@@ -183,6 +183,8 @@ tr.sel td{background:var(--surface2);font-weight:600}
 .chips button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:var(--sea-ink)}
 #tblCidades tbody tr{cursor:pointer}
 #tblCidades tbody tr:hover td{background:var(--surface2)}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface2);color:var(--muted)}
+.tag.on{background:var(--good-bg);color:var(--good)}
 tr.total td{border-top:2px solid var(--ink);font-weight:700}
 </style>
 </head>
@@ -504,6 +506,10 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
       <div class="panel">
         <div class="ph"><h2 id="sTitOf"></h2></div>
         <div class="tblwrap"><table id="tblOfertas"></table></div>
+        <div id="boxUltimas" hidden>
+          <h3 style="margin-top:16px" data-es="Última oferta vista por mes de entrega">Última oferta vista por mês de entrega</h3>
+          <div class="tblwrap"><table id="tblUltimas"></table></div>
+        </div>
       </div>
     </div>
     <div class="grid">
