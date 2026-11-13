@@ -568,12 +568,12 @@ function montarFiltroSoja(){
     ...nomes.map(n=>`<button type="button" data-uf="${selUF}" data-n="${n}" aria-pressed="${semAcento(n)===semAcento(selNome)}">${n}</button>`)].join('');
   $('sAtalhosLb').textContent=nomes.length?L(`Cidades com dados em ${UF_NOMES[selUF]}:`,`Ciudades con datos en ${UF_NOMES[selUF]}:`):L(`Sem cotação de cidades em ${UF_NOMES[selUF]} hoje. Atalhos:`,`Sin cotización de ciudades en ${UF_NOMES[selUF]} hoy. Atajos:`);
 }
-function selecionarCidade(uf,nome){ selUF=uf; selNome=nome; ofertaSel=null; delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; renderSoja(); }
+function selecionarCidade(uf,nome){ if(!Object.prototype.hasOwnProperty.call(UF_NOMES,uf)) return; selUF=uf; selNome=nome; ofertaSel=null; delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; renderSoja(); }
 function renderSoja(){
   const S0=D.soja;
   if(!S0||!S0.cidades){ $('sKpis').innerHTML=`<p class="note">${L('Cotações da soja ainda não carregadas.','Cotizaciones de soja aún no cargadas.')}</p>`; return; }
   montarFiltroSoja();
-  const I=infoCidade(selUF,selNome), c=I.det, nomeH=esc(I.nome), mesoH=esc(I.meso||'—'), nomeC=`${nomeH}/${I.uf}`;
+  const I=infoCidade(selUF,selNome), c=I.det, nomeH=esc(I.nome), mesoH=esc(I.meso||'—'), nomeC=`${nomeH}/${esc(I.uf)}`;
   const loc=c?ofertasLocais(c):[], todas=c?(c.ofertas||[]):[], melhor=(loc.length?loc:todas).length?(loc.length?loc:todas).reduce((a,b)=>b.preco>a.preco?b:a):null;
   const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor);
   const linkGD=`https://www.graodireto.com.br/ofertas/soja/${I.uf.toLowerCase()}/${slugGD(I.nome)}/`;
@@ -710,7 +710,7 @@ function aplicarLink(){
   const q=new URLSearchParams(location.search);
   for(const el of CAMPOS()){ if(!q.has(el.id)) continue; if(el.type==='checkbox') el.checked=q.get(el.id)==='1'; else el.value=q.get(el.id); }
   if(q.has('valoriz')){ presetSel=''; presets(); }
-  if(q.get('cidade')){ const v=q.get('cidade'); if(v.includes('|')){ [selUF,selNome]=v.split('|'); } else { const d=Object.values(D.soja?.cidades||{}).find(c=>c.slug===v); if(d){ selUF=d.uf; selNome=d.nome; } } }
+  if(q.get('cidade')){ const v=q.get('cidade'); if(v.includes('|')){ const [u,n]=v.split('|'); if(Object.prototype.hasOwnProperty.call(UF_NOMES,u)){ selUF=u; selNome=String(n||'').slice(0,80); } } else { const d=Object.values(D.soja?.cidades||{}).find(c=>c.slug===v); if(d){ selUF=d.uf; selNome=d.nome; } } }
   CAMPOS().forEach(formatarCampo);
   setModo($('modo').value);
   return q.get('aba');
