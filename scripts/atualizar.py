@@ -21,10 +21,24 @@ HOJE = dt.date.today()
 log = []
 
 
-def baixar(url, timeout=60):
-    req = urllib.request.Request(url, headers=UA)
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read()
+def baixar(url, timeout=60, tentativas=3):
+    """Baixa sem cache. Repete em 304 (cache de proxy) e erros 5xx/rede."""
+    import time
+    import urllib.error
+    cab = {**UA, "Cache-Control": "no-cache", "Pragma": "no-cache"}
+    for i in range(tentativas):
+        sep = "&" if "?" in url else "?"
+        req = urllib.request.Request(f"{url}{sep}_={int(time.time() * 1000)}" if "bcb.gov.br" in url else url, headers=cab)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code not in (304, 429, 500, 502, 503, 504) or i == tentativas - 1:
+                raise
+        except urllib.error.URLError:
+            if i == tentativas - 1:
+                raise
+        time.sleep(3 * (i + 1))
 
 
 def num_br(s):
