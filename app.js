@@ -15,6 +15,7 @@ function traduzirEstatico(){
   document.title = L('Investir na Costa Esmeralda','Invertir en la Costa Esmeralda');
   if(ES) document.querySelectorAll('[data-es]').forEach(el=>{ el.innerHTML = el.dataset.es; });
   if(ES) $('sCidadeTxt').placeholder='Escriba el nombre';
+  if(ES) $('senhaCorretor').placeholder='Contraseña';
   $('lang-pt').setAttribute('aria-current', ES?'false':'true');
   $('lang-es').setAttribute('aria-current', ES?'true':'false');
 }
@@ -687,6 +688,76 @@ function renderCustos(o,c){
     `<b>Del campo a la costa:</b> vendiendo a ${brl2(liq)} netos por saca, <b>${Math.round(m2)} sacas</b> compran 1 m² en Itapema (${brl(it[LAST])}/m², FipeZap). ${n.toLocaleString('pt-BR')} sacas rinden ${brl(liq*n)}, el equivalente a <b>${(liq*n/it[LAST]).toLocaleString('pt-BR',{maximumFractionDigits:0})} m²</b> o al ${pct(liq*n/ap,0)} de un inmueble de ${brl(ap)}.`);
 }
 
+/* ---------- Área do corretor: tabelas cifradas (AES-256-GCM, PBKDF2-SHA256) ----------
+   O arquivo dados/tabelas.enc.json é gerado por scripts/cifrar_tabelas.py. A senha nunca sai do navegador
+   e as tabelas abertas ficam só na memória desta aba (somem ao recarregar ou ao clicar em Sair). */
+let TAB=null, cEmp=null, cPav='*', cUni=null;
+const b64=s=>Uint8Array.from(atob(s),ch=>ch.charCodeAt(0));
+async function abrirTabelas(senha){
+  const r=await fetch('dados/tabelas.enc.json',{cache:'no-store'});
+  if(r.status===404) throw new Error('vazio');
+  if(!r.ok) throw new Error('rede');
+  const e=await r.json();
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(senha),'PBKDF2',false,['deriveKey']);
+  const chave=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.salt),iterations:e.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  let claro;
+  try{ claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},chave,b64(e.ct)); }catch{ throw new Error('senha'); }
+  return limparTextos(JSON.parse(new TextDecoder().decode(claro)));
+}
+const STATUS={disponivel:L('Disponível','Disponible'),reservado:L('Reservado','Reservado'),vendido:L('Vendido','Vendido')};
+const fmtMesAno=k=>k?NOMES_MES[+k.slice(5,7)-1]+'/'+k.slice(0,4):'—';
+function renderCorretor(){
+  $('formLogin').hidden=!!TAB; $('areaCorretor').hidden=!TAB;
+  if(!TAB) return;
+  const emps=TAB.empreendimentos;
+  if(!emps.some(e=>e.id===cEmp)) cEmp=emps[0].id;
+  $('cEmp').innerHTML=emps.map(e=>`<option value="${e.id}"${e.id===cEmp?' selected':''}>${e.nome}${e.cidade?' · '+e.cidade:''}</option>`).join('');
+  const e=emps.find(x=>x.id===cEmp);
+  const pavs=[...new Set(e.unidades.map(u=>`${u.torre||''}|${u.pavimento??''}`))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  if(cPav!=='*'&&!pavs.includes(cPav)) cPav='*';
+  $('cPav').innerHTML=`<option value="*">${L('Todos','Todos')}</option>`+pavs.map(p=>{const [t,v]=p.split('|'); return `<option value="${p}"${p===cPav?' selected':''}>${t?L('Torre ','Torre ')+t+' · ':''}${v!==''?v+'º '+L('pavimento','piso'):''}</option>`;}).join('');
+  const fx=e.fluxo||{};
+  $('cEmpInfo').innerHTML=[e.incorporadora,e.entrega?L('Entrega ','Entrega ')+fmtMesAno(e.entrega):'',fx.entrada!=null?L(`Fluxo: ${fx.entrada}% entrada, ${fx.mensais}% mensais, ${fx.reforcos}% reforços, ${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}% chaves`,`Plan: ${fx.entrada}% anticipo, ${fx.mensais}% cuotas, ${fx.reforcos}% refuerzos, ${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}% entrega`):'',e.atualizado?L('tabela de ','tabla del ')+fmtDia(e.atualizado):'',e.observacoes||''].filter(Boolean).join(' · ');
+  const us=e.unidades.filter(u=>cPav==='*'||`${u.torre||''}|${u.pavimento??''}`===cPav);
+  $('tblUnidades').innerHTML=`<thead><tr><th style="text-align:left">${L('Unidade','Unidad')}</th><th>${L('Pavimento','Piso')}</th><th style="text-align:left">${L('Tipo','Tipo')}</th><th>${L('Área','Área')}</th><th>${L('Valor de tabela','Precio de lista')}</th><th>R$/m²</th><th>${L('Situação','Situación')}</th></tr></thead><tbody>`+
+    us.map(u=>{const i=e.unidades.indexOf(u); return `<tr data-i="${i}"${cUni===i?' class="sel"':''}><td style="text-align:left"><b>${u.torre?u.torre+'-':''}${u.unidade??''}</b></td><td>${u.pavimento??'—'}</td><td style="text-align:left">${u.tipo||''}</td><td>${u.area?u.area.toLocaleString('pt-BR')+' m²':'—'}</td><td><b>${brl(u.valor)}</b></td><td>${u.area?brl(u.valor/u.area):'—'}</td><td><span class="st ${u.status||''}">${STATUS[u.status]||u.status||''}</span></td></tr>`;}).join('')+'</tbody>';
+  renderUnidade();
+}
+function renderUnidade(){
+  const e=TAB?.empreendimentos.find(x=>x.id===cEmp), u=e?.unidades[cUni];
+  $('cUniBox').hidden=!u; if(!u) return;
+  const fx=u.fluxo||e.fluxo||{}, m2=u.area?u.valor/u.area:null;
+  $('cUniTit').textContent=`${e.nome} · ${u.torre?u.torre+'-':''}${u.unidade??''}`.replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  $('cUniSub').textContent=L('Valores já enviados para as simulações','Valores ya enviados a las simulaciones');
+  $('cUniKpis').innerHTML=kpiHTML([
+    [L('Valor de tabela','Precio de lista'),brl(u.valor),u.tipo||''],
+    [L('Preço por m²','Precio por m²'),m2?brl(m2):'—',m2?L(`Itapema (FipeZap): ${brl(it[LAST])}/m²`,`Itapema (FipeZap): ${brl(it[LAST])}/m²`):''],
+    [L('Entrega','Entrega'),fmtMesAno(e.entrega),e.cidade||''],
+    [L('Fluxo','Plan de pagos'),fx.entrada!=null?`${fx.entrada}/${fx.mensais}/${fx.reforcos}/${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}`:'—',L('entrada / mensais / reforços / chaves (%)','anticipo / cuotas / refuerzos / entrega (%)')],
+  ]);
+}
+function usarUnidade(i){
+  cUni=i; const e=TAB.empreendimentos.find(x=>x.id===cEmp), u=e.unidades[i], fx=u.fluxo||e.fluxo||{};
+  // Simulador e Investidor à vista: mantém a proporção de entrada que estava
+  const prop=num('valor')>0?Math.min(1,num('entrada')/num('valor')):0.3;
+  setNum('valor',u.valor); setNum('entrada',Math.round(u.valor*prop));
+  // Na planta: tabela, prazo até a entrega e fluxo
+  setNum('pValor',u.valor); setNum('pMercado',u.valor);
+  if(e.entrega){ const hoje=new Date(), [y,m]=e.entrega.split('-').map(Number); setNum('pObra',Math.min(72,Math.max(6,(y-hoje.getFullYear())*12+(m-1-hoje.getMonth())))); }
+  if(fx.entrada!=null){ setNum('pEntrada',fx.entrada); setNum('pMensais',fx.mensais); setNum('pReforcos',fx.reforcos); }
+  // PF x Holding
+  setNum('hValor',u.valor);
+  $('cUniMsg').textContent=L('Pronto: Simulador, Investidor à vista, Na planta e PF x Holding foram preenchidos com esta unidade. Na planta, ajuste "Imóvel pronto parecido hoje" se a tabela estiver abaixo do mercado.','Listo: Simulador, Inversor al contado, En pozo y Persona física x Holding se completaron con esta unidad. En pozo, ajuste "Inmueble terminado similar hoy" si la lista está por debajo del mercado.');
+  renderCorretor();
+}
+async function entrarCorretor(){
+  const s=$('senhaCorretor').value; if(!s) return;
+  $('btnEntrar').disabled=true; $('loginMsg').textContent=L('Abrindo…','Abriendo…');
+  try{ TAB=await abrirTabelas(s); $('senhaCorretor').value=''; $('loginMsg').textContent=''; cUni=null; renderCorretor(); }
+  catch(err){ $('loginMsg').textContent= err.message==='senha'?L('Senha incorreta.','Contraseña incorrecta.'):err.message==='vazio'?L('Nenhuma tabela publicada ainda.','Todavía no hay tablas publicadas.'):L('Não consegui carregar as tabelas. Verifique a internet.','No pude cargar las tablas. Verifique internet.'); }
+  finally{ $('btnEntrar').disabled=false; }
+}
+
 /* ---------- contato / WhatsApp ---------- */
 let ultimoResumoWA='';
 const assinatura=()=>`${CONTATO.nome}${CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:''} · WhatsApp ${CONTATO.whatsappTxt}`;
@@ -816,7 +887,7 @@ async function bcbAoVivoCarregar(){
 
 /* ---------- eventos ---------- */
 let tab='why';
-const renders={why:renderWhy,sim:renderSim,avista:renderAvista,planta:renderPlanta,holding:renderHolding,soja:renderSoja,idx:renderIdx,corr:renderCorr};
+const renders={why:renderWhy,sim:renderSim,avista:renderAvista,planta:renderPlanta,holding:renderHolding,soja:renderSoja,idx:renderIdx,corr:renderCorr,corretor:renderCorretor};
 function show(t){ if(!renders[t]) t='why'; tab=t;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   for(const k of Object.keys(renders)) $('p-'+k).hidden=k!==t;
@@ -835,6 +906,12 @@ $('form').addEventListener('input',e=>{ if(e.target.id==='valoriz'){presetSel=''
 $('formPlanta').addEventListener('input',renderPlanta);
 $('formAvista').addEventListener('input',renderAvista);
 $('formHolding').addEventListener('input',renderHolding);
+$('formLogin').addEventListener('submit',e=>{ e.preventDefault(); entrarCorretor(); });
+$('cEmp').addEventListener('change',e=>{ cEmp=e.target.value; cPav='*'; cUni=null; renderCorretor(); });
+$('cPav').addEventListener('change',e=>{ cPav=e.target.value; renderCorretor(); });
+$('tblUnidades').addEventListener('click',e=>{ const tr=e.target.closest('tr[data-i]'); if(tr) usarUnidade(+tr.dataset.i); });
+$('btnSair').addEventListener('click',()=>{ TAB=null; cUni=null; $('loginMsg').textContent=L('Você saiu. As tabelas foram apagadas desta tela.','Usted salió. Las tablas se borraron de esta pantalla.'); renderCorretor(); });
+document.querySelectorAll('[data-ir]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.ir)));
 $('sUF').addEventListener('change',e=>{ const uf=e.target.value, est=D.soja.estados?.[uf], det=detalhadas().find(c=>c.uf===uf);
   const nome=det?.nome||est?.cidades?.[0]?.nome||munUF(uf)[0]?.[0]||''; selecionarCidade(uf,nome); });
 $('sCidadeTxt').addEventListener('change',e=>{ if(e.target.value.trim()) selecionarCidade(selUF,e.target.value.trim()); });

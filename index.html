@@ -185,6 +185,16 @@ tr.sel td{background:var(--surface2);font-weight:600}
 #tblCidades tbody tr:hover td{background:var(--surface2)}
 .tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface2);color:var(--muted)}
 .tag.on{background:var(--good-bg);color:var(--good)}
+.login{max-width:520px}
+.loginrow{display:flex;gap:8px;margin-top:10px}
+.loginrow .in{flex:1}
+.loginrow input{text-align:left!important}
+.st{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px}
+.st.disponivel{background:var(--good-bg);color:var(--good)}
+.st.reservado{background:#fff4d6;color:#8a5a00}
+.st.vendido{background:var(--bad-bg);color:var(--bad)}
+#tblUnidades tbody tr{cursor:pointer}
+#tblUnidades tbody tr:hover td{background:var(--surface2)}
 tr.total td{border-top:2px solid var(--ink);font-weight:700}
 </style>
 </head>
@@ -223,6 +233,7 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
     <button role="tab" data-tab="soja" data-es="Soja">Soja</button>
     <button role="tab" data-tab="idx" data-es="Índices de Brasil">Índices do Brasil</button>
     <button role="tab" data-tab="corr" data-es="Valor actualizado">Correção de valor</button>
+    <button role="tab" data-tab="corretor" data-es="🔒 Área del corredor">🔒 Área do corretor</button>
   </nav>
 
   <!-- ============ POR QUE INVESTIR ============ -->
@@ -572,6 +583,43 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
     <div class="stack">
       <div class="kpis" id="corrKpis"></div>
       <div class="panel"><div class="tblwrap"><table id="tblCorr"></table></div></div>
+    </div>
+  </section>
+
+  <!-- ============ ÁREA DO CORRETOR (tabelas cifradas) ============ -->
+  <section id="p-corretor" class="stack" hidden>
+    <form class="panel login" id="formLogin" onsubmit="return false" autocomplete="on">
+      <h2 data-es="Área del corredor">Área do corretor</h2>
+      <p class="note" data-es="Tablas de emprendimientos protegidas. Sin la contraseña, nadie puede leerlas: el archivo publicado está cifrado.">Tabelas de empreendimentos protegidas. Sem a senha, ninguém consegue ler: o arquivo publicado é cifrado.</p>
+      <input type="text" name="username" value="corretor" autocomplete="username" hidden>
+      <div class="loginrow">
+        <div class="in"><input id="senhaCorretor" type="password" autocomplete="current-password" placeholder="Senha" aria-label="Senha"></div>
+        <button class="btn" type="submit" id="btnEntrar" data-es="Entrar">Entrar</button>
+      </div>
+      <p class="note" id="loginMsg" aria-live="polite"></p>
+    </form>
+    <div id="areaCorretor" class="stack" hidden>
+      <div class="filtro panel">
+        <div class="f2"><label for="cEmp" data-es="Emprendimiento">Empreendimento</label><div class="in"><select id="cEmp"></select></div></div>
+        <div class="f2"><label for="cPav" data-es="Torre / piso">Torre / pavimento</label><div class="in"><select id="cPav"></select></div></div>
+        <button class="btn ghost" type="button" id="btnSair" data-es="Salir">Sair</button>
+        <p class="note" id="cEmpInfo" style="flex-basis:100%"></p>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2 data-es="Unidades">Unidades</h2><span class="note" data-es="Haga clic en una unidad para usarla en las simulaciones">Clique numa unidade para usar nas simulações</span></div>
+        <div class="tblwrap"><table id="tblUnidades"></table></div>
+      </div>
+      <div class="panel" id="cUniBox" hidden>
+        <div class="ph"><h2 id="cUniTit"></h2><span class="note" id="cUniSub"></span></div>
+        <div class="kpis" id="cUniKpis"></div>
+        <div class="actions" style="margin-top:14px">
+          <button class="btn" type="button" data-ir="sim" data-es="Simulador">Simulador</button>
+          <button class="btn" type="button" data-ir="avista" data-es="Inversor al contado">Investidor à vista</button>
+          <button class="btn" type="button" data-ir="planta" data-es="En pozo">Na planta</button>
+          <button class="btn" type="button" data-ir="holding" data-es="Persona física x Holding">PF x Holding</button>
+        </div>
+        <p class="note" id="cUniMsg" style="margin-top:8px"></p>
+      </div>
     </div>
   </section>
 
