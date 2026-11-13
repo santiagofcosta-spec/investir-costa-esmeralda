@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Por que investir em imóveis na Costa Esmeralda (SC): valorização FipeZap, CUB/SC, Selic, CDI, IPCA e simulador de ROI.">
+<title>Investir na Costa Esmeralda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* Layout: faixa-herói com o número-tese da região, abas (Por que investir · Simulador · Índices · Correção), conteúdo em grade que empilha no celular */
+:root{
+  --bg:#f2f6f5; --surface:#ffffff; --surface2:#eaf1ef; --ink:#10201d; --muted:#566b66; --line:#d6e2df;
+  --sea:#0d6e66; --sea-deep:#08413d; --sea-ink:#ffffff; --sand:#c9a86a;
+  --c-itapema:#0d8a7a; --c-bc:#1f5fae; --c-floripa:#7b4bbf; --c-brasil:#8a96a3; --c-cdi:#d0731c; --c-ipca:#c03a5b; --c-cub:#a07d2e; --c-poup:#b0901f;
+  --good:#127a4a; --bad:#b42318; --good-bg:#dff3e8; --bad-bg:#fbe6e3;
+  --f-display:"Sora",ui-sans-serif,system-ui,sans-serif; --f-body:"Inter",ui-sans-serif,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1513; --surface:#122220; --surface2:#172b28; --ink:#e4efec; --muted:#93aaa4; --line:#24403b;
+  --sea:#3dbfab; --sea-deep:#0a2e2a; --sea-ink:#06201c; --sand:#d8b97c;
+  --c-itapema:#3dcbb5; --c-bc:#6b9ee8; --c-floripa:#ad8ae6; --c-brasil:#9aa7b4; --c-cdi:#f09a4a; --c-ipca:#ee7593; --c-cub:#d6b162; --c-poup:#d9bc4a;
+  --good:#5fd394; --bad:#f38479; --good-bg:#12301f; --bad-bg:#3a1c19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1513; --surface:#122220; --surface2:#172b28; --ink:#e4efec; --muted:#93aaa4; --line:#24403b;
+  --sea:#3dbfab; --sea-deep:#0a2e2a; --sea-ink:#06201c; --sand:#d8b97c;
+  --c-itapema:#3dcbb5; --c-bc:#6b9ee8; --c-floripa:#ad8ae6; --c-brasil:#9aa7b4; --c-cdi:#f09a4a; --c-ipca:#ee7593; --c-cub:#d6b162; --c-poup:#d9bc4a;
+  --good:#5fd394; --bad:#f38479; --good-bg:#12301f; --bad-bg:#3a1c19; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+h2{font-size:1.15rem;font-weight:600}
+h3{font-size:.95rem;font-weight:600}
+p{margin:0}
+.note{font-size:12px;color:var(--muted);max-width:80ch}
+
+/* herói */
+.hero{position:relative;overflow:hidden;background:var(--sea-deep);color:#eaf6f3;border-radius:0 0 18px 18px;margin-bottom:18px}
+.hero canvas.waves{position:absolute;inset:auto 0 0 0;width:100%;height:90px;pointer-events:none}
+.hero-in{position:relative;padding:28px max(20px,env(safe-area-inset-left,0px)) 96px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:end}
+@media (max-width:860px){.hero-in{grid-template-columns:minmax(0,1fr)}}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fd9cf}
+.hero h1{font-size:clamp(1.7rem,4vw,2.7rem);font-weight:800;letter-spacing:-.02em;line-height:1.08;margin-top:8px}
+.hero h1 em{font-style:normal;color:#f2d496}
+.hero .lead{color:#c3e2dc;margin-top:12px;max-width:56ch;font-size:15px}
+.thesis{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.thesis .lb{font-size:12px;color:#9fd9cf}
+.bar{display:grid;grid-template-columns:120px minmax(0,1fr) 70px;align-items:center;gap:10px;font-size:13px}
+.bar .track{height:12px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden}
+.bar .fill{height:100%;border-radius:6px;width:0;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.bar b{text-align:right;font-family:var(--f-display)}
+.stamp{font-size:11px;color:#9fd9cf;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{display:inline-block;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.1);color:#d6efe9;font-weight:600}
+.chip.live{background:rgba(61,214,191,.22);color:#bff5ea}
+
+/* abas */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:20px;overflow-x:auto;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+.tabs button{appearance:none;border:0;background:none;color:var(--muted);font:600 14px var(--f-body);padding:12px 14px;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--sea)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+
+.stack{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.ph{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.kpi .lb{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.kpi .v{font-family:var(--f-display);font-size:1.45rem;font-weight:700;margin-top:4px}
+.kpi .n{font-size:12px;color:var(--muted)}
+.kpi .v.up{color:var(--good)}
+.reasons{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.reason{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.reason .big{font-family:var(--f-display);font-size:1.9rem;font-weight:800;color:var(--sea);line-height:1.1}
+.reason p{color:var(--muted);font-size:13px}
+.reason .src{font-size:11px;color:var(--muted);margin-top:auto;padding-top:6px;border-top:1px dashed var(--line)}
+.chartbox{position:relative;height:320px}
+.chartbox.sm{height:260px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.tblwrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+caption{caption-side:bottom;text-align:left;padding-top:8px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+td.hit{background:var(--good-bg)} td.miss{background:var(--bad-bg)}
+td.base{outline:2px solid var(--sea);outline-offset:-2px;font-weight:600}
+.callout{border-left:3px solid var(--sand);background:var(--surface2);padding:12px 14px;border-radius:0 10px 10px 0;font-size:13px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{appearance:none;border:0;background:var(--surface);color:var(--muted);font:600 12px var(--f-body);padding:6px 10px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--sea);color:var(--sea-ink)}
+
+/* simulador */
+.grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.inputs{display:flex;flex-direction:column;gap:18px}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+legend{font:600 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--sea);margin-bottom:8px;padding:0}
+.f{display:grid;grid-template-columns:1fr 130px;align-items:center;gap:8px}
+.f label{font-size:13px}
+.f small{display:block;color:var(--muted);font-size:11px;line-height:1.3}
+.in{display:flex;align-items:center;border:1px solid var(--line);border-radius:7px;background:var(--surface2);overflow:hidden}
+.in span{font-size:12px;color:var(--muted);padding:0 8px}
+.in input,.in select{width:100%;min-width:0;border:0;background:transparent;color:var(--ink);font:500 14px var(--f-body);padding:7px 8px;text-align:right;font-variant-numeric:tabular-nums}
+.in select{text-align:left}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px}
+.chk input{margin-top:3px;accent-color:var(--sea)}
+.verdict{border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.verdict.good{background:var(--good-bg)} .verdict.bad{background:var(--bad-bg)}
+.verdict b{font-family:var(--f-display);font-size:1.05rem}
+.btn{appearance:none;border:1px solid var(--sea);background:var(--sea);color:var(--sea-ink);font:600 13px var(--f-body);padding:8px 14px;border-radius:8px;cursor:pointer}
+textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:8px;background:var(--surface2);color:var(--ink);font:13px/1.5 var(--f-body);padding:10px}
+
+/* animação de entrada: parte de um estado visível */
+.reveal{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{transform:translateY(10px)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>html{color-scheme:light} body{margin:0} [hidden]{display:none!important} img{max-width:100%}</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <canvas class="waves" id="waves" aria-hidden="true"></canvas>
+    <div class="hero-in">
+      <div>
+        <span class="eyebrow">Costa Esmeralda · Porto Belo · Itapema · Bombinhas</span>
+        <h1 id="heroTitle">Quem comprou aqui em 2020 viu o metro quadrado <em>dobrar</em>.</h1>
+        <p class="lead">Dados oficiais do FipeZap, do Banco Central e do Sinduscon mostrando quanto o imóvel no litoral catarinense rendeu contra a renda fixa e a inflação, e uma calculadora para projetar o seu caso.</p>
+      </div>
+      <div class="thesis" aria-label="R$ 100 aplicados em dezembro de 2020">
+        <span class="lb" id="heroLb">R$ 100 aplicados em dez/2020 viraram:</span>
+        <div id="thesisBars"></div>
+        <span class="stamp" id="stamp"></span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="why" id="t-why">Por que investir</button>
+    <button role="tab" aria-selected="false" data-tab="sim" id="t-sim">Simulador de investimento</button>
+    <button role="tab" aria-selected="false" data-tab="idx" id="t-idx">Índices do Brasil</button>
+    <button role="tab" aria-selected="false" data-tab="corr" id="t-corr">Correção de valor</button>
+  </nav>
+
+  <!-- ============ POR QUE INVESTIR ============ -->
+  <section id="p-why" class="stack">
+    <div class="kpis reveal" id="kpisWhy"></div>
+
+    <div class="reasons reveal" id="reasons"></div>
+
+    <div class="panel reveal">
+      <div class="ph"><h2>Valorização acumulada: litoral de SC x renda fixa x inflação</h2><span class="note">Base 100 em dez/2020</span></div>
+      <div class="chartbox"><canvas id="chAcum" aria-label="Valorização acumulada desde dezembro de 2020"></canvas></div>
+      <p class="note" style="margin-top:8px">Imóveis: preço médio de venda residencial (FipeZap), sem contar aluguel. CDI bruto, antes do IR. CUB/SC: pontos oficiais de nov/2020, dez/2025 e out/2026, ligados no gráfico.</p>
+    </div>
+
+    <div class="two reveal">
+      <div class="panel">
+        <div class="ph"><h2>Valorização ano a ano</h2></div>
+        <div class="chartbox sm"><canvas id="chAnual" aria-label="Valorização anual por cidade e índices"></canvas></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2>Preço médio do m² (FipeZap)</h2><span class="note">R$/m², dezembro de cada ano</span></div>
+        <div class="chartbox sm"><canvas id="chM2" aria-label="Preço médio do metro quadrado"></canvas></div>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <div class="ph"><h2>Ranking: valorização anual composta desde dez/2020</h2></div>
+      <div class="tblwrap"><table id="tblRank"></table></div>
+    </div>
+
+    <div class="two reveal">
+      <div class="panel">
+        <div class="ph"><h2>CUB/SC: o custo de construir sobe todo mês</h2><span class="note">R$/m², residencial médio</span></div>
+        <div class="chartbox sm"><canvas id="chCub" aria-label="CUB Santa Catarina mensal"></canvas></div>
+        <p class="note" style="margin-top:8px">Cada mês que passa, um imóvel novo fica mais caro de construir. Isso sustenta o preço de quem já tem o imóvel pronto.</p>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2>CUB/SC por padrão de obra</h2><span class="note" id="cubRef"></span></div>
+        <div class="tblwrap"><table id="tblCubPad"></table></div>
+        <div class="callout" style="margin-top:12px" id="cubCallout"></div>
+      </div>
+    </div>
+
+    <div class="panel reveal">
+      <h2>E Porto Belo?</h2>
+      <p style="margin-top:8px;max-width:80ch">Porto Belo e Bombinhas ainda não têm índice oficial próprio: o FipeZap acompanha 56 cidades e, na Costa Esmeralda, só Itapema entra na pesquisa. Como Porto Belo fica colada em Itapema e disputa o mesmo comprador, usamos Itapema como referência regional. No simulador você coloca o preço real do imóvel que está apresentando.</p>
+    </div>
+  </section>
+
+  <!-- ============ SIMULADOR ============ -->
+  <section id="p-sim" class="grid" hidden>
+    <form class="panel inputs" id="form" onsubmit="return false">
+      <fieldset><legend>Imóvel e compra</legend>
+        <div class="f"><label for="valor">Valor do imóvel</label><div class="in"><span>R$</span><input id="valor" type="number" step="1000" value="900000"></div></div>
+        <div class="f"><label for="entrada">Entrada<small>Igual ao valor = compra à vista</small></label><div class="in"><span>R$</span><input id="entrada" type="number" step="1000" value="270000"></div></div>
+        <div class="f"><label for="custos">ITBI + cartório + registro</label><div class="in"><input id="custos" type="number" step="0.1" value="4"><span>%</span></div></div>
+      </fieldset>
+      <fieldset><legend>Financiamento</legend>
+        <div class="f"><label for="juros">Juros (CET) ao ano</label><div class="in"><input id="juros" type="number" step="0.1" value="12"><span>%</span></div></div>
+        <div class="f"><label for="prazo">Prazo</label><div class="in"><input id="prazo" type="number" step="12" value="360"><span>meses</span></div></div>
+        <div class="f"><label for="sistema">Sistema</label><div class="in"><select id="sistema"><option value="SAC">SAC</option><option value="PRICE">Price</option></select></div></div>
+      </fieldset>
+      <fieldset><legend>Aluguel e despesas</legend>
+        <div class="f"><label for="aluguel">Aluguel médio por mês<small>Na temporada, use a média do ano</small></label><div class="in"><span>R$</span><input id="aluguel" type="number" step="50" value="4500"></div></div>
+        <div class="f"><label for="reajAluguel">Reajuste do aluguel ao ano</label><div class="in"><input id="reajAluguel" type="number" step="0.1" value="4.5"><span>%</span></div></div>
+        <div class="f"><label for="vacancia">Vacância</label><div class="in"><input id="vacancia" type="number" step="1" value="10"><span>%</span></div></div>
+        <div class="f"><label for="adm">Taxa de administração</label><div class="in"><input id="adm" type="number" step="0.5" value="10"><span>%</span></div></div>
+        <div class="f"><label for="desp">Despesas do proprietário<small>IPTU, manutenção, seguro (mês)</small></label><div class="in"><span>R$</span><input id="desp" type="number" step="10" value="400"></div></div>
+        <div class="f"><label for="irAluguel">IR sobre aluguel (efetivo)</label><div class="in"><input id="irAluguel" type="number" step="0.5" value="10"><span>%</span></div></div>
+      </fieldset>
+      <fieldset><legend>Valorização e venda</legend>
+        <div class="seg" id="presets" role="group" aria-label="Cenário de valorização"></div>
+        <div class="f"><label for="valoriz">Valorização ao ano</label><div class="in"><input id="valoriz" type="number" step="0.1" value="6.5"><span>%</span></div></div>
+        <div class="f"><label for="anos">Horizonte (venda em)</label><div class="in"><input id="anos" type="number" step="1" min="1" max="35" value="10"><span>anos</span></div></div>
+        <div class="f"><label for="corretagem">Corretagem na venda</label><div class="in"><input id="corretagem" type="number" step="0.5" value="6"><span>%</span></div></div>
+        <label class="chk"><input type="checkbox" id="irGanho" checked> Cobrar IR de 15% sobre o ganho de capital na venda</label>
+      </fieldset>
+      <fieldset><legend>Renda fixa (média esperada no período)</legend>
+        <div class="f"><label for="cdi">CDI médio ao ano<small id="cdiHint"></small></label><div class="in"><input id="cdi" type="number" step="0.1" value="11.5"><span>%</span></div></div>
+        <div class="f"><label for="pctCdi">CDB rende</label><div class="in"><input id="pctCdi" type="number" step="1" value="100"><span>% CDI</span></div></div>
+        <div class="f"><label for="poup">Poupança ao ano<small id="poupHint"></small></label><div class="in"><input id="poup" type="number" step="0.1" value="7.5"><span>%</span></div></div>
+        <div class="f"><label for="ipca">IPCA médio ao ano<small id="ipcaHint"></small></label><div class="in"><input id="ipca" type="number" step="0.1" value="4.5"><span>%</span></div></div>
+        <div class="f"><label for="spread">Tesouro IPCA+ (taxa real)</label><div class="in"><span>IPCA+</span><input id="spread" type="number" step="0.1" value="6.5"><span>%</span></div></div>
+      </fieldset>
+    </form>
+
+    <div class="stack">
+      <div class="verdict" id="verdict"></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="panel">
+        <div class="ph"><h2>Patrimônio líquido ao longo do tempo</h2><span class="note">Se vendesse/resgatasse naquele ano, já sem dívida, custos e IR</span></div>
+        <div class="chartbox"><canvas id="chEvol" aria-label="Patrimônio por alternativa"></canvas></div>
+      </div>
+      <div class="panel">
+        <h2>Comparativo no fim do horizonte</h2>
+        <p class="note" style="margin:6px 0 10px">Mesmo dinheiro em cada alternativa: entrada + custos de compra, mais todo mês em que o imóvel pediu aporte do bolso. Sobras do aluguel são reinvestidas no CDI líquido.</p>
+        <div class="tblwrap"><table id="tblComp"></table></div>
+      </div>
+      <div class="panel">
+        <h2>Sensibilidade: retorno anual (TIR) do imóvel</h2>
+        <p class="note" style="margin:6px 0 10px">Verde = supera o CDB líquido no mesmo prazo. Moldura = cenário escolhido.</p>
+        <div class="tblwrap"><table id="tblSens"></table></div>
+      </div>
+      <div class="two">
+        <div class="panel"><h2 style="margin-bottom:8px">Fluxo do 1º ano (média por mês)</h2><div class="tblwrap"><table id="tblFluxo"></table></div></div>
+        <div class="panel">
+          <div class="ph"><h2>Resumo para o cliente</h2><button class="btn" id="copy" type="button">Copiar texto</button></div>
+          <p class="note" id="copyMsg" aria-live="polite"></p>
+          <textarea id="resumo" readonly aria-label="Resumo da simulação"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ÍNDICES ============ -->
+  <section id="p-idx" class="stack" hidden>
+    <div class="kpis" id="ticker"></div>
+    <div class="panel">
+      <div class="ph"><h2>Quanto R$ 100 viraram em cada indicador</h2><div class="seg" id="segStart" role="group" aria-label="Período"></div></div>
+      <div class="chartbox"><canvas id="chHist" aria-label="Rentabilidade acumulada por indicador"></canvas></div>
+      <p class="note" style="margin-top:8px">Imóveis Brasil = IVG-R do Banco Central (valor de garantia dos imóveis financiados). CDI bruto.</p>
+    </div>
+    <div class="panel">
+      <h2>Rentabilidade acumulada e média anual</h2>
+      <p class="note" id="histEnd" style="margin:6px 0 10px"></p>
+      <div class="tblwrap"><table id="tblHist"></table></div>
+    </div>
+    <div class="two">
+      <div class="panel"><h2 style="margin-bottom:8px">Selic ao longo do tempo</h2><div class="chartbox sm"><canvas id="chSelic" aria-label="Selic"></canvas></div></div>
+      <div class="panel"><h2 style="margin-bottom:8px">Imóveis x inflação (12 meses)</h2><div class="chartbox sm"><canvas id="chVal" aria-label="Valorização 12 meses"></canvas></div></div>
+    </div>
+  </section>
+
+  <!-- ============ CORREÇÃO ============ -->
+  <section id="p-corr" class="grid" hidden>
+    <form class="panel inputs" onsubmit="return false">
+      <fieldset><legend>Imóvel comprado no passado</legend>
+        <div class="f"><label for="cValor">Valor pago</label><div class="in"><span>R$</span><input id="cValor" type="number" step="1000" value="500000"></div></div>
+        <div class="f"><label for="cAno">Comprado em dezembro de</label><div class="in"><select id="cAno"></select></div></div>
+      </fieldset>
+      <p class="note">Mostra ao proprietário quanto o imóvel valeria hoje pela valorização média de Itapema e o que teria rendido se o dinheiro tivesse ficado no CDI ou na poupança da inflação.</p>
+    </form>
+    <div class="stack">
+      <div class="kpis" id="corrKpis"></div>
+      <div class="panel"><div class="tblwrap"><table id="tblCorr"></table></div></div>
+    </div>
+  </section>
+
+  <p class="note" style="margin-top:28px">Fontes: Índice FipeZAP (Fipe), informes mensais, preço médio residencial de venda. Banco Central do Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433/13522, IGP-M 189, INCC 192, poupança 195, IVG-R 21340). CUB/SC: Sinduscon Grande Florianópolis. Simulação ilustrativa, não é promessa de rentabilidade. Rentabilidade passada não garante rentabilidade futura.</p>
+</div>
+<script src="dados/dados.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

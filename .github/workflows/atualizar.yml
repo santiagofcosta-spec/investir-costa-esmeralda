@@ -1,0 +1,32 @@
+name: Atualizar dados (FipeZap, CUB, Banco Central)
+
+on:
+  schedule:
+    # dias 3, 8, 12, 18 e 25 de cada mês, 10h de Brasília (13h UTC)
+    - cron: "0 13 3,8,12,18,25 * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pypdf==5.1.0
+      - run: python scripts/atualizar.py
+      - name: Salvar se algo mudou
+        run: |
+          if git diff --quiet -- dados/; then
+            echo "Nenhum dado novo."
+          else
+            git config user.name "robo-atualizador"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add dados/
+            git commit -m "Atualiza dados automaticamente ($(date +%d/%m/%Y))"
+            git push
+          fi
