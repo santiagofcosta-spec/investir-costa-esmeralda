@@ -1423,7 +1423,7 @@
     ]
    }
   ],
-  "atualizado": "2026-11-13 17:06",
+  "atualizado": "2026-11-13 17:08",
   "fonte": "Grão Direto (graodireto.com.br)",
   "cidades": {
    "comodoro": {
@@ -1682,7 +1682,7 @@
       "visto": "2026-11-13"
      },
      "2027-03": {
-      "preco": 119.65,
+      "preco": 119.6,
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": true,
@@ -2537,51 +2537,6 @@
     ],
     "ofertas": [
      {
-      "cidade": "Lucas do Rio Verde",
-      "uf": "MT",
-      "preco": 118.5,
-      "comFrete": 117.96,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-13 16:15"
-     },
-     {
-      "cidade": "Nova Mutum",
-      "uf": "MT",
-      "preco": 119.1,
-      "comFrete": 117.41,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-13 16:15"
-     },
-     {
-      "cidade": "Santa Rita do Trivelato",
-      "uf": "MT",
-      "preco": 119.4,
-      "comFrete": 117.0,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-13 16:15"
-     },
-     {
-      "cidade": "Sorriso",
-      "uf": "MT",
-      "preco": 117.3,
-      "comFrete": 116.13,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-13 16:15"
-     },
-     {
-      "cidade": "Tapurah",
-      "uf": "MT",
-      "preco": 117.6,
-      "comFrete": 115.85,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-13 16:15"
-     },
-     {
       "cidade": "Cuiabá",
       "uf": "MT",
       "preco": 130.0,
@@ -2591,67 +2546,76 @@
       "atualizado": "2026-11-10 10:39"
      },
      {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 100.0,
+      "comFrete": 94.18,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-09 14:51"
+     },
+     {
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
-      "preco": 130.8,
-      "comFrete": 130.26,
+      "preco": 131.1,
+      "comFrete": 130.56,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:15"
+      "atualizado": "2026-11-13 17:00"
      },
      {
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
-      "preco": 133.25,
-      "comFrete": 129.74,
+      "preco": 133.5,
+      "comFrete": 129.99,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:15"
+      "atualizado": "2026-11-13 17:00"
      },
      {
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
-      "preco": 123.6,
-      "comFrete": 123.06,
+      "preco": 123.55,
+      "comFrete": 123.01,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:15"
+      "atualizado": "2026-11-13 17:00"
      },
      {
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
-      "preco": 123.4,
-      "comFrete": 122.86,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-13 16:15"
-     },
-     {
-      "cidade": "Lucas do Rio Verde",
-      "uf": "MT",
-      "preco": 125.5,
-      "comFrete": 121.99,
+      "preco": 125.7,
+      "comFrete": 122.19,
       "entrega": "2027-05-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:15"
+      "atualizado": "2026-11-13 17:00"
      },
      {
-      "cidade": "Lucas do Rio Verde",
+      "cidade": "Matupá",
       "uf": "MT",
-      "preco": 121.45,
-      "comFrete": 120.91,
-      "entrega": "2027-04-30",
+      "preco": 140.05,
+      "comFrete": 133.65,
+      "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:15"
+      "atualizado": "2026-11-13 17:00"
+     },
+     {
+      "cidade": "Matupá",
+      "uf": "MT",
+      "preco": 141.0,
+      "comFrete": 131.34,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 17:00"
      }
     ],
     "historico": [
      [
       "2026-11-13",
-      118.5,
-      125.21,
-      133.25,
-      7
+      123.55,
+      128.46,
+      133.5,
+      4
      ]
     ],
     "slug": "lucas-do-rio-verde",
@@ -2665,14 +2629,14 @@
       "visto": "2026-11-13"
      },
      "2026-12": {
-      "preco": 133.25,
-      "cidade": "Lucas do Rio Verde",
+      "preco": 141.0,
+      "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
       "visto": "2026-11-13"
      },
      "2027-05": {
-      "preco": 125.5,
+      "preco": 125.7,
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": false,
@@ -3797,16 +3761,16 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Chapadão do Céu",
-      "preco": 143.84,
-      "var": 1.26,
+      "nome": "Cristalina",
+      "preco": 144.2,
+      "var": 0.82,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Cristalina",
-      "preco": 144.2,
-      "var": 0.82,
+      "nome": "Chapadão do Céu",
+      "preco": 143.84,
+      "var": 1.26,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      },
@@ -3818,16 +3782,16 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Rio Verde",
-      "preco": 142.46,
-      "var": 0.48,
+      "nome": "Jataí",
+      "preco": 144.36,
+      "var": 1.22,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Jataí",
-      "preco": 144.36,
-      "var": 1.22,
+      "nome": "Rio Verde",
+      "preco": 142.46,
+      "var": 0.48,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      }
@@ -4196,16 +4160,16 @@
     ],
     "cidades": [
      {
-      "nome": "Erechim",
-      "preco": 150.84,
-      "var": 1.23,
+      "nome": "Passo Fundo",
+      "preco": 149.79,
+      "var": 0.77,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Passo Fundo",
-      "preco": 149.79,
-      "var": 0.77,
+      "nome": "Erechim",
+      "preco": 150.84,
+      "var": 1.23,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      }

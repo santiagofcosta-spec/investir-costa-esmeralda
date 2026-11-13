@@ -633,10 +633,10 @@ function renderSoja(){
   const ult=c?.ultimas||{}, chaves=Object.keys(ult).sort((a,b)=>a==='disp'?-1:b==='disp'?1:a.localeCompare(b));
   $('boxUltimas').hidden=!chaves.length;
   if(chaves.length){
-    const ativa=(k,u)=>(c.ofertas||[]).some(o=>(o.entrega?o.entrega.slice(0,7):'disp')===k&&Math.abs(o.preco-u.preco)<0.005&&o.cidade===u.cidade);
+    const ativa=k=>(c.ofertas||[]).some(o=>(o.entrega?o.entrega.slice(0,7):'disp')===k);
     const mesTxt=k=>k==='disp'?L('Disponível','Disponible'):NOMES_MES[+k.slice(5,7)-1]+'/'+k.slice(2,4);
     $('tblUltimas').innerHTML=`<thead><tr><th>${L('Entrega','Entrega')}</th><th>${L('Preço','Precio')}</th><th style="text-align:left">${L('Local','Lugar')}</th><th>${L('Visto em','Visto el')}</th><th>${L('Situação','Situación')}</th></tr></thead><tbody>`+
-      chaves.map(k=>{const u=ult[k], on=ativa(k,u); return `<tr><td>${mesTxt(k)}</td><td><b>${sc(u.preco)}</b></td><td style="text-align:left">${u.cidade} - ${u.uf} · ${u.fob?'FOB':'CIF'}</td><td>${fmtDia(u.visto)}</td><td><span class="tag${on?' on':''}">${on?L('Ativa agora','Activa ahora'):L('Saiu do Grão Direto','Salió de Grão Direto')}</span></td></tr>`;}).join('')+
+      chaves.map(k=>{const u=ult[k], on=ativa(k); return `<tr><td>${mesTxt(k)}</td><td><b>${sc(u.preco)}</b></td><td style="text-align:left">${u.cidade} - ${u.uf} · ${u.fob?'FOB':'CIF'}</td><td>${fmtDia(u.visto)}</td><td><span class="tag${on?' on':''}">${on?L('Ativa agora','Activa ahora'):L('Saiu do Grão Direto','Salió de Grão Direto')}</span></td></tr>`;}).join('')+
       `</tbody><caption class="note">${L('A melhor oferta vista para cada mês de entrega, guardada pelo site todo dia útil. "Saiu do Grão Direto" é referência de preço recente, não oferta disponível.','La mejor oferta vista para cada mes de entrega, guardada por el sitio cada día hábil. "Salió de Grão Direto" es referencia de precio reciente, no oferta disponible.')}</caption>`;
   }
   // custos

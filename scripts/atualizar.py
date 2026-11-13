@@ -237,15 +237,15 @@ def gd_ofertas(pp):
 
 
 def atualizar_ultimas(c, dia):
-    """Guarda a última (e melhor) oferta vista para cada mês de entrega, mesmo depois que ela sai do Grão Direto."""
+    """Última oferta vista por mês de entrega. Se há ofertas no ar para o mês, guarda a melhor delas;
+    se não há, mantém a última registrada (que saiu do Grão Direto)."""
     ult = c.setdefault("ultimas", {})
+    hoje = {}
     for o in c.get("ofertas", []):
         k = o["entrega"][:7] if o.get("entrega") else "disp"
-        atual = ult.get(k)
-        if not atual or atual["visto"] < dia or o["preco"] > atual["preco"]:
-            if atual and atual["visto"] == dia and o["preco"] <= atual["preco"]:
-                continue
-            ult[k] = {"preco": o["preco"], "cidade": o["cidade"], "uf": o["uf"], "fob": o["fob"], "visto": dia}
+        if k not in hoje or o["preco"] > hoje[k]["preco"]:
+            hoje[k] = {"preco": o["preco"], "cidade": o["cidade"], "uf": o["uf"], "fob": o["fob"], "visto": dia}
+    ult.update(hoje)
     mes = dia[:7]
     for k in [k for k in ult if k != "disp" and k < mes]:  # entrega já passou
         del ult[k]
