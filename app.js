@@ -1,6 +1,19 @@
 /* Calculadora Costa Esmeralda
    Dados: dados/dados.js (atualizado pelo robô mensal) + Banco Central ao vivo a cada abertura. */
 const D = window.DADOS;
+let imprimindo=false;
+
+/* ---------- contato (CRECI: preencher quando sair, aí o título vira "Corretor de imóveis") ---------- */
+const CONTATO = { nome:'Santiago F Costa', primeiroNome:'Santiago', whatsapp:'5547992176060', whatsappTxt:'(47) 99217-6060', creci:'' };
+
+/* ---------- população (IBGE: Censo 2010, Censo 2022, estimativa 2025) ---------- */
+const POP = {
+  itapema:['Itapema',[45797,75940,86116],'--c-itapema'],
+  portobelo:['Porto Belo',[16083,27688,31557],'--c-bc'],
+  bombinhas:['Bombinhas',[14293,25058,28738],'--c-floripa'],
+  sc:['Santa Catarina',[6248436,7610361,8187029],'--c-brasil'],
+  br:['Brasil',[190755799,203080756,213421037],'--c-ipca'],
+};
 
 /* ---------- utilidades ---------- */
 const $ = id => document.getElementById(id);
@@ -62,7 +75,7 @@ const varBCB = k => PTS.map((p,j)=>{ const ini=p.mes.endsWith('-12')?`${+p.mes.s
 const charts={};
 function baseOpts(fmt,extra={}){
   const mut=css('--muted'), line=css('--line');
-  return Object.assign({responsive:true,maintainAspectRatio:false,animation:reduce?false:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},
+  return Object.assign({responsive:true,maintainAspectRatio:false,animation:(reduce||imprimindo)?false:{duration:1200,easing:'easeOutQuart'},interaction:{mode:'index',intersect:false},
     plugins:{legend:{labels:{color:css('--ink'),boxWidth:10,boxHeight:10,usePointStyle:true,font:{family:'Inter'}}},tooltip:{callbacks:{label:c=>c.parsed.y==null?null:`${c.dataset.label}: ${fmt(c.parsed.y)}`}}},
     scales:{x:{ticks:{color:mut,maxRotation:0,autoSkipPadding:14},grid:{display:false},border:{color:line}},y:{ticks:{color:mut,callback:v=>fmt(v)},grid:{color:line},border:{display:false}}}},extra);
 }
@@ -160,16 +173,35 @@ function renderWhy(){
     options:baseOpts(v=>'R$ '+v.toLocaleString('pt-BR',{maximumFractionDigits:0}),{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>brl2(c.parsed.y)}}}})});
   $('cubRef').textContent=`R$/m², valores de ${CUB.padroes.ref}`;
   $('tblCubPad').innerHTML=`<thead><tr><th>Padrão</th><th style="text-align:left">Tipo</th><th>R$/m²</th></tr></thead><tbody>`+CUB.padroes.itens.map(([c,d,v])=>`<tr><td><b>${c}</b></td><td style="text-align:left">${d}</td><td>${brl2(v)}</td></tr>`).join('')+'</tbody>';
+  // população
+  const cr=k=>POP[k][1][1]/POP[k][1][0]-1;
+  $('popKpis').innerHTML=['portobelo','bombinhas','itapema'].map(k=>`<div class="kpi"><div class="lb">${POP[k][0]}</div><div class="v">+${pct(cr(k),0)}</div><div class="n">${POP[k][1][0].toLocaleString('pt-BR')} → ${POP[k][1][1].toLocaleString('pt-BR')} moradores (2010 → 2022). Estimativa 2025: ${POP[k][1][2].toLocaleString('pt-BR')}</div></div>`).join('')+
+    `<div class="kpi"><div class="lb">Para comparar</div><div class="v" style="color:var(--muted)">+${pct(cr('br'),1)}</div><div class="n">Brasil no mesmo período. Santa Catarina: +${pct(cr('sc'),1)}</div></div>`;
+  draw('chPop',{type:'bar',data:{labels:['Itapema','Porto Belo','Bombinhas'],datasets:[['2010','--c-brasil'],['2022','--c-floripa'],['2025 (estim.)','--c-itapema']].map(([l,c],i)=>({label:l,data:['itapema','portobelo','bombinhas'].map(k=>POP[k][1][i]),backgroundColor:css(c),borderRadius:4}))},
+    options:baseOpts(v=>Math.round(v/1000)+' mil')});
+  draw('chPopCresc',{type:'bar',data:{labels:Object.values(POP).map(p=>p[0]),datasets:[{label:'Crescimento 2010–2022',data:Object.keys(POP).map(k=>100*cr(k)),backgroundColor:Object.values(POP).map(p=>css(p[2])),borderRadius:4}]},
+    options:baseOpts(p1,{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'+'+p1(c.parsed.x)}}},scales:{x:{ticks:{color:css('--muted'),callback:v=>v+'%'},grid:{color:css('--line')}},y:{ticks:{color:css('--ink')},grid:{display:false}}}})});
+
   $('cubCallout').innerHTML=`Construir um prédio alto padrão (R8-A) custa <b>${brl2(r8)}/m²</b> só de obra, sem terreno, projeto, elevador, impostos e lucro do incorporador. O m² médio vendido em Itapema é <b>${brl(it[LAST])}</b>.`;
 }
 
 /* ---------- simulador ---------- */
 function premissas(){
   return {valor:num('valor'),entrada:Math.min(num('entrada'),num('valor')),custos:num('custos')/100,juros:num('juros')/100,prazo:Math.max(1,Math.round(num('prazo'))),
-    sistema:$('sistema').value,aluguel:num('aluguel'),reaj:num('reajAluguel')/100,vac:num('vacancia')/100,adm:num('adm')/100,desp:num('desp'),irAl:num('irAluguel')/100,
+    sistema:$('sistema').value,modo:$('modo').value,aluguel:num('aluguel'),reaj:num('reajAluguel')/100,vac:num('vacancia')/100,
+    dA:num('diariaAlta'),oA:num('ocupAlta')/100,mA:Math.min(12,Math.max(0,Math.round(num('mesesAlta')))),dB:num('diariaBaixa'),oB:num('ocupBaixa')/100,adm:num('adm')/100,desp:num('desp'),irAl:num('irAluguel')/100,
     valoriz:num('valoriz')/100,anos:Math.min(35,Math.max(1,Math.round(num('anos')))),corr:num('corretagem')/100,irGanho:$('irGanho').checked,
     cdi:num('cdi')/100,pctCdi:num('pctCdi')/100,poup:num('poup')/100,ipca:num('ipca')/100,spread:num('spread')/100};
 }
+// renda bruta recebida no mês m (1 = janeiro do 1º ano). Temporada: alta = dezembro + os (n-1) primeiros meses do ano
+const DIAS_MES=30.4;
+function ehAlta(mes0,n){ if(n<=0) return false; return mes0===11 || mes0<n-1; }
+function rendaMes(p,m){
+  if(p.modo!=='temporada') return p.aluguel*(1-p.vac);
+  const mes0=(m-1)%12;
+  return ehAlta(mes0,p.mA) ? p.dA*p.oA*DIAS_MES : p.dB*p.oB*DIAS_MES;
+}
+const rendaAno1=p=>{let s=0; for(let m=1;m<=12;m++) s+=rendaMes(p,m); return s;};
 function simular(p){
   const N=p.anos*12, iFin=mensal(p.juros), P0=p.valor-p.entrada, custoCompra=p.valor*p.custos, C0=p.entrada+custoCompra;
   const pmt=P0>0?P0*iFin/(1-Math.pow(1+iFin,-p.prazo)):0;
@@ -180,7 +212,7 @@ function simular(p){
     return {imovel:venda-saldo-ir+caixa,vI,venda,irVenda:ir,investido:inv,cdb:alt.cdb-Math.max(0,alt.cdb-inv)*a,poup:alt.poup,ipca:alt.ipca-Math.max(0,alt.ipca-inv)*a};};
   anual.push({ano:0,...liq(0)});
   for(let m=1;m<=N;m++){
-    const y=Math.floor((m-1)/12), al=p.aluguel*Math.pow(1+p.reaj,y)*(1-p.vac), adm=al*p.adm, ir=al*p.irAl, desp=p.desp*Math.pow(1+p.ipca,y);
+    const y=Math.floor((m-1)/12), al=rendaMes(p,m)*Math.pow(1+p.reaj,y), adm=al*p.adm, ir=al*p.irAl, desp=p.desp*Math.pow(1+p.ipca,y);
     let parc=0,jur=0;
     if(saldo>0.005&&m<=p.prazo){jur=saldo*iFin; if(p.sistema==='SAC'){const am=P0/p.prazo; parc=am+jur; saldo-=am;} else {parc=pmt; saldo-=pmt-jur;} if(saldo<0) saldo=0;}
     const cf=al-adm-ir-desp-parc;
@@ -221,7 +253,10 @@ function presets(){
 function renderSim(){
   const p=premissas(), r=simular(p), f=r.fim, T=tir(r.fluxos), inv=f.investido, roi=f.imovel/inv-1;
   const alts=[{k:'imovel',n:'Imóvel',c:'--c-itapema',v:f.imovel},{k:'cdb',n:`CDB ${Math.round(p.pctCdi*100)}% do CDI`,c:'--c-cdi',v:f.cdb},{k:'ipca',n:`Tesouro IPCA+ ${p1(p.spread*100)}`,c:'--c-floripa',v:f.ipca},{k:'poup',n:'Poupança',c:'--c-poup',v:f.poup}];
-  const best=alts.slice(1).reduce((a,b)=>b.v>a.v?b:a), ganha=f.imovel>=best.v, be=empate(p), yb=p.aluguel*12/p.valor;
+  const bruto1=p.modo==='temporada'?rendaAno1(p):p.aluguel*12;
+  const best=alts.slice(1).reduce((a,b)=>b.v>a.v?b:a), ganha=f.imovel>=best.v, be=empate(p), yb=bruto1/p.valor;
+  if(p.modo==='temporada'){ const alta=p.dA*p.oA*DIAS_MES, baixa=p.dB*p.oB*DIAS_MES;
+    $('tempResumo').textContent=`Receita bruta: ${brl(alta)}/mês na alta e ${brl(baixa)}/mês no resto do ano. Total no 1º ano: ${brl(bruto1)} (média ${brl(bruto1/12)}/mês).`; }
   const noi=r.ano1.aluguel-r.ano1.adm-r.ano1.desp, cf1=r.fluxos.slice(1,13).reduce((a,b)=>a+b,0);
   const beTxt=isFinite(be)?`O imóvel empata com o CDB se valorizar <b>${pct(be,1)} ao ano</b>. Itapema fez ${pct(Math.pow(it[LAST]/it[0],1/anosPer)-1,1)} ao ano desde 2020.`:(be<0?'O imóvel supera o CDB mesmo sem valorização.':'Nem com 30% ao ano de valorização o imóvel supera o CDB neste cenário.');
   $('verdict').className='verdict '+(ganha?'good':'bad');
@@ -236,13 +271,14 @@ function renderSim(){
   for(const vv of vs){ h+=`<tr><td>${pct(vv,1)}</td>`; for(const a of hs){const rr=simular({...p,valoriz:vv,anos:a}), t=tir(rr.fluxos), c=tir(fluxAlt(rr,rr.fim.cdb)); h+=`<td class="${t>=c?'hit':'miss'}${vv===Math.round(p.valoriz*1000)/1000&&a===p.anos?' base':''}">${isFinite(t)?pct(t,1):'—'}</td>`;} h+='</tr>'; }
   $('tblSens').innerHTML=h+'</tbody>';
   const a1=r.ano1, mm=x=>brl(x/12);
-  $('tblFluxo').innerHTML=`<tbody><tr><td>Aluguel recebido (com vacância)</td><td class="pos">${mm(a1.aluguel)}</td></tr><tr><td>Taxa de administração</td><td class="neg">−${mm(a1.adm)}</td></tr><tr><td>IR sobre aluguel</td><td class="neg">−${mm(a1.ir)}</td></tr><tr><td>Despesas do proprietário</td><td class="neg">−${mm(a1.desp)}</td></tr><tr><td>Parcela do financiamento</td><td class="neg">−${mm(a1.parcela)}</td></tr><tr><td><b>Sobra (ou aporte) por mês</b></td><td class="${cf1>=0?'pos':'neg'}"><b>${mm(cf1)}</b></td></tr><tr><td>dos quais juros pagos ao banco</td><td>${mm(a1.juros)}</td></tr></tbody>`;
+  $('tblFluxo').innerHTML=`<tbody><tr><td>${p.modo==='temporada'?'Diárias recebidas (com ocupação)':'Aluguel recebido (com vacância)'}</td><td class="pos">${mm(a1.aluguel)}</td></tr><tr><td>Taxa de administração</td><td class="neg">−${mm(a1.adm)}</td></tr><tr><td>IR sobre aluguel</td><td class="neg">−${mm(a1.ir)}</td></tr><tr><td>Despesas do proprietário</td><td class="neg">−${mm(a1.desp)}</td></tr><tr><td>Parcela do financiamento</td><td class="neg">−${mm(a1.parcela)}</td></tr><tr><td><b>Sobra (ou aporte) por mês</b></td><td class="${cf1>=0?'pos':'neg'}"><b>${mm(cf1)}</b></td></tr><tr><td>dos quais juros pagos ao banco</td><td>${mm(a1.juros)}</td></tr></tbody>`;
   const sets=alts.map(a=>ds(a.n,r.anual.map(x=>x[a.k]),css(a.c),a.k==='imovel'?{borderWidth:3.5}:{}));
   sets.push(ds('Dinheiro investido',r.anual.map(x=>x.investido),css('--muted'),{borderDash:[5,4],borderWidth:1.5}));
   draw('chEvol',{type:'line',data:{labels:r.anual.map(x=>'Ano '+x.ano),datasets:sets},options:baseOpts(brlK,{animation:false})});
   $('resumo').value=`Simulação de investimento – Costa Esmeralda (SC)
 Imóvel: ${brl(p.valor)} | Entrada: ${brl(p.entrada)}${r.P0>0?` | Financiado: ${brl(r.P0)} (${pct(p.juros,1)} a.a., ${p.prazo} meses, ${p.sistema})`:' (à vista)'}
-Aluguel médio: ${brl(p.aluguel)}/mês (${pct(yb)} ao ano sobre o valor)
+${p.modo==='temporada'?`Temporada: diária ${brl(p.dA)} na alta (${p.mA} meses, ${Math.round(p.oA*100)}% ocupação) e ${brl(p.dB)} no resto do ano (${Math.round(p.oB*100)}%)
+Receita bruta do 1º ano: ${brl(bruto1)} (${pct(yb)} sobre o valor do imóvel)`:`Aluguel: ${brl(p.aluguel)}/mês (${pct(yb)} ao ano sobre o valor)`}
 Valorização considerada: ${pct(p.valoriz,1)} ao ano
 
 Em ${p.anos} anos, colocando ${brl(inv)} do próprio bolso:
@@ -257,8 +293,108 @@ Histórico real (dez/2020 a ${fmtMes(LASTKEY)}):
 - CDI no período: +${pct(idxBCB('cdi')[LAST]/100-1,0)} (bruto) | IPCA: +${pct(idxBCB('ipca')[LAST]/100-1,0)} – Banco Central
 - CUB/SC hoje: ${brl2(cubFim)}/m² (+${p1(CUB.v12m)} em 12 meses) – Sinduscon
 Selic hoje: ${p1(D.bcb.selicMeta)}.
-Simulação ilustrativa. Rentabilidade passada não garante rentabilidade futura.`;
+Simulação ilustrativa. Rentabilidade passada não garante rentabilidade futura.
+
+Veja a simulação completa: ${linkEstado()}
+${assinatura()}`;
+  ultimoResumoWA=`Olá ${CONTATO.primeiroNome}! Vi a simulação no site Investir na Costa Esmeralda: imóvel de ${brl(p.valor)}, retorno de ${isFinite(T)?pct(T):'—'} ao ano em ${p.anos} anos. Quero conversar sobre isso.\n${linkEstado()}`;
+  atualizaWA();
 }
+
+/* ---------- na planta ---------- */
+function simPlanta(){
+  const V=num('pValor'), N=Math.min(72,Math.max(6,Math.round(num('pObra')))), e=num('pEntrada')/100, ms=num('pMensais')/100, rf=num('pReforcos')/100;
+  const ch=Math.max(0,1-e-ms-rf), c=mensal(num('pCorrecao')/100), v=num('pValoriz')/100, corr=num('pCorretagem')/100, rCdi=mensal(num('pCdi')/100);
+  const nRef=Math.max(1,Math.floor(N/12)), fat=t=>Math.pow(1+c,t);
+  const pag=new Array(N+1).fill(0), tipo={ato:V*e,mensalIni:V*ms/N*fat(1),mensalFim:V*ms/N*fat(N),reforcos:[]};
+  pag[0]+=V*e;
+  for(let t=1;t<=N;t++) pag[t]+=V*ms/N*fat(t);
+  for(let k=1;k<=nRef;k++){ const t=Math.min(N,12*k); pag[t]+=V*rf/nRef*fat(t); tipo.reforcos.push([t,V*rf/nRef*fat(t)]); }
+  const saldoChaves=V*ch*fat(N);
+  const M=num('pMercado')||V, vm=t=>M*Math.pow(1+v,t/12);
+  const totalPago=pag.reduce((a,b)=>a+b,0);
+  const venda=vm(N)*(1-corr), ganho=venda-(totalPago+saldoChaves), ir=$('pIr').checked?Math.max(0,ganho)*0.15:0;
+  const liquido=venda-saldoChaves-ir, lucro=liquido-totalPago;
+  // CDB com os mesmos pagamentos
+  let cdb=0, acum=0; const serie=[];
+  for(let t=0;t<=N;t++){ cdb=cdb*(1+rCdi)+pag[t]; acum+=pag[t]; serie.push({t,vm:vm(t),pago:acum,cdb}); }
+  const cdbLiq=cdb-Math.max(0,cdb-totalPago)*irRegressivo(N);
+  const fl=pag.map(x=>-x); fl[N]+=liquido;
+  return {V,M,N,e,ms,rf,ch,nRef,tipo,saldoChaves,totalPago,venda,ir,liquido,lucro,roi:lucro/totalPago,tir:tir(fl),cdbLiq,serie,vmN:vm(N),patrimonio:vm(N)-saldoChaves};
+}
+function renderPlanta(){
+  const r=simPlanta(), soma=r.e+r.ms+r.rf;
+  $('pChavesTxt').innerHTML = soma>1 ? `<span class="neg">Entrada + mensais + reforços passam de 100%. Ajuste os percentuais.</span>` : `Saldo nas chaves: <b>${pct(r.ch,0)}</b> do valor (${brl(r.saldoChaves)} já corrigido), pago com financiamento ou pelo comprador.`;
+  const ganha=r.liquido>r.cdbLiq, mult=r.lucro/(r.cdbLiq-r.totalPago);
+  $('pVerdict').className='verdict '+(ganha?'good':'bad');
+  $('pVerdict').innerHTML=ganha?`<b>Vendendo na entrega das chaves, o lucro é de ${brl(r.lucro)} sobre ${brl(r.totalPago)} pagos.</b><span>${isFinite(mult)&&mult>1?`É ${mult.toLocaleString('pt-BR',{maximumFractionDigits:1})}× o lucro que o mesmo dinheiro daria no CDB (${brl(r.cdbLiq-r.totalPago)}).`:`O CDB com os mesmos pagamentos daria ${brl(r.cdbLiq-r.totalPago)} de lucro.`}</span>`
+    :`<b>Neste cenário o CDB rende mais: ${brl(r.cdbLiq-r.totalPago)} contra ${brl(r.lucro)} no imóvel.</b><span>${r.M===r.V?'Informe o preço de um imóvel pronto parecido: se a tabela do lançamento é mais barata, essa diferença vira ganho na entrega.':'A valorização esperada não cobre a correção das parcelas neste cenário.'}</span>`;
+  const kp=[['Você paga até as chaves',brl(r.totalPago),`em ${r.N} meses, já corrigido`],['Valor na entrega',brl(r.vmN),`${pct(num('pValoriz')/100,1)} ao ano de valorização`],['Lucro na venda',brl(r.lucro),'após saldo, corretagem e IR'],
+    ['ROI sobre o que pagou',pct(r.roi,1),'retorno total'],['TIR',isFinite(r.tir)?pct(r.tir):'—','retorno ao ano'],['Se ficar com o imóvel',brl(r.patrimonio),'valor menos o saldo das chaves']];
+  $('pKpis').innerHTML=kp.map(([l,v,n])=>`<div class="kpi"><div class="lb">${l}</div><div class="v">${v}</div><div class="n">${n}</div></div>`).join('');
+  $('pTbl').innerHTML=`<tbody>${r.M!==r.V?`<tr><td>Tabela ${r.M>r.V?'abaixo':'acima'} do pronto parecido</td><td class="${r.M>r.V?'pos':'neg'}">${pct(Math.abs(1-r.V/r.M),1)}</td></tr>`:''}<tr><td>Valor de venda na entrega</td><td>${brl(r.vmN)}</td></tr><tr><td>Corretagem</td><td class="neg">−${brl(r.vmN-r.venda)}</td></tr><tr><td>Saldo devedor nas chaves</td><td class="neg">−${brl(r.saldoChaves)}</td></tr><tr><td>IR sobre o ganho</td><td class="neg">−${brl(r.ir)}</td></tr>
+    <tr><td><b>Você recebe</b></td><td><b>${brl(r.liquido)}</b></td></tr><tr><td>Você pagou</td><td>${brl(r.totalPago)}</td></tr><tr><td><b>Lucro</b></td><td class="${r.lucro>=0?'pos':'neg'}"><b>${brl(r.lucro)}</b></td></tr><tr><td>Mesmo dinheiro no CDB (líquido)</td><td>${brl(r.cdbLiq)}</td></tr></tbody>`;
+  $('pCron').innerHTML=`<thead><tr><th>Parcela</th><th>Qtd.</th><th>Valor</th></tr></thead><tbody><tr><td>Entrada (ato)</td><td>1</td><td>${brl(r.tipo.ato)}</td></tr>
+    <tr><td>Mensais</td><td>${r.N}</td><td>${brl(r.tipo.mensalIni)} → ${brl(r.tipo.mensalFim)}</td></tr>
+    <tr><td>Reforços anuais</td><td>${r.nRef}</td><td>${brl(r.tipo.reforcos[0][1])} → ${brl(r.tipo.reforcos.at(-1)[1])}</td></tr>
+    <tr><td>Chaves</td><td>1</td><td>${brl(r.saldoChaves)}</td></tr></tbody><caption class="note">Valores corrigidos mês a mês pelo índice da obra.</caption>`;
+  const lab=r.serie.map(x=>x.t===0?'Compra':x.t===r.N?'Chaves':'Mês '+x.t);
+  draw('chPlanta',{type:'line',data:{labels:lab,datasets:[ds('Valor do imóvel',r.serie.map(x=>x.vm),css('--c-itapema'),{borderWidth:3.5}),ds('Quanto você já pagou',r.serie.map(x=>x.pago),css('--c-bc'),{stepped:true,tension:0}),ds('Mesmos pagamentos no CDB',r.serie.map(x=>x.cdb),css('--c-cdi'),{borderDash:[6,4]})]},
+    options:baseOpts(brlK,{animation:false})});
+  ultimoResumoWA=`Olá ${CONTATO.primeiroNome}! Vi a simulação de imóvel na planta no site: tabela ${brl(r.V)}, entrega em ${r.N} meses, lucro estimado de ${brl(r.lucro)} na entrega. Quero conversar sobre isso.\n${linkEstado()}`;
+  atualizaWA();
+}
+
+/* ---------- contato / WhatsApp ---------- */
+let ultimoResumoWA='';
+const assinatura=()=>`${CONTATO.nome}${CONTATO.creci?' · Corretor de imóveis · CRECI '+CONTATO.creci:''} · WhatsApp ${CONTATO.whatsappTxt}`;
+const waURL=msg=>`https://wa.me/${CONTATO.whatsapp}?text=${encodeURIComponent(msg)}`;
+function atualizaWA(){
+  const generico=`Olá ${CONTATO.primeiroNome}! Vi o site Investir na Costa Esmeralda e quero saber mais sobre imóveis na região.`;
+  const msg=(tab==='sim'||tab==='planta')&&ultimoResumoWA?ultimoResumoWA:generico;
+  $('wa').href=waURL(msg); $('waBox').href=waURL(msg);
+}
+function contato(){
+  $('waLabel').textContent=`Fale com ${CONTATO.primeiroNome}`;
+  $('contatoTxt').textContent=`${CONTATO.nome}${CONTATO.creci?' · Corretor de imóveis · CRECI '+CONTATO.creci:''} · WhatsApp ${CONTATO.whatsappTxt}. Monto a simulação com o valor, o aluguel e o fluxo de pagamento do imóvel que você está avaliando.`;
+}
+
+/* ---------- link personalizado ---------- */
+const CAMPOS=()=>[...document.querySelectorAll('#form input, #form select, #formPlanta input')].filter(el=>el.id);
+function linkEstado(){
+  const q=new URLSearchParams();
+  for(const el of CAMPOS()){ if(el.type==='checkbox'){ if(!el.checked) q.set(el.id,'0'); } else if(el.value!==el.defaultValue||el.id==='valoriz'||el.id==='modo') q.set(el.id,el.value); }
+  q.set('aba',tab==='planta'?'planta':'sim');
+  return location.origin+location.pathname+'?'+q.toString();
+}
+function aplicarLink(){
+  const q=new URLSearchParams(location.search); if(![...q.keys()].length) return null;
+  for(const el of CAMPOS()){ if(!q.has(el.id)) continue; if(el.type==='checkbox') el.checked=q.get(el.id)!=='0'; else el.value=q.get(el.id); }
+  if(q.has('valoriz')){ presetSel=''; presets(); }
+  setModo($('modo').value);
+  return q.get('aba');
+}
+function setModo(m){
+  $('modo').value=m;
+  document.querySelectorAll('#modoAluguel button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
+  $('grpAnual').hidden=m!=='anual'; $('grpTemp').hidden=m!=='temporada';
+}
+async function copiar(txt,msgEl){
+  try{ await navigator.clipboard.writeText(txt); msgEl.textContent='Link copiado. Cole no WhatsApp do cliente.'; }
+  catch{ prompt('Copie o link:',txt); }
+}
+
+/* ---------- PDF da proposta (impressão do navegador) ---------- */
+function gerarPDF(){
+  const hoje=new Date().toLocaleDateString('pt-BR');
+  $('printTitle').textContent=tab==='planta'?'Simulação de imóvel na planta · Costa Esmeralda (SC)':'Simulação de investimento imobiliário · Costa Esmeralda (SC)';
+  $('printSub').textContent=`${assinatura()} · ${hoje} · Dados: FipeZap, Banco Central, Sinduscon, IBGE`;
+  const form=tab==='planta'?$('formPlanta'):tab==='sim'?$('form'):null;
+  $('printPrem').textContent = form ? 'Premissas: '+[...form.querySelectorAll('.f')].filter(f=>!f.closest('[hidden]')).map(f=>{const l=f.querySelector('label').childNodes[0].textContent.trim(), el=f.querySelector('input,select'), un=[...f.querySelectorAll('.in span')].map(x=>x.textContent).join(' ').replace('IPCA+','').trim(); return `${l}: ${el.tagName==='SELECT'?el.value:Number(el.value).toLocaleString('pt-BR')}${un&&un!=='R$'?' '+un:''}`.replace(/: (\d)/, (m,d)=> un==='R$'?': R$ '+d:m);}).join(' · ') : '';
+  window.print();
+}
+addEventListener('beforeprint',()=>{imprimindo=true; renders[tab]();});
+addEventListener('afterprint',()=>{imprimindo=false; renders[tab]();});
 
 /* ---------- índices Brasil ---------- */
 const HIST=[['ivgr','Imóveis Brasil (IVG-R)','--c-itapema'],['cdi','CDI','--c-cdi'],['ipca','IPCA','--c-ipca'],['igpm','IGP-M','--c-bc'],['incc','INCC','--c-cub']];
@@ -324,11 +460,11 @@ async function bcbAoVivoCarregar(){
 
 /* ---------- eventos ---------- */
 let tab='why';
-const renders={why:renderWhy,sim:renderSim,idx:renderIdx,corr:renderCorr};
-function show(t){ tab=t;
+const renders={why:renderWhy,sim:renderSim,planta:renderPlanta,idx:renderIdx,corr:renderCorr};
+function show(t){ if(!renders[t]) t='why'; tab=t;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   for(const k of Object.keys(renders)) $('p-'+k).hidden=k!==t;
-  renders[t]();
+  renders[t](); atualizaWA();
 }
 function hints(){
   $('cdiHint').textContent=`Hoje: ${pct(D.bcb.cdiAA/100)}`;
@@ -340,6 +476,10 @@ $('segStart').addEventListener('click',e=>{const b=e.target.closest('button'); i
 $('presets').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; presetSel=b.dataset.k; $('valoriz').value=b.dataset.v; presets(); renderSim();});
 $('form').addEventListener('input',e=>{ if(e.target.id==='valoriz'){presetSel=''; presets();} renderSim(); });
 ['cValor','cAno'].forEach(id=>$(id).addEventListener('input',renderCorr));
+$('formPlanta').addEventListener('input',renderPlanta);
+$('modoAluguel').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; setModo(b.dataset.m); renderSim();});
+document.querySelectorAll('[data-pdf]').forEach(b=>b.addEventListener('click',gerarPDF));
+document.querySelectorAll('[data-link]').forEach(b=>b.addEventListener('click',()=>copiar(linkEstado(),b.parentElement.querySelector('[data-msg]'))));
 $('copy').addEventListener('click',()=>{const ta=$('resumo');
   navigator.clipboard.writeText(ta.value).then(()=>$('copyMsg').textContent='Copiado. Cole no WhatsApp ou e-mail.').catch(()=>{ta.focus();ta.select();$('copyMsg').textContent='Texto selecionado. Use Ctrl+C para copiar.';});});
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{hero(false); renders[tab]();});
@@ -347,5 +487,10 @@ matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{hero(f
 prepBCB(); hints(); opcoesCorr();
 $('poup').value=(poupAA*100).toFixed(1);
 const P0=presets(); $('valoriz').value=(P0[1][2]*100).toFixed(1);
-waves(); hero(); renderWhy();
+$('pCorrecao').value=CUB.v12m.toFixed(1); $('pCorrHint').textContent=`CUB/SC subiu ${p1(CUB.v12m)} em 12 meses`;
+$('pValoriz').value=(P0[2][2]*100).toFixed(1);
+for(const id of ['valoriz','pCorrecao','pValoriz']) $(id).defaultValue=$(id).value;
+contato(); setModo('temporada');
+const abaLink=aplicarLink();
+waves(); hero(); show(abaLink||'why');
 bcbAoVivoCarregar();

@@ -30,7 +30,7 @@
   --good:#5fd394; --bad:#f38479; --good-bg:#12301f; --bad-bg:#3a1c19; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5;font-variant-numeric:tabular-nums}
-.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 96px}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
 h2{font-size:1.15rem;font-weight:600}
 h3{font-size:.95rem;font-weight:600}
@@ -119,11 +119,57 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 .reveal{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}
 @keyframes rise{from{transform:translateY(10px)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ações, contato e WhatsApp */
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn.ghost{background:transparent;color:var(--sea)}
+.msg{font-size:12px;color:var(--muted)}
+.wa{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;display:flex;align-items:center;gap:10px;background:#1f9d55;color:#fff;text-decoration:none;font:600 14px var(--f-body);padding:12px 18px 12px 14px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:transform .2s}
+.wa:hover{transform:translateY(-2px)}
+.wa svg{width:22px;height:22px;flex:none}
+@media (max-width:520px){.wa span{display:none}.wa{padding:14px}}
+.contato{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;background:var(--sea-deep);color:#eaf6f3;border-radius:14px;padding:20px 22px;margin-top:28px}
+.contato h2{color:#fff}
+.contato p{color:#c3e2dc;font-size:13px}
+.contato a.btn{background:#1f9d55;border-color:#1f9d55;color:#fff;text-decoration:none;font-size:14px;padding:10px 18px}
+.pop{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.pop .kpi .v{color:var(--sea)}
+.loc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 20px;margin-top:10px;font-size:13px}
+.loc div{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:6px 0}
+.print-only{display:none}
+
+/* impressão / PDF da proposta */
+@media print{
+  :root,:root:not([data-theme="light"]),:root[data-theme="dark"]{
+    --bg:#ffffff; --surface:#ffffff; --surface2:#f3f6f5; --ink:#10201d; --muted:#4f625d; --line:#d6e2df; --sea:#0d6e66; --sea-ink:#fff;
+    --c-itapema:#0d8a7a; --c-bc:#1f5fae; --c-floripa:#7b4bbf; --c-brasil:#8a96a3; --c-cdi:#d0731c; --c-ipca:#c03a5b; --c-cub:#a07d2e; --c-poup:#b0901f;
+    --good:#127a4a; --bad:#b42318; --good-bg:#dff3e8; --bad-bg:#fbe6e3; color-scheme:light}
+  @page{size:A4;margin:12mm}
+  body{font-size:11px}
+  .hero,.tabs,.wa,.no-print,form.inputs,.contato .btn,#p-why .reasons{display:none!important}
+  .print-only{display:block}
+  .grid{display:block}
+  .panel,.kpi,.verdict{break-inside:avoid;box-shadow:none}
+  .chartbox{height:230px}
+  .stack{gap:10px}
+  .contato{background:none;color:var(--ink);border:1px solid var(--line);margin-top:12px}
+  .contato h2{color:var(--ink)} .contato p{color:var(--muted)}
+  textarea{display:none}
+  .reveal{animation:none}
+}
+.print-head{border-bottom:2px solid #0d6e66;padding-bottom:8px;margin-bottom:12px}
+.print-head h1{font-size:18px}
+.print-head p{font-size:11px;color:#4f625d}
 </style>
 <style>html{color-scheme:light} body{margin:0} [hidden]{display:none!important} img{max-width:100%}</style>
 </head>
 <body>
 <div class="wrap">
+  <div class="print-only print-head">
+    <h1 id="printTitle">Simulação de investimento imobiliário · Costa Esmeralda (SC)</h1>
+    <p id="printSub"></p>
+    <p id="printPrem" style="margin-top:4px"></p>
+  </div>
   <header class="hero">
     <canvas class="waves" id="waves" aria-hidden="true"></canvas>
     <div class="hero-in">
@@ -143,6 +189,7 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
   <nav class="tabs" role="tablist">
     <button role="tab" aria-selected="true" data-tab="why" id="t-why">Por que investir</button>
     <button role="tab" aria-selected="false" data-tab="sim" id="t-sim">Simulador de investimento</button>
+    <button role="tab" aria-selected="false" data-tab="planta" id="t-planta">Na planta</button>
     <button role="tab" aria-selected="false" data-tab="idx" id="t-idx">Índices do Brasil</button>
     <button role="tab" aria-selected="false" data-tab="corr" id="t-corr">Correção de valor</button>
   </nav>
@@ -156,7 +203,7 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
     <div class="panel reveal">
       <div class="ph"><h2>Valorização acumulada: litoral de SC x renda fixa x inflação</h2><span class="note">Base 100 em dez/2020</span></div>
       <div class="chartbox"><canvas id="chAcum" aria-label="Valorização acumulada desde dezembro de 2020"></canvas></div>
-      <p class="note" style="margin-top:8px">Imóveis: preço médio de venda residencial (FipeZap), sem contar aluguel. CDI bruto, antes do IR. CUB/SC: pontos oficiais de nov/2020, dez/2025 e out/2026, ligados no gráfico.</p>
+      <p class="note" style="margin-top:8px">Imóveis: preço médio de venda residencial (FipeZap), sem contar aluguel. CDI bruto, antes do IR. CUB/SC: só os pontos com valor oficial publicado, ligados no gráfico.</p>
     </div>
 
     <div class="two reveal">
@@ -189,6 +236,28 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
     </div>
 
     <div class="panel reveal">
+      <div class="ph"><h2>Uma região que não para de crescer</h2><span class="note">População residente, IBGE</span></div>
+      <div class="pop" id="popKpis"></div>
+      <div class="two" style="margin-top:16px">
+        <div class="chartbox sm"><canvas id="chPop" aria-label="População por cidade, 2010, 2022 e 2025"></canvas></div>
+        <div>
+          <h3>Crescimento da população 2010 → 2022 (Censo)</h3>
+          <div class="chartbox sm"><canvas id="chPopCresc" aria-label="Crescimento populacional comparado"></canvas></div>
+        </div>
+      </div>
+      <h3 style="margin-top:16px">Localização (a partir de Porto Belo, distâncias aproximadas por estrada)</h3>
+      <div class="loc">
+        <div><span>Itapema</span><b>~10 km</b></div>
+        <div><span>Bombinhas</span><b>~12 km</b></div>
+        <div><span>Balneário Camboriú</span><b>~30 km</b></div>
+        <div><span>Aeroporto de Navegantes</span><b>~50 km</b></div>
+        <div><span>Florianópolis (aeroporto)</span><b>~70 km</b></div>
+        <div><span>Acesso</span><b>BR-101</b></div>
+      </div>
+      <p class="note" style="margin-top:10px">Fonte: IBGE, Censos 2010 e 2022 e estimativa populacional 2025. Mais gente morando na região significa mais demanda por compra e por aluguel o ano todo, não só na temporada.</p>
+    </div>
+
+    <div class="panel reveal">
       <h2>E Porto Belo?</h2>
       <p style="margin-top:8px;max-width:80ch">Porto Belo e Bombinhas ainda não têm índice oficial próprio: o FipeZap acompanha 56 cidades e, na Costa Esmeralda, só Itapema entra na pesquisa. Como Porto Belo fica colada em Itapema e disputa o mesmo comprador, usamos Itapema como referência regional. No simulador você coloca o preço real do imóvel que está apresentando.</p>
     </div>
@@ -208,10 +277,25 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
         <div class="f"><label for="sistema">Sistema</label><div class="in"><select id="sistema"><option value="SAC">SAC</option><option value="PRICE">Price</option></select></div></div>
       </fieldset>
       <fieldset><legend>Aluguel e despesas</legend>
-        <div class="f"><label for="aluguel">Aluguel médio por mês<small>Na temporada, use a média do ano</small></label><div class="in"><span>R$</span><input id="aluguel" type="number" step="50" value="4500"></div></div>
-        <div class="f"><label for="reajAluguel">Reajuste do aluguel ao ano</label><div class="in"><input id="reajAluguel" type="number" step="0.1" value="4.5"><span>%</span></div></div>
-        <div class="f"><label for="vacancia">Vacância</label><div class="in"><input id="vacancia" type="number" step="1" value="10"><span>%</span></div></div>
-        <div class="f"><label for="adm">Taxa de administração</label><div class="in"><input id="adm" type="number" step="0.5" value="10"><span>%</span></div></div>
+        <div class="seg" id="modoAluguel" role="group" aria-label="Tipo de aluguel">
+          <button type="button" data-m="anual" aria-pressed="false">Aluguel anual</button>
+          <button type="button" data-m="temporada" aria-pressed="true">Temporada (diárias)</button>
+        </div>
+        <input type="hidden" id="modo" value="temporada">
+        <div id="grpAnual" class="inputs" style="gap:10px" hidden>
+          <div class="f"><label for="aluguel">Aluguel por mês</label><div class="in"><span>R$</span><input id="aluguel" type="number" step="50" value="4500"></div></div>
+          <div class="f"><label for="vacancia">Vacância</label><div class="in"><input id="vacancia" type="number" step="1" value="8"><span>%</span></div></div>
+        </div>
+        <div id="grpTemp" class="inputs" style="gap:10px">
+          <div class="f"><label for="diariaAlta">Diária na alta temporada</label><div class="in"><span>R$</span><input id="diariaAlta" type="number" step="10" value="800"></div></div>
+          <div class="f"><label for="ocupAlta">Ocupação na alta</label><div class="in"><input id="ocupAlta" type="number" step="1" value="70"><span>%</span></div></div>
+          <div class="f"><label for="mesesAlta">Meses de alta<small>Contados a partir de dezembro</small></label><div class="in"><input id="mesesAlta" type="number" step="1" min="0" max="12" value="3"><span>meses</span></div></div>
+          <div class="f"><label for="diariaBaixa">Diária no resto do ano</label><div class="in"><span>R$</span><input id="diariaBaixa" type="number" step="10" value="350"></div></div>
+          <div class="f"><label for="ocupBaixa">Ocupação no resto do ano</label><div class="in"><input id="ocupBaixa" type="number" step="1" value="30"><span>%</span></div></div>
+          <p class="note" id="tempResumo"></p>
+        </div>
+        <div class="f"><label for="reajAluguel">Reajuste do aluguel/diária ao ano</label><div class="in"><input id="reajAluguel" type="number" step="0.1" value="4.5"><span>%</span></div></div>
+        <div class="f"><label for="adm">Administração / plataforma<small>Airbnb, gestão e limpeza na temporada</small></label><div class="in"><input id="adm" type="number" step="0.5" value="20"><span>%</span></div></div>
         <div class="f"><label for="desp">Despesas do proprietário<small>IPTU, manutenção, seguro (mês)</small></label><div class="in"><span>R$</span><input id="desp" type="number" step="10" value="400"></div></div>
         <div class="f"><label for="irAluguel">IR sobre aluguel (efetivo)</label><div class="in"><input id="irAluguel" type="number" step="0.5" value="10"><span>%</span></div></div>
       </fieldset>
@@ -232,6 +316,11 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
     </form>
 
     <div class="stack">
+      <div class="actions no-print">
+        <button class="btn" type="button" data-pdf>Gerar PDF da proposta</button>
+        <button class="btn ghost" type="button" data-link>Copiar link desta simulação</button>
+        <span class="msg" data-msg aria-live="polite"></span>
+      </div>
       <div class="verdict" id="verdict"></div>
       <div class="kpis" id="kpis"></div>
       <div class="panel">
@@ -256,6 +345,48 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
           <textarea id="resumo" readonly aria-label="Resumo da simulação"></textarea>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ NA PLANTA ============ -->
+  <section id="p-planta" class="grid" hidden>
+    <form class="panel inputs" id="formPlanta" onsubmit="return false">
+      <fieldset><legend>Lançamento</legend>
+        <div class="f"><label for="pValor">Valor de tabela</label><div class="in"><span>R$</span><input id="pValor" type="number" step="1000" value="850000"></div></div>
+        <div class="f"><label for="pMercado">Imóvel pronto parecido hoje<small>Mesmo bairro e padrão. Se a tabela é mais barata, o ganho aumenta</small></label><div class="in"><span>R$</span><input id="pMercado" type="number" step="1000" value="850000"></div></div>
+        <div class="f"><label for="pObra">Prazo até as chaves</label><div class="in"><input id="pObra" type="number" step="1" min="6" max="72" value="36"><span>meses</span></div></div>
+      </fieldset>
+      <fieldset><legend>Fluxo de pagamento</legend>
+        <div class="f"><label for="pEntrada">Entrada (ato)</label><div class="in"><input id="pEntrada" type="number" step="1" value="10"><span>%</span></div></div>
+        <div class="f"><label for="pMensais">Parcelas mensais<small>Soma de todas, durante a obra</small></label><div class="in"><input id="pMensais" type="number" step="1" value="30"><span>%</span></div></div>
+        <div class="f"><label for="pReforcos">Reforços anuais<small>Soma dos balões, um a cada 12 meses</small></label><div class="in"><input id="pReforcos" type="number" step="1" value="10"><span>%</span></div></div>
+        <p class="note" id="pChavesTxt"></p>
+        <div class="f"><label for="pCorrecao">Correção das parcelas<small id="pCorrHint">CUB/INCC ao ano</small></label><div class="in"><input id="pCorrecao" type="number" step="0.1" value="6"><span>%</span></div></div>
+      </fieldset>
+      <fieldset><legend>Valorização e venda na entrega</legend>
+        <div class="f"><label for="pValoriz">Valorização até a entrega<small>ao ano</small></label><div class="in"><input id="pValoriz" type="number" step="0.1" value="8"><span>%</span></div></div>
+        <div class="f"><label for="pCorretagem">Corretagem na venda</label><div class="in"><input id="pCorretagem" type="number" step="0.5" value="6"><span>%</span></div></div>
+        <label class="chk"><input type="checkbox" id="pIr" checked> Cobrar IR de 15% sobre o ganho</label>
+        <div class="f"><label for="pCdi">CDI médio ao ano<small>para comparar</small></label><div class="in"><input id="pCdi" type="number" step="0.1" value="11.5"><span>%</span></div></div>
+      </fieldset>
+    </form>
+    <div class="stack">
+      <div class="actions no-print">
+        <button class="btn" type="button" data-pdf>Gerar PDF da proposta</button>
+        <button class="btn ghost" type="button" data-link>Copiar link desta simulação</button>
+        <span class="msg" data-msg aria-live="polite"></span>
+      </div>
+      <div class="verdict" id="pVerdict"></div>
+      <div class="kpis" id="pKpis"></div>
+      <div class="panel">
+        <div class="ph"><h2>Valor do imóvel x quanto você pagou</h2><span class="note">Mês a mês, da compra até as chaves</span></div>
+        <div class="chartbox"><canvas id="chPlanta" aria-label="Valor do imóvel e total pago durante a obra"></canvas></div>
+      </div>
+      <div class="two">
+        <div class="panel"><h2 style="margin-bottom:8px">Resultado na entrega das chaves</h2><div class="tblwrap"><table id="pTbl"></table></div></div>
+        <div class="panel"><h2 style="margin-bottom:8px">Cronograma de pagamento</h2><div class="tblwrap"><table id="pCron"></table></div></div>
+      </div>
+      <p class="note">Considera venda do imóvel na entrega das chaves, com o comprador quitando o saldo. Parcelas corrigidas mês a mês pelo índice informado, como nos contratos de lançamento. Simulação ilustrativa.</p>
     </div>
   </section>
 
@@ -293,8 +424,20 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
     </div>
   </section>
 
-  <p class="note" style="margin-top:28px">Fontes: Índice FipeZAP (Fipe), informes mensais, preço médio residencial de venda. Banco Central do Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433/13522, IGP-M 189, INCC 192, poupança 195, IVG-R 21340). CUB/SC: Sinduscon Grande Florianópolis. Simulação ilustrativa, não é promessa de rentabilidade. Rentabilidade passada não garante rentabilidade futura.</p>
+  <section class="contato" aria-label="Contato">
+    <div>
+      <h2>Quer ver isso para um imóvel específico?</h2>
+      <p id="contatoTxt"></p>
+    </div>
+    <a class="btn" id="waBox" href="#" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+  </section>
+
+  <p class="note" style="margin-top:20px">Fontes: Índice FipeZAP (Fipe), informes mensais, preço médio residencial de venda. Banco Central do Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433/13522, IGP-M 189, INCC 192, poupança 195, IVG-R 21340). CUB/SC: Sinduscon Grande Florianópolis. População: IBGE. Simulação ilustrativa, não é promessa de rentabilidade. Rentabilidade passada não garante rentabilidade futura.</p>
 </div>
+<a class="wa" id="wa" href="#" target="_blank" rel="noopener" aria-label="Conversar no WhatsApp">
+  <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5 9.9 9.9 5.2 16 5.2s11 4.7 11 10.6-4.9 10.6-11 10.6zm6-7.9c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.6-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.5c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.8 5 .8.4 1.4.6 1.9.7.8.3 1.5.2 2.1.1.6-.1 2-.8 2.2-1.6.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.3z"/></svg>
+  <span id="waLabel">Fale com Santiago</span>
+</a>
 <script src="dados/dados.js"></script>
 <script src="app.js"></script>
 </body>

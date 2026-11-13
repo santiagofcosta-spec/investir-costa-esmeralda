@@ -14,3 +14,15 @@ Selic, CDI, IPCA, IGP-M, INCC e simulador de investimento/ROI.
 Se o Banco Central estiver fora do ar, a página usa os últimos dados salvos em `dados/dados.js`.
 
 Para rodar o robô na hora: aba **Actions** → "Atualizar dados" → **Run workflow**.
+
+## Contato e CRECI
+
+Os dados de contato ficam no topo do `app.js` (`const CONTATO`). Quando sair o CRECI,
+preencha `creci:'...'` e o site passa a mostrar "Corretor de imóveis · CRECI ..." no contato,
+no PDF e no resumo do WhatsApp.
+
+## Domínio próprio (opcional)
+
+1. Compre o domínio (ex.: registro.br, cerca de R$ 40/ano).
+2. No painel do domínio, crie um registro **CNAME** de `investir` apontando para `santiagofcosta-spec.github.io`.
+3. No GitHub: Settings → Pages → Custom domain → `investir.seudominio.com.br` → marque "Enforce HTTPS".
