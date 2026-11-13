@@ -171,6 +171,15 @@ ul.rules{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap
 tr.sel td{background:var(--surface2);font-weight:600}
 .tabs button{padding:12px 12px}
 .spark{display:inline-block;vertical-align:middle}
+.filtro{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.f2{display:flex;align-items:center;gap:10px;font-weight:600}
+.f2 .in{min-width:240px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{appearance:none;border:1px solid var(--line);background:var(--surface2);color:var(--ink);font:600 12px var(--f-body);padding:6px 12px;border-radius:999px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--sea);border-color:var(--sea);color:var(--sea-ink)}
+#tblCidades tbody tr{cursor:pointer}
+#tblCidades tbody tr:hover td{background:var(--surface2)}
+tr.total td{border-top:2px solid var(--ink);font-weight:700}
 </style>
 </head>
 <body>
@@ -474,25 +483,48 @@ tr.sel td{background:var(--surface2);font-weight:600}
 
   <!-- ============ SOJA ============ -->
   <section id="p-soja" class="stack" hidden>
+    <div class="filtro panel">
+      <div class="f2"><label for="sCidade" data-es="Elija la ciudad">Escolha a cidade</label><div class="in"><select id="sCidade"></select></div></div>
+      <div class="chips" id="sAtalhos" role="group"></div>
+    </div>
     <div class="kpis" id="sKpis"></div>
     <div class="two">
       <div class="panel">
-        <div class="ph"><h2 data-es="Comodoro/MT: cotización diaria">Comodoro/MT: cotação diária</h2><span class="note" data-es="R$ por saca de 60 kg, disponible">R$ por saca de 60 kg, disponível</span></div>
-        <div class="chartbox sm"><canvas id="chComodoro"></canvas></div>
-        <h3 style="margin-top:14px" data-es="Ofertas de compradores para Comodoro">Ofertas de compradores para Comodoro</h3>
-        <div class="tblwrap"><table id="tblComodoro"></table></div>
+        <div class="ph"><h2 id="sTitGraf"></h2><span class="note" data-es="R$ por saca de 60 kg">R$ por saca de 60 kg</span></div>
+        <div class="chartbox sm"><canvas id="chSoja"></canvas></div>
+        <p class="note" id="sNotaGraf" style="margin-top:8px"></p>
       </div>
       <div class="panel">
-        <div class="ph"><h2 data-es="Vilhena/RO: ofertas de compradores">Vilhena/RO: ofertas de compradores</h2><span class="note" data-es="R$ por saca de 60 kg">R$ por saca de 60 kg</span></div>
-        <div class="chartbox sm"><canvas id="chVilhena"></canvas></div>
-        <div class="tblwrap" style="margin-top:14px"><table id="tblVilhena"></table></div>
+        <div class="ph"><h2 id="sTitOf"></h2></div>
+        <div class="tblwrap"><table id="tblOfertas"></table></div>
       </div>
+    </div>
+    <div class="grid">
+      <form class="panel inputs" id="formCustos" onsubmit="return false">
+        <fieldset><legend data-es="Costos de la venta">Custos da venda</legend>
+          <div class="f"><label for="sOferta" data-es="Oferta usada en el cálculo">Oferta usada no cálculo</label><div class="in"><select id="sOferta"></select></div></div>
+          <div class="f"><label for="sFethab" data-es="Fethab + entidad (MT)&lt;small id=&quot;sFethabHint&quot;&gt;&lt;/small&gt;">Fethab + entidade (MT)<small id="sFethabHint"></small></label><div class="in"><span>R$</span><input id="sFethab" type="number" step="0.01" value="3.23"><span>/sc</span></div></div>
+          <div class="f"><label for="sFunrural" data-es="Funrural + Senar&lt;small&gt;Persona física desde abr/2026&lt;/small&gt;">Funrural + Senar<small>Pessoa física, desde abr/2026</small></label><div class="in"><input id="sFunrural" type="number" step="0.01" value="1.63"><span>%</span></div></div>
+          <div class="f"><label for="sFrete" data-es="Flete hasta el comprador&lt;small id=&quot;sFreteHint&quot;&gt;&lt;/small&gt;">Frete até o comprador<small id="sFreteHint"></small></label><div class="in"><span>R$</span><input id="sFrete" type="number" step="0.01" value="0"><span>/sc</span></div></div>
+          <div class="f"><label for="sArmaz" data-es="Secado, almacenaje y recepción&lt;small&gt;Si corresponde&lt;/small&gt;">Secagem, armazenagem e recepção<small>Se houver</small></label><div class="in"><span>R$</span><input id="sArmaz" type="number" step="0.01" value="0"><span>/sc</span></div></div>
+          <div class="f"><label for="sComissao" data-es="Comisión del corredor de granos">Comissão do corretor de grãos</label><div class="in"><input id="sComissao" type="number" step="0.01" value="0"><span>%</span></div></div>
+          <div class="f"><label for="sOutros" data-es="Otros costos">Outros custos</label><div class="in"><span>R$</span><input id="sOutros" type="number" step="0.01" value="0"><span>/sc</span></div></div>
+          <div class="f"><label for="sProducao" data-es="Sacas a vender">Sacas a vender</label><div class="in"><input id="sProducao" type="number" step="100" value="10000"><span>sc</span></div></div>
+        </fieldset>
+      </form>
+      <div class="stack">
+        <div class="panel"><div class="ph"><h2 data-es="Cuánto queda por saca">Quanto sobra por saca</h2><span class="note" id="sCustoCid"></span></div><div class="tblwrap"><table id="tblCustos"></table></div></div>
+        <div class="callout" id="sSacas"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><h2 data-es="Comparar ciudades">Comparar cidades</h2><span class="note" data-es="Haga clic en una ciudad para verla en detalle">Clique numa cidade para ver em destaque</span></div>
+      <div class="tblwrap"><table id="tblCidades"></table></div>
     </div>
     <div class="panel">
       <div class="ph"><h2 data-es="Soja disponible por región">Soja disponível por região</h2><span class="note" id="sRegData"></span></div>
       <div class="tblwrap"><table id="tblRegioes"></table></div>
     </div>
-    <div class="callout" id="sSacas"></div>
     <p class="note" id="sFonte"></p>
   </section>
 

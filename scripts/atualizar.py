@@ -185,6 +185,14 @@ def gd_dados(caminho):
     return json.loads(m.group(1))["props"]["pageProps"]
 
 
+CIDADES_SOJA = [  # (uf, slug) das páginas públicas do Grão Direto
+    ("mt", "comodoro"), ("mt", "campos-de-julio"), ("mt", "sapezal"), ("mt", "campo-novo-do-parecis"),
+    ("mt", "diamantino"), ("mt", "nova-mutum"), ("mt", "lucas-do-rio-verde"), ("mt", "sorriso"), ("mt", "sinop"),
+    ("mt", "querencia"), ("mt", "primavera-do-leste"), ("mt", "rondonopolis"),
+    ("ro", "vilhena"), ("ro", "cerejeiras"), ("ro", "cabixi"), ("ro", "chupinguaia"), ("ro", "corumbiara"),
+]
+
+
 def gd_ofertas(pp):
     """Ofertas de compra (preço que os compradores pagam), disponível e entrega futura."""
     out = []
@@ -192,8 +200,10 @@ def gd_ofertas(pp):
         for o in grupo.get("offers", []):
             if not o.get("price"):
                 continue
+            cf = o.get("offerPriceWithFreight")
             out.append({
                 "cidade": o.get("cityName"), "uf": o.get("state"), "preco": round(float(o["price"]), 2),
+                "comFrete": round(float(cf), 2) if cf else None,
                 "entrega": o.get("futureModalityDate") or None, "fob": bool(o.get("priceReferenceIsFob", 1)),
                 "atualizado": (o.get("updatedAt") or "")[:16],
             })
@@ -201,44 +211,56 @@ def gd_ofertas(pp):
 
 
 def atualizar_soja(d):
+    import time
     s = d.setdefault("soja", {})
     hoje = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None) - dt.timedelta(hours=3)  # horário de Brasília
-    # regiões
+    dia = hoje.strftime("%Y-%m-%d")
     pp = gd_dados("/precos/soja/")
-    regioes = []
-    for r in pp["tableData"]["physicalMarket"]:
-        if (r.get("name") or "").lower() != "soja":
-            continue
-        regioes.append({"nome": r["description"], "valor": r["value"], "var": r.get("variation"),
-                        "data": r.get("updatedAt"), "pontos": r.get("chartPoints") or []})
+    regioes = [{"nome": r["description"], "valor": r["value"], "var": r.get("variation"), "data": r.get("updatedAt"),
+                "pontos": r.get("chartPoints") or []}
+               for r in pp["tableData"]["physicalMarket"] if (r.get("name") or "").lower() == "soja"]
     if len(regioes) < 5:
         raise RuntimeError("tabela de regiões veio incompleta")
     s["regioes"] = regioes
-    # Comodoro: cotação diária + ofertas
-    pc = gd_dados("/ofertas/soja/mt/comodoro/")
-    com = s.setdefault("comodoro", {"serie": []})
-    serie = dict(map(tuple, com.get("serie", [])))
-    for q in pc.get("formattedQuotationIntraDayValues") or []:
-        v = re.search(r"(\d+[.,]\d+)", q["value"].replace(".", "").replace(",", "."))
-        dd, mm, aa = q["createdAt"].split("/")
-        if v:
-            serie[f"{aa}-{mm}-{dd}"] = float(v.group(1))
-    com["serie"] = [[k, serie[k]] for k in sorted(serie)][-600:]
-    com["regiao"] = "Norte Mato-grossense"
-    com["ofertas"] = gd_ofertas(pc)
-    # Vilhena: sem cotação diária própria; guarda as ofertas e um histórico diário das ofertas locais
-    pv = gd_dados("/ofertas/soja/ro/vilhena/")
-    vil = s.setdefault("vilhena", {"historico": []})
-    vil["ofertas"] = gd_ofertas(pv)
-    locais = [o["preco"] for o in vil["ofertas"] if o["cidade"] == "Vilhena"]
-    if locais:
-        hist = {h[0]: h for h in vil.get("historico", [])}
-        dia = hoje.strftime("%Y-%m-%d")
-        hist[dia] = [dia, min(locais), round(sum(locais) / len(locais), 2), max(locais), len(locais)]
-        vil["historico"] = [hist[k] for k in sorted(hist)][-600:]
+    cidades = s.setdefault("cidades", {})
+    # migra o formato antigo (só Comodoro e Vilhena)
+    if "comodoro" in s and isinstance(s["comodoro"], dict) and "serie" in s["comodoro"]:
+        cidades.setdefault("comodoro", {})["serie"] = s.pop("comodoro")["serie"]
+    if "vilhena" in s and isinstance(s["vilhena"], dict) and "historico" in s["vilhena"]:
+        cidades.setdefault("vilhena", {})["historico"] = s.pop("vilhena")["historico"]
+    ok = 0
+    for uf, slug in CIDADES_SOJA:
+        try:
+            pc = gd_dados(f"/ofertas/soja/{uf}/{slug}/")
+        except Exception as e:  # uma cidade fora do ar não derruba as outras
+            log.append(f"Soja {slug}: {e}")
+            continue
+        c = cidades.setdefault(slug, {})
+        c["nome"], c["uf"] = pc["city"]["name"], pc["city"]["state"]
+        serie = dict(map(tuple, c.get("serie", [])))
+        for q in pc.get("formattedQuotationIntraDayValues") or []:
+            v = re.search(r"(\d+[.,]\d+)", q["value"].replace(".", "").replace(",", "."))
+            dd, mm, aa = q["createdAt"].split("/")
+            if v:
+                serie[f"{aa}-{mm}-{dd}"] = float(v.group(1))
+            m = re.search(r"\(([^)]+)\)", q.get("region") or "")
+            if m:
+                c["regiao"] = m.group(1)
+        c["serie"] = [[k, serie[k]] for k in sorted(serie)][-600:]
+        c["ofertas"] = gd_ofertas(pc)
+        locais = [o["preco"] for o in c["ofertas"] if o["cidade"] == c["nome"]]
+        hist = {h[0]: h for h in c.get("historico", [])}
+        if locais:
+            hist[dia] = [dia, min(locais), round(sum(locais) / len(locais), 2), max(locais), len(locais)]
+        c["historico"] = [hist[k] for k in sorted(hist)][-600:]
+        c["slug"], c["ordem"] = slug, [x[1] for x in CIDADES_SOJA].index(slug)
+        ok += 1
+        time.sleep(1)  # educação com o site
+    if ok == 0:
+        raise RuntimeError("nenhuma cidade carregou")
     s["atualizado"] = hoje.strftime("%Y-%m-%d %H:%M")
     s["fonte"] = "Grão Direto (graodireto.com.br)"
-    log.append(f"Soja: Comodoro {com['serie'][-1] if com['serie'] else '-'}, Vilhena {len(locais)} ofertas locais, {len(regioes)} regiões")
+    log.append(f"Soja: {ok}/{len(CIDADES_SOJA)} cidades, {len(regioes)} regiões")
 
 
 # ---------------------------------------------------------------- principal

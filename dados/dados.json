@@ -1423,211 +1423,2377 @@
     ]
    }
   ],
-  "comodoro": {
-   "serie": [
-    [
-     "2026-10-30",
-     135.84
+  "atualizado": "2026-11-13 16:13",
+  "fonte": "Grão Direto (graodireto.com.br)",
+  "cidades": {
+   "comodoro": {
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
     ],
-    [
-     "2026-11-02",
-     134.79
+    "nome": "Comodoro",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "ofertas": [
+     {
+      "cidade": "Juína",
+      "uf": "MT",
+      "preco": 113.1,
+      "comFrete": 106.71,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Castanheira",
+      "uf": "MT",
+      "preco": 112.8,
+      "comFrete": 105.64,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 100.0,
+      "comFrete": 95.67,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-09 14:51"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 132.0,
+      "comFrete": 130.61,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "preco": 119.9,
+      "comFrete": 119.36,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "preco": 119.5,
+      "comFrete": 118.96,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "preco": 119.2,
+      "comFrete": 118.66,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Comodoro",
+      "uf": "MT",
+      "preco": 118.1,
+      "comFrete": 117.56,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 130.6,
+      "comFrete": 128.18,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
     ],
-    [
-     "2026-11-03",
-     134.57
+    "historico": [
+     [
+      "2026-11-13",
+      118.1,
+      119.17,
+      119.9,
+      4
+     ]
     ],
-    [
-     "2026-11-04",
-     134.38
+    "slug": "comodoro",
+    "ordem": 0
+   },
+   "vilhena": {
+    "historico": [
+     [
+      "2026-11-13",
+      120.45,
+      123.17,
+      130.65,
+      6
+     ]
     ],
-    [
-     "2026-11-05",
-     134.51
+    "nome": "Vilhena",
+    "uf": "RO",
+    "serie": [],
+    "ofertas": [
+     {
+      "cidade": "Juína",
+      "uf": "MT",
+      "preco": 113.15,
+      "comFrete": 108.85,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Castanheira",
+      "uf": "MT",
+      "preco": 112.85,
+      "comFrete": 107.78,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 100.0,
+      "comFrete": 93.66,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-09 14:51"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 130.65,
+      "comFrete": 130.11,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 121.2,
+      "comFrete": 120.66,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 125.1,
+      "comFrete": 121.59,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 120.85,
+      "comFrete": 120.31,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 120.75,
+      "comFrete": 120.21,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 120.45,
+      "comFrete": 119.91,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     }
     ],
-    [
-     "2026-11-06",
-     134.75
+    "slug": "vilhena",
+    "ordem": 12
+   },
+   "campos-de-julio": {
+    "nome": "Campos de Júlio",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
     ],
-    [
-     "2026-11-09",
-     132.45
+    "ofertas": [
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.15,
+      "comFrete": 112.09,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 100.0,
+      "comFrete": 97.05,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-09 14:51"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 132.0,
+      "comFrete": 131.46,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 123.65,
+      "comFrete": 123.11,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 128.4,
+      "comFrete": 124.89,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 120.55,
+      "comFrete": 120.01,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 120.3,
+      "comFrete": 119.76,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 130.6,
+      "comFrete": 129.56,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
     ],
-    [
-     "2026-11-10",
-     132.18
+    "historico": [
+     [
+      "2026-11-13",
+      120.3,
+      124.98,
+      132.0,
+      5
+     ]
     ],
-    [
-     "2026-11-11",
-     131.31
+    "slug": "campos-de-julio",
+    "ordem": 1
+   },
+   "sapezal": {
+    "nome": "Sapezal",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
     ],
-    [
-     "2026-11-12",
-     132.28
-    ]
-   ],
-   "regiao": "Norte Mato-grossense",
-   "ofertas": [
-    {
-     "cidade": "Juína",
-     "uf": "MT",
-     "preco": 112.8,
-     "entrega": null,
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    },
-    {
-     "cidade": "Castanheira",
-     "uf": "MT",
-     "preco": 112.5,
-     "entrega": null,
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    },
-    {
-     "cidade": "Campo Novo do Parecis",
-     "uf": "MT",
-     "preco": 100.0,
-     "entrega": null,
-     "fob": true,
-     "atualizado": "2026-11-09 14:51"
-    },
-    {
-     "cidade": "Campos de Júlio",
-     "uf": "MT",
-     "preco": 131.6,
-     "entrega": "2026-12-31",
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    },
-    {
-     "cidade": "Comodoro",
-     "uf": "MT",
-     "preco": 119.6,
-     "entrega": "2027-01-31",
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    },
-    {
-     "cidade": "Comodoro",
-     "uf": "MT",
-     "preco": 118.3,
-     "entrega": "2027-03-31",
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    },
-    {
-     "cidade": "Comodoro",
-     "uf": "MT",
-     "preco": 118.0,
-     "entrega": "2027-04-30",
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    },
-    {
-     "cidade": "Sapezal",
-     "uf": "MT",
-     "preco": 130.2,
-     "entrega": "2026-12-31",
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    },
-    {
-     "cidade": "Comodoro",
-     "uf": "MT",
-     "preco": 116.9,
-     "entrega": "2027-02-28",
-     "fob": true,
-     "atualizado": "2026-11-13 13:45"
-    }
-   ]
-  },
-  "vilhena": {
-   "historico": [
-    [
-     "2026-11-13",
-     119.3,
-     122.6,
-     130.4,
-     6
-    ]
-   ],
-   "ofertas": [
-    {
-     "cidade": "Juína",
-     "uf": "MT",
-     "preco": 112.9,
-     "entrega": null,
-     "fob": true,
-     "atualizado": "2026-11-13 13:30"
-    },
-    {
-     "cidade": "Castanheira",
-     "uf": "MT",
-     "preco": 112.6,
-     "entrega": null,
-     "fob": true,
-     "atualizado": "2026-11-13 13:30"
-    },
-    {
-     "cidade": "Campo Novo do Parecis",
-     "uf": "MT",
-     "preco": 100.0,
-     "entrega": null,
-     "fob": true,
-     "atualizado": "2026-11-09 14:51"
-    },
-    {
-     "cidade": "Vilhena",
-     "uf": "RO",
-     "preco": 130.4,
-     "entrega": "2026-12-31",
-     "fob": true,
-     "atualizado": "2026-11-13 13:30"
-    },
-    {
-     "cidade": "Vilhena",
-     "uf": "RO",
-     "preco": 120.9,
-     "entrega": "2027-01-31",
-     "fob": true,
-     "atualizado": "2026-11-13 13:30"
-    },
-    {
-     "cidade": "Vilhena",
-     "uf": "RO",
-     "preco": 124.8,
-     "entrega": "2026-12-31",
-     "fob": false,
-     "atualizado": "2026-11-13 13:30"
-    },
-    {
-     "cidade": "Vilhena",
-     "uf": "RO",
-     "preco": 120.55,
-     "entrega": "2027-04-30",
-     "fob": true,
-     "atualizado": "2026-11-13 13:30"
-    },
-    {
-     "cidade": "Vilhena",
-     "uf": "RO",
-     "preco": 119.65,
-     "entrega": "2027-03-31",
-     "fob": true,
-     "atualizado": "2026-11-13 13:30"
-    },
-    {
-     "cidade": "Vilhena",
-     "uf": "RO",
-     "preco": 119.3,
-     "entrega": "2027-04-30",
-     "fob": true,
-     "atualizado": "2026-11-13 13:30"
-    }
-   ]
-  },
-  "atualizado": "2026-11-13 13:51",
-  "fonte": "Grão Direto (graodireto.com.br)"
+    "ofertas": [
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.15,
+      "comFrete": 113.1,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Tapurah",
+      "uf": "MT",
+      "preco": 117.65,
+      "comFrete": 110.67,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Porto dos Gaúchos",
+      "uf": "MT",
+      "preco": 115.55,
+      "comFrete": 108.46,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Juína",
+      "uf": "MT",
+      "preco": 113.1,
+      "comFrete": 106.26,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Juara",
+      "uf": "MT",
+      "preco": 113.1,
+      "comFrete": 106.05,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 100.0,
+      "comFrete": 98.05,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-09 14:51"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 130.6,
+      "comFrete": 130.06,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 124.25,
+      "comFrete": 123.71,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 127.65,
+      "comFrete": 124.14,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 121.15,
+      "comFrete": 120.61,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 132.0,
+      "comFrete": 130.97,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 119.7,
+      "comFrete": 119.16,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      119.7,
+      124.67,
+      130.6,
+      5
+     ]
+    ],
+    "slug": "sapezal",
+    "ordem": 2
+   },
+   "campo-novo-do-parecis": {
+    "nome": "Campo Novo do Parecis",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.2,
+      "comFrete": 115.07,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "preco": 130.0,
+      "comFrete": 122.97,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-10 10:39"
+     },
+     {
+      "cidade": "Santa Rita do Trivelato",
+      "uf": "MT",
+      "preco": 119.5,
+      "comFrete": 113.5,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Tapurah",
+      "uf": "MT",
+      "preco": 117.7,
+      "comFrete": 112.68,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 118.6,
+      "comFrete": 112.76,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Novo Horizonte do Norte",
+      "uf": "MT",
+      "preco": 119.4,
+      "comFrete": 112.52,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 130.15,
+      "comFrete": 129.61,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 125.45,
+      "comFrete": 124.91,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 122.4,
+      "comFrete": 121.86,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Campo Novo do Parecis",
+      "uf": "MT",
+      "preco": 119.3,
+      "comFrete": 118.76,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Campos de Júlio",
+      "uf": "MT",
+      "preco": 132.05,
+      "comFrete": 129.1,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Sapezal",
+      "uf": "MT",
+      "preco": 130.65,
+      "comFrete": 128.7,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      119.3,
+      124.33,
+      130.15,
+      4
+     ]
+    ],
+    "slug": "campo-novo-do-parecis",
+    "ordem": 3
+   },
+   "diamantino": {
+    "nome": "Diamantino",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Campo Verde",
+      "uf": "MT",
+      "preco": 123.5,
+      "comFrete": 117.87,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "preco": 130.0,
+      "comFrete": 126.74,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-10 10:39"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.15,
+      "comFrete": 116.84,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 124.3,
+      "comFrete": 117.14,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Santa Rita do Trivelato",
+      "uf": "MT",
+      "preco": 119.45,
+      "comFrete": 115.25,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 118.55,
+      "comFrete": 114.53,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Diamantino",
+      "uf": "MT",
+      "preco": 123.3,
+      "comFrete": 122.76,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Tangará da Serra",
+      "uf": "MT",
+      "preco": 130.55,
+      "comFrete": 127.78,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Diamantino",
+      "uf": "MT",
+      "preco": 120.2,
+      "comFrete": 119.66,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Diamantino",
+      "uf": "MT",
+      "preco": 118.75,
+      "comFrete": 118.21,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Diamantino",
+      "uf": "MT",
+      "preco": 117.95,
+      "comFrete": 117.41,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 130.9,
+      "comFrete": 126.88,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      117.95,
+      120.05,
+      123.3,
+      4
+     ]
+    ],
+    "slug": "diamantino",
+    "ordem": 4
+   },
+   "nova-mutum": {
+    "nome": "Nova Mutum",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.15,
+      "comFrete": 118.61,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "preco": 130.0,
+      "comFrete": 125.65,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-10 10:39"
+     },
+     {
+      "cidade": "Santa Rita do Trivelato",
+      "uf": "MT",
+      "preco": 119.45,
+      "comFrete": 117.56,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 118.55,
+      "comFrete": 116.86,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campo Verde",
+      "uf": "MT",
+      "preco": 123.5,
+      "comFrete": 117.19,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 117.35,
+      "comFrete": 114.5,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 125.4,
+      "comFrete": 124.86,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 124.2,
+      "comFrete": 123.66,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 121.1,
+      "comFrete": 120.56,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 120.9,
+      "comFrete": 120.36,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.9,
+      "comFrete": 119.36,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.2,
+      "comFrete": 118.66,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      119.15,
+      121.41,
+      125.4,
+      7
+     ]
+    ],
+    "slug": "nova-mutum",
+    "ordem": 5
+   },
+   "lucas-do-rio-verde": {
+    "nome": "Lucas do Rio Verde",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 118.6,
+      "comFrete": 118.06,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.2,
+      "comFrete": 117.51,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Santa Rita do Trivelato",
+      "uf": "MT",
+      "preco": 119.5,
+      "comFrete": 117.1,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 117.4,
+      "comFrete": 116.23,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Tapurah",
+      "uf": "MT",
+      "preco": 117.7,
+      "comFrete": 115.95,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "preco": 130.0,
+      "comFrete": 123.96,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-10 10:39"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 130.7,
+      "comFrete": 130.16,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 133.1,
+      "comFrete": 129.59,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 123.6,
+      "comFrete": 123.06,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 123.5,
+      "comFrete": 122.96,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 125.65,
+      "comFrete": 122.14,
+      "entrega": "2027-05-31",
+      "fob": false,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 121.5,
+      "comFrete": 120.96,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      118.6,
+      125.24,
+      133.1,
+      7
+     ]
+    ],
+    "slug": "lucas-do-rio-verde",
+    "ordem": 6
+   },
+   "sorriso": {
+    "nome": "Sorriso",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 117.35,
+      "comFrete": 116.81,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 118.55,
+      "comFrete": 117.38,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Ubiratã",
+      "uf": "MT",
+      "preco": 117.95,
+      "comFrete": 116.4,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Mutum",
+      "uf": "MT",
+      "preco": 119.15,
+      "comFrete": 116.31,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Santa Rita do Trivelato",
+      "uf": "MT",
+      "preco": 119.45,
+      "comFrete": 116.18,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Vera",
+      "uf": "MT",
+      "preco": 117.35,
+      "comFrete": 116.13,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 129.1,
+      "comFrete": 128.56,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 123.9,
+      "comFrete": 123.36,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 127.1,
+      "comFrete": 123.59,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Matupá",
+      "uf": "MT",
+      "preco": 139.7,
+      "comFrete": 134.48,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 121.85,
+      "comFrete": 121.31,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 121.8,
+      "comFrete": 121.26,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      117.35,
+      123.52,
+      129.1,
+      6
+     ]
+    ],
+    "slug": "sorriso",
+    "ordem": 7
+   },
+   "sinop": {
+    "nome": "Sinop",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 116.95,
+      "comFrete": 116.41,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 118.6,
+      "comFrete": 115.94,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Vera",
+      "uf": "MT",
+      "preco": 117.4,
+      "comFrete": 115.92,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 117.4,
+      "comFrete": 115.86,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Cláudia",
+      "uf": "MT",
+      "preco": 116.8,
+      "comFrete": 115.17,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Nova Ubiratã",
+      "uf": "MT",
+      "preco": 118.0,
+      "comFrete": 114.96,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 129.65,
+      "comFrete": 129.11,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 125.1,
+      "comFrete": 124.56,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Matupá",
+      "uf": "MT",
+      "preco": 139.75,
+      "comFrete": 136.0,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 123.0,
+      "comFrete": 122.46,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Matupá",
+      "uf": "MT",
+      "preco": 140.75,
+      "comFrete": 133.5,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 121.45,
+      "comFrete": 120.91,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      116.95,
+      123.23,
+      129.65,
+      5
+     ]
+    ],
+    "slug": "sinop",
+    "ordem": 8
+   },
+   "querencia": {
+    "nome": "Querência",
+    "uf": "MT",
+    "regiao": "Norte Mato-grossense",
+    "serie": [
+     [
+      "2026-10-30",
+      135.84
+     ],
+     [
+      "2026-11-02",
+      134.79
+     ],
+     [
+      "2026-11-03",
+      134.57
+     ],
+     [
+      "2026-11-04",
+      134.38
+     ],
+     [
+      "2026-11-05",
+      134.51
+     ],
+     [
+      "2026-11-06",
+      134.75
+     ],
+     [
+      "2026-11-09",
+      132.45
+     ],
+     [
+      "2026-11-10",
+      132.18
+     ],
+     [
+      "2026-11-11",
+      131.31
+     ],
+     [
+      "2026-11-12",
+      132.28
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Querência",
+      "uf": "MT",
+      "preco": 115.25,
+      "comFrete": 114.71,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Água Boa",
+      "uf": "MT",
+      "preco": 116.45,
+      "comFrete": 112.31,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Paranatinga",
+      "uf": "MT",
+      "preco": 120.5,
+      "comFrete": 113.63,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Canarana",
+      "uf": "MT",
+      "preco": 115.85,
+      "comFrete": 112.01,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Nova Xavantina",
+      "uf": "MT",
+      "preco": 118.25,
+      "comFrete": 112.59,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Confresa",
+      "uf": "MT",
+      "preco": 109.2,
+      "comFrete": 104.03,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Querência",
+      "uf": "MT",
+      "preco": 126.55,
+      "comFrete": 126.01,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Querência",
+      "uf": "MT",
+      "preco": 121.8,
+      "comFrete": 121.26,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Querência",
+      "uf": "MT",
+      "preco": 123.65,
+      "comFrete": 123.11,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Querência",
+      "uf": "MT",
+      "preco": 121.65,
+      "comFrete": 121.11,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Querência",
+      "uf": "MT",
+      "preco": 121.45,
+      "comFrete": 120.91,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Querência",
+      "uf": "MT",
+      "preco": 115.3,
+      "comFrete": 114.76,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      115.25,
+      120.81,
+      126.55,
+      7
+     ]
+    ],
+    "slug": "querencia",
+    "ordem": 9
+   },
+   "primavera-do-leste": {
+    "nome": "Primavera do Leste",
+    "uf": "MT",
+    "regiao": "Sudeste MT",
+    "serie": [
+     [
+      "2026-10-30",
+      141.31
+     ],
+     [
+      "2026-11-02",
+      140.97
+     ],
+     [
+      "2026-11-03",
+      141.46
+     ],
+     [
+      "2026-11-04",
+      141.05
+     ],
+     [
+      "2026-11-05",
+      141.21
+     ],
+     [
+      "2026-11-06",
+      140.5
+     ],
+     [
+      "2026-11-09",
+      140.13
+     ],
+     [
+      "2026-11-10",
+      139.97
+     ],
+     [
+      "2026-11-11",
+      140.35
+     ],
+     [
+      "2026-11-12",
+      140.29
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Primavera do Leste",
+      "uf": "MT",
+      "preco": 122.45,
+      "comFrete": 121.91,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 124.35,
+      "comFrete": 122.02,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Campo Verde",
+      "uf": "MT",
+      "preco": 123.55,
+      "comFrete": 121.69,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Itiquira",
+      "uf": "MT",
+      "preco": 124.2,
+      "comFrete": 119.23,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "preco": 130.0,
+      "comFrete": 125.77,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-10 10:39"
+     },
+     {
+      "cidade": "Paranatinga",
+      "uf": "MT",
+      "preco": 120.5,
+      "comFrete": 117.93,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Primavera do Leste",
+      "uf": "MT",
+      "preco": 127.45,
+      "comFrete": 126.91,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Primavera do Leste",
+      "uf": "MT",
+      "preco": 124.3,
+      "comFrete": 123.76,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Primavera do Leste",
+      "uf": "MT",
+      "preco": 123.75,
+      "comFrete": 123.21,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Primavera do Leste",
+      "uf": "MT",
+      "preco": 122.5,
+      "comFrete": 121.96,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Primavera do Leste",
+      "uf": "MT",
+      "preco": 121.95,
+      "comFrete": 121.41,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 132.3,
+      "comFrete": 129.97,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 15:45"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      121.95,
+      123.73,
+      127.45,
+      6
+     ]
+    ],
+    "slug": "primavera-do-leste",
+    "ordem": 10
+   },
+   "rondonopolis": {
+    "nome": "Rondonópolis",
+    "uf": "MT",
+    "regiao": "Sudeste MT",
+    "serie": [
+     [
+      "2026-10-30",
+      141.31
+     ],
+     [
+      "2026-11-02",
+      140.97
+     ],
+     [
+      "2026-11-03",
+      141.46
+     ],
+     [
+      "2026-11-04",
+      141.05
+     ],
+     [
+      "2026-11-05",
+      141.21
+     ],
+     [
+      "2026-11-06",
+      140.5
+     ],
+     [
+      "2026-11-09",
+      140.13
+     ],
+     [
+      "2026-11-10",
+      139.97
+     ],
+     [
+      "2026-11-11",
+      140.35
+     ],
+     [
+      "2026-11-12",
+      140.29
+     ]
+    ],
+    "ofertas": [
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 124.3,
+      "comFrete": 123.76,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Itiquira",
+      "uf": "MT",
+      "preco": 124.2,
+      "comFrete": 121.54,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Campo Verde",
+      "uf": "MT",
+      "preco": 123.5,
+      "comFrete": 121.01,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Primavera do Leste",
+      "uf": "MT",
+      "preco": 122.45,
+      "comFrete": 120.14,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cuiabá",
+      "uf": "MT",
+      "preco": 130.0,
+      "comFrete": 126.13,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-10 10:39"
+     },
+     {
+      "cidade": "Paranatinga",
+      "uf": "MT",
+      "preco": 120.5,
+      "comFrete": 115.61,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 132.3,
+      "comFrete": 131.76,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 128.9,
+      "comFrete": 128.36,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 127.4,
+      "comFrete": 126.86,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 126.6,
+      "comFrete": 126.06,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Rondonópolis",
+      "uf": "MT",
+      "preco": 124.3,
+      "comFrete": 123.76,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Itiquira",
+      "uf": "MT",
+      "preco": 129.55,
+      "comFrete": 126.89,
+      "entrega": "2027-05-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      124.3,
+      127.3,
+      132.3,
+      6
+     ]
+    ],
+    "slug": "rondonopolis",
+    "ordem": 11
+   },
+   "cerejeiras": {
+    "nome": "Cerejeiras",
+    "uf": "RO",
+    "serie": [],
+    "ofertas": [
+     {
+      "cidade": "Juína",
+      "uf": "MT",
+      "preco": 113.1,
+      "comFrete": 106.58,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 129.5,
+      "comFrete": 128.96,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 129.5,
+      "comFrete": 128.96,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 127.8,
+      "comFrete": 124.29,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 127.8,
+      "comFrete": 124.29,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 120.2,
+      "comFrete": 119.66,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 120.2,
+      "comFrete": 119.66,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      120.2,
+      125.83,
+      129.5,
+      6
+     ]
+    ],
+    "slug": "cerejeiras",
+    "ordem": 13
+   },
+   "cabixi": {
+    "nome": "Cabixi",
+    "uf": "RO",
+    "serie": [],
+    "ofertas": [
+     {
+      "cidade": "Juína",
+      "uf": "MT",
+      "preco": 113.1,
+      "comFrete": 106.46,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cabixi",
+      "uf": "RO",
+      "preco": 120.2,
+      "comFrete": 119.66,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 129.5,
+      "comFrete": 128.27,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cabixi",
+      "uf": "RO",
+      "preco": 119.8,
+      "comFrete": 119.26,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cabixi",
+      "uf": "RO",
+      "preco": 119.5,
+      "comFrete": 118.96,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cabixi",
+      "uf": "RO",
+      "preco": 118.4,
+      "comFrete": 117.86,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 130.6,
+      "comFrete": 128.23,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      118.4,
+      119.47,
+      120.2,
+      4
+     ]
+    ],
+    "slug": "cabixi",
+    "ordem": 14
+   },
+   "chupinguaia": {
+    "nome": "Chupinguaia",
+    "uf": "RO",
+    "serie": [],
+    "ofertas": [
+     {
+      "cidade": "Juína",
+      "uf": "MT",
+      "preco": 113.1,
+      "comFrete": 106.23,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Chupinguaia",
+      "uf": "RO",
+      "preco": 121.1,
+      "comFrete": 120.56,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 130.6,
+      "comFrete": 127.99,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Chupinguaia",
+      "uf": "RO",
+      "preco": 120.7,
+      "comFrete": 120.16,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Chupinguaia",
+      "uf": "RO",
+      "preco": 120.4,
+      "comFrete": 119.86,
+      "entrega": "2027-04-30",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Chupinguaia",
+      "uf": "RO",
+      "preco": 119.3,
+      "comFrete": 118.76,
+      "entrega": "2027-02-28",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 129.5,
+      "comFrete": 127.85,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [
+     [
+      "2026-11-13",
+      119.3,
+      120.38,
+      121.1,
+      4
+     ]
+    ],
+    "slug": "chupinguaia",
+    "ordem": 15
+   },
+   "corumbiara": {
+    "nome": "Corumbiara",
+    "uf": "RO",
+    "serie": [],
+    "ofertas": [
+     {
+      "cidade": "Juína",
+      "uf": "MT",
+      "preco": 113.1,
+      "comFrete": 105.92,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 129.5,
+      "comFrete": 128.83,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 130.6,
+      "comFrete": 127.68,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "São Miguel do Guaporé",
+      "uf": "RO",
+      "preco": 133.1,
+      "comFrete": 126.1,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Chupinguaia",
+      "uf": "RO",
+      "preco": 121.1,
+      "comFrete": 119.79,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 127.8,
+      "comFrete": 124.22,
+      "entrega": "2026-12-31",
+      "fob": false,
+      "atualizado": "2026-11-13 16:00"
+     },
+     {
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "preco": 120.2,
+      "comFrete": 119.53,
+      "entrega": "2027-01-31",
+      "fob": true,
+      "atualizado": "2026-11-13 16:00"
+     }
+    ],
+    "historico": [],
+    "slug": "corumbiara",
+    "ordem": 16
+   }
+  }
  }
 }

@@ -34,7 +34,25 @@ const brl2 = v => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',mini
 const usd = v => 'US$ '+Math.round(v).toLocaleString('pt-BR');
 const pct = (v,d=2) => (v*100).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d})+'%';
 const p1 = v => v.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
-const num = id => { const v=parseFloat($(id).value); return isFinite(v)?v:0; };
+function lerNum(t){ t=String(t??'').trim().replace(/\s|R\$/g,''); if(!t) return 0;
+  if(t.includes(',')) t=t.replace(/\./g,'').replace(',','.'); else if(/^-?\d{1,3}(\.\d{3})+$/.test(t)) t=t.replace(/\./g,'');
+  const v=parseFloat(t); return isFinite(v)?v:0; }
+const num = id => lerNum($(id).value);
+// campos numéricos: texto com ponto de milhar e vírgula decimal (900.000,00)
+function casasDe(el){ return el.dataset.casas!=null?+el.dataset.casas:0; }
+function formatarCampo(el){ if(el.dataset.num==null) return; const v=lerNum(el.value), c=casasDe(el); el.value=v.toLocaleString('pt-BR',{minimumFractionDigits:c,maximumFractionDigits:Math.max(c,2)}); }
+function setNum(id,v,c){ const el=$(id); if(c!=null) el.dataset.casas=c; el.value=v; formatarCampo(el); }
+function prepararCampos(){
+  document.querySelectorAll('form input[type=number]').forEach(el=>{
+    const dinheiro=[...el.parentElement.querySelectorAll('span')].some(x=>x.textContent.trim()==='R$');
+    const passo=parseFloat(el.getAttribute('step')||'1');
+    el.dataset.num=''; el.dataset.casas = dinheiro ? 2 : (Number.isInteger(passo) ? 0 : 1);
+    el.type='text'; el.inputMode='decimal'; el.autocomplete='off';
+    el.removeAttribute('step'); el.removeAttribute('min'); el.removeAttribute('max');
+    formatarCampo(el);
+  });
+  document.addEventListener('focusout',e=>{ if(e.target.dataset&&e.target.dataset.num!=null) formatarCampo(e.target); });
+}
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const mensal = a => Math.pow(1+a,1/12)-1;
 const irRegressivo = m => m<=6?0.225:m<=12?0.20:m<=24?0.175:0.15;
@@ -499,56 +517,111 @@ function renderHolding(){
 }
 
 /* ---------- soja (Grão Direto, atualizado pelo robô todo dia útil) ---------- */
+// Fethab soja (MT): 21,15% da UPF/MT por tonelada (10% Fethab + 10% adicional até 31/12/2026 + 1,15% entidade).
+// UPF/MT 2026 = R$ 254,36 (Portaria 186/2025-SEFAZ) → R$ 53,80/t → R$ 3,23 por saca de 60 kg.
+const UPF_MT=254.36, FETHAB_PCT=0.2115, FETHAB_SC=+(UPF_MT*FETHAB_PCT*0.06).toFixed(2);
 const fmtDia = s => { const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; };
 const fmtEntrega = e => e ? L('Entrega ','Entrega ')+NOMES_MES[+e.slice(5,7)-1]+'/'+e.slice(2,4) : L('Disponível','Disponible');
-const sc = v => brl2(v).replace(',00','')+'/sc';
+const sc = v => brl2(v)+'/sc';
+let cidadeSel='comodoro';
+const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+function limparTextos(o){ if(Array.isArray(o)) return o.map(limparTextos); if(o&&typeof o==='object'){ for(const k in o) o[k]=limparTextos(o[k]); return o; } return typeof o==='string'?esc(o):o; }
+if(D.soja) limparTextos(D.soja);
+const cidadesSoja=()=>Object.values(D.soja?.cidades||{}).filter(c=>c.nome).sort((a,b)=>(a.ordem??99)-(b.ordem??99));
+const ofertasLocais=c=>(c.ofertas||[]).filter(o=>o.cidade===c.nome);
 function spark(pts){
   if(!pts||pts.length<2) return '';
   const w=70,h=20,mn=Math.min(...pts),mx=Math.max(...pts),r=mx-mn||1;
   const d=pts.map((v,i)=>`${(i/(pts.length-1)*w).toFixed(1)},${(h-2-(v-mn)/r*(h-4)).toFixed(1)}`).join(' ');
-  const cor=pts.at(-1)>=pts[0]?'var(--good)':'var(--bad)';
-  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="${cor}" stroke-width="1.6"/></svg>`;
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="${pts.at(-1)>=pts[0]?'var(--good)':'var(--bad)'}" stroke-width="1.6"/></svg>`;
 }
-function tabelaOfertas(of, local){
-  const lin=of.slice().sort((a,b)=>(a.entrega||'').localeCompare(b.entrega||'')||b.preco-a.preco);
-  return `<thead><tr><th>${L('Modalidade','Modalidad')}</th><th style="text-align:left">${L('Local','Lugar')}</th><th>${L('Frete','Flete')}</th><th>${L('Preço','Precio')}</th></tr></thead><tbody>`+
-    lin.map(o=>`<tr${o.cidade===local?' class="sel"':''}><td>${fmtEntrega(o.entrega)}</td><td style="text-align:left">${o.cidade} - ${o.uf}</td><td>${o.fob?'FOB':'CIF'}</td><td><b>${sc(o.preco)}</b></td></tr>`).join('')+
-    `</tbody><caption class="note">${L('FOB: comprador busca na fazenda (frete por conta dele). CIF: produtor entrega (frete por conta do produtor). Preço bruto por saca.','FOB: el comprador retira en el campo (flete a su cargo). CIF: el productor entrega (flete a su cargo). Precio bruto por saca.')}</caption>`;
+function montarFiltroSoja(){
+  const cs=cidadesSoja(); if(!cs.length) return;
+  if(!cs.some(c=>c.slug===cidadeSel)) cidadeSel=cs[0].slug;
+  const grupo=uf=>cs.filter(c=>c.uf===uf).map(c=>`<option value="${c.slug}"${c.slug===cidadeSel?' selected':''}>${c.nome}</option>`).join('');
+  $('sCidade').innerHTML=`<optgroup label="Mato Grosso">${grupo('MT')}</optgroup><optgroup label="Rondônia">${grupo('RO')}</optgroup>`;
+  $('sAtalhos').innerHTML=['comodoro','vilhena'].filter(k=>D.soja.cidades[k]).map(k=>`<button type="button" data-c="${k}" aria-pressed="${k===cidadeSel}">${D.soja.cidades[k].nome}/${D.soja.cidades[k].uf}</button>`).join('');
 }
+function selecionarCidade(slug){ cidadeSel=slug; $('sCidade').value=slug; ofertaSel=null; renderSoja(); }
+let ofertaSel=null;
 function renderSoja(){
   const S0=D.soja;
-  if(!S0){ $('sKpis').innerHTML=`<p class="note">${L('Cotações da soja ainda não carregadas.','Cotizaciones de soja aún no cargadas.')}</p>`; return; }
-  const ser=S0.comodoro.serie, ult=ser.at(-1), ant=ser.at(-2);
-  const vh=S0.vilhena.historico.at(-1), vLoc=S0.vilhena.ofertas.filter(o=>o.cidade==='Vilhena');
-  const melhorV=vLoc.length?Math.max(...vLoc.map(o=>o.preco)):null;
-  const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor);
+  if(!S0||!S0.cidades){ $('sKpis').innerHTML=`<p class="note">${L('Cotações da soja ainda não carregadas.','Cotizaciones de soja aún no cargadas.')}</p>`; return; }
+  montarFiltroSoja();
+  const c=S0.cidades[cidadeSel], loc=ofertasLocais(c), ser=c.serie||[], hist=c.historico||[];
+  const ult=ser.at(-1), ant=ser.at(-2), melhor=loc.length?loc.reduce((a,b)=>b.preco>a.preco?b:a):null;
+  const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor), reg=c.regiao&&S0.regioes.find(r=>r.nome===c.regiao);
+  const nomeC=`${c.nome}/${c.uf}`;
   $('sKpis').innerHTML=kpiHTML([
-    ['Comodoro/MT',ult?sc(ult[1]):'—',ult?`${fmtDia(ult[0])}${ant?` · ${ult[1]>=ant[1]?'▲':'▼'} ${pct(ult[1]/ant[1]-1)} ${L('no dia','en el día')}`:''}`:'',ult&&ant&&ult[1]>=ant[1]?'up':''],
-    [L('Vilhena/RO: melhor oferta','Vilhena/RO: mejor oferta'),melhorV?sc(melhorV):'—',vh?L(`${vh[4]} ofertas de compradores, média ${sc(vh[2])}`,`${vh[4]} ofertas de compradores, promedio ${sc(vh[2])}`):L('sem ofertas hoje','sin ofertas hoy')],
+    [L('Melhor oferta em ','Mejor oferta en ')+nomeC,melhor?sc(melhor.preco):'—',melhor?`${fmtEntrega(melhor.entrega)} · ${melhor.fob?'FOB':'CIF'}`:L('sem ofertas de compradores na cidade hoje','sin ofertas de compradores en la ciudad hoy'),'up'],
+    [L('Média das ofertas na cidade','Promedio de ofertas en la ciudad'),loc.length?sc(loc.reduce((a,b)=>a+b.preco,0)/loc.length):'—',L(`${loc.length} ofertas de compradores`,`${loc.length} ofertas de compradores`)],
+    [ult?L('Cotação da região','Cotización de la región'):L('Cotação diária','Cotización diaria'),ult?sc(ult[1]):'—',ult?`${c.regiao||''} · ${fmtDia(ult[0])}${ant?` · ${ult[1]>=ant[1]?'▲':'▼'} ${pct(ult[1]/ant[1]-1)}`:''}`:L('o Grão Direto não publica cotação diária para esta cidade','Grão Direto no publica cotización diaria para esta ciudad')],
     [L('Maior preço do país','Mayor precio del país'),sc(regs[0].valor),regs[0].nome],
-    [L('Menor preço do país','Menor precio del país'),sc(regs.at(-1).valor),regs.at(-1).nome],
   ]);
-  draw('chComodoro',{type:'line',data:{labels:ser.map(x=>fmtDia(x[0]).slice(0,5)),datasets:[ds('Comodoro/MT',ser.map(x=>x[1]),css('--c-itapema'),{borderWidth:3,pointRadius:3,fill:true,backgroundColor:css('--c-itapema')+'22'})]},
-    options:baseOpts(v=>'R$ '+v.toLocaleString('pt-BR',{maximumFractionDigits:0}),{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>sc(c.parsed.y)}}}})});
-  $('tblComodoro').innerHTML=tabelaOfertas(S0.comodoro.ofertas,'Comodoro');
-  const vhist=S0.vilhena.historico;
-  if(vhist.length>1){
-    draw('chVilhena',{type:'line',data:{labels:vhist.map(x=>fmtDia(x[0]).slice(0,5)),datasets:[ds(L('Melhor oferta','Mejor oferta'),vhist.map(x=>x[3]),css('--good'),{pointRadius:3}),ds(L('Média','Promedio'),vhist.map(x=>x[2]),css('--c-bc'),{borderWidth:3,pointRadius:3}),ds(L('Menor oferta','Menor oferta'),vhist.map(x=>x[1]),css('--c-ipca'),{pointRadius:3})]},options:baseOpts(v=>'R$ '+Math.round(v))});
+  // gráfico: série da região (MT) + histórico das ofertas locais; sem histórico, as ofertas de hoje
+  $('sTitGraf').textContent=L(`Preços em ${nomeC}`,`Precios en ${nomeC}`);
+  const dias=[...new Set([...ser.map(x=>x[0]),...hist.map(x=>x[0])])].sort();
+  if(dias.length>1){
+    const mS=Object.fromEntries(ser), mH=Object.fromEntries(hist.map(h=>[h[0],h]));
+    const sets=[];
+    if(ser.length) sets.push(ds(L(`Cotação da região (${c.regiao})`,`Cotización de la región (${c.regiao})`),dias.map(d=>mS[d]??null),css('--c-itapema'),{borderWidth:3,pointRadius:3,spanGaps:true}));
+    if(hist.length){ sets.push(ds(L('Melhor oferta na cidade','Mejor oferta en la ciudad'),dias.map(d=>mH[d]?.[3]??null),css('--good'),{pointRadius:3,spanGaps:true})); sets.push(ds(L('Média das ofertas','Promedio de ofertas'),dias.map(d=>mH[d]?.[2]??null),css('--c-bc'),{pointRadius:3,borderDash:[5,4],spanGaps:true})); }
+    draw('chSoja',{type:'line',data:{labels:dias.map(d=>fmtDia(d).slice(0,5)),datasets:sets},options:baseOpts(v=>'R$ '+Math.round(v),{plugins:{legend:{labels:{color:css('--ink'),boxWidth:10,boxHeight:10,usePointStyle:true}},tooltip:{callbacks:{label:x=>x.parsed.y==null?null:`${x.dataset.label}: ${sc(x.parsed.y)}`}}}})});
   } else {
-    const loc=vLoc.slice().sort((a,b)=>(a.entrega||'').localeCompare(b.entrega||''));
-    draw('chVilhena',{type:'bar',data:{labels:loc.map(o=>fmtEntrega(o.entrega)+(o.fob?' FOB':' CIF')),datasets:[{label:'Vilhena/RO',data:loc.map(o=>o.preco),backgroundColor:css('--c-bc'),borderRadius:4}]},
-      options:baseOpts(v=>'R$ '+Math.round(v),{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>sc(c.parsed.y)}}},scales:{x:{ticks:{color:css('--muted')},grid:{display:false}},y:{min:Math.floor(Math.min(...loc.map(o=>o.preco))/5)*5-5,ticks:{color:css('--muted'),callback:v=>'R$ '+v},grid:{color:css('--line')}}}})});
+    const l=loc.slice().sort((a,b)=>(a.entrega||'').localeCompare(b.entrega||''));
+    draw('chSoja',{type:'bar',data:{labels:l.map(o=>fmtEntrega(o.entrega)+(o.fob?' FOB':' CIF')),datasets:[{label:nomeC,data:l.map(o=>o.preco),backgroundColor:css('--c-bc'),borderRadius:4}]},
+      options:baseOpts(v=>'R$ '+Math.round(v),{plugins:{legend:{display:false},tooltip:{callbacks:{label:x=>sc(x.parsed.y)}}}})});
   }
-  $('tblVilhena').innerHTML=tabelaOfertas(S0.vilhena.ofertas,'Vilhena');
-  $('sRegData').textContent=L(`R$ por saca de 60 kg · ${regs[0].data}`,`R$ por saca de 60 kg · ${regs[0].data}`);
+  $('sNotaGraf').textContent = c.uf==='MT'
+    ? L(`No Mato Grosso, o Grão Direto publica uma cotação por região: ${c.nome} usa a da região ${c.regiao||'Norte Mato-grossense'}. O que muda de cidade para cidade são as ofertas dos compradores.`,`En Mato Grosso, Grão Direto publica una cotización por región: ${c.nome} usa la de la región ${c.regiao||'Norte Mato-grossense'}. Lo que cambia entre ciudades son las ofertas de los compradores.`)
+    : L(`${c.nome} não tem cotação diária no Grão Direto. Mostramos as ofertas de compradores e guardamos a média de cada dia para formar o histórico.`,`${c.nome} no tiene cotización diaria en Grão Direto. Mostramos las ofertas de compradores y guardamos el promedio de cada día para formar el histórico.`);
+  // ofertas
+  $('sTitOf').textContent=L(`Ofertas de compradores para ${nomeC}`,`Ofertas de compradores para ${nomeC}`);
+  const lin=(c.ofertas||[]).slice().sort((a,b)=>(a.cidade===c.nome?0:1)-(b.cidade===c.nome?0:1)||(a.entrega||'').localeCompare(b.entrega||'')||b.preco-a.preco);
+  $('tblOfertas').innerHTML=`<thead><tr><th>${L('Modalidade','Modalidad')}</th><th style="text-align:left">${L('Local','Lugar')}</th><th>${L('Frete','Flete')}</th><th>${L('Preço','Precio')}</th></tr></thead><tbody>`+
+    lin.map(o=>`<tr${o.cidade===c.nome?' class="sel"':''}><td>${fmtEntrega(o.entrega)}</td><td style="text-align:left">${o.cidade} - ${o.uf}</td><td>${o.fob?'FOB':'CIF'}</td><td><b>${sc(o.preco)}</b></td></tr>`).join('')+
+    `</tbody><caption class="note">${L('Em destaque, compradores na própria cidade. FOB: comprador busca (frete por conta dele). CIF: produtor entrega (frete por conta do produtor). Preço bruto por saca de 60 kg.','Destacados, compradores en la propia ciudad. FOB: el comprador retira (flete a su cargo). CIF: el productor entrega (flete a su cargo). Precio bruto por saca de 60 kg.')}</caption>`;
+  // custos
+  const ofs=lin; if(ofertaSel==null||!ofs[ofertaSel]) ofertaSel=Math.max(0,ofs.indexOf(melhor??ofs[0]));
+  $('sOferta').innerHTML=ofs.map((o,i)=>`<option value="${i}"${i===ofertaSel?' selected':''}>${o.cidade} · ${fmtEntrega(o.entrega)} · ${o.fob?'FOB':'CIF'} · ${brl2(o.preco)}</option>`).join('');
+  if(!$('sFethab').dataset.manual) setNum('sFethab', c.uf==='MT'?FETHAB_SC:0, 2);
+  $('sFethabHint').textContent = c.uf==='MT' ? L(`21,15% da UPF/MT por tonelada = R$ ${FETHAB_SC.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`,`21,15% de la UPF/MT por tonelada = R$ ${FETHAB_SC.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`) : L('Rondônia não cobra Fethab','Rondônia no cobra Fethab');
+  const o=ofs[ofertaSel];
+  const freteGD = o&&o.comFrete!=null ? Math.max(0,+(o.preco-o.comFrete).toFixed(2)) : 0;
+  if(!$('sFrete').dataset.manual) setNum('sFrete', freteGD, 2);
+  $('sFreteHint').textContent = o&&o.comFrete!=null ? L(`Estimativa do Grão Direto até ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`,`Estimación de Grão Direto hasta ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`) : L('Informe se você entrega (CIF)','Informe si usted entrega (CIF)');
+  renderCustos(o,c);
+  // comparar cidades
+  $('tblCidades').innerHTML=`<thead><tr><th style="text-align:left">${L('Cidade','Ciudad')}</th><th>${L('Melhor oferta','Mejor oferta')}</th><th>${L('Média das ofertas','Promedio ofertas')}</th><th>${L('Ofertas','Ofertas')}</th><th>${L('Cotação da região','Cotización región')}</th></tr></thead><tbody>`+
+    cidadesSoja().map(x=>{const l=ofertasLocais(x), m=l.length?Math.max(...l.map(y=>y.preco)):null, md=l.length?l.reduce((a,b)=>a+b.preco,0)/l.length:null, u=(x.serie||[]).at(-1);
+      return `<tr data-c="${x.slug}"${x.slug===cidadeSel?' class="sel"':''}><td style="text-align:left">${x.nome}/${x.uf}</td><td>${m?sc(m):'—'}</td><td>${md?sc(md):'—'}</td><td>${l.length}</td><td>${u?sc(u[1]):'—'}</td></tr>`;}).join('')+'</tbody>';
+  // regiões
+  $('sRegData').textContent=`R$/sc 60 kg · ${regs[0].data}`;
   $('tblRegioes').innerHTML=`<thead><tr><th style="text-align:left">${L('Região','Región')}</th><th>${L('Preço','Precio')}</th><th>${L('No dia','En el día')}</th><th>${L('Últimos 7 dias','Últimos 7 días')}</th></tr></thead><tbody>`+
-    regs.map(r=>`<tr${r.nome==='Norte Mato-grossense'?' class="sel"':''}><td style="text-align:left">${r.nome}${r.nome==='Norte Mato-grossense'?L(' (Comodoro)',' (Comodoro)'):''}</td><td><b>${sc(r.valor)}</b></td><td class="${(r.var||0)>=0?'pos':'neg'}">${(r.var>=0?'+':'')+(r.var||0).toLocaleString('pt-BR',{maximumFractionDigits:2})}%</td><td>${spark(r.pontos)}</td></tr>`).join('')+'</tbody>';
-  // ponte com o imóvel: quantas sacas compram o m² em Itapema
-  if(ult){ const sacas=it[LAST]/ult[1], ap=num('valor')/ult[1];
-    $('sSacas').innerHTML=L(`<b>Do campo para o litoral:</b> com a soja de Comodoro a ${sc(ult[1])}, <b>${Math.round(sacas)} sacas</b> compram 1 m² em Itapema (${brl(it[LAST])}/m², FipeZap). Um imóvel de ${brl(num('valor'))} equivale a <b>${Math.round(ap).toLocaleString('pt-BR')} sacas</b>.`,
-      `<b>Del campo a la costa:</b> con la soja de Comodoro a ${sc(ult[1])}, <b>${Math.round(sacas)} sacas</b> compran 1 m² en Itapema (${brl(it[LAST])}/m², FipeZap). Un inmueble de ${brl(num('valor'))} equivale a <b>${Math.round(ap).toLocaleString('pt-BR')} sacas</b>.`); }
-  $('sFonte').innerHTML=L(`Fonte: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotações e ofertas públicas de compradores. Atualizado em ${S0.atualizado.split(' ')[0].split('-').reverse().join('/')} às ${S0.atualizado.split(' ')[1]}, todo dia útil às 19h. Vilhena não tem cotação diária própria: mostramos as ofertas de compradores e guardamos a média de cada dia.`,
-    `Fuente: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotizaciones y ofertas públicas de compradores. Actualizado el ${S0.atualizado.split(' ')[0].split('-').reverse().join('/')} a las ${S0.atualizado.split(' ')[1]}, cada día hábil a las 19h. Vilhena no tiene cotización diaria propia: mostramos las ofertas de compradores y guardamos el promedio de cada día.`);
+    regs.map(r=>`<tr${reg&&r.nome===reg.nome?' class="sel"':''}><td style="text-align:left">${r.nome}</td><td><b>${sc(r.valor)}</b></td><td class="${(r.var||0)>=0?'pos':'neg'}">${(r.var>=0?'+':'')+(r.var||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}%</td><td>${spark(r.pontos)}</td></tr>`).join('')+'</tbody>';
+  const at_=S0.atualizado.split(' ');
+  $('sFonte').innerHTML=L(`Fonte: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotações e ofertas públicas de compradores, atualizado em ${fmtDia(at_[0])} às ${at_[1]} (todo dia útil às 19h). Fethab: Lei MT 7.263/2000 e UPF/MT 2026 (Portaria 186/2025-SEFAZ). Funrural: LC 224/2025. Confirme os custos com seu contador.`,
+    `Fuente: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotizaciones y ofertas públicas de compradores, actualizado el ${fmtDia(at_[0])} a las ${at_[1]} (cada día hábil a las 19h). Fethab: Ley MT 7.263/2000 y UPF/MT 2026 (Portaria 186/2025-SEFAZ). Funrural: LC 224/2025. Confirme los costos con su contador.`);
+}
+function renderCustos(o,c){
+  if(!o){ $('tblCustos').innerHTML=''; $('sSacas').innerHTML=''; return; }
+  const p=o.preco, fet=num('sFethab'), fun=p*num('sFunrural')/100, fr=num('sFrete'), arm=num('sArmaz'), com=p*num('sComissao')/100, out=num('sOutros'), n=num('sProducao');
+  const liq=p-fet-fun-fr-arm-com-out;
+  const lin=(t,v,cls='neg')=>`<tr><td>${t}</td><td class="${cls}">${v<0?'−':''}${brl2(Math.abs(v))}</td><td class="${cls}">${v<0?'−':''}${brl(Math.abs(v)*n)}</td></tr>`;
+  $('sCustoCid').textContent=`${c.nome}/${c.uf} · ${fmtEntrega(o.entrega)} · ${o.fob?'FOB':'CIF'}`;
+  $('tblCustos').innerHTML=`<thead><tr><th></th><th>${L('Por saca','Por saca')}</th><th>${L(`Em ${n.toLocaleString('pt-BR')} sacas`,`En ${n.toLocaleString('pt-BR')} sacas`)}</th></tr></thead><tbody>`+
+    lin(L('Preço bruto da oferta','Precio bruto de la oferta'),p,'')+
+    lin(c.uf==='MT'?'Fethab + entidade':'Fethab',-fet)+
+    lin(L(`Funrural + Senar (${num('sFunrural').toLocaleString('pt-BR')}%)`,`Funrural + Senar (${num('sFunrural').toLocaleString('pt-BR')}%)`),-fun)+
+    lin(L('Frete','Flete'),-fr)+
+    lin(L('Secagem, armazenagem e recepção','Secado, almacenaje y recepción'),-arm)+
+    lin(L('Comissão','Comisión'),-com)+
+    lin(L('Outros custos','Otros costos'),-out)+
+    `<tr class="total"><td>${L('Sobra para o produtor','Queda para el productor')}</td><td class="pos">${brl2(liq)}</td><td class="pos">${brl(liq*n)}</td></tr>`+
+    `<tr><td>${L('Custos sobre o preço bruto','Costos sobre el precio bruto')}</td><td>${pct((p-liq)/p)}</td><td>${L('por tonelada:','por tonelada:')} ${brl2(liq/0.06)}</td></tr></tbody>`;
+  const m2=it[LAST]/liq, ap=num('valor');
+  $('sSacas').innerHTML=L(`<b>Do campo para o litoral:</b> vendendo a ${brl2(liq)} líquidos por saca, <b>${Math.round(m2)} sacas</b> compram 1 m² em Itapema (${brl(it[LAST])}/m², FipeZap). ${n.toLocaleString('pt-BR')} sacas rendem ${brl(liq*n)}, o equivalente a <b>${(liq*n/it[LAST]).toLocaleString('pt-BR',{maximumFractionDigits:0})} m²</b> ou a ${pct(liq*n/ap,0)} de um imóvel de ${brl(ap)}.`,
+    `<b>Del campo a la costa:</b> vendiendo a ${brl2(liq)} netos por saca, <b>${Math.round(m2)} sacas</b> compran 1 m² en Itapema (${brl(it[LAST])}/m², FipeZap). ${n.toLocaleString('pt-BR')} sacas rinden ${brl(liq*n)}, el equivalente a <b>${(liq*n/it[LAST]).toLocaleString('pt-BR',{maximumFractionDigits:0})} m²</b> o al ${pct(liq*n/ap,0)} de un inmueble de ${brl(ap)}.`);
 }
 
 /* ---------- contato / WhatsApp ---------- */
@@ -557,7 +630,7 @@ const assinatura=()=>`${CONTATO.nome}${CONTATO.creci?L(' · Corretor de imóveis
 const waURL=msg=>`https://wa.me/${CONTATO.whatsapp}?text=${encodeURIComponent(msg)}`;
 function atualizaWA(){
   const generico=L(`Olá ${CONTATO.primeiroNome}! Vi o site Investir na Costa Esmeralda e quero saber mais sobre imóveis na região.`,`¡Hola ${CONTATO.primeiroNome}! Vi el sitio Invertir en la Costa Esmeralda y quiero saber más sobre inmuebles en la región.`);
-  const msg=['sim','planta','avista','holding'].includes(tab)&&ultimoResumoWA?ultimoResumoWA:generico;
+  const msg=['sim','planta','avista','holding','soja'].includes(tab)&&ultimoResumoWA?ultimoResumoWA:generico;
   $('wa').href=waURL(msg); $('waBox').href=waURL(msg);
 }
 function contato(){
@@ -576,13 +649,16 @@ function linkEstado(){
     else if(el.tagName==='SELECT'){ if(el.selectedIndex!==0) q.set(el.id,el.value); }
     else if(el.value!==el.defaultValue||el.id==='modo') q.set(el.id,el.value);
   }
-  q.set('aba',['planta','avista','holding'].includes(tab)?tab:'sim');
+  if(tab==='soja') q.set('cidade',cidadeSel);
+  q.set('aba',['planta','avista','holding','soja'].includes(tab)?tab:'sim');
   return location.origin+location.pathname+'?'+q.toString();
 }
 function aplicarLink(){
   const q=new URLSearchParams(location.search);
   for(const el of CAMPOS()){ if(!q.has(el.id)) continue; if(el.type==='checkbox') el.checked=q.get(el.id)==='1'; else el.value=q.get(el.id); }
   if(q.has('valoriz')){ presetSel=''; presets(); }
+  if(q.get('cidade')) cidadeSel=q.get('cidade');
+  CAMPOS().forEach(formatarCampo);
   setModo($('modo').value);
   return q.get('aba');
 }
@@ -599,15 +675,15 @@ async function copiar(txt,msgEl){
 /* ---------- PDF da proposta ---------- */
 function gerarPDF(){
   const hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
-  const titulos={planta:L('Simulação de imóvel na planta','Simulación de inmueble en pozo'),avista:L('Investidor à vista','Inversor al contado'),holding:L('Pessoa física x Holding','Persona física x Holding')};
+  const titulos={soja:L('Soja: preço e custos por saca','Soja: precio y costos por saca'),planta:L('Simulação de imóvel na planta','Simulación de inmueble en pozo'),avista:L('Investidor à vista','Inversor al contado'),holding:L('Pessoa física x Holding','Persona física x Holding')};
   $('printTitle').textContent=(titulos[tab]||L('Simulação de investimento imobiliário','Simulación de inversión inmobiliaria'))+' · Costa Esmeralda (SC)';
   $('printSub').textContent=`${assinatura()} · ${hoje} · ${L('Dados: FipeZap, Banco Central, Sinduscon, IBGE','Datos: FipeZap, Banco Central de Brasil, Sinduscon, IBGE')}`;
-  const form={planta:'formPlanta',sim:'form',avista:'form',holding:'formHolding'}[tab];
+  const form={planta:'formPlanta',sim:'form',avista:'form',holding:'formHolding',soja:'formCustos'}[tab];
   const el=form&&$(form);
   $('printPrem').textContent = el ? L('Premissas: ','Supuestos: ')+[...el.querySelectorAll('.f')].filter(f=>!f.closest('[hidden]')).map(f=>{
     const l=f.querySelector('label').childNodes[0].textContent.trim(), inp=f.querySelector('input,select'), un=[...f.querySelectorAll('.in span')].map(x=>x.textContent).filter(x=>x!=='IPCA+').join(' ').trim();
-    const val=inp.tagName==='SELECT'?inp.options[inp.selectedIndex].text:Number(inp.value).toLocaleString('pt-BR');
-    return `${l}: ${un==='R$'?'R$ '+val:val+(un?' '+un:'')}`;}).join(' · ') : '';
+    const val=inp.tagName==='SELECT'?inp.options[inp.selectedIndex].text:inp.value;
+    return `${l}: ${un.startsWith('R$')?'R$ '+val+un.slice(2):val+(un?' '+un:'')}`;}).join(' · ') : '';
   window.print();
 }
 addEventListener('beforeprint',()=>{imprimindo=true; renders[tab]();});
@@ -691,11 +767,20 @@ function hints(){
 traduzirEstatico();
 document.querySelector('.tabs').addEventListener('click',e=>{const b=e.target.closest('button'); if(b) show(b.dataset.tab);});
 $('segStart').addEventListener('click',e=>{const b=e.target.closest('button'); if(b){histMeses=+b.dataset.n; renderIdx();}});
-$('presets').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; presetSel=b.dataset.k; $('valoriz').value=b.dataset.v; presets(); renderSim();});
+$('presets').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; presetSel=b.dataset.k; setNum('valoriz',+b.dataset.v); presets(); renderSim();});
 $('form').addEventListener('input',e=>{ if(e.target.id==='valoriz'){presetSel=''; presets();} renderSim(); });
 $('formPlanta').addEventListener('input',renderPlanta);
 $('formAvista').addEventListener('input',renderAvista);
 $('formHolding').addEventListener('input',renderHolding);
+$('sCidade').addEventListener('change',e=>{ delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; selecionarCidade(e.target.value); });
+$('sAtalhos').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; selecionarCidade(b.dataset.c);});
+$('tblCidades').addEventListener('click',e=>{const tr=e.target.closest('tr[data-c]'); if(!tr) return; delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; selecionarCidade(tr.dataset.c); $('sKpis').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});});
+$('formCustos').addEventListener('input',e=>{
+  if(e.target.id==='sOferta'){ ofertaSel=+e.target.value; delete $('sFrete').dataset.manual; renderSoja(); return; }
+  if(e.target.id==='sFethab'||e.target.id==='sFrete') e.target.dataset.manual='1';
+  const c=D.soja.cidades[cidadeSel], loc=(c.ofertas||[]).slice().sort((a,b)=>(a.cidade===c.nome?0:1)-(b.cidade===c.nome?0:1)||(a.entrega||'').localeCompare(b.entrega||'')||b.preco-a.preco);
+  renderCustos(loc[ofertaSel],c);
+});
 ['cValor','cAno'].forEach(id=>$(id).addEventListener('input',renderCorr));
 $('modoAluguel').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; setModo(b.dataset.m); renderSim();});
 document.querySelectorAll('[data-pdf]').forEach(b=>b.addEventListener('click',gerarPDF));
@@ -706,13 +791,14 @@ $('copy').addEventListener('click',()=>{const ta=$('resumo');
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{hero(false); renders[tab]();});
 
 prepBCB(); hints(); opcoesCorr();
-$('poup').value=(poupAA*100).toFixed(1);
-const P0=presets(); $('valoriz').value=(P0[1][2]*100).toFixed(1);
-$('pCorrecao').value=CUB.v12m.toFixed(1);
-$('pValoriz').value=(P0[2][2]*100).toFixed(1);
-$('hValoriz').value=(P0[1][2]*100).toFixed(1);
-{ const p=premissas(); $('hValor').value=p.valor; $('hAluguel').value=Math.round(rendaAno1(p)/12/10)*10; }
-for(const id of ['valoriz','poup','pCorrecao','pValoriz','hValoriz','hValor','hAluguel']) $(id).defaultValue=$(id).value;
+prepararCampos();
+setNum('poup',+(poupAA*100).toFixed(1));
+const P0=presets(); setNum('valoriz',+(P0[1][2]*100).toFixed(1));
+setNum('pCorrecao',+CUB.v12m.toFixed(1));
+setNum('pValoriz',+(P0[2][2]*100).toFixed(1));
+setNum('hValoriz',+(P0[1][2]*100).toFixed(1));
+{ const p=premissas(); setNum('hValor',p.valor); setNum('hAluguel',Math.round(rendaAno1(p)/12/10)*10); }
+CAMPOS().forEach(el=>{ if(el.type!=='checkbox') el.defaultValue=el.value; });
 contato(); setModo('temporada');
 const abaLink=aplicarLink();
 waves(); hero(); show(abaLink||'why');
