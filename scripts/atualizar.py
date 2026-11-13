@@ -172,11 +172,80 @@ def atualizar_cub(d):
     log.append(f"CUB {chave}: R$ {valor:.2f}")
 
 
+# ---------------------------------------------------------------- Soja (Grão Direto)
+GD = "https://www.graodireto.com.br"
+
+
+def gd_dados(caminho):
+    """Lê os dados estruturados (__NEXT_DATA__) de uma página pública do Grão Direto."""
+    html = baixar(GD + caminho).decode("utf-8", "ignore")
+    m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
+    if not m:
+        raise RuntimeError(f"dados não encontrados em {caminho}")
+    return json.loads(m.group(1))["props"]["pageProps"]
+
+
+def gd_ofertas(pp):
+    """Ofertas de compra (preço que os compradores pagam), disponível e entrega futura."""
+    out = []
+    for grupo in pp.get("offers", {}).get("purchase", {}).get("data", []):
+        for o in grupo.get("offers", []):
+            if not o.get("price"):
+                continue
+            out.append({
+                "cidade": o.get("cityName"), "uf": o.get("state"), "preco": round(float(o["price"]), 2),
+                "entrega": o.get("futureModalityDate") or None, "fob": bool(o.get("priceReferenceIsFob", 1)),
+                "atualizado": (o.get("updatedAt") or "")[:16],
+            })
+    return out
+
+
+def atualizar_soja(d):
+    s = d.setdefault("soja", {})
+    hoje = dt.datetime.now(dt.timezone.utc).replace(tzinfo=None) - dt.timedelta(hours=3)  # horário de Brasília
+    # regiões
+    pp = gd_dados("/precos/soja/")
+    regioes = []
+    for r in pp["tableData"]["physicalMarket"]:
+        if (r.get("name") or "").lower() != "soja":
+            continue
+        regioes.append({"nome": r["description"], "valor": r["value"], "var": r.get("variation"),
+                        "data": r.get("updatedAt"), "pontos": r.get("chartPoints") or []})
+    if len(regioes) < 5:
+        raise RuntimeError("tabela de regiões veio incompleta")
+    s["regioes"] = regioes
+    # Comodoro: cotação diária + ofertas
+    pc = gd_dados("/ofertas/soja/mt/comodoro/")
+    com = s.setdefault("comodoro", {"serie": []})
+    serie = dict(map(tuple, com.get("serie", [])))
+    for q in pc.get("formattedQuotationIntraDayValues") or []:
+        v = re.search(r"(\d+[.,]\d+)", q["value"].replace(".", "").replace(",", "."))
+        dd, mm, aa = q["createdAt"].split("/")
+        if v:
+            serie[f"{aa}-{mm}-{dd}"] = float(v.group(1))
+    com["serie"] = [[k, serie[k]] for k in sorted(serie)][-600:]
+    com["regiao"] = "Norte Mato-grossense"
+    com["ofertas"] = gd_ofertas(pc)
+    # Vilhena: sem cotação diária própria; guarda as ofertas e um histórico diário das ofertas locais
+    pv = gd_dados("/ofertas/soja/ro/vilhena/")
+    vil = s.setdefault("vilhena", {"historico": []})
+    vil["ofertas"] = gd_ofertas(pv)
+    locais = [o["preco"] for o in vil["ofertas"] if o["cidade"] == "Vilhena"]
+    if locais:
+        hist = {h[0]: h for h in vil.get("historico", [])}
+        dia = hoje.strftime("%Y-%m-%d")
+        hist[dia] = [dia, min(locais), round(sum(locais) / len(locais), 2), max(locais), len(locais)]
+        vil["historico"] = [hist[k] for k in sorted(hist)][-600:]
+    s["atualizado"] = hoje.strftime("%Y-%m-%d %H:%M")
+    s["fonte"] = "Grão Direto (graodireto.com.br)"
+    log.append(f"Soja: Comodoro {com['serie'][-1] if com['serie'] else '-'}, Vilhena {len(locais)} ofertas locais, {len(regioes)} regiões")
+
+
 # ---------------------------------------------------------------- principal
 def main():
     d = json.loads(ARQ_JSON.read_text(encoding="utf-8"))
     antes = json.dumps(d, sort_keys=True)
-    for nome, fn in (("Banco Central", atualizar_bcb), ("FipeZap", atualizar_fipezap), ("CUB", atualizar_cub)):
+    for nome, fn in (("Banco Central", atualizar_bcb), ("FipeZap", atualizar_fipezap), ("CUB", atualizar_cub), ("Soja", atualizar_soja)):
         try:
             fn(d)
         except Exception as e:  # uma fonte fora do ar não derruba as outras

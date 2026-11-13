@@ -498,6 +498,59 @@ function renderHolding(){
   atualizaWA();
 }
 
+/* ---------- soja (Grão Direto, atualizado pelo robô todo dia útil) ---------- */
+const fmtDia = s => { const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; };
+const fmtEntrega = e => e ? L('Entrega ','Entrega ')+NOMES_MES[+e.slice(5,7)-1]+'/'+e.slice(2,4) : L('Disponível','Disponible');
+const sc = v => brl2(v).replace(',00','')+'/sc';
+function spark(pts){
+  if(!pts||pts.length<2) return '';
+  const w=70,h=20,mn=Math.min(...pts),mx=Math.max(...pts),r=mx-mn||1;
+  const d=pts.map((v,i)=>`${(i/(pts.length-1)*w).toFixed(1)},${(h-2-(v-mn)/r*(h-4)).toFixed(1)}`).join(' ');
+  const cor=pts.at(-1)>=pts[0]?'var(--good)':'var(--bad)';
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="${cor}" stroke-width="1.6"/></svg>`;
+}
+function tabelaOfertas(of, local){
+  const lin=of.slice().sort((a,b)=>(a.entrega||'').localeCompare(b.entrega||'')||b.preco-a.preco);
+  return `<thead><tr><th>${L('Modalidade','Modalidad')}</th><th style="text-align:left">${L('Local','Lugar')}</th><th>${L('Frete','Flete')}</th><th>${L('Preço','Precio')}</th></tr></thead><tbody>`+
+    lin.map(o=>`<tr${o.cidade===local?' class="sel"':''}><td>${fmtEntrega(o.entrega)}</td><td style="text-align:left">${o.cidade} - ${o.uf}</td><td>${o.fob?'FOB':'CIF'}</td><td><b>${sc(o.preco)}</b></td></tr>`).join('')+
+    `</tbody><caption class="note">${L('FOB: comprador busca na fazenda (frete por conta dele). CIF: produtor entrega (frete por conta do produtor). Preço bruto por saca.','FOB: el comprador retira en el campo (flete a su cargo). CIF: el productor entrega (flete a su cargo). Precio bruto por saca.')}</caption>`;
+}
+function renderSoja(){
+  const S0=D.soja;
+  if(!S0){ $('sKpis').innerHTML=`<p class="note">${L('Cotações da soja ainda não carregadas.','Cotizaciones de soja aún no cargadas.')}</p>`; return; }
+  const ser=S0.comodoro.serie, ult=ser.at(-1), ant=ser.at(-2);
+  const vh=S0.vilhena.historico.at(-1), vLoc=S0.vilhena.ofertas.filter(o=>o.cidade==='Vilhena');
+  const melhorV=vLoc.length?Math.max(...vLoc.map(o=>o.preco)):null;
+  const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor);
+  $('sKpis').innerHTML=kpiHTML([
+    ['Comodoro/MT',ult?sc(ult[1]):'—',ult?`${fmtDia(ult[0])}${ant?` · ${ult[1]>=ant[1]?'▲':'▼'} ${pct(ult[1]/ant[1]-1)} ${L('no dia','en el día')}`:''}`:'',ult&&ant&&ult[1]>=ant[1]?'up':''],
+    [L('Vilhena/RO: melhor oferta','Vilhena/RO: mejor oferta'),melhorV?sc(melhorV):'—',vh?L(`${vh[4]} ofertas de compradores, média ${sc(vh[2])}`,`${vh[4]} ofertas de compradores, promedio ${sc(vh[2])}`):L('sem ofertas hoje','sin ofertas hoy')],
+    [L('Maior preço do país','Mayor precio del país'),sc(regs[0].valor),regs[0].nome],
+    [L('Menor preço do país','Menor precio del país'),sc(regs.at(-1).valor),regs.at(-1).nome],
+  ]);
+  draw('chComodoro',{type:'line',data:{labels:ser.map(x=>fmtDia(x[0]).slice(0,5)),datasets:[ds('Comodoro/MT',ser.map(x=>x[1]),css('--c-itapema'),{borderWidth:3,pointRadius:3,fill:true,backgroundColor:css('--c-itapema')+'22'})]},
+    options:baseOpts(v=>'R$ '+v.toLocaleString('pt-BR',{maximumFractionDigits:0}),{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>sc(c.parsed.y)}}}})});
+  $('tblComodoro').innerHTML=tabelaOfertas(S0.comodoro.ofertas,'Comodoro');
+  const vhist=S0.vilhena.historico;
+  if(vhist.length>1){
+    draw('chVilhena',{type:'line',data:{labels:vhist.map(x=>fmtDia(x[0]).slice(0,5)),datasets:[ds(L('Melhor oferta','Mejor oferta'),vhist.map(x=>x[3]),css('--good'),{pointRadius:3}),ds(L('Média','Promedio'),vhist.map(x=>x[2]),css('--c-bc'),{borderWidth:3,pointRadius:3}),ds(L('Menor oferta','Menor oferta'),vhist.map(x=>x[1]),css('--c-ipca'),{pointRadius:3})]},options:baseOpts(v=>'R$ '+Math.round(v))});
+  } else {
+    const loc=vLoc.slice().sort((a,b)=>(a.entrega||'').localeCompare(b.entrega||''));
+    draw('chVilhena',{type:'bar',data:{labels:loc.map(o=>fmtEntrega(o.entrega)+(o.fob?' FOB':' CIF')),datasets:[{label:'Vilhena/RO',data:loc.map(o=>o.preco),backgroundColor:css('--c-bc'),borderRadius:4}]},
+      options:baseOpts(v=>'R$ '+Math.round(v),{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>sc(c.parsed.y)}}},scales:{x:{ticks:{color:css('--muted')},grid:{display:false}},y:{min:Math.floor(Math.min(...loc.map(o=>o.preco))/5)*5-5,ticks:{color:css('--muted'),callback:v=>'R$ '+v},grid:{color:css('--line')}}}})});
+  }
+  $('tblVilhena').innerHTML=tabelaOfertas(S0.vilhena.ofertas,'Vilhena');
+  $('sRegData').textContent=L(`R$ por saca de 60 kg · ${regs[0].data}`,`R$ por saca de 60 kg · ${regs[0].data}`);
+  $('tblRegioes').innerHTML=`<thead><tr><th style="text-align:left">${L('Região','Región')}</th><th>${L('Preço','Precio')}</th><th>${L('No dia','En el día')}</th><th>${L('Últimos 7 dias','Últimos 7 días')}</th></tr></thead><tbody>`+
+    regs.map(r=>`<tr${r.nome==='Norte Mato-grossense'?' class="sel"':''}><td style="text-align:left">${r.nome}${r.nome==='Norte Mato-grossense'?L(' (Comodoro)',' (Comodoro)'):''}</td><td><b>${sc(r.valor)}</b></td><td class="${(r.var||0)>=0?'pos':'neg'}">${(r.var>=0?'+':'')+(r.var||0).toLocaleString('pt-BR',{maximumFractionDigits:2})}%</td><td>${spark(r.pontos)}</td></tr>`).join('')+'</tbody>';
+  // ponte com o imóvel: quantas sacas compram o m² em Itapema
+  if(ult){ const sacas=it[LAST]/ult[1], ap=num('valor')/ult[1];
+    $('sSacas').innerHTML=L(`<b>Do campo para o litoral:</b> com a soja de Comodoro a ${sc(ult[1])}, <b>${Math.round(sacas)} sacas</b> compram 1 m² em Itapema (${brl(it[LAST])}/m², FipeZap). Um imóvel de ${brl(num('valor'))} equivale a <b>${Math.round(ap).toLocaleString('pt-BR')} sacas</b>.`,
+      `<b>Del campo a la costa:</b> con la soja de Comodoro a ${sc(ult[1])}, <b>${Math.round(sacas)} sacas</b> compran 1 m² en Itapema (${brl(it[LAST])}/m², FipeZap). Un inmueble de ${brl(num('valor'))} equivale a <b>${Math.round(ap).toLocaleString('pt-BR')} sacas</b>.`); }
+  $('sFonte').innerHTML=L(`Fonte: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotações e ofertas públicas de compradores. Atualizado em ${S0.atualizado.split(' ')[0].split('-').reverse().join('/')} às ${S0.atualizado.split(' ')[1]}, todo dia útil às 19h. Vilhena não tem cotação diária própria: mostramos as ofertas de compradores e guardamos a média de cada dia.`,
+    `Fuente: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotizaciones y ofertas públicas de compradores. Actualizado el ${S0.atualizado.split(' ')[0].split('-').reverse().join('/')} a las ${S0.atualizado.split(' ')[1]}, cada día hábil a las 19h. Vilhena no tiene cotización diaria propia: mostramos las ofertas de compradores y guardamos el promedio de cada día.`);
+}
+
 /* ---------- contato / WhatsApp ---------- */
 let ultimoResumoWA='';
 const assinatura=()=>`${CONTATO.nome}${CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:''} · WhatsApp ${CONTATO.whatsappTxt}`;
@@ -624,7 +677,7 @@ async function bcbAoVivoCarregar(){
 
 /* ---------- eventos ---------- */
 let tab='why';
-const renders={why:renderWhy,sim:renderSim,avista:renderAvista,planta:renderPlanta,holding:renderHolding,idx:renderIdx,corr:renderCorr};
+const renders={why:renderWhy,sim:renderSim,avista:renderAvista,planta:renderPlanta,holding:renderHolding,soja:renderSoja,idx:renderIdx,corr:renderCorr};
 function show(t){ if(!renders[t]) t='why'; tab=t;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   for(const k of Object.keys(renders)) $('p-'+k).hidden=k!==t;

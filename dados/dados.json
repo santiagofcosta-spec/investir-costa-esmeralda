@@ -1209,5 +1209,425 @@
     ]
    ]
   }
+ },
+ "soja": {
+  "regioes": [
+   {
+    "nome": "Triângulo Mineiro/Alto Paranaíba",
+    "valor": 151.06,
+    "var": 0.61,
+    "data": "12/11/2026",
+    "pontos": [
+     146.96,
+     147.89,
+     148.6,
+     148.23,
+     148.83,
+     150.14,
+     151.06
+    ]
+   },
+   {
+    "nome": "Sul Goiano",
+    "valor": 140.1,
+    "var": -0.01,
+    "data": "12/11/2026",
+    "pontos": [
+     137.97,
+     136.92,
+     136.78,
+     135.87,
+     136.18,
+     140.12,
+     140.1
+    ]
+   },
+   {
+    "nome": "Sudoeste Mato-grossense",
+    "valor": 136.41,
+    "var": -0.15,
+    "data": "12/11/2026",
+    "pontos": [
+     135.89,
+     135.72,
+     136.03,
+     136.25,
+     136.46,
+     136.61,
+     136.41
+    ]
+   },
+   {
+    "nome": "Sudoeste de Mato Grosso do Sul",
+    "valor": 140.8,
+    "var": 0.85,
+    "data": "12/11/2026",
+    "pontos": [
+     140.43,
+     139.39,
+     138.31,
+     138.1,
+     138.45,
+     139.61,
+     140.8
+    ]
+   },
+   {
+    "nome": "Norte Mato-grossense",
+    "valor": 132.28,
+    "var": 0.74,
+    "data": "12/11/2026",
+    "pontos": [
+     134.38,
+     134.51,
+     134.75,
+     132.45,
+     132.18,
+     131.31,
+     132.28
+    ]
+   },
+   {
+    "nome": "Centro Oriental Paranaense",
+    "valor": 153.4,
+    "var": 0.55,
+    "data": "12/11/2026",
+    "pontos": [
+     151.69,
+     151.6,
+     151.45,
+     151.3,
+     151.49,
+     152.56,
+     153.4
+    ]
+   },
+   {
+    "nome": "Sudeste MT",
+    "valor": 140.29,
+    "var": -0.04,
+    "data": "12/11/2026",
+    "pontos": [
+     141.05,
+     141.21,
+     140.5,
+     140.13,
+     139.97,
+     140.35,
+     140.29
+    ]
+   },
+   {
+    "nome": "Noroeste de Minas",
+    "valor": 143.04,
+    "var": 0.38,
+    "data": "12/11/2026",
+    "pontos": [
+     142.07,
+     142.46,
+     143.22,
+     142.97,
+     142.88,
+     142.5,
+     143.04
+    ]
+   },
+   {
+    "nome": "Centro Ocidental Rio-grandense",
+    "valor": 151.35,
+    "var": 0.27,
+    "data": "12/11/2026",
+    "pontos": [
+     150.63,
+     150.2,
+     149.96,
+     149.78,
+     150.06,
+     150.94,
+     151.35
+    ]
+   },
+   {
+    "nome": "Nordeste MT",
+    "valor": 132.21,
+    "var": 0.14,
+    "data": "12/11/2026",
+    "pontos": [
+     130.64,
+     131.25,
+     131.7,
+     132,
+     131.99,
+     132.02,
+     132.21
+    ]
+   },
+   {
+    "nome": "Norte Central Paranaense",
+    "valor": 143.64,
+    "var": -5.51,
+    "data": "12/11/2026",
+    "pontos": [
+     150.55,
+     150.24,
+     148.94,
+     149.49,
+     150.82,
+     152.01,
+     143.64
+    ]
+   },
+   {
+    "nome": "Leste MS",
+    "valor": 140.42,
+    "var": 0.06,
+    "data": "12/11/2026",
+    "pontos": [
+     141.36,
+     141.13,
+     140.55,
+     140.06,
+     140.03,
+     140.34,
+     140.42
+    ]
+   },
+   {
+    "nome": "Assis SP",
+    "valor": 147.9,
+    "var": 1.43,
+    "data": "12/11/2026",
+    "pontos": [
+     144.91,
+     144.68,
+     144.44,
+     144.5,
+     145.07,
+     145.81,
+     147.9
+    ]
+   },
+   {
+    "nome": "Extremo Oeste Baiano",
+    "valor": 143.97,
+    "var": 0.51,
+    "data": "12/11/2026",
+    "pontos": [
+     141.67,
+     141.28,
+     140.81,
+     142.07,
+     142.4,
+     143.24,
+     143.97
+    ]
+   }
+  ],
+  "comodoro": {
+   "serie": [
+    [
+     "2026-10-30",
+     135.84
+    ],
+    [
+     "2026-11-02",
+     134.79
+    ],
+    [
+     "2026-11-03",
+     134.57
+    ],
+    [
+     "2026-11-04",
+     134.38
+    ],
+    [
+     "2026-11-05",
+     134.51
+    ],
+    [
+     "2026-11-06",
+     134.75
+    ],
+    [
+     "2026-11-09",
+     132.45
+    ],
+    [
+     "2026-11-10",
+     132.18
+    ],
+    [
+     "2026-11-11",
+     131.31
+    ],
+    [
+     "2026-11-12",
+     132.28
+    ]
+   ],
+   "regiao": "Norte Mato-grossense",
+   "ofertas": [
+    {
+     "cidade": "Juína",
+     "uf": "MT",
+     "preco": 112.8,
+     "entrega": null,
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    },
+    {
+     "cidade": "Castanheira",
+     "uf": "MT",
+     "preco": 112.5,
+     "entrega": null,
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    },
+    {
+     "cidade": "Campo Novo do Parecis",
+     "uf": "MT",
+     "preco": 100.0,
+     "entrega": null,
+     "fob": true,
+     "atualizado": "2026-11-09 14:51"
+    },
+    {
+     "cidade": "Campos de Júlio",
+     "uf": "MT",
+     "preco": 131.6,
+     "entrega": "2026-12-31",
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    },
+    {
+     "cidade": "Comodoro",
+     "uf": "MT",
+     "preco": 119.6,
+     "entrega": "2027-01-31",
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    },
+    {
+     "cidade": "Comodoro",
+     "uf": "MT",
+     "preco": 118.3,
+     "entrega": "2027-03-31",
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    },
+    {
+     "cidade": "Comodoro",
+     "uf": "MT",
+     "preco": 118.0,
+     "entrega": "2027-04-30",
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    },
+    {
+     "cidade": "Sapezal",
+     "uf": "MT",
+     "preco": 130.2,
+     "entrega": "2026-12-31",
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    },
+    {
+     "cidade": "Comodoro",
+     "uf": "MT",
+     "preco": 116.9,
+     "entrega": "2027-02-28",
+     "fob": true,
+     "atualizado": "2026-11-13 13:45"
+    }
+   ]
+  },
+  "vilhena": {
+   "historico": [
+    [
+     "2026-11-13",
+     119.3,
+     122.6,
+     130.4,
+     6
+    ]
+   ],
+   "ofertas": [
+    {
+     "cidade": "Juína",
+     "uf": "MT",
+     "preco": 112.9,
+     "entrega": null,
+     "fob": true,
+     "atualizado": "2026-11-13 13:30"
+    },
+    {
+     "cidade": "Castanheira",
+     "uf": "MT",
+     "preco": 112.6,
+     "entrega": null,
+     "fob": true,
+     "atualizado": "2026-11-13 13:30"
+    },
+    {
+     "cidade": "Campo Novo do Parecis",
+     "uf": "MT",
+     "preco": 100.0,
+     "entrega": null,
+     "fob": true,
+     "atualizado": "2026-11-09 14:51"
+    },
+    {
+     "cidade": "Vilhena",
+     "uf": "RO",
+     "preco": 130.4,
+     "entrega": "2026-12-31",
+     "fob": true,
+     "atualizado": "2026-11-13 13:30"
+    },
+    {
+     "cidade": "Vilhena",
+     "uf": "RO",
+     "preco": 120.9,
+     "entrega": "2027-01-31",
+     "fob": true,
+     "atualizado": "2026-11-13 13:30"
+    },
+    {
+     "cidade": "Vilhena",
+     "uf": "RO",
+     "preco": 124.8,
+     "entrega": "2026-12-31",
+     "fob": false,
+     "atualizado": "2026-11-13 13:30"
+    },
+    {
+     "cidade": "Vilhena",
+     "uf": "RO",
+     "preco": 120.55,
+     "entrega": "2027-04-30",
+     "fob": true,
+     "atualizado": "2026-11-13 13:30"
+    },
+    {
+     "cidade": "Vilhena",
+     "uf": "RO",
+     "preco": 119.65,
+     "entrega": "2027-03-31",
+     "fob": true,
+     "atualizado": "2026-11-13 13:30"
+    },
+    {
+     "cidade": "Vilhena",
+     "uf": "RO",
+     "preco": 119.3,
+     "entrega": "2027-04-30",
+     "fob": true,
+     "atualizado": "2026-11-13 13:30"
+    }
+   ]
+  },
+  "atualizado": "2026-11-13 13:51",
+  "fonte": "Grão Direto (graodireto.com.br)"
  }
 }

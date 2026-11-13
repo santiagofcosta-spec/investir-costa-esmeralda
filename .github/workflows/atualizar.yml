@@ -2,8 +2,8 @@ name: Atualizar dados (FipeZap, CUB, Banco Central)
 
 on:
   schedule:
-    # dias 3, 8, 12, 18 e 25 de cada mês, 10h de Brasília (13h UTC)
-    - cron: "0 13 3,8,12,18,25 * *"
+    # todo dia útil às 19h de Brasília (22h UTC): soja muda todo dia; FipeZap/CUB só mudam quando sai dado novo
+    - cron: "0 22 * * 1-5"
   workflow_dispatch: {}
 
 permissions:

@@ -170,6 +170,7 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 ul.rules{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted);max-width:90ch}
 tr.sel td{background:var(--surface2);font-weight:600}
 .tabs button{padding:12px 12px}
+.spark{display:inline-block;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -204,6 +205,7 @@ tr.sel td{background:var(--surface2);font-weight:600}
     <button role="tab" data-tab="avista" data-es="Inversor al contado">Investidor à vista</button>
     <button role="tab" data-tab="planta" data-es="En pozo">Na planta</button>
     <button role="tab" data-tab="holding" data-es="Persona física x Holding">PF x Holding</button>
+    <button role="tab" data-tab="soja" data-es="Soja">Soja</button>
     <button role="tab" data-tab="idx" data-es="Índices de Brasil">Índices do Brasil</button>
     <button role="tab" data-tab="corr" data-es="Valor actualizado">Correção de valor</button>
   </nav>
@@ -468,6 +470,30 @@ tr.sel td{background:var(--surface2);font-weight:600}
         <ul class="rules" id="hRegras"></ul>
       </div>
     </div>
+  </section>
+
+  <!-- ============ SOJA ============ -->
+  <section id="p-soja" class="stack" hidden>
+    <div class="kpis" id="sKpis"></div>
+    <div class="two">
+      <div class="panel">
+        <div class="ph"><h2 data-es="Comodoro/MT: cotización diaria">Comodoro/MT: cotação diária</h2><span class="note" data-es="R$ por saca de 60 kg, disponible">R$ por saca de 60 kg, disponível</span></div>
+        <div class="chartbox sm"><canvas id="chComodoro"></canvas></div>
+        <h3 style="margin-top:14px" data-es="Ofertas de compradores para Comodoro">Ofertas de compradores para Comodoro</h3>
+        <div class="tblwrap"><table id="tblComodoro"></table></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h2 data-es="Vilhena/RO: ofertas de compradores">Vilhena/RO: ofertas de compradores</h2><span class="note" data-es="R$ por saca de 60 kg">R$ por saca de 60 kg</span></div>
+        <div class="chartbox sm"><canvas id="chVilhena"></canvas></div>
+        <div class="tblwrap" style="margin-top:14px"><table id="tblVilhena"></table></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="ph"><h2 data-es="Soja disponible por región">Soja disponível por região</h2><span class="note" id="sRegData"></span></div>
+      <div class="tblwrap"><table id="tblRegioes"></table></div>
+    </div>
+    <div class="callout" id="sSacas"></div>
+    <p class="note" id="sFonte"></p>
   </section>
 
   <!-- ============ ÍNDICES ============ -->
