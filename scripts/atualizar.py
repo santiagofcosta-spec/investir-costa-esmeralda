@@ -31,7 +31,11 @@ def baixar(url, timeout=60, tentativas=3):
         req = urllib.request.Request(f"{url}{sep}_={int(time.time() * 1000)}" if "bcb.gov.br" in url else url, headers=cab)
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.read()
+                corpo = r.read()
+                if corpo[:2] == bytes([0x1F, 0x8B]):  # resposta compactada (gzip)
+                    import gzip
+                    corpo = gzip.decompress(corpo)
+                return corpo
         except urllib.error.HTTPError as e:
             if e.code not in (304, 429, 500, 502, 503, 504) or i == tentativas - 1:
                 raise
@@ -185,6 +189,28 @@ def gd_dados(caminho):
     return json.loads(m.group(1))["props"]["pageProps"]
 
 
+UFS = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
+
+
+def slug_gd(nome):
+    s = "".join(c for c in unicodedata.normalize("NFD", nome) if unicodedata.category(c) != "Mn").lower()
+    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+
+
+def municipios_ibge():
+    """Todos os municípios com UF e mesorregião (IBGE), em formato compacto: {uf: [[nome, idx_meso], ...]}."""
+    dados = json.loads(baixar("https://servicodados.ibge.gov.br/api/v1/localidades/municipios?view=nivelado", timeout=120))
+    mesos, por_uf = [], {}
+    for m in dados:
+        meso = m["mesorregiao-nome"]
+        if meso not in mesos:
+            mesos.append(meso)
+        por_uf.setdefault(m["UF-sigla"], []).append([m["municipio-nome"], mesos.index(meso)])
+    for uf in por_uf:
+        por_uf[uf].sort(key=lambda x: slug_gd(x[0]))
+    return {"mesos": mesos, "uf": por_uf}
+
+
 CIDADES_SOJA = [  # (uf, slug) das páginas públicas do Grão Direto
     ("mt", "comodoro"), ("mt", "campos-de-julio"), ("mt", "sapezal"), ("mt", "campo-novo-do-parecis"),
     ("mt", "diamantino"), ("mt", "nova-mutum"), ("mt", "lucas-do-rio-verde"), ("mt", "sorriso"), ("mt", "sinop"),
@@ -258,6 +284,41 @@ def atualizar_soja(d):
         time.sleep(1)  # educação com o site
     if ok == 0:
         raise RuntimeError("nenhuma cidade carregou")
+    # Brasil todo: página de cada estado traz cotações de regiões e de cidades
+    estados = s.setdefault("estados", {})
+    hc = s.setdefault("historicoCidades", {})
+    ne = 0
+    for uf in UFS:
+        try:
+            pe = gd_dados(f"/ofertas/soja/{uf.lower()}/")
+        except Exception as e:
+            log.append(f"Soja estado {uf}: {e}")
+            continue
+        ap = pe.get("averagePrices") or {}
+        def lista(chave):
+            out = []
+            for r in (ap.get(chave) or {}).get("prices") or []:
+                out.append({"nome": r.get("locationName"), "preco": round(float(r["price"]), 2), "var": r.get("variation"),
+                            "data": (r.get("date") or "")[:10], "tipo": r.get("productName")})
+            return out
+        estados[uf] = {"nome": (pe.get("templateValues") or {}).get("state") or uf, "regioes": lista("regions"), "cidades": lista("cities")}
+        for c in estados[uf]["cidades"]:
+            k = f"{uf}|{c['nome']}"
+            h = dict(map(tuple, hc.get(k, [])))
+            if c["data"]:
+                h[c["data"]] = c["preco"]
+            hc[k] = [[x, h[x]] for x in sorted(h)][-180:]
+        ne += 1
+        time.sleep(1)
+    # lista de municípios (IBGE) com mesorregião; renovada uma vez por mês
+    mun = s.get("municipios")
+    if not mun or mun.get("mes") != hoje.strftime("%Y-%m"):
+        try:
+            s["municipios"] = municipios_ibge()
+            s["municipios"]["mes"] = hoje.strftime("%Y-%m")
+        except Exception as e:
+            log.append(f"Municípios IBGE: {e}")
+    log.append(f"Soja Brasil: {ne}/27 estados, {sum(len(v['cidades']) for v in estados.values())} cidades com cotação")
     s["atualizado"] = hoje.strftime("%Y-%m-%d %H:%M")
     s["fonte"] = "Grão Direto (graodireto.com.br)"
     log.append(f"Soja: {ok}/{len(CIDADES_SOJA)} cidades, {len(regioes)} regiões")

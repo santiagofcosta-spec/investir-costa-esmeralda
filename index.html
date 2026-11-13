@@ -173,7 +173,9 @@ tr.sel td{background:var(--surface2);font-weight:600}
 .spark{display:inline-block;vertical-align:middle}
 .filtro{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
 .f2{display:flex;align-items:center;gap:10px;font-weight:600}
-.f2 .in{min-width:240px}
+.f2 .in{min-width:220px}
+.f2 input{text-align:left!important}
+.atalhos{display:flex;flex-direction:column;gap:6px;flex-basis:100%}
 .ghost-light{background:transparent!important;border:1px solid #9fd9cf!important;color:#eaf6f3!important;text-decoration:none}
 .contato{gap:12px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
@@ -486,8 +488,11 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
   <!-- ============ SOJA ============ -->
   <section id="p-soja" class="stack" hidden>
     <div class="filtro panel">
-      <div class="f2"><label for="sCidade" data-es="Elija la ciudad">Escolha a cidade</label><div class="in"><select id="sCidade"></select></div></div>
-      <div class="chips" id="sAtalhos" role="group"></div>
+      <div class="f2"><label for="sUF" data-es="Estado">Estado</label><div class="in"><select id="sUF"></select></div></div>
+      <div class="f2"><label for="sCidadeTxt" data-es="Ciudad">Cidade</label><div class="in"><input id="sCidadeTxt" list="sListaCidades" autocomplete="off" placeholder="Digite o nome"></div><datalist id="sListaCidades"></datalist></div>
+      <div class="atalhos"><span class="note" id="sAtalhosLb"></span><div class="chips" id="sAtalhos" role="group"></div></div>
+      <p class="note neg" id="sAviso" hidden></p>
+      <a id="sLinkGD" href="#" target="_blank" rel="noopener" class="note"></a>
     </div>
     <div class="kpis" id="sKpis"></div>
     <div class="two">
@@ -520,7 +525,7 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
       </div>
     </div>
     <div class="panel">
-      <div class="ph"><h2 data-es="Comparar ciudades">Comparar cidades</h2><span class="note" data-es="Haga clic en una ciudad para verla en detalle">Clique numa cidade para ver em destaque</span></div>
+      <div class="ph"><h2 data-es="Ciudades con precio en Brasil">Cidades com preço no Brasil</h2><span class="note" data-es="Haga clic en una ciudad para verla en detalle">Clique numa cidade para ver em destaque</span></div>
       <div class="tblwrap"><table id="tblCidades"></table></div>
     </div>
     <div class="panel">

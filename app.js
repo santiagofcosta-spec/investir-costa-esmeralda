@@ -14,6 +14,7 @@ function traduzirEstatico(){
   document.documentElement.lang = ES ? 'es' : 'pt-BR';
   document.title = L('Investir na Costa Esmeralda','Invertir en la Costa Esmeralda');
   if(ES) document.querySelectorAll('[data-es]').forEach(el=>{ el.innerHTML = el.dataset.es; });
+  if(ES) $('sCidadeTxt').placeholder='Escriba el nombre';
   $('lang-pt').setAttribute('aria-current', ES?'false':'true');
   $('lang-es').setAttribute('aria-current', ES?'true':'false');
 }
@@ -523,12 +524,27 @@ const UPF_MT=254.36, FETHAB_PCT=0.2115, FETHAB_SC=+(UPF_MT*FETHAB_PCT*0.06).toFi
 const fmtDia = s => { const [y,m,d]=s.split('-'); return `${d}/${m}/${y}`; };
 const fmtEntrega = e => e ? L('Entrega ','Entrega ')+NOMES_MES[+e.slice(5,7)-1]+'/'+e.slice(2,4) : L('Disponível','Disponible');
 const sc = v => brl2(v)+'/sc';
-let cidadeSel='comodoro';
 const esc=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 function limparTextos(o){ if(Array.isArray(o)) return o.map(limparTextos); if(o&&typeof o==='object'){ for(const k in o) o[k]=limparTextos(o[k]); return o; } return typeof o==='string'?esc(o):o; }
-if(D.soja) limparTextos(D.soja);
-const cidadesSoja=()=>Object.values(D.soja?.cidades||{}).filter(c=>c.nome).sort((a,b)=>(a.ordem??99)-(b.ordem??99));
+if(D.soja){ const mun=D.soja.municipios; delete D.soja.municipios; limparTextos(D.soja); D.soja.municipios=mun; } // nomes do IBGE vão por textContent/option
+const UF_NOMES={AC:'Acre',AL:'Alagoas',AP:'Amapá',AM:'Amazonas',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MT:'Mato Grosso',MS:'Mato Grosso do Sul',MG:'Minas Gerais',PA:'Pará',PB:'Paraíba',PR:'Paraná',PE:'Pernambuco',PI:'Piauí',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RS:'Rio Grande do Sul',RO:'Rondônia',RR:'Roraima',SC:'Santa Catarina',SP:'São Paulo',SE:'Sergipe',TO:'Tocantins'};
+const slugGD=n=>n.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const semAcento=n=>String(n).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+let selUF='MT', selNome='Comodoro', ofertaSel=null;
+const detalhadas=()=>Object.values(D.soja?.cidades||{}).filter(c=>c.nome).sort((a,b)=>(a.ordem??99)-(b.ordem??99));
 const ofertasLocais=c=>(c.ofertas||[]).filter(o=>o.cidade===c.nome);
+const munUF=uf=>(D.soja?.municipios?.uf?.[uf])||[];
+function infoCidade(uf,nome){
+  const n=semAcento(nome), S0=D.soja;
+  const det=detalhadas().find(c=>c.uf===uf&&semAcento(c.nome)===n);
+  const est=S0.estados?.[uf]||{regioes:[],cidades:[]};
+  const cot=est.cidades.find(c=>semAcento(c.nome)===n);
+  const m=munUF(uf).find(x=>semAcento(x[0])===n);
+  const meso=m?S0.municipios.mesos[m[1]]:(det?.regiao||null);
+  const reg=meso?(est.regioes.find(r=>semAcento(r.nome)===semAcento(meso))||S0.regioes.find(r=>semAcento(r.nome)===semAcento(meso))):null;
+  const hist=S0.historicoCidades?.[`${uf}|${cot?.nome}`]||[];
+  return {uf,nome:m?m[0]:(det?.nome||nome),det,cot,meso,reg,est,hist,existe:!!m||!!det};
+}
 function spark(pts){
   if(!pts||pts.length<2) return '';
   const w=70,h=20,mn=Math.min(...pts),mx=Math.max(...pts),r=mx-mn||1;
@@ -536,79 +552,116 @@ function spark(pts){
   return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${d}" fill="none" stroke="${pts.at(-1)>=pts[0]?'var(--good)':'var(--bad)'}" stroke-width="1.6"/></svg>`;
 }
 function montarFiltroSoja(){
-  const cs=cidadesSoja(); if(!cs.length) return;
-  if(!cs.some(c=>c.slug===cidadeSel)) cidadeSel=cs[0].slug;
-  const grupo=uf=>cs.filter(c=>c.uf===uf).map(c=>`<option value="${c.slug}"${c.slug===cidadeSel?' selected':''}>${c.nome}</option>`).join('');
-  $('sCidade').innerHTML=`<optgroup label="Mato Grosso">${grupo('MT')}</optgroup><optgroup label="Rondônia">${grupo('RO')}</optgroup>`;
-  $('sAtalhos').innerHTML=['comodoro','vilhena'].filter(k=>D.soja.cidades[k]).map(k=>`<button type="button" data-c="${k}" aria-pressed="${k===cidadeSel}">${D.soja.cidades[k].nome}/${D.soja.cidades[k].uf}</button>`).join('');
+  const ufs=Object.keys(UF_NOMES);
+  const comDado=uf=>{const e=D.soja.estados?.[uf]; return (e&&(e.regioes.length||e.cidades.length))||detalhadas().some(c=>c.uf===uf);};
+  $('sUF').innerHTML=`<optgroup label="${L('Com cotação no Grão Direto','Con cotización en Grão Direto')}">`+ufs.filter(comDado).map(u=>`<option value="${u}">${UF_NOMES[u]}</option>`).join('')+
+    `</optgroup><optgroup label="${L('Outros estados','Otros estados')}">`+ufs.filter(u=>!comDado(u)).map(u=>`<option value="${u}">${UF_NOMES[u]}</option>`).join('')+'</optgroup>';
+  $('sUF').value=selUF;
+  // datalist com todos os municípios do estado
+  const dl=$('sListaCidades'); dl.replaceChildren(...munUF(selUF).map(x=>{const o=document.createElement('option'); o.value=x[0]; return o;}));
+  $('sCidadeTxt').value=selNome;
+  // atalhos: cidades com dados neste estado + Comodoro/Vilhena
+  const e=D.soja.estados?.[selUF]||{cidades:[]};
+  const nomes=[...new Set([...detalhadas().filter(c=>c.uf===selUF).map(c=>c.nome),...e.cidades.map(c=>c.nome)])];
+  const fixos=[['MT','Comodoro'],['RO','Vilhena']].filter(([u])=>u!==selUF);
+  $('sAtalhos').innerHTML=[...fixos.map(([u,n])=>`<button type="button" data-uf="${u}" data-n="${n}" aria-pressed="false">${n}/${u}</button>`),
+    ...nomes.map(n=>`<button type="button" data-uf="${selUF}" data-n="${n}" aria-pressed="${semAcento(n)===semAcento(selNome)}">${n}</button>`)].join('');
+  $('sAtalhosLb').textContent=nomes.length?L(`Cidades com dados em ${UF_NOMES[selUF]}:`,`Ciudades con datos en ${UF_NOMES[selUF]}:`):L(`Sem cotação de cidades em ${UF_NOMES[selUF]} hoje. Atalhos:`,`Sin cotización de ciudades en ${UF_NOMES[selUF]} hoy. Atajos:`);
 }
-function selecionarCidade(slug){ cidadeSel=slug; $('sCidade').value=slug; ofertaSel=null; renderSoja(); }
-let ofertaSel=null;
+function selecionarCidade(uf,nome){ selUF=uf; selNome=nome; ofertaSel=null; delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; renderSoja(); }
 function renderSoja(){
   const S0=D.soja;
   if(!S0||!S0.cidades){ $('sKpis').innerHTML=`<p class="note">${L('Cotações da soja ainda não carregadas.','Cotizaciones de soja aún no cargadas.')}</p>`; return; }
   montarFiltroSoja();
-  const c=S0.cidades[cidadeSel], loc=ofertasLocais(c), ser=c.serie||[], hist=c.historico||[];
-  const ult=ser.at(-1), ant=ser.at(-2), melhor=loc.length?loc.reduce((a,b)=>b.preco>a.preco?b:a):null;
-  const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor), reg=c.regiao&&S0.regioes.find(r=>r.nome===c.regiao);
-  const nomeC=`${c.nome}/${c.uf}`;
-  $('sKpis').innerHTML=kpiHTML([
-    [L('Melhor oferta em ','Mejor oferta en ')+nomeC,melhor?sc(melhor.preco):'—',melhor?`${fmtEntrega(melhor.entrega)} · ${melhor.fob?'FOB':'CIF'}`:L('sem ofertas de compradores na cidade hoje','sin ofertas de compradores en la ciudad hoy'),'up'],
-    [L('Média das ofertas na cidade','Promedio de ofertas en la ciudad'),loc.length?sc(loc.reduce((a,b)=>a+b.preco,0)/loc.length):'—',L(`${loc.length} ofertas de compradores`,`${loc.length} ofertas de compradores`)],
-    [ult?L('Cotação da região','Cotización de la región'):L('Cotação diária','Cotización diaria'),ult?sc(ult[1]):'—',ult?`${c.regiao||''} · ${fmtDia(ult[0])}${ant?` · ${ult[1]>=ant[1]?'▲':'▼'} ${pct(ult[1]/ant[1]-1)}`:''}`:L('o Grão Direto não publica cotação diária para esta cidade','Grão Direto no publica cotización diaria para esta ciudad')],
-    [L('Maior preço do país','Mayor precio del país'),sc(regs[0].valor),regs[0].nome],
-  ]);
-  // gráfico: série da região (MT) + histórico das ofertas locais; sem histórico, as ofertas de hoje
+  const I=infoCidade(selUF,selNome), c=I.det, nomeH=esc(I.nome), mesoH=esc(I.meso||'—'), nomeC=`${nomeH}/${I.uf}`;
+  const loc=c?ofertasLocais(c):[], melhor=loc.length?loc.reduce((a,b)=>b.preco>a.preco?b:a):null;
+  const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor);
+  const linkGD=`https://www.graodireto.com.br/ofertas/soja/${I.uf.toLowerCase()}/${slugGD(I.nome)}/`;
+  if(!I.existe) { $('sAviso').hidden=false; $('sAviso').textContent=L(`Não encontramos "${selNome}" em ${UF_NOMES[selUF]}. Escolha um nome da lista.`,`No encontramos "${selNome}" en ${UF_NOMES[selUF]}. Elija un nombre de la lista.`); }
+  else $('sAviso').hidden=true;
+  // KPIs
+  const kp=[];
+  if(melhor) kp.push([L('Melhor oferta em ','Mejor oferta en ')+nomeC,sc(melhor.preco),`${fmtEntrega(melhor.entrega)} · ${melhor.fob?'FOB':'CIF'}`,'up']);
+  if(I.cot) kp.push([L('Cotação da cidade','Cotización de la ciudad'),sc(I.cot.preco),`${I.cot.tipo||''} · ${fmtDia(I.cot.data)} · ${(I.cot.var>=0?'▲ +':'▼ ')}${(I.cot.var||0).toLocaleString('pt-BR',{maximumFractionDigits:2})}%`,'up']);
+  if(I.reg) kp.push([L('Cotação da região','Cotización de la región'),sc(I.reg.preco??I.reg.valor),`${I.reg.nome} · ${(I.reg.data||'').includes('-')?fmtDia(I.reg.data):(I.reg.data||'')}`]);
+  if(loc.length) kp.push([L('Média das ofertas na cidade','Promedio de ofertas en la ciudad'),sc(loc.reduce((a,b)=>a+b.preco,0)/loc.length),L(`${loc.length} ofertas de compradores`,`${loc.length} ofertas de compradores`)]);
+  if(!kp.length) kp.push([nomeC,'—',L(`Sem cotação publicada para a cidade ou a região (${mesoH}).`,`Sin cotización publicada para la ciudad o la región (${mesoH}).`)]);
+  kp.push([L('Maior preço do país','Mayor precio del país'),sc(regs[0].valor),regs[0].nome]);
+  $('sKpis').innerHTML=kpiHTML(kp.slice(0,4));
+  $('sLinkGD').href=linkGD; $('sLinkGD').textContent=L(`Ver ofertas de ${nomeH} ao vivo no Grão Direto ↗`,`Ver ofertas de ${nomeH} en vivo en Grão Direto ↗`);
+  // gráfico
   $('sTitGraf').textContent=L(`Preços em ${nomeC}`,`Precios en ${nomeC}`);
-  const dias=[...new Set([...ser.map(x=>x[0]),...hist.map(x=>x[0])])].sort();
+  const ser=c?.serie||[], hist=c?.historico||[], hc=I.hist;
+  const dias=[...new Set([...ser.map(x=>x[0]),...hist.map(x=>x[0]),...hc.map(x=>x[0])])].sort();
   if(dias.length>1){
-    const mS=Object.fromEntries(ser), mH=Object.fromEntries(hist.map(h=>[h[0],h]));
-    const sets=[];
+    const mS=Object.fromEntries(ser), mH=Object.fromEntries(hist.map(h=>[h[0],h])), mC=Object.fromEntries(hc), sets=[];
+    if(hc.length) sets.push(ds(L('Cotação da cidade','Cotización de la ciudad'),dias.map(d=>mC[d]??null),css('--c-bc'),{borderWidth:3,pointRadius:3,spanGaps:true}));
     if(ser.length) sets.push(ds(L(`Cotação da região (${c.regiao})`,`Cotización de la región (${c.regiao})`),dias.map(d=>mS[d]??null),css('--c-itapema'),{borderWidth:3,pointRadius:3,spanGaps:true}));
-    if(hist.length){ sets.push(ds(L('Melhor oferta na cidade','Mejor oferta en la ciudad'),dias.map(d=>mH[d]?.[3]??null),css('--good'),{pointRadius:3,spanGaps:true})); sets.push(ds(L('Média das ofertas','Promedio de ofertas'),dias.map(d=>mH[d]?.[2]??null),css('--c-bc'),{pointRadius:3,borderDash:[5,4],spanGaps:true})); }
+    if(hist.length){ sets.push(ds(L('Melhor oferta na cidade','Mejor oferta en la ciudad'),dias.map(d=>mH[d]?.[3]??null),css('--good'),{pointRadius:3,spanGaps:true})); sets.push(ds(L('Média das ofertas','Promedio de ofertas'),dias.map(d=>mH[d]?.[2]??null),css('--c-cdi'),{pointRadius:3,borderDash:[5,4],spanGaps:true})); }
     draw('chSoja',{type:'line',data:{labels:dias.map(d=>fmtDia(d).slice(0,5)),datasets:sets},options:baseOpts(v=>'R$ '+Math.round(v),{plugins:{legend:{labels:{color:css('--ink'),boxWidth:10,boxHeight:10,usePointStyle:true}},tooltip:{callbacks:{label:x=>x.parsed.y==null?null:`${x.dataset.label}: ${sc(x.parsed.y)}`}}}})});
-  } else {
+  } else if(loc.length){
     const l=loc.slice().sort((a,b)=>(a.entrega||'').localeCompare(b.entrega||''));
-    draw('chSoja',{type:'bar',data:{labels:l.map(o=>fmtEntrega(o.entrega)+(o.fob?' FOB':' CIF')),datasets:[{label:nomeC,data:l.map(o=>o.preco),backgroundColor:css('--c-bc'),borderRadius:4}]},
+    draw('chSoja',{type:'bar',data:{labels:l.map(o=>fmtEntrega(o.entrega)+(o.fob?' FOB':' CIF')),datasets:[{label:nomeC,data:l.map(o=>o.preco),backgroundColor:css('--c-bc'),borderRadius:4}]},options:baseOpts(v=>'R$ '+Math.round(v),{plugins:{legend:{display:false},tooltip:{callbacks:{label:x=>sc(x.parsed.y)}}}})});
+  } else {
+    // sem histórico local: preços das regiões e cidades do estado
+    const it_=[...I.est.regioes.map(r=>[r.nome,r.preco]),...I.est.cidades.map(r=>[r.nome,r.preco])];
+    draw('chSoja',{type:'bar',data:{labels:it_.map(x=>x[0]),datasets:[{label:UF_NOMES[I.uf],data:it_.map(x=>x[1]),backgroundColor:it_.map(x=>semAcento(x[0])===semAcento(I.meso||'')?css('--c-itapema'):css('--c-brasil')),borderRadius:4}]},
       options:baseOpts(v=>'R$ '+Math.round(v),{plugins:{legend:{display:false},tooltip:{callbacks:{label:x=>sc(x.parsed.y)}}}})});
   }
-  $('sNotaGraf').textContent = c.uf==='MT'
-    ? L(`No Mato Grosso, o Grão Direto publica uma cotação por região: ${c.nome} usa a da região ${c.regiao||'Norte Mato-grossense'}. O que muda de cidade para cidade são as ofertas dos compradores.`,`En Mato Grosso, Grão Direto publica una cotización por región: ${c.nome} usa la de la región ${c.regiao||'Norte Mato-grossense'}. Lo que cambia entre ciudades son las ofertas de los compradores.`)
-    : L(`${c.nome} não tem cotação diária no Grão Direto. Mostramos as ofertas de compradores e guardamos a média de cada dia para formar o histórico.`,`${c.nome} no tiene cotización diaria en Grão Direto. Mostramos las ofertas de compradores y guardamos el promedio de cada día para formar el histórico.`);
+  $('sNotaGraf').textContent = c&&c.uf==='MT'
+    ? L(`No Mato Grosso, o Grão Direto publica uma cotação por região: ${nomeH} usa a da região ${c.regiao||mesoH}. O que muda de cidade para cidade são as ofertas dos compradores.`,`En Mato Grosso, Grão Direto publica una cotización por región: ${nomeH} usa la de la región ${c.regiao||mesoH}. Lo que cambia entre ciudades son las ofertas de los compradores.`)
+    : c ? L(`${nomeH} não tem cotação diária no Grão Direto. Mostramos as ofertas de compradores e guardamos a média de cada dia.`,`${nomeH} no tiene cotización diaria en Grão Direto. Mostramos las ofertas de compradores y guardamos el promedio de cada día.`)
+    : I.cot ? L(`Cotação diária de ${nomeH} no Grão Direto. O histórico cresce a cada dia útil.`,`Cotización diaria de ${nomeH} en Grão Direto. El histórico crece cada día hábil.`)
+    : L(`${nomeH} fica na mesorregião ${mesoH}. ${I.reg?'Usamos a cotação dessa região como referência.':'O Grão Direto não publica cotação para essa região; o gráfico mostra as cotações do estado.'} Para as ofertas da cidade, use o link acima.`,`${nomeH} está en la mesorregión ${mesoH}. ${I.reg?'Usamos la cotización de esa región como referencia.':'Grão Direto no publica cotización para esa región; el gráfico muestra las cotizaciones del estado.'} Para las ofertas de la ciudad, use el enlace de arriba.`);
   // ofertas
-  $('sTitOf').textContent=L(`Ofertas de compradores para ${nomeC}`,`Ofertas de compradores para ${nomeC}`);
-  const lin=(c.ofertas||[]).slice().sort((a,b)=>(a.cidade===c.nome?0:1)-(b.cidade===c.nome?0:1)||(a.entrega||'').localeCompare(b.entrega||'')||b.preco-a.preco);
-  $('tblOfertas').innerHTML=`<thead><tr><th>${L('Modalidade','Modalidad')}</th><th style="text-align:left">${L('Local','Lugar')}</th><th>${L('Frete','Flete')}</th><th>${L('Preço','Precio')}</th></tr></thead><tbody>`+
-    lin.map(o=>`<tr${o.cidade===c.nome?' class="sel"':''}><td>${fmtEntrega(o.entrega)}</td><td style="text-align:left">${o.cidade} - ${o.uf}</td><td>${o.fob?'FOB':'CIF'}</td><td><b>${sc(o.preco)}</b></td></tr>`).join('')+
-    `</tbody><caption class="note">${L('Em destaque, compradores na própria cidade. FOB: comprador busca (frete por conta dele). CIF: produtor entrega (frete por conta do produtor). Preço bruto por saca de 60 kg.','Destacados, compradores en la propia ciudad. FOB: el comprador retira (flete a su cargo). CIF: el productor entrega (flete a su cargo). Precio bruto por saca de 60 kg.')}</caption>`;
+  $('sTitOf').textContent=c?L(`Ofertas de compradores para ${nomeC}`,`Ofertas de compradores para ${nomeC}`):L(`Cotações em ${UF_NOMES[I.uf]}`,`Cotizaciones en ${UF_NOMES[I.uf]}`);
+  let ofs=[];
+  if(c){
+    ofs=(c.ofertas||[]).slice().sort((a,b)=>(a.cidade===c.nome?0:1)-(b.cidade===c.nome?0:1)||(a.entrega||'').localeCompare(b.entrega||'')||b.preco-a.preco);
+    $('tblOfertas').innerHTML=`<thead><tr><th>${L('Modalidade','Modalidad')}</th><th style="text-align:left">${L('Local','Lugar')}</th><th>${L('Frete','Flete')}</th><th>${L('Preço','Precio')}</th></tr></thead><tbody>`+
+      ofs.map(o=>`<tr${o.cidade===c.nome?' class="sel"':''}><td>${fmtEntrega(o.entrega)}</td><td style="text-align:left">${o.cidade} - ${o.uf}</td><td>${o.fob?'FOB':'CIF'}</td><td><b>${sc(o.preco)}</b></td></tr>`).join('')+
+      `</tbody><caption class="note">${L('Em destaque, compradores na própria cidade. FOB: comprador busca (frete por conta dele). CIF: produtor entrega. Preço bruto por saca de 60 kg.','Destacados, compradores en la propia ciudad. FOB: el comprador retira (flete a su cargo). CIF: el productor entrega. Precio bruto por saca de 60 kg.')}</caption>`;
+  } else {
+    const rows=[...I.est.regioes.map(r=>({...r,t:L('Região','Región')})),...I.est.cidades.map(r=>({...r,t:L('Cidade','Ciudad')}))];
+    $('tblOfertas').innerHTML=rows.length?`<thead><tr><th style="text-align:left">${L('Local','Lugar')}</th><th>${L('Tipo','Tipo')}</th><th>${L('Preço','Precio')}</th><th>${L('No dia','En el día')}</th></tr></thead><tbody>`+
+      rows.map(r=>`<tr${(I.cot&&r.nome===I.cot.nome)||(I.reg&&r.nome===I.reg.nome)?' class="sel"':''}><td style="text-align:left">${r.nome}</td><td>${r.t}</td><td><b>${sc(r.preco)}</b></td><td class="${(r.var||0)>=0?'pos':'neg'}">${(r.var>=0?'+':'')+(r.var||0).toLocaleString('pt-BR',{maximumFractionDigits:2})}%</td></tr>`).join('')+'</tbody>'
+      :`<tbody><tr><td>${L(`O Grão Direto não publica cotações em ${UF_NOMES[I.uf]} hoje. Veja as ofertas da cidade pelo link acima.`,`Grão Direto no publica cotizaciones en ${UF_NOMES[I.uf]} hoy. Vea las ofertas de la ciudad en el enlace de arriba.`)}</td></tr></tbody>`;
+    const base=I.cot?{cidade:I.nome,uf:I.uf,preco:I.cot.preco,fob:true,entrega:null,comFrete:null,rot:L('Cotação da cidade','Cotización de la ciudad')}:I.reg?{cidade:I.reg.nome,uf:I.uf,preco:I.reg.preco??I.reg.valor,fob:true,entrega:null,comFrete:null,rot:L('Cotação da região','Cotización de la región')}:null;
+    ofs=base?[base]:[];
+  }
   // custos
-  const ofs=lin; if(ofertaSel==null||!ofs[ofertaSel]) ofertaSel=Math.max(0,ofs.indexOf(melhor??ofs[0]));
-  $('sOferta').innerHTML=ofs.map((o,i)=>`<option value="${i}"${i===ofertaSel?' selected':''}>${o.cidade} · ${fmtEntrega(o.entrega)} · ${o.fob?'FOB':'CIF'} · ${brl2(o.preco)}</option>`).join('');
-  if(!$('sFethab').dataset.manual) setNum('sFethab', c.uf==='MT'?FETHAB_SC:0, 2);
-  $('sFethabHint').textContent = c.uf==='MT' ? L(`21,15% da UPF/MT por tonelada = R$ ${FETHAB_SC.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`,`21,15% de la UPF/MT por tonelada = R$ ${FETHAB_SC.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`) : L('Rondônia não cobra Fethab','Rondônia no cobra Fethab');
+  if(ofertaSel==null||!ofs[ofertaSel]) ofertaSel=Math.max(0,ofs.indexOf(melhor??ofs[0]));
+  $('sOferta').innerHTML=ofs.map((o,i)=>`<option value="${i}"${i===ofertaSel?' selected':''}>${o.rot?o.rot+' · '+o.cidade:`${o.cidade} · ${fmtEntrega(o.entrega)} · ${o.fob?'FOB':'CIF'}`} · ${brl2(o.preco)}</option>`).join('');
+  if(!$('sFethab').dataset.manual) setNum('sFethab', I.uf==='MT'?FETHAB_SC:0, 2);
+  $('sFethabHint').textContent = I.uf==='MT' ? L(`21,15% da UPF/MT por tonelada = R$ ${FETHAB_SC.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`,`21,15% de la UPF/MT por tonelada = R$ ${FETHAB_SC.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`) : L(`Fethab é só do Mato Grosso. Se ${UF_NOMES[I.uf]} tiver fundo estadual, informe aqui.`,`Fethab es solo de Mato Grosso. Si ${UF_NOMES[I.uf]} tiene fondo estatal, infórmelo aquí.`);
   const o=ofs[ofertaSel];
   const freteGD = o&&o.comFrete!=null ? Math.max(0,+(o.preco-o.comFrete).toFixed(2)) : 0;
   if(!$('sFrete').dataset.manual) setNum('sFrete', freteGD, 2);
-  $('sFreteHint').textContent = o&&o.comFrete!=null ? L(`Estimativa do Grão Direto até ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`,`Estimación de Grão Direto hasta ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`) : L('Informe se você entrega (CIF)','Informe si usted entrega (CIF)');
-  renderCustos(o,c);
-  // comparar cidades
-  $('tblCidades').innerHTML=`<thead><tr><th style="text-align:left">${L('Cidade','Ciudad')}</th><th>${L('Melhor oferta','Mejor oferta')}</th><th>${L('Média das ofertas','Promedio ofertas')}</th><th>${L('Ofertas','Ofertas')}</th><th>${L('Cotação da região','Cotización región')}</th></tr></thead><tbody>`+
-    cidadesSoja().map(x=>{const l=ofertasLocais(x), m=l.length?Math.max(...l.map(y=>y.preco)):null, md=l.length?l.reduce((a,b)=>a+b.preco,0)/l.length:null, u=(x.serie||[]).at(-1);
-      return `<tr data-c="${x.slug}"${x.slug===cidadeSel?' class="sel"':''}><td style="text-align:left">${x.nome}/${x.uf}</td><td>${m?sc(m):'—'}</td><td>${md?sc(md):'—'}</td><td>${l.length}</td><td>${u?sc(u[1]):'—'}</td></tr>`;}).join('')+'</tbody>';
+  $('sFreteHint').textContent = o&&o.comFrete!=null ? L(`Estimativa do Grão Direto até ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`,`Estimación de Grão Direto hasta ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`) : L('Informe o frete até o comprador, se for por sua conta','Informe el flete hasta el comprador, si corre por su cuenta');
+  renderCustos(o,{nome:I.nome,uf:I.uf});
+  sojaOfertasAtuais=ofs;
+  // cidades acompanhadas no Brasil
+  const linhas=[...detalhadas().map(x=>{const l=ofertasLocais(x); return {uf:x.uf,nome:x.nome,preco:l.length?Math.max(...l.map(y=>y.preco)):((x.serie||[]).at(-1)?.[1]??null),fonte:l.length?L(`melhor de ${l.length} ofertas`,`mejor de ${l.length} ofertas`):L('cotação da região','cotización de la región')};}),
+    ...Object.entries(S0.estados||{}).flatMap(([uf,e])=>e.cidades.filter(cq=>!detalhadas().some(d=>d.uf===uf&&semAcento(d.nome)===semAcento(cq.nome))).map(cq=>({uf,nome:cq.nome,preco:cq.preco,fonte:L('cotação da cidade','cotización de la ciudad'),pts:(S0.historicoCidades?.[`${uf}|${cq.nome}`]||[]).map(h=>h[1])})))]
+    .filter(x=>x.preco).sort((a,b)=>(a.uf===selUF?0:1)-(b.uf===selUF?0:1)||a.uf.localeCompare(b.uf)||b.preco-a.preco);
+  $('tblCidades').innerHTML=`<thead><tr><th style="text-align:left">${L('Cidade','Ciudad')}</th><th>UF</th><th>${L('Preço','Precio')}</th><th style="text-align:left">${L('Base','Base')}</th></tr></thead><tbody>`+
+    linhas.map(x=>`<tr data-uf="${x.uf}" data-n="${x.nome}"${x.uf===selUF&&semAcento(x.nome)===semAcento(I.nome)?' class="sel"':''}><td style="text-align:left">${x.nome}</td><td>${x.uf}</td><td><b>${sc(x.preco)}</b></td><td style="text-align:left">${x.fonte}</td></tr>`).join('')+'</tbody>';
   // regiões
   $('sRegData').textContent=`R$/sc 60 kg · ${regs[0].data}`;
   $('tblRegioes').innerHTML=`<thead><tr><th style="text-align:left">${L('Região','Región')}</th><th>${L('Preço','Precio')}</th><th>${L('No dia','En el día')}</th><th>${L('Últimos 7 dias','Últimos 7 días')}</th></tr></thead><tbody>`+
-    regs.map(r=>`<tr${reg&&r.nome===reg.nome?' class="sel"':''}><td style="text-align:left">${r.nome}</td><td><b>${sc(r.valor)}</b></td><td class="${(r.var||0)>=0?'pos':'neg'}">${(r.var>=0?'+':'')+(r.var||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}%</td><td>${spark(r.pontos)}</td></tr>`).join('')+'</tbody>';
+    regs.map(r=>`<tr${I.reg&&semAcento(r.nome)===semAcento(I.reg.nome)?' class="sel"':''}><td style="text-align:left">${r.nome}</td><td><b>${sc(r.valor)}</b></td><td class="${(r.var||0)>=0?'pos':'neg'}">${(r.var>=0?'+':'')+(r.var||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}%</td><td>${spark(r.pontos)}</td></tr>`).join('')+'</tbody>';
   const at_=S0.atualizado.split(' ');
-  $('sFonte').innerHTML=L(`Fonte: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotações e ofertas públicas de compradores, atualizado em ${fmtDia(at_[0])} às ${at_[1]} (todo dia útil às 19h). Fethab: Lei MT 7.263/2000 e UPF/MT 2026 (Portaria 186/2025-SEFAZ). Funrural: LC 224/2025. Confirme os custos com seu contador.`,
-    `Fuente: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a>, cotizaciones y ofertas públicas de compradores, actualizado el ${fmtDia(at_[0])} a las ${at_[1]} (cada día hábil a las 19h). Fethab: Ley MT 7.263/2000 y UPF/MT 2026 (Portaria 186/2025-SEFAZ). Funrural: LC 224/2025. Confirme los costos con su contador.`);
+  $('sFonte').innerHTML=L(`Fonte: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a> (cotações e ofertas públicas de compradores), atualizado em ${fmtDia(at_[0])} às ${at_[1]}, todo dia útil às 19h. Lista de municípios e mesorregiões: IBGE. Fethab: Lei MT 7.263/2000 e UPF/MT 2026 (Portaria 186/2025-SEFAZ). Funrural: LC 224/2025. Confirme os custos com seu contador.`,
+    `Fuente: <a href="https://www.graodireto.com.br/precos/soja/" target="_blank" rel="noopener">Grão Direto</a> (cotizaciones y ofertas públicas de compradores), actualizado el ${fmtDia(at_[0])} a las ${at_[1]}, cada día hábil a las 19h. Municipios y mesorregiones: IBGE. Fethab: Ley MT 7.263/2000 y UPF/MT 2026 (Portaria 186/2025-SEFAZ). Funrural: LC 224/2025. Confirme los costos con su contador.`);
 }
+let sojaOfertasAtuais=[];
+
 function renderCustos(o,c){
   if(!o){ $('tblCustos').innerHTML=''; $('sSacas').innerHTML=''; return; }
   const p=o.preco, fet=num('sFethab'), fun=p*num('sFunrural')/100, fr=num('sFrete'), arm=num('sArmaz'), com=p*num('sComissao')/100, out=num('sOutros'), n=num('sProducao');
   const liq=p-fet-fun-fr-arm-com-out;
   const lin=(t,v,cls='neg')=>{ if(cls==='neg'&&Math.abs(v)<0.005) cls=''; return `<tr><td>${t}</td><td class="${cls}">${v<0?'−':''}${brl2(Math.abs(v))}</td><td class="${cls}">${v<0?'−':''}${brl(Math.abs(v)*n)}</td></tr>`; };
-  $('sCustoCid').textContent=`${c.nome}/${c.uf} · ${fmtEntrega(o.entrega)} · ${o.fob?'FOB':'CIF'}`;
+  $('sCustoCid').textContent=`${c.nome}/${c.uf} · ${o.rot||fmtEntrega(o.entrega)+' · '+(o.fob?'FOB':'CIF')}`;
   $('tblCustos').innerHTML=`<thead><tr><th></th><th>${L('Por saca','Por saca')}</th><th>${L(`Em ${n.toLocaleString('pt-BR')} sacas`,`En ${n.toLocaleString('pt-BR')} sacas`)}</th></tr></thead><tbody>`+
     lin(L('Preço bruto da oferta','Precio bruto de la oferta'),p,'')+
     lin(c.uf==='MT'?'Fethab + entidade':'Fethab',-fet)+
@@ -649,7 +702,7 @@ function linkEstado(){
     else if(el.tagName==='SELECT'){ if(el.selectedIndex!==0) q.set(el.id,el.value); }
     else if(el.value!==el.defaultValue||el.id==='modo') q.set(el.id,el.value);
   }
-  if(tab==='soja') q.set('cidade',cidadeSel);
+  if(tab==='soja') q.set('cidade',`${selUF}|${selNome}`);
   q.set('aba',['planta','avista','holding','soja'].includes(tab)?tab:'sim');
   return location.origin+location.pathname+'?'+q.toString();
 }
@@ -657,7 +710,7 @@ function aplicarLink(){
   const q=new URLSearchParams(location.search);
   for(const el of CAMPOS()){ if(!q.has(el.id)) continue; if(el.type==='checkbox') el.checked=q.get(el.id)==='1'; else el.value=q.get(el.id); }
   if(q.has('valoriz')){ presetSel=''; presets(); }
-  if(q.get('cidade')) cidadeSel=q.get('cidade');
+  if(q.get('cidade')){ const v=q.get('cidade'); if(v.includes('|')){ [selUF,selNome]=v.split('|'); } else { const d=Object.values(D.soja?.cidades||{}).find(c=>c.slug===v); if(d){ selUF=d.uf; selNome=d.nome; } } }
   CAMPOS().forEach(formatarCampo);
   setModo($('modo').value);
   return q.get('aba');
@@ -772,14 +825,15 @@ $('form').addEventListener('input',e=>{ if(e.target.id==='valoriz'){presetSel=''
 $('formPlanta').addEventListener('input',renderPlanta);
 $('formAvista').addEventListener('input',renderAvista);
 $('formHolding').addEventListener('input',renderHolding);
-$('sCidade').addEventListener('change',e=>{ delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; selecionarCidade(e.target.value); });
-$('sAtalhos').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; selecionarCidade(b.dataset.c);});
-$('tblCidades').addEventListener('click',e=>{const tr=e.target.closest('tr[data-c]'); if(!tr) return; delete $('sFethab').dataset.manual; delete $('sFrete').dataset.manual; selecionarCidade(tr.dataset.c); $('sKpis').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});});
+$('sUF').addEventListener('change',e=>{ const uf=e.target.value, est=D.soja.estados?.[uf], det=detalhadas().find(c=>c.uf===uf);
+  const nome=det?.nome||est?.cidades?.[0]?.nome||munUF(uf)[0]?.[0]||''; selecionarCidade(uf,nome); });
+$('sCidadeTxt').addEventListener('change',e=>{ if(e.target.value.trim()) selecionarCidade(selUF,e.target.value.trim()); });
+$('sAtalhos').addEventListener('click',e=>{const b=e.target.closest('button'); if(b) selecionarCidade(b.dataset.uf,b.dataset.n);});
+$('tblCidades').addEventListener('click',e=>{const tr=e.target.closest('tr[data-uf]'); if(!tr) return; selecionarCidade(tr.dataset.uf,tr.dataset.n); $('sKpis').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});});
 $('formCustos').addEventListener('input',e=>{
   if(e.target.id==='sOferta'){ ofertaSel=+e.target.value; delete $('sFrete').dataset.manual; renderSoja(); return; }
   if(e.target.id==='sFethab'||e.target.id==='sFrete') e.target.dataset.manual='1';
-  const c=D.soja.cidades[cidadeSel], loc=(c.ofertas||[]).slice().sort((a,b)=>(a.cidade===c.nome?0:1)-(b.cidade===c.nome?0:1)||(a.entrega||'').localeCompare(b.entrega||'')||b.preco-a.preco);
-  renderCustos(loc[ofertaSel],c);
+  renderCustos(sojaOfertasAtuais[ofertaSel],{nome:selNome,uf:selUF});
 });
 ['cValor','cAno'].forEach(id=>$(id).addEventListener('input',renderCorr));
 $('modoAluguel').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; setModo(b.dataset.m); renderSim();});
