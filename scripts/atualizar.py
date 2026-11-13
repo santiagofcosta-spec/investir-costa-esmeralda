@@ -178,7 +178,10 @@ def main():
         try:
             fn(d)
         except Exception as e:  # uma fonte fora do ar não derruba as outras
-            log.append(f"{nome}: ERRO {type(e).__name__}: {e}")
+            if nome == "Banco Central":
+                log.append(f"Banco Central: sem resposta deste servidor ({e}). Sem problema: o site busca o Banco Central direto no navegador; dados de reserva mantidos.")
+            else:
+                log.append(f"{nome}: ERRO {type(e).__name__}: {e}")
     if json.dumps(d, sort_keys=True) != antes:
         d["atualizado"] = HOJE.isoformat()
     ARQ_JSON.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
