@@ -392,6 +392,30 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
 @media print{.wizard,.btn-util,.badge,.assinatura .ass-acoes{display:none!important}.assinatura{background:none;color:var(--ink);border:1px solid var(--line)}.assinatura h2{color:var(--ink)}}
 </style>
 <style>.wa{position:fixed}
+.cen-layout{display:flex;flex-direction:column;gap:26px}
+.cenarios{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:860px){.cenarios{grid-template-columns:minmax(0,1fr)}}
+.cenarios form.panel.inputs{position:static;max-height:none;overflow:visible}
+.panel.auto{display:flex;flex-direction:column;gap:14px;border:1px solid rgba(255,195,80,.55);background:linear-gradient(170deg,rgba(255,195,80,.09),var(--surface) 45%);position:sticky;top:84px}
+@media (max-width:860px){.panel.auto{position:static}}
+.auto-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.auto-h h2{font-size:1.15rem}
+.badge-seu{color:var(--blue);background:rgba(15,99,208,.08);border-color:rgba(15,99,208,.3);margin:0}
+.badge-seu::before{background:var(--blue)}
+.auto-valor{grid-template-columns:1fr 180px}
+.auto-valor input{font-size:16px!important;font-weight:600!important}
+.auto-filtro::before{background:linear-gradient(135deg,#FFC350,#C5A059);box-shadow:0 4px 14px rgba(255,195,80,.35)}
+.auto-filtro button[aria-pressed="true"]{color:#111416}
+.auto-tbl td{white-space:normal;vertical-align:top;padding:9px 8px}
+.auto-tbl td small{display:block;color:var(--muted);font-size:11px;font-weight:400;margin-top:2px;line-height:1.4}
+.auto-tbl td:last-child{text-align:right;white-space:nowrap}
+.tag.prov{background:#fff4d6;color:#8a5a00}
+.panel.cmp{border-color:rgba(255,195,80,.45)}
+.cmp-tbl th.c-auto{color:var(--gold-ink)} .cmp-tbl th.c-seu{color:var(--blue)}
+.cmp-tbl td.c-auto{background:rgba(255,195,80,.07);font-weight:600}
+.cmp-tbl td.c-seu{font-weight:600}
+@media print{.cenarios{display:block}.panel.auto{display:none}}
+
 .fresco{font-size:11px;color:var(--muted);white-space:nowrap}
 .velho{font-size:11px;font-weight:600;color:var(--bad);background:var(--bad-bg);padding:1px 6px;border-radius:6px;white-space:nowrap}
 .pb-serie{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
@@ -687,8 +711,11 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
   </section>
 
   <!-- ============ SIMULADOR ============ -->
-  <section id="p-sim" class="grid" hidden>
+  <section id="p-sim" class="cen-layout" hidden>
+    <div class="cenarios">
+    <aside class="panel auto" id="auto-sim" aria-label="Cenário de mercado"></aside>
     <form class="panel inputs" id="form" onsubmit="return false">
+      <div class="auto-h"><span class="badge badge-seu" data-es="Editable">Editável</span><h2 data-es="Su escenario">Seu cenário</h2></div>
       <fieldset><legend data-es="Inmueble y compra">Imóvel e compra</legend>
         <div class="f"><label for="valor" data-es="Valor del inmueble">Valor do imóvel</label><div class="in"><span>R$</span><input id="valor" type="number" step="1000" value="900000"></div></div>
         <div class="f"><label for="entrada" data-es="Anticipo<small>Igual al valor = compra al contado</small>">Entrada<small>Igual ao valor = compra à vista</small></label><div class="in"><span>R$</span><input id="entrada" type="number" step="1000" value="270000"></div></div>
@@ -741,7 +768,9 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
         <div class="f"><label for="spread" data-es="Tesoro IPCA+ (tasa real)">Tesouro IPCA+ (taxa real)</label><div class="in"><span>IPCA+</span><input id="spread" type="number" step="0.1" value="6.5"><span>%</span></div></div>
       </fieldset>
     </form>
+    </div>
     <div class="stack">
+      <div class="panel cmp" id="cmp-sim"></div>
       <div class="actions no-print">
         <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
         <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
@@ -785,15 +814,20 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
   </section>
 
   <!-- ============ INVESTIDOR À VISTA ============ -->
-  <section id="p-avista" class="grid" hidden>
+  <section id="p-avista" class="cen-layout" hidden>
+    <div class="cenarios">
+    <aside class="panel auto" id="auto-avista" aria-label="Cenário de mercado"></aside>
     <form class="panel inputs" id="formAvista" onsubmit="return false">
+      <div class="auto-h"><span class="badge badge-seu" data-es="Editable">Editável</span><h2 data-es="Su escenario">Seu cenário</h2></div>
       <fieldset><legend data-es="Compra al contado">Compra à vista</legend>
         <div class="f"><label for="desconto" data-es="Descuento negociado al contado">Desconto negociado à vista</label><div class="in"><input id="desconto" type="number" step="0.5" min="0" max="40" value="5"><span>%</span></div></div>
       </fieldset>
       <p class="note" id="avistaPrem"></p>
       <button class="btn ghost" type="button" data-goto="sim" data-es="Ajustar supuestos en el Simulador">Ajustar premissas no Simulador</button>
     </form>
+    </div>
     <div class="stack">
+      <div class="panel cmp" id="cmp-avista"></div>
       <div class="actions no-print">
         <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
         <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
@@ -815,8 +849,11 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
   </section>
 
   <!-- ============ NA PLANTA ============ -->
-  <section id="p-planta" class="grid" hidden>
+  <section id="p-planta" class="cen-layout" hidden>
+    <div class="cenarios">
+    <aside class="panel auto" id="auto-planta" aria-label="Cenário de mercado"></aside>
     <form class="panel inputs" id="formPlanta" onsubmit="return false">
+      <div class="auto-h"><span class="badge badge-seu" data-es="Editable">Editável</span><h2 data-es="Su escenario">Seu cenário</h2></div>
       <fieldset><legend data-es="Lanzamiento">Lançamento</legend>
         <div class="f"><label for="pValor" data-es="Precio de lista">Valor de tabela</label><div class="in"><span>R$</span><input id="pValor" type="number" step="1000" value="850000"></div></div>
         <div class="f"><label for="pMercado" data-es="Inmueble terminado similar hoy<small>Mismo barrio y estándar. Si la lista es más barata, la ganancia aumenta</small>">Imóvel pronto parecido hoje<small>Mesmo bairro e padrão. Se a tabela é mais barata, o ganho aumenta</small></label><div class="in"><span>R$</span><input id="pMercado" type="number" step="1000" value="850000"></div></div>
@@ -835,7 +872,9 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
         <div class="f"><label for="pCdi" data-es="CDI promedio anual<small>para comparar</small>">CDI médio ao ano<small>para comparar</small></label><div class="in"><input id="pCdi" type="number" step="0.1" value="11.5"><span>%</span></div></div>
       </fieldset>
     </form>
+    </div>
     <div class="stack">
+      <div class="panel cmp" id="cmp-planta"></div>
       <div class="actions no-print">
         <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
         <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
@@ -861,8 +900,11 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
   </section>
 
   <!-- ============ PF x HOLDING ============ -->
-  <section id="p-holding" class="grid" hidden>
+  <section id="p-holding" class="cen-layout" hidden>
+    <div class="cenarios">
+    <aside class="panel auto" id="auto-holding" aria-label="Cenário de mercado"></aside>
     <form class="panel inputs" id="formHolding" onsubmit="return false">
+      <div class="auto-h"><span class="badge badge-seu" data-es="Editable">Editável</span><h2 data-es="Su escenario">Seu cenário</h2></div>
       <fieldset><legend data-es="Patrimonio">Patrimônio</legend>
         <div class="f"><label for="hValor" data-es="Valor de los inmuebles">Valor dos imóveis</label><div class="in"><span>R$</span><input id="hValor" type="number" step="10000" value="900000"></div></div>
         <div class="f"><label for="hQtd" data-es="Cantidad de inmuebles">Quantidade de imóveis</label><div class="in"><input id="hQtd" type="number" step="1" min="1" value="1"></div></div>
@@ -888,7 +930,9 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
         <label class="chk"><input type="checkbox" id="hSucessao" checked> <span data-es="Incluir la sucesión (herencia a los hijos)">Incluir a sucessão (herança para os filhos)</span></label>
       </fieldset>
     </form>
+    </div>
     <div class="stack">
+      <div class="panel cmp" id="cmp-holding"></div>
       <div class="actions no-print">
         <button class="btn" type="button" data-pdf data-es="Generar PDF de la propuesta">Gerar PDF da proposta</button>
         <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>

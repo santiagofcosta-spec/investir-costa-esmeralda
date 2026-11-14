@@ -16,7 +16,25 @@ const SITE_CONFIG = {
   whatsappTxt: '(47) 99217-6060',
   itbiRegistroPct: 3.5,        // ITBI + cartório + registro, % do valor
   mobiliaPadraoPct: 8.0,       // mobília e decoração, % do valor (locação/temporada)
-  multiplicadorTemporada: 1.45 // temporada costuma render ~1,45× o aluguel anual (referência de mercado)
+  multiplicadorTemporada: 1.45, // temporada costuma render ~1,45× o aluguel anual (referência de mercado)
+  // Cenário de mercado (automático): números SEM fonte oficial, da experiência da consultoria.
+  // provisorio:true = ainda não conferidos pelo Santiago (o site mostra "referência provisória").
+  referenciaMercado: {
+    provisorio: true,
+    entradaPct: 30,               // usado só se o "Seu cenário" estiver sem valor
+    diariaAltaPctValor: 0.0889,   // diária na alta, % do valor do imóvel (R$ 800 num imóvel de R$ 900 mil)
+    diariaBaixaPctValor: 0.0389,  // diária no resto do ano (R$ 350 em R$ 900 mil)
+    ocupAlta: 70, ocupBaixa: 30, mesesAlta: 3,
+    aluguelMensalPctValor: 0.5,   // aluguel anual tradicional, % do valor por mês
+    vacancia: 8,
+    admTemporada: 20, admAnual: 10, // % sobre a receita
+    despesasAnoPctValor: 0.53,    // IPTU, manutenção, seguro: % do valor por ano
+    irAluguel: 10,                // IR efetivo sobre aluguel
+    corretagem: 6,                // na venda
+    descontoAvista: 5,
+    fluxoPlanta: { entrada: 10, mensais: 30, reforcos: 10 },
+    honorInventario: 5
+  }
 };
 const CONTATO = { nome:SITE_CONFIG.consultorNome, primeiroNome:SITE_CONFIG.primeiroNome, whatsapp:SITE_CONFIG.whatsappNumero, whatsappTxt:SITE_CONFIG.whatsappTxt, creci:SITE_CONFIG.creci, imobiliaria:SITE_CONFIG.imobiliaria };
 
@@ -439,16 +457,16 @@ function renderAvista(){
 }
 
 /* ---------- na planta ---------- */
-function simPlanta(){
-  const V=num('pValor'), N=Math.min(72,Math.max(6,Math.round(num('pObra')))), e=num('pEntrada')/100, ms=num('pMensais')/100, rf=num('pReforcos')/100;
-  const ch=Math.max(0,1-e-ms-rf), c=mensal(num('pCorrecao')/100), v=num('pValoriz')/100, corr=num('pCorretagem')/100, rCdi=mensal(num('pCdi')/100);
+function simPlanta(g=num){
+  const V=g('pValor'), N=Math.min(72,Math.max(6,Math.round(g('pObra')))), e=g('pEntrada')/100, ms=g('pMensais')/100, rf=g('pReforcos')/100;
+  const ch=Math.max(0,1-e-ms-rf), c=mensal(g('pCorrecao')/100), v=g('pValoriz')/100, corr=g('pCorretagem')/100, rCdi=mensal(g('pCdi')/100);
   const nRef=Math.max(1,Math.floor(N/12)), fat=t=>Math.pow(1+c,t);
   const pag=new Array(N+1).fill(0), tipo={ato:V*e,mensalIni:V*ms/N*fat(1),mensalFim:V*ms/N*fat(N),reforcos:[]};
   pag[0]+=V*e;
   for(let t=1;t<=N;t++) pag[t]+=V*ms/N*fat(t);
   for(let k=1;k<=nRef;k++){ const t=Math.min(N,12*k); pag[t]+=V*rf/nRef*fat(t); tipo.reforcos.push([t,V*rf/nRef*fat(t)]); }
   const saldoChaves=V*ch*fat(N);
-  const M=num('pMercado')||V, vm=t=>M*Math.pow(1+v,t/12);
+  const M=g('pMercado')||V, vm=t=>M*Math.pow(1+v,t/12);
   const totalPago=pag.reduce((a,b)=>a+b,0);
   const venda=vm(N)*(1-corr), ir=irGanhoPF(venda,totalPago+saldoChaves,N).ir;
   const liquido=venda-saldoChaves-ir, lucro=liquido-totalPago;
@@ -484,10 +502,10 @@ function renderPlanta(){
 /* ---------- PF x Holding ---------- */
 // Holding no lucro presumido com receita até R$ 5 mi/ano (acima disso a LC 224/2025 aumenta a presunção em 10%).
 const PISCOFINS=0.0365, PRES_ALUGUEL=0.32, VENDA_ESTOQUE=PISCOFINS+0.08*0.15+0.08*0.10+0.12*0.09; // ~6,73%
-function simHolding(){
-  const V=num('hValor'), Q=Math.max(1,Math.round(num('hQtd'))), A=num('hAluguel')*12, anos=Math.max(1,Math.round(num('hAnos'))), v=num('hValoriz')/100;
-  const irPf=num('hIrPf')/100, honor=num('hHonor')/100, reg=$('hRegistro').value, socios=Math.max(1,Math.round(num('hSocios')));
-  const abertura=num('hAbertura'), contab=num('hContab')*12, itbi=num('hItbi')/100;
+function simHolding(g=num){
+  const V=g('hValor'), Q=Math.max(1,Math.round(g('hQtd'))), A=g('hAluguel')*12, anos=Math.max(1,Math.round(g('hAnos'))), v=g('hValoriz')/100;
+  const irPf=g('hIrPf')/100, honor=g('hHonor')/100, reg=$('hRegistro').value, socios=Math.max(1,Math.round(g('hSocios')));
+  const abertura=g('hAbertura'), contab=g('hContab')*12, itbi=g('hItbi')/100;
   const reforma=$('hReforma').checked, distVenda=$('hDistVenda').checked, vende=$('hVende').checked, suc=$('hSucessao').checked;
   const ano0=new Date().getFullYear(), reaj=0.045;
   const pf={aluguel:0,venda:0,sucessao:0,custos:0}, hd={aluguel:0,venda:0,sucessao:0,custos:abertura+V*itbi};
@@ -1162,6 +1180,131 @@ function initV2(){
   }
 }
 
+
+/* =====================================================================
+   CENÁRIO DE MERCADO (automático): só o valor do imóvel e o filtro de valorização mudam.
+   Taxas oficiais vêm do Banco Central / FipeZap / DWV / CUB; o resto vem de SITE_CONFIG.referenciaMercado.
+   A estrutura (perfil de renda, entrada %, prazo, horizonte, opções marcadas) segue o "Seu cenário".
+   ===================================================================== */
+let autoValor=null, autoValorManual=false, autoFiltro='media', JUROS_IMOB=null;
+const taxaPB=()=>{ const S=REFS.serieDWVPortoBelo.pontos, a=S[0], b=S.at(-1); return Math.pow(b.v/a.v,1/(b.t-a.t))-1; };
+const FILTROS={
+  media:{nome:()=>L('Média Porto Belo + Itapema','Promedio Porto Belo + Itapema'),taxa:()=>(taxaPB()+cagrItapema())/2,fonte:()=>L('média de DWV (Porto Belo) e FipeZap (Itapema)','promedio de DWV (Porto Belo) y FipeZap (Itapema)')},
+  portobelo:{nome:()=>'Porto Belo',taxa:taxaPB,fonte:()=>L(`DWV, ${REFS.serieDWVPortoBelo.pontos[0].rot} a ${REFS.serieDWVPortoBelo.pontos.at(-1).rot}`,`DWV, ${REFS.serieDWVPortoBelo.pontos[0].rot} a ${REFS.serieDWVPortoBelo.pontos.at(-1).rot}`)},
+  itapema:{nome:()=>'Itapema',taxa:cagrItapema,fonte:()=>`FipeZap, dez/2020 a ${fmtMes(LASTKEY)}`},
+};
+const RM=()=>SITE_CONFIG.referenciaMercado;
+const juros=()=>(JUROS_IMOB??REFS.jurosImob.v)/100;
+function vAuto(){ if(!autoValorManual||!autoValor) autoValor=num({planta:'pValor',holding:'hValor'}[tab]||'valor'); return autoValor; }
+
+function autoP(){ // premissas do Simulador no cenário de mercado
+  const u=premissas(), V=vAuto(), r=RM(), ent=u.valor>0?Math.min(1,u.entrada/u.valor):r.entradaPct/100;
+  return {...u,valor:V,entrada:V*ent,custos:u.custos>0?SITE_CONFIG.itbiRegistroPct/100:0,mob:u.mob>0?SITE_CONFIG.mobiliaPadraoPct/100:0,juros:juros(),
+    aluguel:V*r.aluguelMensalPctValor/100,vac:r.vacancia/100,dA:V*r.diariaAltaPctValor/100,oA:r.ocupAlta/100,mA:r.mesesAlta,dB:V*r.diariaBaixaPctValor/100,oB:r.ocupBaixa/100,
+    adm:(u.modo==='temporada'?r.admTemporada:r.admAnual)/100,desp:V*r.despesasAnoPctValor/100/12,irAl:r.irAluguel/100,reaj:i12('ipca'),
+    valoriz:FILTROS[autoFiltro].taxa(),corr:r.corretagem/100,cdi:D.bcb.cdiAA/100,pctCdi:1,poup:poupAA,ipca:i12('ipca')};
+}
+function autoPlantaG(){ const V=vAuto(), r=RM(), razao=num('pValor')>0?num('pMercado')/num('pValor'):1;
+  const m={pValor:V,pMercado:V*razao,pEntrada:r.fluxoPlanta.entrada,pMensais:r.fluxoPlanta.mensais,pReforcos:r.fluxoPlanta.reforcos,pCorrecao:CUB.v12m,pValoriz:FILTROS[autoFiltro].taxa()*100,pCorretagem:r.corretagem,pCdi:D.bcb.cdiAA};
+  return id=>id in m?m[id]:num(id); }
+function autoHoldingG(){ const V=vAuto(), p=autoP(), m={hValor:V,hAluguel:(p.modo==='nenhum'?V*RM().aluguelMensalPctValor/100:rendaAno1(p)/12),hValoriz:FILTROS[autoFiltro].taxa()*100,hHonor:RM().honorInventario};
+  return id=>id in m?m[id]:num(id); }
+
+const PROV=()=>RM().provisorio?` <span class="tag prov">${L('referência provisória','referencia provisoria')}</span>`:` <span class="tag">${L('referência da consultoria','referencia de la consultoría')}</span>`;
+function linhasPremissas(aba){
+  const p=autoP(), r=RM(), F=FILTROS[autoFiltro], bc=L('Banco Central','Banco Central'), jd=JUROS_IMOB!=null?L('ao vivo','en vivo'):REFS.jurosImob.data;
+  const rows=[[L('Valorização ao ano','Valorización anual'),pct(F.taxa(),1),F.fonte()]];
+  if(aba==='sim'||aba==='avista'){
+    rows.push([L('CDI hoje','CDI hoy'),pct(p.cdi,2),bc+(bcbAoVivo?L(', ao vivo',', en vivo'):'')],[L('IPCA 12 meses (reajuste e despesas)','IPCA 12 meses (ajuste y gastos)'),pct(p.ipca,2),bc],[L('Poupança','Caja de ahorro'),pct(p.poup,2),bc]);
+    if(aba==='sim') rows.push([L('Juros do financiamento','Interés de la financiación'),pct(p.juros,2),`${bc} (SGS 20772), ${jd}`]);
+    if(p.custos>0) rows.push([L('ITBI + registro','ITBI + registro'),p1(SITE_CONFIG.itbiRegistroPct),L('configuração do site','configuración del sitio')]);
+    if(p.modo==='temporada') rows.push([L('Diária alta / resto do ano','Diaria alta / resto del año'),`${brl(p.dA)} / ${brl(p.dB)}`,L(`ocupação ${r.ocupAlta}% / ${r.ocupBaixa}%, ${r.mesesAlta} meses de alta`,`ocupación ${r.ocupAlta}% / ${r.ocupBaixa}%, ${r.mesesAlta} meses de alta`)+PROV()]);
+    if(p.modo==='anual') rows.push([L('Aluguel por mês','Alquiler por mes'),brl(p.aluguel),L(`${p1(r.aluguelMensalPctValor)} do valor, vacância ${r.vacancia}%`,`${p1(r.aluguelMensalPctValor)} del valor, vacancia ${r.vacancia}%`)+PROV()]);
+    if(p.modo!=='nenhum') rows.push([L('Administração / plataforma','Administración / plataforma'),p1(p.adm*100),PROV()]);
+    rows.push([L('Despesas do proprietário','Gastos del propietario'),brl(p.desp)+L('/mês','/mes'),L(`${p1(r.despesasAnoPctValor)} do valor ao ano`,`${p1(r.despesasAnoPctValor)} del valor por año`)+PROV()],[L('Corretagem na venda','Comisión en la venta'),p1(r.corretagem),PROV()]);
+    if(aba==='avista') rows.push([L('Desconto à vista','Descuento al contado'),p1(r.descontoAvista),PROV()]);
+  }
+  if(aba==='planta'){ const f=r.fluxoPlanta;
+    rows.push([L('Correção das parcelas','Ajuste de las cuotas'),p1(CUB.v12m),L('CUB/SC, últimos 12 meses (Sinduscon)','CUB/SC, últimos 12 meses (Sinduscon)')],[L('Fluxo (entrada / mensais / reforços / chaves)','Plan (anticipo / cuotas / refuerzos / entrega)'),`${f.entrada}/${f.mensais}/${f.reforcos}/${Math.max(0,100-f.entrada-f.mensais-f.reforcos)}%`,PROV()],[L('CDI para comparar','CDI para comparar'),pct(D.bcb.cdiAA/100,2),bc],[L('Corretagem na venda','Comisión en la venta'),p1(r.corretagem),PROV()]);
+  }
+  if(aba==='holding'){ const g=autoHoldingG();
+    rows.push([L('Aluguel bruto por mês','Alquiler bruto por mes'),brl(g('hAluguel')),L('mesma referência do Simulador','misma referencia del Simulador')+PROV()],[L('Advogado e custas do inventário','Abogado y costas del sucesorio'),p1(r.honorInventario),PROV()]);
+  }
+  return rows;
+}
+function painelAuto(aba){
+  const el=$('auto-'+aba); if(!el) return;
+  if(!el.dataset.pronto){
+    el.dataset.pronto='1';
+    el.innerHTML=`<div class="auto-h"><span class="badge" style="margin:0">${L('Automático','Automático')}</span><h2>${L('Cenário de mercado','Escenario de mercado')}</h2></div>
+      <p class="note">${L('Percentuais gerados pelo site com os dados de hoje. Você só escolhe o valor do imóvel e a referência de valorização.','Porcentajes generados por el sitio con los datos de hoy. Usted solo elige el valor del inmueble y la referencia de valorización.')}</p>
+      <div class="f auto-valor"><label for="autoValor-${aba}">${L('Valor do imóvel','Valor del inmueble')}</label><div class="in"><span>R$</span><input id="autoValor-${aba}" class="auto-valor-in" inputmode="numeric" autocomplete="off"></div></div>
+      <div class="seg3 auto-filtro" role="group" aria-label="${L('Referência de valorização','Referencia de valorización')}">
+        <button type="button" data-f="media">${L('Média PB + Itapema','Promedio PB + Itapema')}</button><button type="button" data-f="portobelo">Porto Belo</button><button type="button" data-f="itapema">Itapema</button></div>
+      <div class="tblwrap"><table class="auto-tbl"></table></div>
+      <p class="note auto-igual">${L('Igual ao seu cenário: perfil de renda, entrada (%), prazo, horizonte e opções marcadas.','Igual a su escenario: perfil de renta, anticipo (%), plazo, horizonte y opciones marcadas.')}</p>`;
+    const inp=el.querySelector('.auto-valor-in');
+    inp.addEventListener('input',()=>{ const v=lerNum(inp.value); if(v>0){ autoValor=v; autoValorManual=true; renders[tab](); } });
+    inp.addEventListener('blur',()=>{ inp.value=fmtN(vAuto()); });
+    el.querySelector('.auto-filtro').addEventListener('click',e=>{ const b=e.target.closest('[data-f]'); if(b){ autoFiltro=b.dataset.f; renders[tab](); } });
+  }
+  const inp=el.querySelector('.auto-valor-in'); if(document.activeElement!==inp) inp.value=fmtN(vAuto());
+  const seg=el.querySelector('.auto-filtro'); seg.style.setProperty('--i',['media','portobelo','itapema'].indexOf(autoFiltro));
+  seg.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===autoFiltro));
+  el.querySelector('.auto-tbl').innerHTML='<tbody>'+linhasPremissas(aba).map(([n,v,f])=>`<tr><td>${n}<small>${f}</small></td><td><b>${v}</b></td></tr>`).join('')+'</tbody>';
+}
+function comparativo(aba,linhas){ // linhas: [rótulo, valorAuto, valorSeu, maiorÉMelhor?]
+  const el=$('cmp-'+aba); if(!el) return;
+  el.innerHTML=`<div class="ph"><h2>${L('Cenário de mercado x Seu cenário','Escenario de mercado x Su escenario')}</h2><span class="note">${L(`valorização: ${FILTROS[autoFiltro].nome()} (${pct(FILTROS[autoFiltro].taxa(),1)} ao ano)`,`valorización: ${FILTROS[autoFiltro].nome()} (${pct(FILTROS[autoFiltro].taxa(),1)} anual)`)}</span></div>
+    <div class="tblwrap"><table class="cmp-tbl"><thead><tr><th></th><th class="c-auto">${L('Mercado (automático)','Mercado (automático)')}</th><th class="c-seu">${L('Seu cenário','Su escenario')}</th></tr></thead><tbody>`+
+    linhas.map(([n,a,b])=>`<tr><td>${n}</td><td class="c-auto">${a}</td><td class="c-seu">${b}</td></tr>`).join('')+`</tbody></table></div>`;
+}
+const tirTxt=t=>isFinite(t)?pct(t):'—';
+function renderAutoSim(){
+  painelAuto('sim');
+  const pa=autoP(), ra=simular(pa), ps=premissas(), rs=simular(ps), Ta=tir(ra.fluxos), Ts=tir(rs.fluxos);
+  const dif=(r)=>{const d=r.fim.imovel-r.fim.cdb; return `<span class="${d>=0?'pos':'neg'}">${d>=0?'+':'−'}${brl(Math.abs(d))}</span>`;};
+  const b1=p=>p.modo==='temporada'?rendaAno1(p):p.modo==='nenhum'?0:p.aluguel*12*(1-p.vac);
+  comparativo('sim',[[L('Valor do imóvel','Valor del inmueble'),brl(pa.valor),brl(ps.valor)],[L(`Patrimônio em ${ps.anos} anos`,`Patrimonio en ${ps.anos} años`),brl(ra.fim.imovel),brl(rs.fim.imovel)],
+    [L('Vantagem sobre o CDB líquido','Ventaja sobre el CDB neto'),dif(ra),dif(rs)],[L('TIR (retorno ao ano)','TIR (retorno anual)'),tirTxt(Ta),tirTxt(Ts)],
+    [L('Renda bruta por mês (1º ano)','Renta bruta por mes (1er año)'),brl(b1(pa)/12),brl(b1(ps)/12)],[L('Desembolso total','Desembolso total'),brl(ra.fim.investido),brl(rs.fim.investido)]]);
+}
+function renderAutoAvista(){
+  painelAuto('avista');
+  const r=RM(), pa={...autoP(),entrada:Infinity,desc:r.descontoAvista/100}, ps={...premissas(),entrada:Infinity,desc:num('desconto')/100};
+  const ra=simular(pa), rs=simular(ps), mes=x=>x.fluxos.slice(1,13).reduce((a,b)=>a+b,0)/12;
+  comparativo('avista',[[L('Preço à vista','Precio al contado'),brl(ra.preco),brl(rs.preco)],[L('Renda líquida por mês (1º ano)','Renta neta por mes (1er año)'),brl(mes(ra)),brl(mes(rs))],
+    [L(`Patrimônio em ${ps.anos} anos`,`Patrimonio en ${ps.anos} años`),brl(ra.fim.imovel),brl(rs.fim.imovel)],[L('Mesmo dinheiro no CDB','El mismo dinero en el CDB'),brl(ra.fim.cdb),brl(rs.fim.cdb)],['TIR',tirTxt(tir(ra.fluxos)),tirTxt(tir(rs.fluxos))]]);
+}
+function renderAutoPlanta(){
+  painelAuto('planta');
+  const a=simPlanta(autoPlantaG()), s=simPlanta();
+  comparativo('planta',[[L('Valor de tabela','Precio de lista'),brl(a.V),brl(s.V)],[L('Você paga até as chaves','Usted paga hasta la entrega'),brl(a.totalPago),brl(s.totalPago)],[L('Valor na entrega','Valor a la entrega'),brl(a.vmN),brl(s.vmN)],
+    [L('Lucro vendendo na entrega','Ganancia vendiendo a la entrega'),`<span class="${a.lucro>=0?'pos':'neg'}">${brl(a.lucro)}</span>`,`<span class="${s.lucro>=0?'pos':'neg'}">${brl(s.lucro)}</span>`],[L('ROI sobre o que pagou','ROI sobre lo pagado'),pct(a.roi,1),pct(s.roi,1)],['TIR',tirTxt(a.tir),tirTxt(s.tir)]]);
+}
+function renderAutoHolding(){
+  painelAuto('holding');
+  const a=simHolding(autoHoldingG()), s=simHolding();
+  const eco=r=>{const e=r.totPf-r.totHd; return `<span class="${e>=0?'pos':'neg'}">${e>=0?'':'−'}${brl(Math.abs(e))}</span>`;};
+  comparativo('holding',[[L('Valor dos imóveis','Valor de los inmuebles'),brl(a.V??vAuto()),brl(num('hValor'))],[L('Impostos e custos na pessoa física','Impuestos y costos como persona física'),brl(a.totPf),brl(s.totPf)],[L('Impostos e custos na holding','Impuestos y costos en la holding'),brl(a.totHd),brl(s.totHd)],[L('Economia com a holding','Ahorro con la holding'),eco(a),eco(s)]]);
+}
+async function jurosAoVivo(){
+  try{ const r=await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.20772/dados/ultimos/3?formato=json'); if(!r.ok) return;
+    const rs=await r.json(), m=rs.reduce((a,b)=>b.data.split('/').reverse().join('')>a.data.split('/').reverse().join('')?b:a);
+    const v=parseFloat(m.valor); if(v>3&&v<40){ JUROS_IMOB=v; if(['sim','avista','planta','holding'].includes(tab)) renders[tab](); } }catch{}
+}
+function initAuto(){
+  const w={sim:renderAutoSim,avista:renderAutoAvista,planta:renderAutoPlanta,holding:renderAutoHolding};
+  for(const [k,f] of Object.entries(w)){ const orig=renders[k]; renders[k]=()=>{ orig(); f(); }; }
+  // o "Seu cenário" redesenha só a própria aba: acompanha também o automático
+  $('form').addEventListener('input',()=>renderAutoSim());
+  $('formAvista').addEventListener('input',()=>renderAutoAvista());
+  $('formPlanta').addEventListener('input',()=>renderAutoPlanta());
+  $('formHolding').addEventListener('input',()=>renderAutoHolding());
+  $('modoAluguel').addEventListener('click',()=>setTimeout(renderAutoSim,0));
+  jurosAoVivo();
+}
+
 /* ---------- eventos ---------- */
 let tab='why';
 const renders={why:renderWhy,sim:renderSim,avista:renderAvista,planta:renderPlanta,holding:renderHolding,soja:renderSoja,idx:renderIdx,corr:renderCorr,corretor:renderCorretor};
@@ -1220,6 +1363,6 @@ setNum('custos',SITE_CONFIG.itbiRegistroPct);
 CAMPOS().forEach(el=>{ if(el.type!=='checkbox') el.defaultValue=el.value; });
 contato(); setModo('temporada');
 const abaLink=aplicarLink();
-initV2();
+initV2(); initAuto();
 waves(); hero(); show(abaLink||(ANCORA_ABA[location.hash.slice(1)])||'why'); rotaHash();
 bcbAoVivoCarregar();

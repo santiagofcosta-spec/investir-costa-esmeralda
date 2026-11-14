@@ -119,5 +119,10 @@
   "atualizado": "2026-11-13",
   "validadeDias": 120,
   "nome": "Situação dos projetos de Porto Belo (VivaPark, All Resort, Porto Belo Lagos, Perequê)"
+ },
+ "jurosImob": {
+  "v": 14.2,
+  "data": "set/2026",
+  "txt": "Banco Central, SGS 20772: taxa média do financiamento imobiliário com taxas de mercado (PF). Reserva: o site busca ao vivo."
  }
 }
