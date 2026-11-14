@@ -1129,6 +1129,25 @@ function renderPBSerie(){
   $('pbSerieSelo').innerHTML=selo(REFS.serieDWVPortoBelo);
   draw('chPBSerie',{type:'bar',data:{labels:S.map(p=>p.rot),datasets:[{label:L('m² médio de venda em Porto Belo (DWV)','m² medio de venta en Porto Belo (DWV)'),data:S.map(p=>p.v),backgroundColor:S.map((p,i)=>i===S.length-1?css('--gold'):'rgba(255,195,80,.55)'),borderColor:css('--gold-2'),borderWidth:1,borderRadius:6}]},
     options:baseOpts(v=>'R$ '+Math.round(v/1000)+' mil',{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${brl(c.parsed.y)}/m² · DWV, via ${S[c.dataIndex].f}`}}}})});
+  renderPBItbi();
+}
+
+/* ---------- Porto Belo: dinheiro movimentado em escrituras, estimado pelo ITBI (Tesouro Nacional) ----------
+   volume ≈ ITBI arrecadado ÷ alíquota. Só a partir de 2019, quando a alíquota já era 2% o ano todo. */
+function renderPBItbi(){
+  const R=REFS.itbiPortoBelo; if(!$('chPBItbi')||!R) return;
+  const S=R.serie.filter(x=>x[0]>=R.aliquotaDesde).map(([a,v])=>({a,itbi:v,vol:v/R.aliquota}));
+  if(S.length<2) return;
+  const fv=v=>v>=1e9?'R$ '+(v/1e9).toLocaleString('pt-BR',{maximumFractionDigits:2})+L(' bi',' mil M'):'R$ '+Math.round(v/1e6).toLocaleString('pt-BR')+L(' mi',' M');
+  const a=S[0], b=S.at(-1), n=b.a-a.a, cagr=Math.pow(b.vol/a.vol,1/n)-1;
+  $('pbItbiKpis').innerHTML=kpiHTML([
+    [L(`Movimentado em ${b.a}`,`Movido en ${b.a}`),fv(b.vol),L(`estimado pelo ITBI de ${fv(b.itbi)}`,`estimado por el ITBI de ${fv(b.itbi)}`),''],
+    [L(`Crescimento desde ${a.a}`,`Crecimiento desde ${a.a}`),'×'+fmtN(b.vol/a.vol,1),`${fv(a.vol)} → ${fv(b.vol)}`,'up'],
+    [L('Média ao ano','Promedio anual'),'+'+pct(cagr,0),L(`de ${a.a} a ${b.a}, em valores da época`,`de ${a.a} a ${b.a}, en valores de cada año`),'up'],
+  ]);
+  $('pbItbiSelo').innerHTML=selo(R);
+  draw('chPBItbi',{type:'bar',data:{labels:S.map(x=>String(x.a)),datasets:[{label:L('Dinheiro movimentado em compras de imóveis (estimado)','Dinero movido en compras de inmuebles (estimado)'),data:S.map(x=>x.vol),backgroundColor:S.map((x,i)=>i===S.length-1?css('--c-itapema'):css('--c-itapema')+'8c'),borderRadius:6}]},
+    options:baseOpts(fv,{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>[`${L('Movimentado','Movido')}: ${fv(S[c.dataIndex].vol)}`,`${L('ITBI arrecadado','ITBI recaudado')}: ${brl(S[c.dataIndex].itbi)}`]}}}})});
 }
 
 /* ---------- m² internacional (aba Investidor à vista) ---------- */

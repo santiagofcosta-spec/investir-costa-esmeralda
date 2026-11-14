@@ -124,5 +124,66 @@
   "v": 14.2,
   "data": "set/2026",
   "txt": "Banco Central, SGS 20772: taxa média do financiamento imobiliário com taxas de mercado (PF). Reserva: o site busca ao vivo."
+ },
+ "itbiPortoBelo": {
+  "nome": "ITBI arrecadado em Porto Belo (Tesouro Nacional/SICONFI)",
+  "ente": 4213500,
+  "txt": "ITBI arrecadado (receita bruta realizada) declarado pela Prefeitura de Porto Belo na DCA ao Tesouro Nacional (SICONFI)",
+  "aliquota": 0.02,
+  "aliquotaDesde": 2019,
+  "aliquotaTxt": "2% desde a Lei Municipal 2.704/2018 (era 3% pela Lei 2.145/2014)",
+  "atualizado": "2026-11-14",
+  "validadeDias": 400,
+  "auto": true,
+  "serie": [
+   [
+    2014,
+    3253241.81
+   ],
+   [
+    2015,
+    3143253.73
+   ],
+   [
+    2016,
+    2421392.75
+   ],
+   [
+    2017,
+    3000760.26
+   ],
+   [
+    2018,
+    4003840.66
+   ],
+   [
+    2019,
+    4334375.02
+   ],
+   [
+    2020,
+    5410288.43
+   ],
+   [
+    2021,
+    9733789.27
+   ],
+   [
+    2022,
+    12335942.67
+   ],
+   [
+    2023,
+    14979832.44
+   ],
+   [
+    2024,
+    20195377.7
+   ],
+   [
+    2025,
+    25726571.05
+   ]
+  ]
  }
 }

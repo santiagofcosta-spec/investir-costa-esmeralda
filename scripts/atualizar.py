@@ -362,6 +362,35 @@ def atualizar_cepea(refs):
     h.update({"data": data, "v": valor, "txt": f"Indicador Cepea/Esalq Paranaguá, {data}", "atualizado": HOJE.isoformat()})
 
 
+# ---------------------------------------------------------------- ITBI Porto Belo (Tesouro Nacional / SICONFI)
+def itbi_ano(ente, ano):
+    """ITBI arrecadado (receita bruta realizada) no ano, pela Declaração de Contas Anuais (DCA, Anexo I-C).
+    Pega só a conta principal de impostos (1.1.1.2.08 até 2017, 1.1.1.8.01.4 de 2018 a 2021, 1.1.1.2.53 desde 2022);
+    a linha de multas e juros (1.9...) fica de fora. None se o ano ainda não foi entregue."""
+    url = f"https://apidatalake.tesouro.gov.br/ords/siconfi/tt/dca?an_exercicio={ano}&no_anexo=DCA-Anexo%20I-C&id_ente={ente}"
+    itens = json.loads(baixar(url).decode("utf-8")).get("items", [])
+    achados = [x for x in itens if x["cod_conta"].startswith("RO1.1.1.") and "Inter Vivos" in x["conta"]
+               and "Multa" not in x["conta"] and x["coluna"] == "Receitas Brutas Realizadas"]
+    if not achados:
+        return None
+    return round(float(min(achados, key=lambda x: len(x["cod_conta"]))["valor"]), 2)  # a conta-mãe, não as subcontas
+
+
+def atualizar_itbi(refs):
+    r = refs["itbiPortoBelo"]
+    serie = {a: v for a, v in r["serie"]}
+    for ano in range(max(serie) + 1, HOJE.year):  # anos fechados ainda não carregados
+        v = itbi_ano(r["ente"], ano)
+        if v is None:
+            continue  # a prefeitura entrega a DCA até 30/04 do ano seguinte
+        if not 1e6 < v < 1e9:
+            raise ValueError(f"ITBI {ano} fora do esperado: {v}")
+        serie[ano] = v
+        log.append(f"ITBI Porto Belo {ano}: R$ {v:,.2f}")
+    r["serie"] = [[a, serie[a]] for a in sorted(serie)]
+    r["atualizado"] = HOJE.isoformat()
+
+
 def main():
     d = json.loads(ARQ_JSON.read_text(encoding="utf-8"))
     antes = json.dumps(d, sort_keys=True)
@@ -380,6 +409,10 @@ def main():
         atualizar_cepea(refs)
     except Exception as e:
         log.append(f"Cepea: ERRO {type(e).__name__}: {e}")
+    try:
+        atualizar_itbi(refs)
+    except Exception as e:
+        log.append(f"ITBI: ERRO {type(e).__name__}: {e}")
     ARQ_REFS.write_text(json.dumps(refs, ensure_ascii=False, indent=1), encoding="utf-8")
     ARQ_REFS_JS.write_text("window.REFS_DADOS = " + json.dumps(refs, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
     ARQ_JSON.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
