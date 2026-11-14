@@ -774,6 +774,75 @@ function renderCustos(o,c){
   const m2=it[LAST]/liq, ap=num('valor');
   $('sSacas').innerHTML=L(`<b>Do campo para o litoral:</b> vendendo a ${brl2(liq)} líquidos por saca, <b>${Math.round(m2)} sacas</b> compram 1 m² em Itapema (${brl(it[LAST])}/m², FipeZap). ${n.toLocaleString('pt-BR')} sacas rendem ${brl(liq*n)}, o equivalente a <b>${(liq*n/it[LAST]).toLocaleString('pt-BR',{maximumFractionDigits:0})} m²</b> ou a ${pct(liq*n/ap,0)} de um imóvel de ${brl(ap)}.`,
     `<b>Del campo a la costa:</b> vendiendo a ${brl2(liq)} netos por saca, <b>${Math.round(m2)} sacas</b> compran 1 m² en Itapema (${brl(it[LAST])}/m², FipeZap). ${n.toLocaleString('pt-BR')} sacas rinden ${brl(liq*n)}, el equivalente a <b>${(liq*n/it[LAST]).toLocaleString('pt-BR',{maximumFractionDigits:0})} m²</b> o al ${pct(liq*n/ap,0)} de un inmueble de ${brl(ap)}.`);
+  renderProjAgro(liq,n,c);
+}
+
+/* ---------- Projeção agro: por que compensa trocar a safra por m² ----------
+   Mesmo capital (sacas × preço líquido) em 3 caminhos, ano a ano:
+   imóvel (valorização do Simulador + aluguel anual líquido, pela referência de mercado do SITE_CONFIG),
+   CDI líquido de IR (15%, prazo longo) e soja guardada (tendência do Cepea Paranaguá dez/2021 → hoje). */
+let projH=10, projV='cub'; // cenário de valorização: cub (custo de obra), sim (Simulador), ritmo (Porto Belo 2021-26)
+function renderProjAgro(liq,n,c){
+  const el=$('projAgro'); if(!el) return;
+  if(!(liq>0)||!(n>0)){ el.innerHTML=''; return; }
+  const R=SITE_CONFIG.referenciaMercado, S0=REFS.soja, pb=agroCid==='portobelo', cidNome=pb?'Porto Belo':'Itapema';
+  const m2=pb?REFS.m2PortoBelo.v:it[LAST], C=liq*n, H=projH;
+  // aluguel anual líquido: 0,5%/mês, menos vacância, administração, IR e despesas do proprietário
+  const y=Math.max(0,(R.aluguelMensalPctValor*12/100)*(1-R.vacancia/100)*(1-R.admAnual/100)*(1-R.irAluguel/100)-R.despesasAnoPctValor/100);
+  const anosSoja=(new Date(S0.hoje.data.split('/').reverse().join('-'))-new Date(S0.antes.data.split('/').reverse().join('-')))/(365.25*864e5);
+  const gS=Math.pow(S0.hoje.v/S0.antes.v,1/anosSoja)-1;
+  const pbS=REFS.serieDWVPortoBelo.pontos, m21=pbS.find(p=>p.rot==='2021').v, m2Var=pb?REFS.m2PortoBelo.v/m21-1:it[LAST]/it[PERKEY.indexOf('2021-12')]-1;
+  const cubAA=Math.pow(cubFim/cubIni,12/mesesEntre(CUB.inicio.mes,cubFimKey))-1;
+  const pbFim=pbS.at(-1), ritmoAA=pb?Math.pow(pbFim.v/m21,1/(pbFim.t-2021.5))-1:Math.pow(it[LAST]/it[PERKEY.indexOf('2021-12')],12/mesesEntre('2021-12',LASTKEY))-1;
+  const cen={cub:[cubAA,L('Custo de obra (CUB/SC)','Costo de obra (CUB/SC)')],sim:[num('valoriz')/100,L('Simulador','Simulador')],ritmo:[ritmoAA,L(`Ritmo de ${cidNome} desde 2021`,`Ritmo de ${cidNome} desde 2021`)]};
+  const v=Math.max(-0.5,cen[projV][0]), cdiL=Math.max(0,num('cdi')/100)*0.85;
+  const imo=[],alu=[],cdi=[],soja=[]; let acum=0;
+  for(let t=0;t<=H;t++){ const vt=C*Math.pow(1+v,t); if(t>0) acum+=y*C*Math.pow(1+v,t-1); imo.push(vt); alu.push(vt+acum); cdi.push(C*Math.pow(1+cdiL,t)); soja.push(C*Math.pow(1+gS,t)); }
+  const precoH=liq*Math.pow(1+gS,H), emSc=x=>x/precoH;
+  const fim={imo:alu[H],cdi:cdi[H],soja:soja[H]}, vant=fim.imo-fim.soja, alugAno=y*C/liq;
+  const sc0=n.toLocaleString('pt-BR');
+  const melhor=fim.imo>=fim.cdi;
+  const tile=(ic,lb,vv,nn,cor,cls='')=>`<div class="pa-tile ${cls}" style="--pa-c:${cor}"><span class="ic" aria-hidden="true">${ic}</span><div class="lb">${lb}</div><div class="v">${vv}</div><div class="n">${nn}</div></div>`;
+  const maxB=Math.max(emSc(fim.imo),emSc(fim.cdi),emSc(fim.soja));
+  const bar=(rot,val,cls,det)=>`<div class="sc-row"><span>${rot}</span><div class="sc-t"><div class="sc-f ${cls}" style="width:${(emSc(val)/maxB*100).toFixed(1)}%"></div></div><b>${fmtN(emSc(val))} sc</b><small>${det}</small></div>`;
+  const msgWA=L(`Olá, ${CONTATO.primeiroNome}! Vi a projeção do Investidor Agro: ${sc0} sacas em um imóvel em ${cidNome} em ${H} anos. Quero conversar sobre permuta.`,`¡Hola, ${CONTATO.primeiroNome}! Vi la proyección del Inversor Agro: ${sc0} sacas en un inmueble en ${cidNome} en ${H} años. Quiero conversar sobre permuta.`);
+  el.innerHTML=`<div class="pa-top"><div>
+      <span class="badge">${L('Projeção','Proyección')}</span>
+      <h2 id="projAgroTit">${L(`Por que compensa trocar ${sc0} sacas por m² em ${cidNome}`,`Por qué conviene cambiar ${sc0} sacas por m² en ${cidNome}`)}</h2>
+      <p class="note">${L(`O mesmo dinheiro da venda (${brl(C)} líquidos, de ${esc(c.nome)}/${esc(c.uf)}) em três caminhos.`,`El mismo dinero de la venta (${brl(C)} netos, de ${esc(c.nome)}/${esc(c.uf)}) en tres caminos.`)}</p></div>
+    <div class="pa-ctrl"><span class="note">${L('Horizonte','Horizonte')}</span><div class="chips" role="group" aria-label="${L('Horizonte da projeção','Horizonte de la proyección')}">${[5,10,15].map(a=>`<button type="button" data-ph="${a}" aria-pressed="${a===H}">${a} ${L('anos','años')}</button>`).join('')}</div>
+      <span class="note">${L('Valorização','Valorización')}</span><div class="chips" role="group" aria-label="${L('Cenário de valorização','Escenario de valorización')}">${Object.entries(cen).map(([k,[x,t]])=>`<button type="button" data-pv="${k}" aria-pressed="${k===projV}">${t} · ${pct(x,1)}</button>`).join('')}</div></div></div>
+    <div class="pa-hero">
+      ${tile('🌾',L('Sua safra compra hoje','Su cosecha compra hoy'),`${fmtN(C/m2)} m²`,L(`em ${cidNome}, a ${brl(m2)}/m²`,`en ${cidNome}, a ${brl(m2)}/m²`),'var(--c-itapema)')}
+      ${tile('🏠',L(`Imóvel em ${H} anos`,`Inmueble en ${H} años`),brlK(imo[H]),L(`${pct(v,1)} ao ano · ${cen[projV][1]}`,`${pct(v,1)} anual · ${cen[projV][1]}`),'var(--gold)')}
+      ${tile('🔑',L('Aluguel paga por ano','El alquiler paga por año'),`≈ ${fmtN(alugAno)} sc`,L(`${brlK(acum)} somados em ${H} anos, já líquidos`,`${brlK(acum)} sumados en ${H} años, ya netos`),'var(--c-bc)')}
+      ${tile('📈',L('A mais que guardar a soja','Más que guardar la soja'),(vant>=0?'+':'−')+brlK(Math.abs(vant)),L(`≈ ${fmtN(emSc(vant))} sacas a mais em ${H} anos`,`≈ ${fmtN(emSc(vant))} sacas más en ${H} años`),'var(--good)',vant>=0?'win':'')}
+    </div>
+    <div class="pa-grid">
+      <div><h3>${L('Patrimônio ano a ano','Patrimonio año a año')}</h3><p class="sub">${L('R$ nominais, sem vender o imóvel','R$ nominales, sin vender el inmueble')}</p><div class="chartbox sm"><canvas id="chProjAgro" role="img" aria-label="${L('Projeção do patrimônio em três caminhos','Proyección del patrimonio en tres caminos')}"></canvas></div></div>
+      <div><h3>${L(`Em ${H} anos, medido em sacas`,`En ${H} años, medido en sacas`)}</h3><p class="sub">${L(`ao preço projetado da soja: ${brl2(precoH)}/sc`,`al precio proyectado de la soja: ${brl2(precoH)}/sc`)}</p>
+        <div class="sacas pa-bars">
+          ${bar(L('Imóvel + aluguel','Inmueble + alquiler'),fim.imo,'imo',`${brlK(fim.imo)} · ${L(`${pct(emSc(fim.imo)/n-1,0)} sobre as ${sc0} sc`,`${pct(emSc(fim.imo)/n-1,0)} sobre las ${sc0} sc`)}`)}
+          ${bar(L('Vender e pôr no CDI','Vender y poner en CDI'),fim.cdi,'cdi',`${brlK(fim.cdi)} · CDI ${pct(num('cdi')/100,1)} − IR 15%`)}
+          ${bar(L('Guardar a soja','Guardar la soja'),fim.soja,'soja',`${brlK(fim.soja)} · ${L('saca','saca')} ${gS>=0?'+':''}${pct(gS,1)} ${L('ao ano','anual')}`)}
+        </div>
+        <p class="note" style="margin-top:10px">${melhor?L(`Neste cenário o imóvel fica à frente do CDI por ${brlK(fim.imo-fim.cdi)}, e ainda é um bem real, que não depende do preço da saca.`,`En este escenario el inmueble queda por delante del CDI por ${brlK(fim.imo-fim.cdi)}, y además es un bien real, que no depende del precio de la saca.`):L(`Neste cenário o CDI fica à frente por ${brlK(fim.cdi-fim.imo)}. O imóvel passa à frente quando a valorização acompanha o custo de obra (CUB/SC) ou quando o aluguel é maior, como na temporada.`,`En este escenario el CDI queda por delante por ${brlK(fim.cdi-fim.imo)}. El inmueble pasa adelante cuando la valorización acompaña el costo de obra (CUB/SC) o cuando el alquiler es mayor, como en temporada.`)}</p>
+      </div>
+    </div>
+    <div class="pa-why">
+      <div><span class="ic" aria-hidden="true">⚖️</span><span><b class="big">${m2Var>=0?'+':''}${pct(m2Var,0)} × ${pct(S0.hoje.v/S0.antes.v-1,0)}</b>${L(`m² de ${cidNome} × saca de soja, de dez/2021 até hoje`,`m² de ${cidNome} × saca de soja, de dic/2021 a hoy`)}</span></div>
+      <div><span class="ic" aria-hidden="true">🧱</span><span><b class="big">+${pct(cubAA,1)} ${L('ao ano','anual')}</b>${L('CUB/SC: o custo de construir sobe e segura o preço do imóvel','CUB/SC: el costo de construir sube y sostiene el precio del inmueble')}</span></div>
+      <div><span class="ic" aria-hidden="true">🛡️</span><span><b class="big">${L('Sem quebra de safra','Sin pérdida de cosecha')}</b>${L('não estraga no silo, não paga armazenagem e passa para os filhos','no se echa a perder en el silo, no paga almacenaje y pasa a los hijos')}</span></div>
+    </div>
+    <div class="pa-cta"><p class="note" style="margin:0;max-width:80ch">${L(`Premissas: valorização pelo cenário escolhido acima (CUB/SC: média anual desde ${fmtMes(CUB.inicio.mes)}; ritmo: m² ${pb?'DWV':'FipeZap'} de 2021 até hoje, que pode não se repetir); CDI do Simulador; aluguel de ${fmtN(R.aluguelMensalPctValor,1)}% do valor ao mês, com ${R.vacancia}% de vacância, ${R.admAnual}% de administração, ${R.irAluguel}% de IR e ${fmtN(R.despesasAnoPctValor,2)}% ao ano de despesas (≈ ${pct(y,1)} líquidos ao ano); soja seguindo a mesma variação anual do Cepea Paranaguá entre ${S0.antes.data} e ${S0.hoje.data}, sem custo de armazenagem. É uma projeção, não promessa de rentabilidade.`,`Supuestos: valorización según el escenario elegido arriba (CUB/SC: promedio anual desde ${fmtMes(CUB.inicio.mes)}; ritmo: m² ${pb?'DWV':'FipeZap'} de 2021 a hoy, que puede no repetirse); CDI del Simulador; alquiler de ${fmtN(R.aluguelMensalPctValor,1)}% del valor por mes, con ${R.vacancia}% de vacancia, ${R.admAnual}% de administración, ${R.irAluguel}% de impuesto y ${fmtN(R.despesasAnoPctValor,2)}% anual de gastos (≈ ${pct(y,1)} netos al año); soja siguiendo la misma variación anual del Cepea Paranaguá entre ${S0.antes.data} y ${S0.hoje.data}, sin costo de almacenaje. Es una proyección, no promesa de rentabilidad.`)}</p>
+      <a class="btn" href="${waURL(msgWA)}" target="_blank" rel="noopener">${L('Conversar sobre permuta no WhatsApp','Conversar sobre permuta por WhatsApp')}</a></div>`;
+  const anos=Array.from({length:H+1},(_,t)=>t===0?L('hoje','hoy'):L(`ano ${t}`,`año ${t}`));
+  draw('chProjAgro',{type:'line',data:{labels:anos,datasets:[
+    ds(L('Imóvel + aluguel','Inmueble + alquiler'),alu,css('--gold'),{borderWidth:3,fill:'+1',backgroundColor:css('--gold')+'2e'}),
+    ds(L('Imóvel (só valorização)','Inmueble (solo valorización)'),imo,css('--c-cub'),{borderDash:[4,4]}),
+    ds(L('CDI líquido','CDI neto'),cdi,css('--c-cdi')),
+    ds(L('Soja guardada','Soja guardada'),soja,css('--c-brasil'))]},
+    options:baseOpts(brlK)});
 }
 
 /* ---------- Área do corretor: tabelas cifradas (AES-256-GCM, PBKDF2-SHA256) ----------
@@ -1212,7 +1281,8 @@ function initV2(){
   const rw=renders.why, ra=renders.avista;
   renders.why=()=>{ rw(); renderPBSerie(); renderTeto(); renderEspera(); };
   renders.avista=()=>{ ra(); renderInternacional(); };
-  $('agroBox').addEventListener('click',e=>{ const b=e.target.closest('[data-cid]'); if(b){ agroCid=b.dataset.cid; renderAgro(); } });
+  $('agroBox').addEventListener('click',e=>{ const b=e.target.closest('[data-cid]'); if(b){ agroCid=b.dataset.cid; renderAgro(); renderCustos(sojaOfertasAtuais[ofertaSel],{nome:selNome,uf:selUF}); } });
+$('projAgro').addEventListener('click',e=>{ const b=e.target.closest('[data-ph]'), bv=e.target.closest('[data-pv]'); if(b) projH=+b.dataset.ph; if(bv) projV=bv.dataset.pv; if(b||bv) renderCustos(sojaOfertasAtuais[ofertaSel],{nome:selNome,uf:selUF}); });
   addEventListener('hashchange',rotaHash);
   // janelas entram suavemente ao rolar (só contêineres fixos; o conteúdo interno é redesenhado sem afetar)
   if('IntersectionObserver' in window && !reduce){

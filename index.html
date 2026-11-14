@@ -456,7 +456,38 @@ body.ver-auto .cmp-tbl td.c-auto{background:rgba(255,195,80,.18)}
 .ticket-grid .tk:nth-child(2){border-top-color:var(--line)}
 .agro-cid{margin-bottom:12px}
 .agro-cid button{font-size:14px;padding:8px 18px}
-.agro-cid button[aria-pressed="true"]{background:linear-gradient(135deg,#FFC350,#C5A059);border-color:#C5A059;color:#111416;box-shadow:0 6px 16px rgba(255,195,80,.35)}</style>
+.agro-cid button[aria-pressed="true"]{background:linear-gradient(135deg,#FFC350,#C5A059);border-color:#C5A059;color:#111416;box-shadow:0 6px 16px rgba(255,195,80,.35)}
+/* Projeção agro: por que compensa trocar a safra por m² */
+.proj-agro .pa-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:16px}
+.proj-agro .pa-top h2{margin:6px 0 4px}
+.proj-agro .pa-top p{margin:0;max-width:70ch}
+.pa-ctrl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.pa-ctrl .chips button{font-size:13px;padding:7px 14px}
+.pa-ctrl .chips button[aria-pressed="true"]{background:linear-gradient(135deg,#FFC350,#C5A059);border-color:#C5A059;color:#111416}
+.pa-hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:18px}
+.pa-tile{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px}
+.pa-tile::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--pa-c,var(--gold))}
+.pa-tile .ic{font-size:22px;line-height:1}
+.pa-tile .lb{font-size:12px;color:var(--muted);margin:8px 0 2px;text-transform:uppercase;letter-spacing:.04em}
+.pa-tile .v{font-family:var(--f-display);font-size:clamp(24px,3.4vw,32px);font-weight:700;line-height:1.1}
+.pa-tile .n{font-size:12px;color:var(--muted);margin-top:4px}
+@media (max-width:560px){.pa-hero{grid-template-columns:1fr 1fr;gap:10px}.pa-tile{padding:14px 12px}.pa-tile .v{font-size:21px}.pa-tile .lb{font-size:11px}}
+.pa-tile.win{border-color:color-mix(in srgb,var(--good) 45%,var(--line))}
+.pa-tile.win .v{color:var(--good)}
+.pa-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:860px){.pa-grid{grid-template-columns:1fr}}
+.pa-grid h3{margin:0 0 4px;font-size:15px}
+.pa-grid .sub{font-size:12px;color:var(--muted);margin:0 0 10px}
+.pa-bars .sc-row{grid-template-columns:150px minmax(0,1fr) 110px}
+.pa-bars .sc-f.cdi{background:var(--c-cdi)}
+.pa-bars .sc-f.soja{background:var(--c-brasil)}
+.pa-bars .sc-f.imo{background:linear-gradient(90deg,#C5A059,#FFC350)}
+@media (max-width:560px){.pa-bars .sc-row{grid-template-columns:100px minmax(0,1fr) 84px}}
+.pa-why{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:18px}
+.pa-why div{display:flex;gap:12px;align-items:flex-start;background:var(--surface2);border-radius:12px;padding:12px 14px;font-size:13px}
+.pa-why b.big{display:block;font-family:var(--f-display);font-size:20px}
+.pa-why .ic{font-size:22px;line-height:1.2}
+.pa-cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:16px}</style>
 <style>
 /* ===================== V3 · acabamento sofisticado: janelas flutuantes, mais respiro ===================== */
 :root{
@@ -1036,6 +1067,7 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
       <div class="ph"><h2 data-es="Soja disponible por región">Soja disponível por região</h2><span class="note" id="sRegData"></span></div>
       <div class="tblwrap"><table id="tblRegioes"></table></div>
     </div>
+    <section class="panel proj-agro" id="projAgro" aria-labelledby="projAgroTit"></section>
     <p class="note" id="sFonte"></p>
   </section>
 
