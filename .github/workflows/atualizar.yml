@@ -1,4 +1,4 @@
-name: Atualizar dados (FipeZap, CUB, Banco Central)
+name: Atualizar dados (FipeZap, CUB, Banco Central, soja, Cepea) e alertas
 
 on:
   schedule:
@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   atualizar:
@@ -19,9 +20,13 @@ jobs:
           python-version: "3.12"
       - run: pip install pypdf==5.1.0
       - run: python scripts/atualizar.py
+      - name: Alertas (dado vencido e notícias de Porto Belo)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/alertas.py
       - name: Salvar se algo mudou
         run: |
-          if git diff --quiet -- dados/; then
+          if git diff --quiet -- dados/ && [ -z "$(git ls-files --others --exclude-standard dados/)" ]; then
             echo "Nenhum dado novo."
           else
             git config user.name "robo-atualizador"

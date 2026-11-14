@@ -21,29 +21,17 @@ const SITE_CONFIG = {
 const CONTATO = { nome:SITE_CONFIG.consultorNome, primeiroNome:SITE_CONFIG.primeiroNome, whatsapp:SITE_CONFIG.whatsappNumero, whatsappTxt:SITE_CONFIG.whatsappTxt, creci:SITE_CONFIG.creci, imobiliaria:SITE_CONFIG.imobiliaria };
 
 /* ---------- referências de mercado com fonte (conferidas em 13/11/2026; atualizar à mão) ---------- */
-const REFS = {
-  m2PortoBelo: { v:14712, txt:'imóveis novos vendidos no 1º semestre de 2026 (levantamento DWV publicado por Portas e NSC Total)' },
-  // m² médio de venda em Porto Belo segundo a DWV, como publicado na imprensa. t = posição no tempo (ano decimal).
-  // Excluído: R$ 18.918 para 2023 (Lance Porto Belo), incoerente com jan/2023 e 2024 da própria DWV.
-  serieDWVPortoBelo: [
-    { rot:'2020', t:2020.5, v:8066, f:'Lance Porto Belo' },
-    { rot:'2021', t:2021.5, v:8558, f:'Lance Porto Belo' },
-    { rot:'2022', t:2022.5, v:10623, f:'Lance Porto Belo' },
-    { rot:'jan/23', t:2023.0, v:11845, f:'NSC Total' },
-    { rot:'jan/24', t:2024.0, v:12333, f:'NSC Total' },
-    { rot:'2024', t:2024.5, v:13400, f:'Imobireport' },
-    { rot:'2025', t:2025.5, v:13900, f:'Imobireport' },
-    { rot:'1º sem/26', t:2026.25, v:14712, f:'Portas e NSC Total' },
-  ],
-  vendasPortoBelo: { v:'R$ 2,5 bilhões', txt:'vendas de imóveis novos e lançamentos no 1º semestre de 2026 (DWV, via Portas e NSC Total)' },
-  soja: { antes:{ data:'dez/2021', v:171.42, txt:'Indicador Cepea/Esalq Paranaguá, fechamento de 17/12/2021' },
-          hoje:{ data:'nov/2026', v:159.87, txt:'Indicador Cepea/Esalq Paranaguá, 11/11/2026' }, areaPadrao:100 },
-  internacional: [
-    { nome:'Punta del Este', faixa:'US$ 3.200 a 3.500', ref:3350, txt:'média geral de apartamentos (Mercado Libre, 2026); obra nova premium: US$ 6.000 a 9.000/m² (El Cronista)' },
-    { nome:'Miami', faixa:'US$ 6.600 a 11.200', ref:11200, txt:'condomínios de luxo, mediana US$ 1.040/pé² no 1º tri/2026 (Condo Black Book); Downtown, todos os condomínios: ~US$ 610/pé²' },
-  ],
-  orlaItapema: { custo:'~R$ 60 milhões', km:'4,75 km', largura:'até 60 m', txt:'Prefeitura de Itapema e Governo de SC, conforme NSC Total e Portas' },
-};
+const REFS = window.REFS_DADOS; // dados/referencias.json: números de mercado com fonte, data e validade
+
+/* ---------- idade dos dados manuais ---------- */
+const diasDesde = iso => Math.floor((Date.now() - new Date(iso + 'T12:00:00')) / 864e5);
+const vencido = r => !!(r && r.atualizado && r.validadeDias && diasDesde(r.atualizado) > r.validadeDias);
+function selo(r){ // "conferido em nov/2026" + aviso se passou da validade
+  if(!r || !r.atualizado) return '';
+  const [y,m]=r.atualizado.split('-'); const q=NOMES_MES[+m-1]+'/'+y;
+  return vencido(r) ? ` <span class="velho">${L(`dado de ${q}, pode estar desatualizado`,`dato de ${q}, puede estar desactualizado`)}</span>`
+                    : ` <span class="fresco">${L(`conferido em ${q}`,`verificado en ${q}`)}</span>`;
+}
 
 /* ---------- idioma ---------- */
 const ES = new URLSearchParams(location.search).get('lang') === 'es';
@@ -997,19 +985,20 @@ function renderTeto(){
   draw('chRegional',{type:'bar',data:{labels:rows.map(r=>r[0]),datasets:[{label:'R$/m²',data:rows.map(r=>r[1]),backgroundColor:rows.map(r=>css(r[2])),borderRadius:6}]},
     options:baseOpts(v=>'R$ '+Math.round(v/1000)+' mil',{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${brl(c.parsed.x)}/m² · ${rows[c.dataIndex][3]}`}}},scales:{x:{beginAtZero:true,ticks:{color:css('--muted'),callback:v=>'R$ '+Math.round(v/1000)+' mil'},grid:{color:css('--line')}},y:{ticks:{color:css('--ink'),font:{weight:'600'}},grid:{display:false}}}})});
   const gap=1-REFS.m2PortoBelo.v/REG.bc.m2[fimDe('bc')];
-  $('regionalNota').innerHTML=L(`Porto Belo ainda negocia cerca de <b>${pct(gap,0)} abaixo</b> do m² de Balneário Camboriú, com os grandes projetos de bairro planejado e orla em andamento. Atenção: o número de Porto Belo vem de outra metodologia (imóveis novos vendidos, ${REFS.m2PortoBelo.txt}), porque a cidade não tem índice FipeZap.`,`Porto Belo todavía negocia cerca de <b>${pct(gap,0)} por debajo</b> del m² de Balneário Camboriú, con grandes proyectos de barrio planificado y costanera en marcha. Atención: el dato de Porto Belo usa otra metodología (inmuebles nuevos vendidos, encuesta DWV), porque la ciudad no tiene índice FipeZap.`);
+  $('regionalNota').innerHTML=L(`Porto Belo ainda negocia cerca de <b>${pct(gap,0)} abaixo</b> do m² de Balneário Camboriú, com os grandes projetos de bairro planejado e orla em andamento. Atenção: o número de Porto Belo vem de outra metodologia (imóveis novos vendidos, ${REFS.m2PortoBelo.txt}), porque a cidade não tem índice FipeZap.`,`Porto Belo todavía negocia cerca de <b>${pct(gap,0)} por debajo</b> del m² de Balneário Camboriú, con grandes proyectos de barrio planificado y costanera en marcha. Atención: el dato de Porto Belo usa otra metodología (inmuebles nuevos vendidos, encuesta DWV), porque la ciudad no tiene índice FipeZap.`)+selo(REFS.m2PortoBelo);
 }
 
 /* ---------- Porto Belo: série DWV ---------- */
 function renderPBSerie(){
   if(!$('chPBSerie')) return;
-  const S=REFS.serieDWVPortoBelo, a=S[0], b=S.at(-1), anos=b.t-a.t, cagr=Math.pow(b.v/a.v,1/anos)-1;
+  const S=REFS.serieDWVPortoBelo.pontos, a=S[0], b=S.at(-1), anos=b.t-a.t, cagr=Math.pow(b.v/a.v,1/anos)-1;
   $('pbSerieKpis').innerHTML=kpiHTML([
     [L('m² em Porto Belo hoje','m² en Porto Belo hoy'),brl(b.v),L('1º semestre de 2026 · DWV','1er semestre de 2026 · DWV'),''],
     [L('Valorização desde 2020','Valorización desde 2020'),'+'+pct(b.v/a.v-1,0),`${brl(a.v)} → ${brl(b.v)}`,'up'],
     [L('Média ao ano','Promedio anual'),pct(cagr,1),L(`em cerca de ${fmtN(anos,1)} anos`,`en cerca de ${fmtN(anos,1)} años`),'up'],
     [L('Ainda abaixo de Itapema','Todavía por debajo de Itapema'),pct(1-b.v/it[LAST],0),L(`Itapema: ${brl(it[LAST])}/m² (FipeZap)`,`Itapema: ${brl(it[LAST])}/m² (FipeZap)`)],
   ]);
+  $('pbSerieSelo').innerHTML=selo(REFS.serieDWVPortoBelo);
   draw('chPBSerie',{type:'bar',data:{labels:S.map(p=>p.rot),datasets:[{label:L('m² médio de venda em Porto Belo (DWV)','m² medio de venta en Porto Belo (DWV)'),data:S.map(p=>p.v),backgroundColor:S.map((p,i)=>i===S.length-1?css('--gold'):'rgba(255,195,80,.55)'),borderColor:css('--gold-2'),borderWidth:1,borderRadius:6}]},
     options:baseOpts(v=>'R$ '+Math.round(v/1000)+' mil',{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${brl(c.parsed.y)}/m² · DWV, via ${S[c.dataIndex].f}`}}}})});
 }
@@ -1019,11 +1008,11 @@ function renderInternacional(){
   const el=$('intlBox'); if(!el) return;
   const u=usdEm(LASTKEY); if(!u) return;
   const ce=it[LAST]/u, pb=REFS.m2PortoBelo.v/u;
-  const rows=[[L('Porto Belo (novos)','Porto Belo (nuevos)'),pb,usd(pb),L('DWV 2026 ÷ PTAX','DWV 2026 ÷ PTAX')],['Itapema',ce,usd(ce),`FipeZap ÷ PTAX ${fmtMes(LASTKEY)}`],...REFS.internacional.map(r=>[r.nome,r.ref,r.faixa,r.txt])];
+  const rows=[[L('Porto Belo (novos)','Porto Belo (nuevos)'),pb,usd(pb),L('DWV 2026 ÷ PTAX','DWV 2026 ÷ PTAX')],['Itapema',ce,usd(ce),`FipeZap ÷ PTAX ${fmtMes(LASTKEY)}`],...REFS.internacional.itens.map(r=>[r.nome,r.ref,r.faixa,r.txt])];
   const max=Math.max(...rows.map(r=>r[1]));
   el.innerHTML=`<div class="ph"><h2>${L('Costa Esmeralda x mercados internacionais','Costa Esmeralda x mercados internacionales')}</h2><span class="note">${L('US$ por m²','US$ por m²')}</span></div>
     <div class="intl">${rows.map(([n,v,t,s],i)=>`<div class="intl-row${i<2?' ce':''}"><span class="intl-n">${n}</span><div class="intl-t"><div class="intl-f" style="width:${(v/max*100).toFixed(1)}%"></div></div><b>${t}</b><small>${s}</small></div>`).join('')}</div>
-    <p class="note" style="margin-top:10px">${L('Fontes de segmentos diferentes: compare como ordem de grandeza. Para Punta del Este e Miami a barra usa o topo da faixa citada.','Fuentes de segmentos distintos: compare como orden de magnitud. Para Punta del Este y Miami la barra usa el tope del rango citado.')}</p>`;
+    <p class="note" style="margin-top:10px">${L('Fontes de segmentos diferentes: compare como ordem de grandeza. Para Punta del Este e Miami a barra usa o topo da faixa citada.','Fuentes de segmentos distintos: compare como orden de magnitud. Para Punta del Este y Miami la barra usa el tope del rango citado.')}${selo(REFS.internacional)}</p>`;
 }
 
 /* ---------- #objecao-cub-imposto: alavancagem na obra ---------- */
@@ -1055,7 +1044,7 @@ function renderAgro(){
   const S0=REFS.soja, area=S0.areaPadrao, iDez21=PERKEY.indexOf('2021-12'), pb=agroCid==='portobelo';
   const cidNome=pb?'Porto Belo':'Itapema';
   // Porto Belo: m² de hoje = DWV 2026; dez/2021 estimado com a valorização de Itapema (FipeZap) no período
-  const m2Hoje=pb?REFS.m2PortoBelo.v:it[LAST], m2Antes=pb?REFS.serieDWVPortoBelo.find(p=>p.rot==='2021').v:it[iDez21];
+  const m2Hoje=pb?REFS.m2PortoBelo.v:it[LAST], m2Antes=pb?REFS.serieDWVPortoBelo.pontos.find(p=>p.rot==='2021').v:it[iDez21];
   const loc=precoSojaLocal(), fatorPorto=S0.antes.v/S0.hoje.v;
   // hoje: preço da cidade; dez/2021: estimado aplicando a variação de Paranaguá ao preço da cidade
   const pHoje=loc?loc.v:S0.hoje.v, pAntes=loc?loc.v*fatorPorto:S0.antes.v;
@@ -1073,9 +1062,9 @@ function renderAgro(){
     </div>
     <div class="callout" style="margin-top:12px">${L(`Quem trocou <b>${fmtN(s0)} sacas</b> por um imóvel em dez/2021 tem hoje um patrimônio que equivale a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} a mais. A saca caiu e o m² subiu: o imóvel guardou o valor da safra.`,`Quien cambió <b>${fmtN(s0)} sacas</b> por un inmueble en dic/2021 hoy tiene un patrimonio equivalente a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} más. La saca bajó y el m² subió: el inmueble guardó el valor de la cosecha.`)}</div>
     <p class="note" style="margin-top:8px">${loc
-      ? L(`Soja hoje: ${loc.fonte}. Dez/2021: estimado aplicando ao preço da cidade a mesma variação do porto de Paranaguá no período (Cepea/Esalq: ${brl2(S0.antes.v)} em 17/12/2021 → ${brl2(S0.hoje.v)} em 11/11/2026), porque não há histórico por cidade daquela época. ${notaImovel}`,
-          `Soja hoy: ${loc.fonte}. Dic/2021: estimado aplicando al precio de la ciudad la misma variación del puerto de Paranaguá en el período (Cepea/Esalq: ${brl2(S0.antes.v)} el 17/12/2021 → ${brl2(S0.hoje.v)} el 11/11/2026), porque no hay histórico por ciudad de esa época. ${notaImovel}`)
-      : L(`Sem cotação para a cidade escolhida: usamos o porto de Paranaguá. Soja: ${S0.antes.txt}; ${S0.hoje.txt}. ${notaImovel}`,`Sin cotización para la ciudad elegida: usamos el puerto de Paranaguá (Cepea/Esalq, 17/12/2021 y 11/11/2026). ${notaImovel}`)}</p>`;
+      ? L(`Soja hoje: ${loc.fonte}. Dez/2021: estimado aplicando ao preço da cidade a mesma variação do porto de Paranaguá no período (Cepea/Esalq: ${brl2(S0.antes.v)} em ${S0.antes.data} → ${brl2(S0.hoje.v)} em ${S0.hoje.data}), porque não há histórico por cidade daquela época. ${notaImovel}`,
+          `Soja hoy: ${loc.fonte}. Dic/2021: estimado aplicando al precio de la ciudad la misma variación del puerto de Paranaguá en el período (Cepea/Esalq: ${brl2(S0.antes.v)} el ${S0.antes.data} → ${brl2(S0.hoje.v)} el ${S0.hoje.data}), porque no hay histórico por ciudad de esa época. ${notaImovel}`)
+      : L(`Sem cotação para a cidade escolhida: usamos o porto de Paranaguá. Soja: ${S0.antes.txt}; ${S0.hoje.txt}. ${notaImovel}`,`Sin cotización para la ciudad elegida: usamos el puerto de Paranaguá (Cepea/Esalq, ${S0.antes.data} y ${S0.hoje.data}). ${notaImovel}`)}${vencido(S0.hoje)?selo(S0.hoje):""}${agroCid==='portobelo'?selo(REFS.serieDWVPortoBelo):''}</p>`;
 }
 
 /* ---------- Atalho guiado: monte seu cenário em 30 segundos ---------- */
@@ -1154,6 +1143,8 @@ function initV2(){
   $('tempRef').textContent=L(`Referência: temporada bem gerida costuma render ~${fmtN(SITE_CONFIG.multiplicadorTemporada,2)}× o aluguel anual tradicional.`,`Referencia: una temporada bien gestionada suele rendir ~${fmtN(SITE_CONFIG.multiplicadorTemporada,2)}× el alquiler anual tradicional.`);
   // assinatura e selo
   $('pbHero').innerHTML=L(`<b>★ Porto Belo</b> movimentou <b>${REFS.vendasPortoBelo.v}</b> em imóveis novos no 1º semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², ainda abaixo dos vizinhos. <a href="#porto-belo">Veja o que está sendo construído →</a>`,`<b>★ Porto Belo</b> movió <b>R$ 2.500 millones</b> en inmuebles nuevos en el 1er semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², todavía por debajo de sus vecinos. <a href="#porto-belo">Vea lo que se está construyendo →</a>`);
+  document.querySelectorAll('.selo-projetos').forEach(e=>e.innerHTML=selo(REFS.projetos));
+  document.querySelectorAll('.selo-orla').forEach(e=>e.innerHTML=selo(REFS.orlaItapema));
   $('assNome').textContent=SITE_CONFIG.consultorNome;
   $('assCargo').textContent=(SITE_CONFIG.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+SITE_CONFIG.creci+' · ':'')+SITE_CONFIG.imobiliaria;
   $('assWa').textContent='WhatsApp '+SITE_CONFIG.whatsappTxt;

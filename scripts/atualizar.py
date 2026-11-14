@@ -16,6 +16,8 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 ARQ_JSON = RAIZ / "dados" / "dados.json"
 ARQ_JS = RAIZ / "dados" / "dados.js"
+ARQ_REFS = RAIZ / "dados" / "referencias.json"
+ARQ_REFS_JS = RAIZ / "dados" / "referencias.js"
 UA = {"User-Agent": "Mozilla/5.0 (atualizador-calculadora)"}
 HOJE = dt.date.today()
 log = []
@@ -341,6 +343,25 @@ def atualizar_soja(d):
 
 
 # ---------------------------------------------------------------- principal
+# ---------------------------------------------------------------- Cepea (soja Paranaguá)
+def atualizar_cepea(refs):
+    """Indicador da Soja Cepea/Esalq - Paranaguá: pega a linha mais recente da tabela pública."""
+    html = baixar("https://www.cepea.org.br/br/indicador/soja.aspx").decode("utf-8", "replace")
+    i = html.find('id="imagenet-indicador1"')
+    if i < 0:
+        raise ValueError("tabela do indicador Paranaguá não encontrada")
+    m = re.search(r"<td>(\d{2}/\d{2}/\d{4})</td>\s*<td>([\d.,]+)</td>", html[i:i + 4000])
+    if not m:
+        raise ValueError("linha do indicador não reconhecida")
+    data, valor = m.group(1), num_br(m.group(2))
+    if not 50 < valor < 500:
+        raise ValueError(f"valor fora do esperado: {valor}")
+    h = refs["soja"]["hoje"]
+    if h.get("data") != data or h.get("v") != valor:
+        log.append(f"Cepea Paranaguá: R$ {valor:.2f} em {data}")
+    h.update({"data": data, "v": valor, "txt": f"Indicador Cepea/Esalq Paranaguá, {data}", "atualizado": HOJE.isoformat()})
+
+
 def main():
     d = json.loads(ARQ_JSON.read_text(encoding="utf-8"))
     antes = json.dumps(d, sort_keys=True)
@@ -354,6 +375,13 @@ def main():
                 log.append(f"{nome}: ERRO {type(e).__name__}: {e}")
     if json.dumps(d, sort_keys=True) != antes:
         d["atualizado"] = HOJE.isoformat()
+    refs = json.loads(ARQ_REFS.read_text(encoding="utf-8"))
+    try:
+        atualizar_cepea(refs)
+    except Exception as e:
+        log.append(f"Cepea: ERRO {type(e).__name__}: {e}")
+    ARQ_REFS.write_text(json.dumps(refs, ensure_ascii=False, indent=1), encoding="utf-8")
+    ARQ_REFS_JS.write_text("window.REFS_DADOS = " + json.dumps(refs, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
     ARQ_JSON.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
     ARQ_JS.write_text("window.DADOS = " + json.dumps(d, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
     print("\n".join(log))

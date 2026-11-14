@@ -392,6 +392,8 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
 @media print{.wizard,.btn-util,.badge,.assinatura .ass-acoes{display:none!important}.assinatura{background:none;color:var(--ink);border:1px solid var(--line)}.assinatura h2{color:var(--ink)}}
 </style>
 <style>.wa{position:fixed}
+.fresco{font-size:11px;color:var(--muted);white-space:nowrap}
+.velho{font-size:11px;font-weight:600;color:var(--bad);background:var(--bad-bg);padding:1px 6px;border-radius:6px;white-space:nowrap}
 .pb-serie{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
 .pb-hero{margin-top:14px;display:inline-block;max-width:60ch;font-size:14px;color:#e6e8ea;background:rgba(255,195,80,.1);border:1px solid rgba(255,195,80,.35);border-left:3px solid var(--gold);border-radius:10px;padding:10px 14px}
 .pb-hero b{color:var(--gold)}
@@ -486,9 +488,10 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
         <span class="badge" data-es="Vector de expansión">Vetor de expansão</span>
         <h2 data-es="Porto Belo en transformación">Porto Belo em transformação</h2>
         <p data-es="Grandes proyectos privados y públicos se concentran en Porto Belo y alrededores. Cada tarjeta muestra la situación actual y la fuente: son proyectos anunciados por desarrolladores y prensa, con plazos que pueden cambiar.">Grandes projetos privados e públicos estão se concentrando em Porto Belo e arredores. Cada card mostra a situação atual e a fonte: são projetos anunciados por incorporadoras e imprensa, com prazos que podem mudar.</p>
+        <p class="note selo-projetos"></p>
       </div>
       <div class="pb-serie">
-        <h3 data-es="Precio medio del m² en Porto Belo (DWV)">Preço médio do m² em Porto Belo (DWV)</h3>
+        <h3><span data-es="Precio medio del m² en Porto Belo (DWV)">Preço médio do m² em Porto Belo (DWV)</span><span id="pbSerieSelo"></span></h3>
         <div class="kpis" id="pbSerieKpis" style="margin-top:10px"></div>
         <div class="chartbox sm" style="margin-top:12px"><canvas id="chPBSerie"></canvas></div>
         <p class="note" style="margin-top:8px" data-es="Porto Belo no forma parte del FipeZap. Estos son los valores de la plataforma DWV (inmuebles nuevos vendidos) divulgados por Lance Porto Belo (2020–2022), NSC Total (ene/2023 y ene/2024), Imobireport (2024 y 2025) y Portas/NSC Total (1er sem/2026). Mezcla promedios anuales y fotos de enero; sirve para ver la tendencia. Se descartó un valor de R$ 18.918 para 2023 por ser incoherente con los demás datos de DWV.">Porto Belo não entra no FipeZap. Estes são os valores da plataforma DWV (imóveis novos vendidos) divulgados por Lance Porto Belo (2020–2022), NSC Total (jan/2023 e jan/2024), Imobireport (2024 e 2025) e Portas/NSC Total (1º sem/2026). Mistura médias anuais e retratos de janeiro: serve para ver a tendência. Um valor de R$ 18.918 para 2023 foi descartado por não bater com os demais dados da DWV.</p>
@@ -566,7 +569,7 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
 
       <h3 style="margin-top:18px" data-es="Obras que sostienen la demanda todo el año">Obras que sustentam a demanda o ano todo</h3>
       <div class="cards" style="margin-top:10px">
-        <article class="card"><span class="ic">🏖️</span><h3 data-es="Ensanche de la playa de Itapema">Alargamento da faixa de areia de Itapema</h3><span class="num" data-es="~R$ 60 mi · 4,75 km">~R$ 60 mi · 4,75 km</span><p data-es="Meia Praia gana hasta 60 m de arena (cerca de 498 mil m³), dividido entre Municipio y Gobierno de SC. Protege la costa y valoriza la primera línea.">Meia Praia ganha até 60 m de areia (cerca de 498 mil m³), com custo dividido entre Prefeitura e Governo de SC. Protege a orla e valoriza a frente-mar.</p><span class="src">NSC Total, Portas</span></article>
+        <article class="card"><span class="ic">🏖️</span><h3 data-es="Ensanche de la playa de Itapema">Alargamento da faixa de areia de Itapema</h3><span class="num" data-es="~R$ 60 mi · 4,75 km">~R$ 60 mi · 4,75 km</span><p data-es="Meia Praia gana hasta 60 m de arena (cerca de 498 mil m³), dividido entre Municipio y Gobierno de SC. Protege la costa y valoriza la primera línea.">Meia Praia ganha até 60 m de areia (cerca de 498 mil m³), com custo dividido entre Prefeitura e Governo de SC. Protege a orla e valoriza a frente-mar.</p><span class="src">NSC Total, Portas<span class="selo-orla"></span></span></article>
         <article class="card"><span class="ic">⚓</span><h3 data-es="Muelle Oporto · límite Itapema / Porto Belo">Píer Oporto · divisa Itapema / Porto Belo</h3><span class="num" data-es="Polo náutico y gastronómico">Polo náutico e gastronômico</span><p data-es="Muelle turístico en la desembocadura del río Perequê, entre Itapema y Porto Belo, con propuesta de gastronomía, entretenimiento y náutica.">Píer turístico na foz do Rio Perequê, entre Itapema e Porto Belo, com proposta de gastronomia, entretenimento e náutica.</p><span class="src">NSC Total, MySide</span></article>
         <article class="card"><span class="ic">🏙️</span><h3 data-es="Barrios planificados y masterplans">Bairros planejados e masterplans</h3><span class="num" data-es="Perequê · VivaPark · Porto Belo Lagos">Perequê · VivaPark · Porto Belo Lagos</span><p data-es="Masterplan del Perequê y barrios planificados junto a la BR-101: vivienda calificada todo el año, no solo en el verano.">Masterplan do Perequê e bairros planejados às margens da BR-101: moradia qualificada o ano inteiro, não só no verão.</p><span class="src" data-es="Ver «Porto Belo en transformación»">Veja "Porto Belo em transformação"</span></article>
         <article class="card"><span class="ic">✈️</span><h3 data-es="Eje logístico BR-101">Eixo logístico BR-101</h3><span class="num" data-es="2 aeropuertos internacionales">2 aeroportos internacionais</span><p data-es="Acceso directo por la BR-101, entre los aeropuertos de Navegantes (~50 km) y Florianópolis (~70 km), vecina de Balneário Camboriú e Itajaí.">Acesso direto pela BR-101, entre os aeroportos de Navegantes (~50 km) e Florianópolis (~70 km), vizinha de Balneário Camboriú e Itajaí.</p><span class="src" data-es="Distancias aproximadas por ruta">Distâncias aproximadas por estrada</span></article>
@@ -985,6 +988,7 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
   <span id="waLabel"></span>
 </a>
 <script src="dados/dados.js"></script>
+<script src="dados/referencias.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
