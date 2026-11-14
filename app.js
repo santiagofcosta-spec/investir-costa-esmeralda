@@ -1154,6 +1154,12 @@ function initV2(){
   renders.avista=()=>{ ra(); renderInternacional(); };
   $('agroBox').addEventListener('click',e=>{ const b=e.target.closest('[data-cid]'); if(b){ agroCid=b.dataset.cid; renderAgro(); } });
   addEventListener('hashchange',rotaHash);
+  // janelas entram suavemente ao rolar (só contêineres fixos; o conteúdo interno é redesenhado sem afetar)
+  if('IntersectionObserver' in window && !reduce){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visivel'); io.unobserve(e.target); } }),{rootMargin:'0px 0px -6% 0px'});
+    document.querySelectorAll('section[id^="p-"] > *, .contato, .assinatura, #seguranca').forEach((el,i)=>{ if(el.closest('.wizard')) return; el.classList.add('sobe'); el.style.transitionDelay=Math.min(i%4,3)*60+'ms'; io.observe(el); });
+    addEventListener('beforeprint',()=>document.querySelectorAll('.sobe').forEach(el=>el.classList.add('visivel')));
+  }
 }
 
 /* ---------- eventos ---------- */
