@@ -23,6 +23,7 @@ const CONTATO = { nome:SITE_CONFIG.consultorNome, primeiroNome:SITE_CONFIG.prime
 /* ---------- referências de mercado com fonte (conferidas em 13/11/2026; atualizar à mão) ---------- */
 const REFS = {
   m2PortoBelo: { v:14712, txt:'imóveis novos vendidos no 1º semestre de 2026 (levantamento DWV publicado por Portas e NSC Total)' },
+  vendasPortoBelo: { v:'R$ 2,5 bilhões', txt:'vendas de imóveis novos e lançamentos no 1º semestre de 2026 (DWV, via Portas e NSC Total)' },
   soja: { antes:{ data:'dez/2021', v:171.42, txt:'Indicador Cepea/Esalq Paranaguá, fechamento de 17/12/2021' },
           hoje:{ data:'nov/2026', v:159.87, txt:'Indicador Cepea/Esalq Paranaguá, 11/11/2026' }, areaPadrao:100 },
   internacional: [
@@ -201,6 +202,7 @@ function pouPer(){ let f=1; for(let i=mi(BASE)+1;i<=at('cdi',LASTKEY);i++){ cons
 function renderWhy(){
   const valIt=it[LAST]/it[0]-1, cagrIt=Math.pow(1+valIt,1/anosPer)-1, cdi=idxBCB('cdi'), ipca=idxBCB('ipca'), real=it[LAST]/it[0]/(ipca[LAST]/100)-1;
   const kp=[
+    ['m² Porto Belo',REFS.m2PortoBelo.v,v=>'R$ '+Math.round(v).toLocaleString('pt-BR'),L('imóveis novos · 1º sem/2026 (DWV)','inmuebles nuevos · 1er sem/2026 (DWV)'),''],
     [L('m² médio em Itapema','m² medio en Itapema'),it[LAST],v=>'R$ '+Math.round(v).toLocaleString('pt-BR'),`FipeZap ${fmtMes(LASTKEY)}`,''],
     [L('Valorização desde dez/2020','Valorización desde dic/2020'),valIt*100,v=>'+'+p1(v),L(`${pct(cagrIt,1)} ao ano em média`,`${pct(cagrIt,1)} anual promedio`),'up'],
     [L('Ganho acima da inflação','Ganancia sobre la inflación'),real*100,v=>'+'+p1(v),L('valorização real, já descontado o IPCA','valorización real, descontado el IPCA'),'up'],
@@ -210,7 +212,9 @@ function renderWhy(){
   $('kpisWhy').innerHTML=kp.map(([l,,,n,c],i)=>`<div class="kpi"><div class="lb">${l}</div><div class="v ${c}" id="kw${i}">0</div><div class="n">${n}</div></div>`).join('');
   kp.forEach(([,v,f],i)=>countUp($('kw'+i),v,f));
   const r8=CUB.padroes.itens.find(p=>p[0]==='R8-A')[2], br=REG.brasil.m2;
+  const crPB=POP.portobelo[1][1]/POP.portobelo[1][0]-1;
   const reasons=[
+    [L('R$ 2,5 bi','R$ 2.500 M'),L('em vendas em Porto Belo em 6 meses','en ventas en Porto Belo en 6 meses'),L(`No 1º semestre de 2026, Porto Belo, com cerca de 31 mil moradores, movimentou ${REFS.vendasPortoBelo.v} em imóveis novos e lançamentos, a ${brl(REFS.m2PortoBelo.v)}/m² em média, ainda abaixo de Itapema e de Balneário Camboriú. A população cresceu ${pct(crPB,0)} entre os Censos de 2010 e 2022.`,`En el 1er semestre de 2026, Porto Belo, con cerca de 31 mil habitantes, movió R$ 2.500 millones en inmuebles nuevos y lanzamientos, a ${brl(REFS.m2PortoBelo.v)}/m² en promedio, todavía por debajo de Itapema y Balneário Camboriú. La población creció ${pct(crPB,0)} entre los censos de 2010 y 2022.`),L('DWV via Portas e NSC Total · IBGE','DWV vía Portas y NSC Total · IBGE')],
     [pct(valIt,0),L('de valorização desde dez/2020','de valorización desde dic/2020'),L(`O metro quadrado em Itapema saiu de ${brl(it[0])} para ${brl(it[LAST])}. No mesmo período o CDI bruto rendeu ${p1(cdi[LAST]-100)} e a inflação foi ${p1(ipca[LAST]-100)}.`,`El metro cuadrado en Itapema pasó de ${brl(it[0])} a ${brl(it[LAST])}. En el mismo período el CDI bruto rindió ${p1(cdi[LAST]-100)} y la inflación fue ${p1(ipca[LAST]-100)}.`),L('FipeZap e Banco Central','FipeZap y Banco Central')],
     [(it[LAST]/br[fimDe('brasil')]).toLocaleString('pt-BR',{maximumFractionDigits:1})+'×',L('o preço médio do Brasil','el precio medio de Brasil'),L(`O m² da região custa ${brl(it[LAST])}, contra ${brl(br[fimDe('brasil')])} na média das cidades do FipeZap. É um mercado de alto padrão, com compradores de todo o país.`,`El m² de la región cuesta ${brl(it[LAST])}, contra ${brl(br[fimDe('brasil')])} en el promedio de las ciudades de FipeZap. Es un mercado de alto estándar, con compradores de todo el país y del exterior.`),`FipeZap ${fmtMes(LASTKEY)}`],
     ['+'+pct(cubFim/cubIni-1,0),L('no custo de construir desde 2020','en el costo de construir desde 2020'),L(`O CUB/SC passou de ${brl2(cubIni)} para ${brl2(cubFim)} por m². Obra nova fica mais cara todo mês, o que dá sustentação ao preço do imóvel pronto.`,`El CUB/SC pasó de ${brl2(cubIni)} a ${brl2(cubFim)} por m². Construir es más caro cada mes, lo que sostiene el precio del inmueble terminado.`),'Sinduscon Grande Florianópolis'],
@@ -795,13 +799,13 @@ let ultimoResumoWA='';
 const assinatura=()=>`${CONTATO.nome}${CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:''} · ${CONTATO.imobiliaria} · WhatsApp ${CONTATO.whatsappTxt}`;
 const waURL=msg=>`https://wa.me/${CONTATO.whatsapp}?text=${encodeURIComponent(msg)}`;
 function atualizaWA(){
-  const generico=L(`Olá ${CONTATO.primeiroNome}! Vi o site Investir na Costa Esmeralda e quero saber mais sobre imóveis na região.`,`¡Hola ${CONTATO.primeiroNome}! Vi el sitio Invertir en la Costa Esmeralda y quiero saber más sobre inmuebles en la región.`);
+  const generico=L(`Olá ${CONTATO.primeiroNome}! Vi o site Investir na Costa Esmeralda e quero saber mais sobre imóveis em Porto Belo e região.`,`¡Hola ${CONTATO.primeiroNome}! Vi el sitio Invertir en la Costa Esmeralda y quiero saber más sobre inmuebles en Porto Belo y la región.`);
   const msg=['sim','planta','avista','holding','soja'].includes(tab)&&ultimoResumoWA?ultimoResumoWA:generico;
   $('wa').href=waURL(msg); $('waBox').href=waURL(msg); if($('waAss')) $('waAss').href=waURL(msg);
 }
 function contato(){
   $('waLabel').textContent=L(`Fale com ${CONTATO.primeiroNome}`,`Hable con ${CONTATO.primeiroNome}`);
-  $('contatoTxt').textContent=assinatura()+L('. Monto a simulação com o valor, o aluguel e o fluxo de pagamento do imóvel que você está avaliando.','. Armo la simulación con el valor, el alquiler y el plan de pagos del inmueble que usted está evaluando. Atiendo en español.');
+  $('contatoTxt').textContent=assinatura()+L('. Atendimento em Porto Belo (Perequê). Monto a simulação com o valor, o aluguel e o fluxo de pagamento do imóvel que você está avaliando.','. Atención en Porto Belo (Perequê). Armo la simulación con el valor, el alquiler y el plan de pagos del inmueble que usted está evaluando. Atiendo en español.');
 }
 
 /* ---------- link personalizado ---------- */
@@ -977,7 +981,7 @@ function renderTeto(){
     [L('Piso 2 · m² em dólar','Piso 2 · m² en dólares'),m2usd?usd(m2usd):'—',L('Itapema ÷ PTAX: barato para quem ganha em dólar','Itapema ÷ PTAX: barato para quien gana en dólares')],
     [L('Piso 3 · vizinho mais caro','Piso 3 · vecino más caro'),brl(REG.bc.m2[fimDe('bc')]),L('m² de Balneário Camboriú: teto de referência regional','m² de Balneário Camboriú: techo de referencia regional')],
   ]);
-  const rows=[['Balneário Camboriú',REG.bc.m2[fimDe('bc')],'--c-bc',`FipeZap ${fmtMes(LASTKEY)}`],['Itapema',it[LAST],'--c-itapema',`FipeZap ${fmtMes(LASTKEY)}`],['Porto Belo',REFS.m2PortoBelo.v,'--c-cub',L('imóveis novos, 1º sem/2026 (DWV)','inmuebles nuevos, 1er sem/2026 (DWV)')]];
+  const rows=[['Balneário Camboriú',REG.bc.m2[fimDe('bc')],'--c-brasil',`FipeZap ${fmtMes(LASTKEY)}`],['Itapema',it[LAST],'--c-itapema',`FipeZap ${fmtMes(LASTKEY)}`],['Porto Belo ★',REFS.m2PortoBelo.v,'--gold',L('imóveis novos, 1º sem/2026 (DWV)','inmuebles nuevos, 1er sem/2026 (DWV)')]];
   draw('chRegional',{type:'bar',data:{labels:rows.map(r=>r[0]),datasets:[{label:'R$/m²',data:rows.map(r=>r[1]),backgroundColor:rows.map(r=>css(r[2])),borderRadius:6}]},
     options:baseOpts(v=>'R$ '+Math.round(v/1000)+' mil',{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${brl(c.parsed.x)}/m² · ${rows[c.dataIndex][3]}`}}},scales:{x:{beginAtZero:true,ticks:{color:css('--muted'),callback:v=>'R$ '+Math.round(v/1000)+' mil'},grid:{color:css('--line')}},y:{ticks:{color:css('--ink'),font:{weight:'600'}},grid:{display:false}}}})});
   const gap=1-REFS.m2PortoBelo.v/REG.bc.m2[fimDe('bc')];
@@ -1123,6 +1127,7 @@ function initV2(){
   // referência de temporada
   $('tempRef').textContent=L(`Referência: temporada bem gerida costuma render ~${fmtN(SITE_CONFIG.multiplicadorTemporada,2)}× o aluguel anual tradicional.`,`Referencia: una temporada bien gestionada suele rendir ~${fmtN(SITE_CONFIG.multiplicadorTemporada,2)}× el alquiler anual tradicional.`);
   // assinatura e selo
+  $('pbHero').innerHTML=L(`<b>★ Porto Belo</b> movimentou <b>${REFS.vendasPortoBelo.v}</b> em imóveis novos no 1º semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², ainda abaixo dos vizinhos. <a href="#porto-belo">Veja o que está sendo construído →</a>`,`<b>★ Porto Belo</b> movió <b>R$ 2.500 millones</b> en inmuebles nuevos en el 1er semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², todavía por debajo de sus vecinos. <a href="#porto-belo">Vea lo que se está construyendo →</a>`);
   $('assNome').textContent=SITE_CONFIG.consultorNome;
   $('assCargo').textContent=(SITE_CONFIG.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+SITE_CONFIG.creci+' · ':'')+SITE_CONFIG.imobiliaria;
   $('assWa').textContent='WhatsApp '+SITE_CONFIG.whatsappTxt;

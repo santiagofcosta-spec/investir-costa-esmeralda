@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%231E212C%22/%3E%3Cpath d=%22M7 22l6-7 5 4 7-9%22 stroke=%22%23FFC350%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
-<meta name="description" content="Por que investir em imóveis na Costa Esmeralda (SC): valorização FipeZap, CUB/SC, Selic, CDI, IPCA e simulador de ROI.">
+<meta name="description" content="Por que investir em imóveis em Porto Belo e na Costa Esmeralda (SC): valorização FipeZap, CUB/SC, Selic, CDI, IPCA e simulador de ROI.">
 <title>Investir na Costa Esmeralda</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap">
@@ -392,6 +392,16 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
 @media print{.wizard,.btn-util,.badge,.assinatura .ass-acoes{display:none!important}.assinatura{background:none;color:var(--ink);border:1px solid var(--line)}.assinatura h2{color:var(--ink)}}
 </style>
 <style>.wa{position:fixed}
+.pb-hero{margin-top:14px;display:inline-block;max-width:60ch;font-size:14px;color:#e6e8ea;background:rgba(255,195,80,.1);border:1px solid rgba(255,195,80,.35);border-left:3px solid var(--gold);border-radius:10px;padding:10px 14px}
+.pb-hero b{color:var(--gold)}
+.pb-hero a{color:#FFD889;font-weight:600;white-space:nowrap}
+#kpisWhy .kpi:first-child{border-color:rgba(255,195,80,.7);background:linear-gradient(160deg,rgba(255,195,80,.14),var(--surface) 70%)}
+#kpisWhy .kpi:first-child .lb{color:var(--gold-ink);font-weight:700}
+#reasons .reason:first-child{border-color:rgba(255,195,80,.7);background:linear-gradient(160deg,rgba(255,195,80,.12),var(--surface) 65%)}
+#porto-belo{border:1px solid rgba(255,195,80,.6);background:linear-gradient(170deg,rgba(255,195,80,.08),var(--surface) 40%)}
+#porto-belo h2{font-size:1.45rem}
+.ticket-grid .tk:first-child{border-top-color:var(--gold);box-shadow:0 0 0 1px rgba(255,195,80,.5)}
+.ticket-grid .tk:nth-child(2){border-top-color:var(--line)}
 .agro-cid{margin-bottom:12px}
 .agro-cid button{font-size:14px;padding:8px 18px}
 .agro-cid button[aria-pressed="true"]{background:linear-gradient(135deg,#FFC350,#C5A059);border-color:#C5A059;color:#111416;box-shadow:0 6px 16px rgba(255,195,80,.35)}</style>
@@ -413,6 +423,7 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
         <span class="eyebrow">Costa Esmeralda · Porto Belo · Itapema · Bombinhas</span>
         <h1 id="heroTitle"></h1>
         <p class="lead" data-es="Datos oficiales de FipeZap, del Banco Central de Brasil y del Sinduscon que muestran cuánto rindió el inmueble en el litoral de Santa Catarina frente a la renta fija y la inflación, y una calculadora para proyectar su caso.">Dados oficiais do FipeZap, do Banco Central e do Sinduscon mostrando quanto o imóvel no litoral catarinense rendeu contra a renda fixa e a inflação, e uma calculadora para projetar o seu caso.</p>
+        <p class="pb-hero" id="pbHero"></p>
       </div>
       <div class="thesis">
         <span class="lb" id="heroLb"></span>
@@ -469,8 +480,6 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
   <!-- ============ POR QUE INVESTIR ============ -->
   <section id="p-why" class="stack">
     <div class="kpis reveal" id="kpisWhy"></div>
-    <div class="reasons reveal" id="reasons"></div>
-
     <section class="panel reveal" id="porto-belo">
       <div class="sec-h">
         <span class="badge" data-es="Vector de expansión">Vetor de expansão</span>
@@ -484,6 +493,8 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
         <article class="card"><span class="ic">🌊</span><span class="st obra" data-es="En ejecución por etapas">Em execução por etapas</span><h3 data-es="Revitalización de la costanera del Perequê">Revitalização da orla do Perequê</h3><span class="num" data-es="5 etapas · 36 meses">5 etapas · 36 meses</span><p data-es="Masterplan del Perequê (Municipio + ACIP, asociación de constructoras de Porto Belo): espigones de los ríos Perequê y Perequezinho, nueva costanera del Balneário Perequê y revitalización de las avenidas principales.">Masterplan do Perequê (Prefeitura + ACIP, associação das construtoras de Porto Belo): molhes dos rios Perequê e Perequezinho, nova orla do Balneário Perequê e revitalização das principais avenidas.</p><span class="src">NSC Total, MySide</span></article>
       </div>
     </section>
+    <div class="reasons reveal" id="reasons"></div>
+
     <div class="panel reveal">
       <div class="ph"><h2 data-es="Valorización acumulada: litoral de SC x renta fija x inflación">Valorização acumulada: litoral de SC x renda fixa x inflação</h2><span class="note" data-es="Base 100 en dic/2020">Base 100 em dez/2020</span></div>
       <div class="chartbox"><canvas id="chAcum"></canvas></div>
@@ -947,7 +958,7 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
     <div>
       <h2 id="assNome"></h2>
       <div class="ass-cargo" id="assCargo"></div>
-      <p data-es="Consultoría de inversión inmobiliaria en la Costa Esmeralda guiada por datos oficiales: FipeZap, Banco Central, Sinduscon e IBGE. Cada propuesta se arma con los números del inmueble que usted está evaluando.">Consultoria de investimento imobiliário na Costa Esmeralda orientada por dados oficiais: FipeZap, Banco Central, Sinduscon e IBGE. Cada proposta é montada com os números do imóvel que você está avaliando.</p>
+      <p data-es="Consultoría de inversión inmobiliaria en Porto Belo y la Costa Esmeralda, guiada por datos oficiales: FipeZap, Banco Central, Sinduscon e IBGE. Cada propuesta se arma con los números del inmueble que usted está evaluando.">Consultoria de investimento imobiliário em Porto Belo e na Costa Esmeralda, orientada por dados oficiais: FipeZap, Banco Central, Sinduscon e IBGE. Cada proposta é montada com os números do imóvel que você está avaliando.</p>
       <div class="ass-acoes"><a class="btn-cta" id="waAss" href="#" target="_blank" rel="noopener" data-es="Conversar por WhatsApp">Conversar no WhatsApp</a><span class="ass-wa" id="assWa"></span></div>
     </div>
   </section>
