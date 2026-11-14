@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%2308413d%22/%3E%3Cpath d=%22M7 22l6-7 5 4 7-9%22 stroke=%22%233dd6bf%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%231E212C%22/%3E%3Cpath d=%22M7 22l6-7 5 4 7-9%22 stroke=%22%23FFC350%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
 <meta name="description" content="Por que investir em imóveis na Costa Esmeralda (SC): valorização FipeZap, CUB/SC, Selic, CDI, IPCA e simulador de ROI.">
 <title>Investir na Costa Esmeralda</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 /* Layout: faixa-herói com o número-tese da região, abas (Por que investir · Simulador · Índices · Correção), conteúdo em grade que empilha no celular */
@@ -197,6 +197,201 @@ tr.sel td{background:var(--surface2);font-weight:600}
 #tblUnidades tbody tr:hover td{background:var(--surface2)}
 tr.total td{border-top:2px solid var(--ink);font-weight:700}
 </style>
+<style>
+/* ===================== V2 · identidade Goya (Outfit, grafite + dourado) ===================== */
+:root{
+  --bg:#f4f5f7; --surface:#ffffff; --surface2:#f1f2f4; --ink:#1E212C; --muted:#595E61; --line:#e1e4e8;
+  --sea:#1E212C; --sea-deep:#111416; --sea-ink:#ffffff; --sand:#FFC350;
+  --gold:#FFC350; --gold-2:#C5A059; --gold-ink:#8a6100; --blue:#0F63D0;
+  --emerald-1:#059669; --emerald-2:#10B981;
+  --f-display:"Outfit",ui-sans-serif,system-ui,sans-serif; --f-body:"Outfit",ui-sans-serif,system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111416; --surface:#1a1d26; --surface2:#1E212C; --ink:#eef0f2; --muted:#B1BAC2; --line:#2b3040;
+  --sea:#FFC350; --sea-deep:#0b0d10; --sea-ink:#111416; --gold-ink:#FFC350; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111416; --surface:#1a1d26; --surface2:#1E212C; --ink:#eef0f2; --muted:#B1BAC2; --line:#2b3040;
+  --sea:#FFC350; --sea-deep:#0b0d10; --sea-ink:#111416; --gold-ink:#FFC350; color-scheme:dark}
+body{font-size:15px;letter-spacing:.005em}
+h1,h2,h3{letter-spacing:-.01em}
+h2{font-weight:600}
+.panel,.kpi,.reason{border-radius:14px;box-shadow:0 1px 2px rgba(17,20,22,.04),0 6px 18px rgba(17,20,22,.04)}
+.hero{background:radial-gradient(120% 140% at 85% 0%,rgba(255,195,80,.16),transparent 55%),linear-gradient(160deg,#1E212C,#111416);color:#f1f1f1;border-radius:0 0 22px 22px}
+.eyebrow{color:var(--gold);font-weight:600}
+.hero h1 em{color:var(--gold)}
+.hero .lead{color:#c9ced3}
+.thesis{background:rgba(255,255,255,.05);border-color:rgba(255,195,80,.22)}
+.thesis .lb,.stamp{color:#B1BAC2}
+.chip{background:rgba(255,255,255,.08);color:#e6e8ea}
+.chip.live{background:rgba(255,195,80,.18);color:#FFD889}
+.tabs button{font-weight:500}
+.tabs button[aria-selected="true"]{border-bottom-color:var(--gold);color:var(--ink);font-weight:600}
+legend{color:var(--gold-ink)}
+.reason .big{color:var(--ink)}
+.reason .big::after{content:"";display:block;width:34px;height:3px;border-radius:2px;background:var(--gold);margin-top:8px}
+.callout{border-left-color:var(--gold)}
+.btn{border-radius:10px;transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s}
+.btn:hover{transform:translateY(-1px)}
+.contato{background:linear-gradient(160deg,#1E212C,#111416);border:1px solid rgba(255,195,80,.18)}
+.contato p{color:#c9ced3}
+.ghost-light{border-color:rgba(255,195,80,.55)!important;color:#f1f1f1!important}
+
+/* ---------- PT | ES com borda dourada animada ---------- */
+.lang{background:rgba(17,20,22,.55);padding:3px;border:1px solid transparent;background-clip:padding-box;isolation:isolate}
+.lang::before{content:"";position:absolute;inset:-1px;border-radius:999px;padding:1px;background:conic-gradient(from var(--ang,0deg),#FFC350,#C5A059 25%,rgba(255,195,80,.15) 50%,#D4AF37 75%,#FFC350);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:giraBorda 5s linear infinite;z-index:-1}
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes giraBorda{to{--ang:360deg}}
+.lang a{color:#e6e8ea;transition:background .3s var(--ease),color .3s}
+.lang a:hover{color:var(--gold)}
+.lang a[aria-current="true"]{background:var(--gold);color:#111416}
+.lang a#lang-es{font-weight:700}
+
+/* ---------- Botão primário de conversão (esmeralda + shimmer) ---------- */
+.btn-cta,.contato a.btn#waBox,.wa{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--emerald-1),var(--emerald-2))!important;border:1px solid rgba(255,255,255,.18)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 24px rgba(16,185,129,.32);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.btn-cta::after,.contato a.btn#waBox::after,.wa::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-20deg);animation:shimmer 4s var(--ease) infinite;pointer-events:none}
+.btn-cta:hover,.contato a.btn#waBox:hover,.wa:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 12px 30px rgba(16,185,129,.42)}
+.btn-cta:hover::after,.contato a.btn#waBox:hover::after,.wa:hover::after{animation:shimmer 1s var(--ease)}
+.btn-cta:active,.contato a.btn#waBox:active,.wa:active{transform:scale(.98)}
+@keyframes shimmer{0%{left:-60%}22%,100%{left:130%}}
+
+/* ---------- Botões dourados (atalho guiado) ---------- */
+.btn-gold,.wiz-opt{appearance:none;cursor:pointer;font:600 14px var(--f-body);color:var(--ink);background:linear-gradient(var(--surface),var(--surface)) padding-box,linear-gradient(135deg,#FFC350,#C5A059) border-box;border:1.5px solid transparent;border-radius:12px;padding:12px 16px;text-align:left;position:relative;transition:color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);overflow:hidden;isolation:isolate}
+.wiz-opt::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,#FFC350,#D4AF37);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease);z-index:-1}
+.wiz-opt:hover::before,.wiz-opt[aria-pressed="true"]::before{transform:scaleX(1)}
+.wiz-opt:hover,.wiz-opt[aria-pressed="true"]{color:#111416;transform:translateY(-2px);box-shadow:0 8px 22px rgba(255,195,80,.35)}
+.wiz-opt:active{transform:scale(.98)}
+.wiz-opt small{display:block;font-weight:400;font-size:12px;opacity:.75;margin-top:2px}
+
+/* ---------- Atalho guiado ---------- */
+.wizard{position:relative;margin:-6px 0 20px;background:linear-gradient(160deg,#1E212C,#15181f);color:#f1f1f1;border:1px solid rgba(255,195,80,.25);border-radius:16px;padding:18px}
+.wizard h2{color:#fff;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wizard h2 .pill{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:#111416;background:var(--gold);padding:3px 9px;border-radius:999px}
+.wizard .sub{color:#B1BAC2;font-size:13px;margin-top:4px}
+.wiz-steps{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+.wiz-step{border-left:2px solid rgba(255,195,80,.25);padding-left:14px;transition:border-color .4s}
+.wiz-step.active{border-left-color:var(--gold)}
+.wiz-step.active .wiz-q{color:var(--gold)}
+.wiz-step.done{opacity:.7}
+.wiz-q{font:600 13px var(--f-body);color:#e6e8ea;margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.wiz-q .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(255,195,80,.15);color:var(--gold);font-size:12px}
+.wiz-step.done .wiz-q .n{background:var(--gold);color:#111416}
+.wiz-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}
+.wizard .wiz-opt{background:linear-gradient(#1f232e,#1f232e) padding-box,linear-gradient(135deg,#FFC350,#C5A059) border-box;color:#f1f1f1}
+.wizard .wiz-opt[aria-pressed="true"],.wizard .wiz-opt:hover{color:#111416}
+.wiz-step.active .wiz-opt{animation:stagger .5s var(--ease) both}
+.wiz-step.active .wiz-opt:nth-child(2){animation-delay:.07s}
+.wiz-step.active .wiz-opt:nth-child(3){animation-delay:.14s}
+.wiz-step.active .wiz-opt[aria-pressed="false"]{box-shadow:0 0 0 0 rgba(255,195,80,.0)}
+.wiz-step.active{animation:glowStep 2.4s ease-in-out infinite}
+@keyframes stagger{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes glowStep{0%,100%{box-shadow:-2px 0 0 0 rgba(255,195,80,0)}50%{box-shadow:-2px 0 14px -2px rgba(255,195,80,.55)}}
+.wiz-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.wiz-foot .msg{color:#FFD889}
+.wizard .btn-util{color:#e6e8ea}
+
+/* ---------- Seletor segmentado com pílula deslizante ---------- */
+.seg3{position:relative;display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:4px;--i:2}
+.seg3::before{content:"";position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/3);border-radius:9px;background:linear-gradient(135deg,#0d6e66,var(--emerald-2));box-shadow:0 4px 14px rgba(16,185,129,.35);transform:translateX(calc(var(--i) * 100%));transition:transform .45s var(--ease)}
+.seg3 button{position:relative;z-index:1;appearance:none;border:0;background:none;cursor:pointer;font:600 12px/1.25 var(--f-body);color:var(--muted);padding:9px 6px;border-radius:9px;transition:color .35s}
+.seg3 button[aria-pressed="true"]{color:#fff}
+.chk.dim{opacity:.5}
+
+/* ---------- Botões utilitários (glass/outline + check) ---------- */
+.btn-util{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:600 12px var(--f-body);color:var(--ink);background:rgba(255,255,255,.06);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:999px;padding:7px 14px;transition:border-color .3s var(--ease),color .3s,box-shadow .3s var(--ease),transform .3s var(--ease)}
+.btn-util:hover{border-color:var(--gold);color:var(--gold-ink);box-shadow:0 0 0 3px rgba(255,195,80,.18);transform:translateY(-1px)}
+.btn-util.ok{border-color:var(--emerald-2);color:var(--emerald-1)}
+.btn-util.falhou{border-color:var(--bad);color:var(--bad)}
+.chk-ic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:22;stroke-dashoffset:22;animation:desenha .45s var(--ease) forwards}
+@keyframes desenha{to{stroke-dashoffset:0}}
+[data-objecao]{position:relative}
+.btn-arg{position:absolute;top:12px;right:12px;z-index:3}
+.modo-corretor [data-objecao] > .badge{margin-right:170px}
+@media (max-width:560px){.btn-arg{position:static;margin-bottom:10px}.modo-corretor [data-objecao] > .badge{margin-right:0}}
+
+/* ---------- Selos de objeção + destaque por âncora ---------- */
+.badge{display:inline-flex;align-items:center;gap:6px;font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--gold-ink);background:rgba(255,195,80,.14);border:1px solid rgba(255,195,80,.45);padding:4px 10px;border-radius:999px;margin-bottom:10px}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.flash{animation:flash 2s var(--ease)}
+@keyframes flash{0%,60%{box-shadow:0 0 0 3px var(--gold),0 0 28px rgba(255,195,80,.45)}100%{box-shadow:0 0 0 0 transparent}}
+[id^="objecao-"],#porto-belo,#microrregioes,#seguranca{scroll-margin-top:64px}
+
+/* ---------- Vantagem sobre o CDB ---------- */
+.vantagem{display:flex;flex-direction:column;gap:2px;border-radius:14px;padding:16px 18px;border:1px solid}
+.vantagem.good{background:linear-gradient(135deg,rgba(5,150,105,.12),rgba(16,185,129,.06));border-color:rgba(16,185,129,.45)}
+.vantagem.bad{background:var(--bad-bg);border-color:var(--bad)}
+.vantagem .vl{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.vantagem .vv{font:700 2rem var(--f-display);color:var(--good)}
+.vantagem.bad .vv{color:var(--bad)}
+.vantagem .vn{font-size:13px;color:var(--muted)}
+
+/* ---------- Tradutor de ticket ---------- */
+.ticket-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.tk{display:flex;flex-direction:column;gap:3px;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:14px;border-top:3px solid var(--gold)}
+.tk-lb{font-size:12px;color:var(--muted);font-weight:600}
+.tk-a{font:700 1.5rem var(--f-display)}
+.tk-t{font-size:14px}
+.tk-s{font-size:11px;color:var(--muted)}
+
+/* ---------- Grades de cards (projetos, obras, microrregiões, selo) ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.card{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;transition:transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(17,20,22,.08);border-color:rgba(255,195,80,.55)}
+.card h3{font-size:1rem}
+.card p{font-size:13px;color:var(--muted)}
+.card .num{font:700 1.25rem var(--f-display);color:var(--ink)}
+.card .src{font-size:11px;color:var(--muted);margin-top:auto;padding-top:8px;border-top:1px dashed var(--line)}
+.card .st{align-self:flex-start}
+.st.obra{background:rgba(15,99,208,.12);color:var(--blue)}
+.st.pronto{background:var(--good-bg);color:var(--good)}
+.st.plan{background:rgba(255,195,80,.18);color:var(--gold-ink)}
+.card .ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(255,195,80,.16);font-size:18px}
+.sec-h{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.sec-h p{color:var(--muted);font-size:14px;max-width:80ch}
+
+/* ---------- Barras horizontais (internacional, sacas) ---------- */
+.intl,.sacas{display:flex;flex-direction:column;gap:10px}
+.intl-row,.sc-row{display:grid;grid-template-columns:140px minmax(0,1fr) 140px;gap:4px 12px;align-items:center;font-size:13px}
+.intl-row small,.sc-row small{grid-column:2/4;color:var(--muted);font-size:11px;margin-top:-4px}
+.intl-t,.sc-t{height:12px;background:var(--surface2);border-radius:6px;overflow:hidden}
+.intl-f,.sc-f{height:100%;border-radius:6px;background:var(--c-brasil);transition:width 1.2s var(--ease)}
+.intl-row.ce .intl-f{background:linear-gradient(90deg,var(--gold-2),var(--gold))}
+.intl-row b,.sc-row b{text-align:right;font-family:var(--f-display)}
+.sc-f{background:linear-gradient(90deg,#0d6e66,var(--emerald-2))}
+.sc-f.old{background:var(--c-brasil)}
+@media (max-width:560px){.intl-row,.sc-row{grid-template-columns:96px minmax(0,1fr) 92px}.intl-row small,.sc-row small{grid-column:1/4}}
+
+/* ---------- Alavancagem na obra ---------- */
+.alav-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.alav-grid > div{display:flex;flex-direction:column;gap:2px;background:var(--surface2);border-radius:12px;padding:12px 14px}
+.alav-grid .vl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.alav-grid b{font:700 1.35rem var(--f-display)}
+.alav-roi{background:linear-gradient(135deg,rgba(5,150,105,.14),rgba(16,185,129,.06))!important;border:1px solid rgba(16,185,129,.4)}
+.alav-roi b{color:var(--good);font-size:1.7rem!important}
+.alav-roi small{font-size:12px;color:var(--muted)}
+
+/* ---------- Custo de esperar ---------- */
+.range{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.range-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.range-top b{font:700 1.4rem var(--f-display)}
+input[type=range]{width:100%;accent-color:var(--gold-2)}
+
+/* ---------- Selo jurídico + assinatura ---------- */
+.selo .card .ic{background:rgba(5,150,105,.12)}
+.assinatura{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;background:linear-gradient(160deg,#1E212C,#111416);color:#f1f1f1;border-radius:18px;padding:22px;border:1px solid rgba(255,195,80,.25);margin-top:20px}
+.ass-mono{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font:700 1.5rem var(--f-display);color:#111416;background:linear-gradient(135deg,#FFC350,#C5A059);box-shadow:0 0 0 4px rgba(255,195,80,.18)}
+.assinatura h2{color:#fff;font-size:1.3rem}
+.ass-cargo{color:var(--gold);font-weight:600;font-size:14px;margin-top:2px}
+.assinatura p{color:#c9ced3;font-size:14px;margin-top:8px;max-width:72ch}
+.ass-acoes{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+.ass-acoes .btn-cta{text-decoration:none;font:600 14px var(--f-body);padding:11px 18px;border-radius:10px}
+.ass-wa{color:#B1BAC2;font-size:13px}
+@media (max-width:520px){.assinatura{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){.lang::before,.btn-cta::after,.contato a.btn#waBox::after,.wa::after,.wiz-step.active,.wiz-step.active .wiz-opt,.flash{animation:none!important}}
+@media print{.wizard,.btn-util,.badge,.assinatura .ass-acoes{display:none!important}.assinatura{background:none;color:var(--ink);border:1px solid var(--line)}.assinatura h2{color:var(--ink)}}
+</style>
+<style>.wa{position:fixed}</style>
 </head>
 <body>
 <div class="wrap">
@@ -224,22 +419,68 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
     </div>
   </header>
 
+  <section class="wizard no-print" id="atalho" aria-label="Monte seu cenário">
+    <h2><span class="pill" data-es="30 segundos">30 segundos</span><span data-es="Arme su escenario en 3 preguntas">Monte seu cenário em 3 perguntas</span></h2>
+    <p class="sub" data-es="Responda y el sitio abre la calculadora correcta con valores compatibles. Opcional: puede explorar libremente las pestañas de abajo.">Responda e o site abre a calculadora certa, já com valores compatíveis. É opcional: você também pode explorar as abas abaixo.</p>
+    <div class="wiz-steps">
+      <div class="wiz-step" data-step="1">
+        <div class="wiz-q"><span class="n">1</span><span data-es="¿Cuál es su objetivo?">Qual seu objetivo?</span></div>
+        <div class="wiz-opts">
+          <button type="button" class="wiz-opt" data-k="obj" data-v="valorizacao" aria-pressed="false"><span data-es="Valorización en pozo">Valorização na planta</span><small data-es="comprar antes, vender o quedarse en la entrega">comprar antes, vender ou ficar na entrega</small></button>
+          <button type="button" class="wiz-opt" data-k="obj" data-v="renda" aria-pressed="false"><span data-es="Renta pasiva / Temporada">Renda passiva / Temporada</span><small data-es="alquiler anual o diarias">aluguel anual ou diárias</small></button>
+          <button type="button" class="wiz-opt" data-k="obj" data-v="patrimonio" aria-pressed="false"><span data-es="Protección patrimonial / Agro">Proteção patrimonial / Agro</span><small data-es="familia, sucesión, holding">família, sucessão, holding</small></button>
+        </div>
+      </div>
+      <div class="wiz-step" data-step="2" hidden>
+        <div class="wiz-q"><span class="n">2</span><span data-es="¿Rango de inversión?">Faixa de aporte?</span></div>
+        <div class="wiz-opts">
+          <button type="button" class="wiz-opt" data-k="faixa" data-v="ate12" aria-pressed="false" data-es="Hasta R$ 1,2 mi">Até R$ 1,2 mi</button>
+          <button type="button" class="wiz-opt" data-k="faixa" data-v="12a25" aria-pressed="false" data-es="R$ 1,2 mi a R$ 2,5 mi">R$ 1,2 mi a R$ 2,5 mi</button>
+          <button type="button" class="wiz-opt" data-k="faixa" data-v="acima" aria-pressed="false" data-es="Más de R$ 2,5 mi">Acima de R$ 2,5 mi</button>
+        </div>
+      </div>
+      <div class="wiz-step" data-step="3" hidden>
+        <div class="wiz-q"><span class="n">3</span><span data-es="¿Cómo piensa invertir?">Como pretende investir?</span></div>
+        <div class="wiz-opts">
+          <button type="button" class="wiz-opt" data-k="forma" data-v="avista" aria-pressed="false" data-es="Al contado">À vista</button>
+          <button type="button" class="wiz-opt" data-k="forma" data-v="fluxo" aria-pressed="false" data-es="Anticipo + cuotas de obra">Entrada + fluxo de obra</button>
+          <button type="button" class="wiz-opt" data-k="forma" data-v="soja" aria-pressed="false" data-es="Permuta en sacas de soja">Permuta em sacas de soja</button>
+        </div>
+      </div>
+    </div>
+    <div class="wiz-foot"><button type="button" class="btn-util" id="wizReset" hidden data-es="↺ Empezar de nuevo">↺ Recomeçar</button><span class="msg" id="wizMsg" aria-live="polite"></span></div>
+  </section>
+
   <nav class="tabs" role="tablist">
     <button role="tab" data-tab="why" data-es="Por qué invertir">Por que investir</button>
     <button role="tab" data-tab="sim" data-es="Simulador">Simulador</button>
     <button role="tab" data-tab="avista" data-es="Inversor al contado">Investidor à vista</button>
     <button role="tab" data-tab="planta" data-es="En pozo">Na planta</button>
     <button role="tab" data-tab="holding" data-es="Persona física x Holding">PF x Holding</button>
-    <button role="tab" data-tab="soja" data-es="Soja">Soja</button>
+    <button role="tab" data-tab="soja" data-es="Inversor Agro (Permuta en Sacas)">Investidor Agro (Permuta em Sacas)</button>
     <button role="tab" data-tab="idx" data-es="Índices de Brasil">Índices do Brasil</button>
     <button role="tab" data-tab="corr" data-es="Valor actualizado">Correção de valor</button>
-    <button role="tab" data-tab="corretor" data-es="🔒 Área del corredor">🔒 Área do corretor</button>
+    <button role="tab" data-tab="corretor" data-es="🔒 Área restringida" hidden>🔒 Área restrita</button>
   </nav>
 
   <!-- ============ POR QUE INVESTIR ============ -->
   <section id="p-why" class="stack">
     <div class="kpis reveal" id="kpisWhy"></div>
     <div class="reasons reveal" id="reasons"></div>
+
+    <section class="panel reveal" id="porto-belo">
+      <div class="sec-h">
+        <span class="badge" data-es="Vector de expansión">Vetor de expansão</span>
+        <h2 data-es="Porto Belo en transformación">Porto Belo em transformação</h2>
+        <p data-es="Grandes proyectos privados y públicos se concentran en Porto Belo y alrededores. Cada tarjeta muestra la situación actual y la fuente: son proyectos anunciados por desarrolladores y prensa, con plazos que pueden cambiar.">Grandes projetos privados e públicos estão se concentrando em Porto Belo e arredores. Cada card mostra a situação atual e a fonte: são projetos anunciados por incorporadoras e imprensa, com prazos que podem mudar.</p>
+      </div>
+      <div class="cards">
+        <article class="card"><span class="ic">🌳</span><span class="st pronto" data-es="Recibiendo residentes">Recebendo moradores</span><h3>VivaPark Porto Belo</h3><span class="num" data-es="~R$ 1 mil millones">~R$ 1 bilhão</span><p data-es="Primer «barrio parque» planificado de Brasil, junto a la BR-101 (Vokkan). Hasta 30 mil residentes previstos, sello de sustentabilidad LEED, urbanismo con parques y tecnología.">Primeiro "bairro parque" planejado do Brasil, às margens da BR-101 (Vokkan). Até 30 mil moradores previstos, selo de sustentabilidade LEED, urbanismo com parques e tecnologia.</p><span class="src" data-es="Inversión inicial informada · NSC Total, MySide">Investimento inicial informado · NSC Total, MySide</span></article>
+        <article class="card"><span class="ic">🎾</span><span class="st obra" data-es="Golf listo · tenis en 2028">Golfe pronto · tênis em 2028</span><h3>All Resort Club Residence</h3><span class="num" data-es="VGV R$ 600 millones">VGV R$ 600 milhões</span><p data-es="Masterplan de 182 mil m² (All Wert) con el primer campo de golf totalmente iluminado de Sudamérica y el primer Rafa Nadal Tennis Center de América del Sur, previsto para 2028.">Masterplan de 182 mil m² (All Wert) com o primeiro campo de golfe totalmente iluminado da América do Sul e o primeiro Rafa Nadal Tennis Center da América do Sul, previsto para 2028.</p><span class="src">Panrotas, InfoMoney, NSC Total</span></article>
+        <article class="card"><span class="ic">⚽</span><span class="st plan" data-es="En licenciamiento · previsión 2027">Em licenciamento · previsão 2027</span><h3 data-es="Ecosistema Neymar Jr. · Porto Belo Lagos">Ecossistema Neymar Jr. · Porto Belo Lagos</h3><span class="num" data-es="~R$ 250 millones">~R$ 250 milhões</span><p data-es="Complejo deportivo y de ocio de la familia Neymar dentro del barrio planificado Porto Belo Lagos (JTA), una ciudad inteligente de cerca de 900 mil a 1 millón de m² junto a la BR-101.">Complexo esportivo e de lazer da família Neymar dentro do bairro planejado Porto Belo Lagos (JTA), uma cidade inteligente de cerca de 900 mil a 1 milhão de m² às margens da BR-101.</p><span class="src" data-es="Valores varían según la fuente · NSC Total, Diário do Litoral, MySide">Valores variam conforme a fonte · NSC Total, Diário do Litoral, MySide</span></article>
+        <article class="card"><span class="ic">🌊</span><span class="st obra" data-es="En ejecución por etapas">Em execução por etapas</span><h3 data-es="Revitalización de la costanera del Perequê">Revitalização da orla do Perequê</h3><span class="num" data-es="5 etapas · 36 meses">5 etapas · 36 meses</span><p data-es="Masterplan del Perequê (Municipio + ACIP, asociación de constructoras de Porto Belo): espigones de los ríos Perequê y Perequezinho, nueva costanera del Balneário Perequê y revitalización de las avenidas principales.">Masterplan do Perequê (Prefeitura + ACIP, associação das construtoras de Porto Belo): molhes dos rios Perequê e Perequezinho, nova orla do Balneário Perequê e revitalização das principais avenidas.</p><span class="src">NSC Total, MySide</span></article>
+      </div>
+    </section>
     <div class="panel reveal">
       <div class="ph"><h2 data-es="Valorización acumulada: litoral de SC x renta fija x inflación">Valorização acumulada: litoral de SC x renda fixa x inflação</h2><span class="note" data-es="Base 100 en dic/2020">Base 100 em dez/2020</span></div>
       <div class="chartbox"><canvas id="chAcum"></canvas></div>
@@ -265,7 +506,27 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
         <div class="callout" style="margin-top:12px" id="cubCallout"></div>
       </div>
     </div>
-    <div class="panel reveal">
+
+    <section class="panel reveal" id="objecao-teto" data-objecao>
+      <span class="badge" data-es="Los 3 pisos que sostienen el precio">Os 3 Pisos de Sustentação de Preço</span>
+      <div class="ph"><h2 data-es="¿Ya subió demasiado? Lo que sostiene el precio">Já subiu demais? O que sustenta o preço</h2></div>
+      <div class="kpis" id="pisosKpis"></div>
+      <h3 style="margin-top:18px" data-es="Asimetría regional: precio medio del m²">Assimetria regional: preço médio do m²</h3>
+      <div class="chartbox sm"><canvas id="chRegional"></canvas></div>
+      <p class="note" id="regionalNota" style="margin-top:8px"></p>
+    </section>
+    <section class="panel reveal" id="objecao-espera" data-objecao>
+      <span class="badge" data-es="El costo de esperar 12 meses">O Custo de Esperar 12 Meses</span>
+      <div class="ph"><h2 data-es="¿Y si espero un año más?">E se eu esperar mais um ano?</h2></div>
+      <div class="range">
+        <div class="range-top"><label for="espValor" data-es="Valor del inmueble hoy">Valor do imóvel hoje</label><b id="espValorTxt"></b></div>
+        <input type="range" id="espValor" min="400000" max="6000000" step="50000" value="1200000">
+      </div>
+      <div class="kpis" id="espOut"></div>
+      <p class="note" style="margin-top:8px" data-es="Proyección con la valorización media anual de Itapema desde dic/2020 (FipeZap). Rentabilidad pasada no garantiza rentabilidad futura.">Projeção com a valorização média anual de Itapema desde dez/2020 (FipeZap). Rentabilidade passada não garante rentabilidade futura.</p>
+    </section>
+    <div class="panel reveal" id="objecao-temporada" data-objecao>
+      <span class="badge" data-es="Liquidez 365 días (vivienda fija + temporada)">Liquidez 365 Dias (Moradia Fixa + Temporada)</span>
       <div class="ph"><h2 data-es="Una región que no para de crecer">Uma região que não para de crescer</h2><span class="note" data-es="Población residente, IBGE">População residente, IBGE</span></div>
       <div class="pop" id="popKpis"></div>
       <div class="two" style="margin-top:16px">
@@ -281,8 +542,30 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
         <div><span data-es="Florianópolis (aeropuerto)">Florianópolis (aeroporto)</span><b>~70 km</b></div>
         <div><span data-es="Acceso">Acesso</span><b>BR-101</b></div>
       </div>
+
+      <h3 style="margin-top:18px" data-es="Obras que sostienen la demanda todo el año">Obras que sustentam a demanda o ano todo</h3>
+      <div class="cards" style="margin-top:10px">
+        <article class="card"><span class="ic">🏖️</span><h3 data-es="Ensanche de la playa de Itapema">Alargamento da faixa de areia de Itapema</h3><span class="num" data-es="~R$ 60 mi · 4,75 km">~R$ 60 mi · 4,75 km</span><p data-es="Meia Praia gana hasta 60 m de arena (cerca de 498 mil m³), dividido entre Municipio y Gobierno de SC. Protege la costa y valoriza la primera línea.">Meia Praia ganha até 60 m de areia (cerca de 498 mil m³), com custo dividido entre Prefeitura e Governo de SC. Protege a orla e valoriza a frente-mar.</p><span class="src">NSC Total, Portas</span></article>
+        <article class="card"><span class="ic">⚓</span><h3 data-es="Muelle Oporto · límite Itapema / Porto Belo">Píer Oporto · divisa Itapema / Porto Belo</h3><span class="num" data-es="Polo náutico y gastronómico">Polo náutico e gastronômico</span><p data-es="Muelle turístico en la desembocadura del río Perequê, entre Itapema y Porto Belo, con propuesta de gastronomía, entretenimiento y náutica.">Píer turístico na foz do Rio Perequê, entre Itapema e Porto Belo, com proposta de gastronomia, entretenimento e náutica.</p><span class="src">NSC Total, MySide</span></article>
+        <article class="card"><span class="ic">🏙️</span><h3 data-es="Barrios planificados y masterplans">Bairros planejados e masterplans</h3><span class="num" data-es="Perequê · VivaPark · Porto Belo Lagos">Perequê · VivaPark · Porto Belo Lagos</span><p data-es="Masterplan del Perequê y barrios planificados junto a la BR-101: vivienda calificada todo el año, no solo en el verano.">Masterplan do Perequê e bairros planejados às margens da BR-101: moradia qualificada o ano inteiro, não só no verão.</p><span class="src" data-es="Ver «Porto Belo en transformación»">Veja "Porto Belo em transformação"</span></article>
+        <article class="card"><span class="ic">✈️</span><h3 data-es="Eje logístico BR-101">Eixo logístico BR-101</h3><span class="num" data-es="2 aeropuertos internacionales">2 aeroportos internacionais</span><p data-es="Acceso directo por la BR-101, entre los aeropuertos de Navegantes (~50 km) y Florianópolis (~70 km), vecina de Balneário Camboriú e Itajaí.">Acesso direto pela BR-101, entre os aeroportos de Navegantes (~50 km) e Florianópolis (~70 km), vizinha de Balneário Camboriú e Itajaí.</p><span class="src" data-es="Distancias aproximadas por ruta">Distâncias aproximadas por estrada</span></article>
+      </div>
       <p class="note" style="margin-top:10px" data-es="Fuente: IBGE, censos 2010 y 2022 y estimación 2025. Más habitantes significa más demanda de compra y de alquiler todo el año, no solo en temporada.">Fonte: IBGE, Censos 2010 e 2022 e estimativa populacional 2025. Mais gente morando na região significa mais demanda por compra e por aluguel o ano todo, não só na temporada.</p>
     </div>
+
+    <section class="panel reveal" id="microrregioes">
+      <div class="sec-h">
+        <span class="badge" data-es="Guía para inversores de otros estados y países">Guia para quem investe de fora</span>
+        <h2 data-es="Microrregiones de la Costa Esmeralda">Microrregiões da Costa Esmeralda</h2>
+      </div>
+      <div class="cards">
+        <article class="card"><h3>Balneário Perequê · Porto Belo</h3><span class="st plan" data-es="Mayor potencial de multiplicación">Maior potencial de multiplicação</span><p data-es="Vector de expansión con nuevos emprendimientos frente al mar y a una cuadra del mar, y la costanera en revitalización.">Vetor de expansão, com novos empreendimentos frente-mar e quadra-mar e a orla em revitalização.</p></article>
+        <article class="card"><h3 data-es="Eje VivaPark y planificados · Porto Belo">Eixo VivaPark e planejados · Porto Belo</h3><span class="st obra" data-es="Vivienda todo el año">Moradia o ano inteiro</span><p data-es="Urbanismo moderno, calidad de vida y tecnología, con fuerte demanda de vivienda calificada fuera de temporada.">Urbanismo moderno, qualidade de vida e tecnologia, com forte demanda por moradia qualificada fora da temporada.</p></article>
+        <article class="card"><h3>Meia Praia · Itapema</h3><span class="st pronto" data-es="Mercado maduro, alta liquidez">Mercado maduro, alta liquidez</span><p data-es="Servicios consolidados y reventa rápida; la valorización se impulsa con el ensanche de la playa.">Serviços consolidados e revenda rápida; valorização impulsionada pelo alargamento da orla.</p></article>
+        <article class="card"><h3>Bombinhas</h3><span class="st plan" data-es="Escasez + temporada">Escassez + temporada</span><p data-es="Península con poco terreno disponible, vocación internacional y fuerte rentabilidad en temporada.">Península com pouco terreno disponível, vocação internacional e forte rentabilidade na temporada.</p></article>
+      </div>
+      <p class="note" style="margin-top:10px" data-es="Perfiles cualitativos para orientar la conversación; no sustituyen la evaluación de cada inmueble.">Perfis qualitativos para orientar a conversa; não substituem a avaliação de cada imóvel.</p>
+    </section>
     <div class="panel reveal">
       <h2 data-es="¿Y Porto Belo?">E Porto Belo?</h2>
       <p style="margin-top:8px;max-width:80ch" data-es="Porto Belo y Bombinhas todavía no tienen un índice oficial propio: FipeZap sigue 56 ciudades y, en la Costa Esmeralda, solo Itapema forma parte. Como Porto Belo es vecina de Itapema y compite por el mismo comprador, usamos Itapema como referencia regional. En el simulador usted ingresa el precio real del inmueble.">Porto Belo e Bombinhas ainda não têm índice oficial próprio: o FipeZap acompanha 56 cidades e, na Costa Esmeralda, só Itapema entra na pesquisa. Como Porto Belo fica colada em Itapema e disputa o mesmo comprador, usamos Itapema como referência regional. No simulador você coloca o preço real do imóvel que está apresentando.</p>
@@ -295,17 +578,20 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
       <fieldset><legend data-es="Inmueble y compra">Imóvel e compra</legend>
         <div class="f"><label for="valor" data-es="Valor del inmueble">Valor do imóvel</label><div class="in"><span>R$</span><input id="valor" type="number" step="1000" value="900000"></div></div>
         <div class="f"><label for="entrada" data-es="Anticipo<small>Igual al valor = compra al contado</small>">Entrada<small>Igual ao valor = compra à vista</small></label><div class="in"><span>R$</span><input id="entrada" type="number" step="1000" value="270000"></div></div>
-        <div class="f"><label for="custos" data-es="ITBI + escribanía + registro">ITBI + cartório + registro</label><div class="in"><input id="custos" type="number" step="0.1" value="4"><span>%</span></div></div>
+        <label class="chk"><input type="checkbox" id="incEscritura" checked> <span data-es="Incluir costos de escritura (ITBI + registro)">Incluir custos de escritura (ITBI + registro)</span></label>
+        <div class="f"><label for="custos" data-es="ITBI + escribanía + registro">ITBI + cartório + registro</label><div class="in"><input id="custos" type="number" step="0.1" value="3.5"><span>%</span></div></div>
+        <label class="chk"><input type="checkbox" id="incMobilia"> <span data-es="Incluir muebles y decoración (8% del valor)">Incluir mobília e decoração (8% do valor)</span></label>
       </fieldset>
       <fieldset><legend data-es="Financiación">Financiamento</legend>
         <div class="f"><label for="juros" data-es="Interés anual (CET)">Juros (CET) ao ano</label><div class="in"><input id="juros" type="number" step="0.1" value="12"><span>%</span></div></div>
         <div class="f"><label for="prazo" data-es="Plazo">Prazo</label><div class="in"><input id="prazo" type="number" step="12" value="360"><span data-es="meses">meses</span></div></div>
         <div class="f"><label for="sistema" data-es="Sistema">Sistema</label><div class="in"><select id="sistema"><option value="SAC">SAC</option><option value="PRICE">Price</option></select></div></div>
       </fieldset>
-      <fieldset><legend data-es="Alquiler y gastos">Aluguel e despesas</legend>
-        <div class="seg" id="modoAluguel" role="group">
-          <button type="button" data-m="anual" aria-pressed="false" data-es="Alquiler anual">Aluguel anual</button>
-          <button type="button" data-m="temporada" aria-pressed="true" data-es="Temporada (diarias)">Temporada (diárias)</button>
+      <fieldset><legend data-es="Perfil de renta pasiva">Perfil de renda passiva</legend>
+        <div class="seg3" id="modoAluguel" role="group" aria-label="Perfil de renda">
+          <button type="button" data-m="nenhum" aria-pressed="false" data-es="Solo valorización">Apenas valorização</button>
+          <button type="button" data-m="anual" aria-pressed="false" data-es="Alquiler anual">Locação anual</button>
+          <button type="button" data-m="temporada" aria-pressed="true" data-es="Temporada Costa Esmeralda">Temporada Costa Esmeralda</button>
         </div>
         <input type="hidden" id="modo" value="temporada">
         <div id="grpAnual" class="inputs" style="gap:10px" hidden>
@@ -319,6 +605,7 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
           <div class="f"><label for="diariaBaixa" data-es="Diaria el resto del año">Diária no resto do ano</label><div class="in"><span>R$</span><input id="diariaBaixa" type="number" step="10" value="350"></div></div>
           <div class="f"><label for="ocupBaixa" data-es="Ocupación el resto del año">Ocupação no resto do ano</label><div class="in"><input id="ocupBaixa" type="number" step="1" value="30"><span>%</span></div></div>
           <p class="note" id="tempResumo"></p>
+          <p class="note" id="tempRef"></p>
         </div>
         <div class="f"><label for="reajAluguel" data-es="Reajuste anual del alquiler/diaria">Reajuste do aluguel/diária ao ano</label><div class="in"><input id="reajAluguel" type="number" step="0.1" value="4.5"><span>%</span></div></div>
         <div class="f"><label for="adm" data-es="Administración / plataforma<small>Airbnb, gestión y limpieza en temporada</small>">Administração / plataforma<small>Airbnb, gestão e limpeza na temporada</small></label><div class="in"><input id="adm" type="number" step="0.5" value="20"><span>%</span></div></div>
@@ -346,8 +633,13 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
         <button class="btn ghost" type="button" data-link data-es="Copiar enlace de esta simulación">Copiar link desta simulação</button>
         <span class="msg" data-msg aria-live="polite"></span>
       </div>
-      <div class="verdict" id="verdict"></div>
+      <section class="stack" id="objecao-cdi" data-objecao style="gap:12px">
+        <span class="badge" style="align-self:flex-start" data-es="Ventaja real sobre el CDB neto">Vantagem Real sobre o CDB Líquido</span>
+        <div class="vantagem" id="vantagemCDI"></div>
+        <div class="verdict" id="verdict"></div>
+      </section>
       <div class="kpis" id="kpis"></div>
+      <div class="panel" id="ticket"></div>
       <div class="panel">
         <div class="ph"><h2 data-es="Patrimonio neto a lo largo del tiempo">Patrimônio líquido ao longo do tempo</h2><span class="note" data-es="Si vendiera/rescatara ese año, ya sin deuda, costos ni impuestos">Se vendesse/resgatasse naquele ano, já sem dívida, custos e IR</span></div>
         <div class="chartbox"><canvas id="chEvol"></canvas></div>
@@ -370,7 +662,7 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
       <div class="two">
         <div class="panel"><h2 style="margin-bottom:8px" data-es="Flujo del 1er año (promedio mensual)">Fluxo do 1º ano (média por mês)</h2><div class="tblwrap"><table id="tblFluxo"></table></div></div>
         <div class="panel">
-          <div class="ph"><h2 data-es="Resumen para el cliente">Resumo para o cliente</h2><button class="btn" id="copy" type="button" data-es="Copiar texto">Copiar texto</button></div>
+          <div class="ph"><h2 data-es="Resumen para el cliente">Resumo para o cliente</h2><button class="btn-util" id="copy" type="button" data-es="📋 Copiar resumen">📋 Copiar Resumo</button></div>
           <p class="note" id="copyMsg" aria-live="polite"></p>
           <textarea id="resumo" readonly></textarea>
         </div>
@@ -404,6 +696,7 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
         <div class="kpis" id="usdKpis"></div>
         <div class="chartbox sm" style="margin-top:12px"><canvas id="chUsd"></canvas></div>
       </div>
+      <div class="panel" id="intlBox"></div>
     </div>
   </section>
 
@@ -435,6 +728,11 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
         <span class="msg" data-msg aria-live="polite"></span>
       </div>
       <div class="verdict" id="pVerdict"></div>
+      <section class="panel" id="objecao-cub-imposto" data-objecao>
+        <span class="badge" data-es="Apalancamiento en la obra">Alavancagem na Obra</span>
+        <div class="ph"><h2 data-es="¿El CUB se come la ganancia? La cuenta">O CUB come o lucro? A conta</h2></div>
+        <div id="alavanca"></div>
+      </section>
       <div class="kpis" id="pKpis"></div>
       <div class="panel">
         <div class="ph"><h2 data-es="Valor del inmueble x cuánto pagó">Valor do imóvel x quanto você pagou</h2><span class="note" data-es="Mes a mes, de la compra a la entrega">Mês a mês, da compra até as chaves</span></div>
@@ -500,6 +798,12 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
 
   <!-- ============ SOJA ============ -->
   <section id="p-soja" class="stack" hidden>
+    <section class="panel" id="objecao-agro" data-objecao>
+      <span class="badge" data-es="Poder de compra en sacas (cobertura patrimonial)">Poder de Compra em Sacas (Hedge Patrimonial)</span>
+      <h2 data-es="Inversor Agro: convierta la cosecha en patrimonio">Investidor Agro: transforme a safra em patrimônio</h2>
+      <p class="note" style="margin:6px 0 14px;max-width:90ch" data-es="La permuta convierte sacas en un activo real en la costa: el productor deja de depender del precio de la soja en el momento de la venta y guarda el valor en m², que sigue el costo de construcción. Abajo, la cotización y los costos por saca en su ciudad.">A permuta converte sacas em um ativo real no litoral: o produtor deixa de depender do preço da soja no momento da venda e guarda o valor em m², que acompanha o custo de construção. Abaixo, a cotação e os custos por saca na sua cidade.</p>
+      <div id="agroBox"></div>
+    </section>
     <div class="filtro panel">
       <div class="f2"><label for="sUF" data-es="Estado">Estado</label><div class="in"><select id="sUF"></select></div></div>
       <div class="f2"><label for="sCidadeTxt" data-es="Ciudad">Cidade</label><div class="in"><input id="sCidadeTxt" list="sListaCidades" autocomplete="off" placeholder="Digite o nome"></div><datalist id="sListaCidades"></datalist></div>
@@ -589,7 +893,7 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
   <!-- ============ ÁREA DO CORRETOR (tabelas cifradas) ============ -->
   <section id="p-corretor" class="stack" hidden>
     <form class="panel login" id="formLogin" onsubmit="return false" autocomplete="on">
-      <h2 data-es="Área del corredor">Área do corretor</h2>
+      <h2 data-es="Área restringida">Área restrita</h2>
       <p class="note" data-es="Tablas de emprendimientos protegidas. Sin la contraseña, nadie puede leerlas: el archivo publicado está cifrado.">Tabelas de empreendimentos protegidas. Sem a senha, ninguém consegue ler: o arquivo publicado é cifrado.</p>
       <input type="text" name="username" value="corretor" autocomplete="username" hidden>
       <div class="loginrow">
@@ -623,6 +927,27 @@ tr.total td{border-top:2px solid var(--ink);font-weight:700}
     </div>
   </section>
 
+
+  <section class="panel selo" id="seguranca" style="margin-top:28px">
+    <div class="sec-h">
+      <span class="badge" data-es="Curaduría técnica">Curadoria técnica</span>
+      <h2 data-es="Seguridad jurídica: lo que exigimos de cada emprendimiento">Segurança jurídica: o que exigimos de cada empreendimento</h2>
+    </div>
+    <div class="cards">
+      <article class="card"><span class="ic">📜</span><h3 data-es="Incorporación registrada">Incorporação registrada</h3><p data-es="Memorial de incorporación registrado en la matrícula del inmueble (Ley 4.591/1964), condición para vender en pozo.">Memorial de incorporação registrado na matrícula do imóvel (Lei 4.591/1964), condição para vender na planta.</p></article>
+      <article class="card"><span class="ic">🛡️</span><h3 data-es="Patrimonio de afectación">Patrimônio de afetação</h3><p data-es="El dinero y el terreno de la obra quedan separados del patrimonio de la constructora (Ley 10.931/2004): protegen al comprador si la empresa tiene problemas.">O dinheiro e o terreno da obra ficam separados do patrimônio da construtora (Lei 10.931/2004): protegem o comprador se a empresa tiver problemas.</p></article>
+      <article class="card"><span class="ic">🏗️</span><h3 data-es="Historial de entregas">Histórico de entregas</h3><p data-es="Obras entregues en plazo y estándar prometidos, verificados en visitas y documentos, no solo en el folleto.">Obras entregues no prazo e no padrão prometidos, conferidos em visitas e documentos, não só no folder.</p></article>
+    </div>
+  </section>
+  <section class="assinatura" aria-label="Consultor">
+    <div class="ass-mono" aria-hidden="true">SC</div>
+    <div>
+      <h2 id="assNome"></h2>
+      <div class="ass-cargo" id="assCargo"></div>
+      <p data-es="Consultoría de inversión inmobiliaria en la Costa Esmeralda guiada por datos oficiales: FipeZap, Banco Central, Sinduscon e IBGE. Cada propuesta se arma con los números del inmueble que usted está evaluando.">Consultoria de investimento imobiliário na Costa Esmeralda orientada por dados oficiais: FipeZap, Banco Central, Sinduscon e IBGE. Cada proposta é montada com os números do imóvel que você está avaliando.</p>
+      <div class="ass-acoes"><a class="btn-cta" id="waAss" href="#" target="_blank" rel="noopener" data-es="Conversar por WhatsApp">Conversar no WhatsApp</a><span class="ass-wa" id="assWa"></span></div>
+    </div>
+  </section>
   <section class="contato" aria-label="Contato">
     <div>
       <h2 data-es="¿Quiere ver esto para un inmueble específico?">Quer ver isso para um imóvel específico?</h2>
