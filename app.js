@@ -87,17 +87,48 @@ const num = id => lerNum($(id).value);
 // campos numéricos: texto com ponto de milhar e vírgula decimal (900.000,00)
 function casasDe(el){ return el.dataset.casas!=null?+el.dataset.casas:0; }
 function formatarCampo(el){ if(el.dataset.num==null) return; const v=lerNum(el.value), c=casasDe(el); el.value=v.toLocaleString('pt-BR',{minimumFractionDigits:c,maximumFractionDigits:Math.max(c,2)}); }
-function setNum(id,v,c){ const el=$(id); if(c!=null) el.dataset.casas=c; el.value=v; formatarCampo(el); }
+function setNum(id,v,c){ const el=$(id); if(c!=null) el.dataset.casas=c; el.value=v; formatarCampo(el); if(el.dataset.dinheiro!=null) extenso(el); }
 function prepararCampos(){
   document.querySelectorAll('form input[type=number]').forEach(el=>{
     const dinheiro=[...el.parentElement.querySelectorAll('span')].some(x=>x.textContent.trim()==='R$');
     const passo=parseFloat(el.getAttribute('step')||'1');
-    el.dataset.num=''; el.dataset.casas = dinheiro ? 2 : (Number.isInteger(passo) ? 0 : 1);
+    el.dataset.num=''; el.dataset.casas = dinheiro ? (passo<1 ? 2 : 0) : (Number.isInteger(passo) ? 0 : 1);
+    if(dinheiro) prepararDinheiro(el, passo>=1000);
     el.type='text'; el.inputMode='decimal'; el.autocomplete='off';
     el.removeAttribute('step'); el.removeAttribute('min'); el.removeAttribute('max');
     formatarCampo(el);
   });
-  document.addEventListener('focusout',e=>{ if(e.target.dataset&&e.target.dataset.num!=null) formatarCampo(e.target); });
+  document.addEventListener('focusout',e=>{ if(e.target.dataset&&e.target.dataset.num!=null){ formatarCampo(e.target); extenso(e.target); } });
+  // pontos de milhar enquanto digita (só campos em R$); roda antes dos cálculos (fase de captura)
+  document.addEventListener('input',e=>{ const el=e.target; if(el.dataset&&el.dataset.dinheiro!=null){ milharAoDigitar(el); extenso(el); } },true);
+}
+function prepararDinheiro(el,grande){
+  el.dataset.dinheiro=''; el.inputMode='numeric';
+  if(grande && !el.parentElement.parentElement.querySelector('.extenso')){
+    const x=document.createElement('span'); x.className='extenso'; x.setAttribute('aria-hidden','true'); el.parentElement.after(x);
+  }
+}
+function porExtenso(v){
+  if(!(v>0)) return '';
+  const f=n=>n.toLocaleString('pt-BR',{maximumFractionDigits:2});
+  if(v>=1e9){ const n=v/1e9; return `R$ ${f(n)} ${n<2?L('bilhão','mil millones'):L('bilhões','mil millones')}`; }
+  if(v>=1e6){ const n=v/1e6; return `R$ ${f(n)} ${n<2?L('milhão','millón'):L('milhões','millones')}`; }
+  if(v>=1e3) return `R$ ${f(v/1e3)} mil`;
+  return '';
+}
+function extenso(el){ const x=el.parentElement&&el.parentElement.nextElementSibling; if(x&&x.classList.contains('extenso')) x.textContent=porExtenso(lerNum(el.value)); }
+function milharAoDigitar(el){
+  const v=el.value, pos=el.selectionStart??v.length;
+  const conta=t=>t.replace(/[^\d,]/g,'').length;           // dígitos (e vírgula) antes do cursor
+  const antes=conta(v.slice(0,pos));
+  let limpo=v.replace(/[^\d,]/g,''); const i=limpo.indexOf(',');
+  if(i>=0) limpo=limpo.slice(0,i+1)+limpo.slice(i+1).replace(/,/g,'').slice(0,casasDe(el)||0);
+  let [int,dec]=limpo.split(','); int=(int||'').replace(/^0+(?=\d)/,'');
+  const novo=int.replace(/\B(?=(\d{3})+(?!\d))/g,'.')+(dec!=null&&casasDe(el)>0?','+dec:'');
+  if(novo===v) return;
+  el.value=novo;
+  let k=0,p=0; while(p<novo.length&&k<antes){ if(/[\d,]/.test(novo[p])) k++; p++; }
+  try{ el.setSelectionRange(p,p); }catch{}
 }
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const mensal = a => Math.pow(1+a,1/12)-1;
@@ -1243,12 +1274,12 @@ function painelAuto(aba){
         <button type="button" data-f="media">${L('Média PB + Itapema','Promedio PB + Itapema')}</button><button type="button" data-f="portobelo">Porto Belo</button><button type="button" data-f="itapema">Itapema</button></div>
       <div class="tblwrap"><table class="auto-tbl"></table></div>
       <p class="note auto-igual">${L('Igual ao seu cenário: perfil de renda, entrada (%), prazo, horizonte e opções marcadas.','Igual a su escenario: perfil de renta, anticipo (%), plazo, horizonte y opciones marcadas.')}</p>`;
-    const inp=el.querySelector('.auto-valor-in');
+    const inp=el.querySelector('.auto-valor-in'); inp.dataset.num=''; inp.dataset.casas=0; prepararDinheiro(inp,true);
     inp.addEventListener('input',()=>{ const v=lerNum(inp.value); if(v>0){ autoValor=v; autoValorManual=true; renders[tab](); } });
     inp.addEventListener('blur',()=>{ inp.value=fmtN(vAuto()); });
     el.querySelector('.auto-filtro').addEventListener('click',e=>{ const b=e.target.closest('[data-f]'); if(b){ autoFiltro=b.dataset.f; renders[tab](); } });
   }
-  const inp=el.querySelector('.auto-valor-in'); if(document.activeElement!==inp) inp.value=fmtN(vAuto());
+  const inp=el.querySelector('.auto-valor-in'); if(document.activeElement!==inp) inp.value=fmtN(vAuto()); extenso(inp);
   const seg=el.querySelector('.auto-filtro'); seg.style.setProperty('--i',['media','portobelo','itapema'].indexOf(autoFiltro));
   seg.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===autoFiltro));
   el.querySelector('.auto-tbl').innerHTML='<tbody>'+linhasPremissas(aba).map(([n,v,f])=>`<tr><td>${n}<small>${f}</small></td><td><b>${v}</b></td></tr>`).join('')+'</tbody>';
