@@ -308,7 +308,9 @@ function renderWhy(){
 }
 
 /* ---------- simulador ---------- */
-function premissas(){
+let viewAuto=false, resAberto=null; // qual cenário os resultados mostram; resultados fechados até o clique
+function premissas(){ return viewAuto ? autoP() : premissasSeu(); }
+function premissasSeu(){
   return {valor:num('valor'),entrada:Math.min(num('entrada'),num('valor')),custos:$('incEscritura').checked?num('custos')/100:0,mob:$('incMobilia').checked?SITE_CONFIG.mobiliaPadraoPct/100:0,juros:num('juros')/100,prazo:Math.max(1,Math.round(num('prazo'))),
     sistema:$('sistema').value,modo:$('modo').value,aluguel:num('aluguel'),reaj:num('reajAluguel')/100,vac:num('vacancia')/100,
     dA:num('diariaAlta'),oA:num('ocupAlta')/100,mA:Math.min(12,Math.max(0,Math.round(num('mesesAlta')))),dB:num('diariaBaixa'),oB:num('ocupBaixa')/100,
@@ -438,6 +440,7 @@ Historia real (dic/2020 a ${fmtMes(LASTKEY)}):
 - CUB/SC hoy: ${brl2(cubFim)}/m² (+${p1(CUB.v12m)} en 12 meses) – Sinduscon
 Tasa Selic hoy: ${p1(D.bcb.selicMeta)}.
 Simulación ilustrativa. Rentabilidad pasada no garantiza rentabilidad futura.`)+`\n\n${L('Veja a simulação completa:','Vea la simulación completa:')} ${linkEstado()}\n${assinatura()}`;
+  if(viewAuto) $('resumo').value=L('[Cenário de mercado: premissas automáticas do site com dados de hoje]\n','[Escenario de mercado: supuestos automáticos del sitio con datos de hoy]\n')+$('resumo').value;
   const perfil={nenhum:L('apenas valorização','solo valorización'),anual:L('locação anual','alquiler anual'),temporada:L('temporada','temporada')}[p.modo];
   const finTxt=r.P0>0?L(`financiado em ${p.prazo} meses`,`financiado en ${p.prazo} meses`):L('à vista','al contado');
   ultimoResumoWA=L(`Olá ${CONTATO.primeiroNome}! Fiz uma simulação no site Investir na Costa Esmeralda:\n• Imóvel: ${brl(p.valor)}\n• Entrada: ${brl(p.entrada)} (${finTxt})\n• Perfil: ${perfil}\n• Horizonte: ${p.anos} anos\n• Retorno projetado: ${isFinite(T)?pct(T):'—'} ao ano (patrimônio final ${brl(f.imovel)} x ${brl(f.cdb)} no CDB)\nQuero conversar sobre isso.`,
@@ -447,7 +450,7 @@ Simulación ilustrativa. Rentabilidad pasada no garantiza rentabilidad futura.`)
 
 /* ---------- investidor à vista ---------- */
 function renderAvista(){
-  const base=premissas(), d=num('desconto')/100;
+  const base=premissas(), d=(viewAuto?RM().descontoAvista:num('desconto'))/100;
   const pv={...base,entrada:Infinity,desc:d};
   const r=simular(pv), T=tir(r.fluxos), f=r.fim;
   const rendaLiq1=r.fluxos.slice(1,13).reduce((a,b)=>a+b,0)/12;
@@ -508,14 +511,14 @@ function simPlanta(g=num){
   return {V,M,N,e,ms,rf,ch,nRef,tipo,saldoChaves,totalPago,venda,ir,liquido,lucro,roi:lucro/totalPago,tir:tir(fl),cdbLiq,serie,vmN:vm(N),patrimonio:vm(N)-saldoChaves};
 }
 function renderPlanta(){
-  const r=simPlanta(), soma=r.e+r.ms+r.rf;
+  const gP=viewAuto?autoPlantaG():num, r=simPlanta(gP), soma=r.e+r.ms+r.rf;
   $('pCorrHint').textContent=L(`CUB/SC subiu ${p1(CUB.v12m)} em 12 meses`,`El CUB/SC subió ${p1(CUB.v12m)} en 12 meses`);
   $('pChavesTxt').innerHTML = soma>1 ? `<span class="neg">${L('Entrada + mensais + reforços passam de 100%. Ajuste os percentuais.','Anticipo + cuotas + refuerzos superan el 100%. Ajuste los porcentajes.')}</span>` : L(`Saldo nas chaves: <b>${pct(r.ch,0)}</b> do valor (${brl(r.saldoChaves)} já corrigido), pago com financiamento ou pelo comprador.`,`Saldo a la entrega: <b>${pct(r.ch,0)}</b> del valor (${brl(r.saldoChaves)} ya ajustado), pagado con financiación o por el comprador.`);
   const ganha=r.liquido>r.cdbLiq, mult=r.lucro/(r.cdbLiq-r.totalPago);
   $('pVerdict').className='verdict '+(ganha?'good':'bad');
   $('pVerdict').innerHTML=ganha?L(`<b>Vendendo na entrega das chaves, o lucro é de ${brl(r.lucro)} sobre ${brl(r.totalPago)} pagos.</b>`,`<b>Vendiendo a la entrega, la ganancia es de ${brl(r.lucro)} sobre ${brl(r.totalPago)} pagados.</b>`)+`<span>${isFinite(mult)&&mult>1?L(`É ${mult.toLocaleString('pt-BR',{maximumFractionDigits:1})}× o lucro que o mesmo dinheiro daria no CDB (${brl(r.cdbLiq-r.totalPago)}).`,`Es ${mult.toLocaleString('pt-BR',{maximumFractionDigits:1})}× la ganancia que el mismo dinero daría en el CDB (${brl(r.cdbLiq-r.totalPago)}).`):L(`O CDB com os mesmos pagamentos daria ${brl(r.cdbLiq-r.totalPago)} de lucro.`,`El CDB con los mismos pagos daría ${brl(r.cdbLiq-r.totalPago)} de ganancia.`)}</span>`
     :L(`<b>Neste cenário o CDB rende mais: ${brl(r.cdbLiq-r.totalPago)} contra ${brl(r.lucro)} no imóvel.</b>`,`<b>En este escenario el CDB rinde más: ${brl(r.cdbLiq-r.totalPago)} contra ${brl(r.lucro)} en el inmueble.</b>`)+`<span>${r.M===r.V?L('Informe o preço de um imóvel pronto parecido: se a tabela do lançamento é mais barata, essa diferença vira ganho na entrega.','Informe el precio de un inmueble terminado similar: si la lista del lanzamiento es más barata, esa diferencia se vuelve ganancia a la entrega.'):L('A valorização esperada não cobre a correção das parcelas neste cenário.','La valorización esperada no cubre el ajuste de las cuotas en este escenario.')}</span>`;
-  $('pKpis').innerHTML=kpiHTML([[L('Você paga até as chaves','Usted paga hasta la entrega'),brl(r.totalPago),L(`em ${r.N} meses, já corrigido`,`en ${r.N} meses, ya ajustado`)],[L('Valor na entrega','Valor a la entrega'),brl(r.vmN),L(`${pct(num('pValoriz')/100,1)} ao ano de valorização`,`${pct(num('pValoriz')/100,1)} anual de valorización`)],[L('Lucro na venda','Ganancia en la venta'),brl(r.lucro),L('após saldo, corretagem e IR','tras saldo, comisión e impuesto')],
+  $('pKpis').innerHTML=kpiHTML([[L('Você paga até as chaves','Usted paga hasta la entrega'),brl(r.totalPago),L(`em ${r.N} meses, já corrigido`,`en ${r.N} meses, ya ajustado`)],[L('Valor na entrega','Valor a la entrega'),brl(r.vmN),L(`${pct(gP('pValoriz')/100,1)} ao ano de valorização`,`${pct(gP('pValoriz')/100,1)} anual de valorización`)],[L('Lucro na venda','Ganancia en la venta'),brl(r.lucro),L('após saldo, corretagem e IR','tras saldo, comisión e impuesto')],
     [L('ROI sobre o que pagou','ROI sobre lo pagado'),pct(r.roi,1),L('retorno total','retorno total')],['TIR',isFinite(r.tir)?pct(r.tir):'—',L('retorno ao ano','retorno anual')],[L('Se ficar com o imóvel','Si se queda con el inmueble'),brl(r.patrimonio),L('valor menos o saldo das chaves','valor menos el saldo a la entrega')]]);
   renderAlavancagem(r);
   $('pTbl').innerHTML=`<tbody>${r.M!==r.V?`<tr><td>${r.M>r.V?L('Tabela abaixo do pronto parecido','Lista por debajo del terminado similar'):L('Tabela acima do pronto parecido','Lista por encima del terminado similar')}</td><td class="${r.M>r.V?'pos':'neg'}">${pct(Math.abs(1-r.V/r.M),1)}</td></tr>`:''}<tr><td>${L('Valor de venda na entrega','Valor de venta a la entrega')}</td><td>${brl(r.vmN)}</td></tr><tr><td>${L('Corretagem','Comisión')}</td><td class="neg">−${brl(r.vmN-r.venda)}</td></tr><tr><td>${L('Saldo devedor nas chaves','Saldo a la entrega')}</td><td class="neg">−${brl(r.saldoChaves)}</td></tr><tr><td>${L('IR sobre o ganho (com fator de redução)','Impuesto sobre la ganancia (con factor de reducción)')}</td><td class="neg">−${brl(r.ir)}</td></tr>
@@ -568,7 +571,7 @@ function simHolding(g=num){
   return {pf,hd,totPf:tot(pf),totHd:tot(hd),anos,vFim,V,A};
 }
 function renderHolding(){
-  const r=simHolding(), eco=r.totPf-r.totHd;
+  const r=simHolding(viewAuto?autoHoldingG():num), eco=r.totPf-r.totHd;
   $('hPeriodo').textContent=`${r.anos} ${L('anos','años')}`;
   $('hVerdict').className='verdict '+(eco>0?'good':'bad');
   $('hVerdict').innerHTML = eco>0
@@ -869,6 +872,9 @@ function linkEstado(){
     else if(el.value!==el.defaultValue||el.id==='modo') q.set(el.id,el.value);
   }
   if(tab==='soja') q.set('cidade',`${selUF}|${selNome}`);
+  if(resAberto) q.set('cen',viewAuto?'mercado':'seu');
+  if(autoFiltro!=='media') q.set('filtro',autoFiltro);
+  if(autoValorManual&&autoValor) q.set('vauto',Math.round(autoValor));
   q.set('aba',['planta','avista','holding','soja'].includes(tab)?tab:'sim');
   return location.origin+location.pathname+'?'+q.toString();
 }
@@ -905,6 +911,10 @@ function gerarPDF(){
     const l=f.querySelector('label').childNodes[0].textContent.trim(), inp=f.querySelector('input,select'), un=[...f.querySelectorAll('.in span')].map(x=>x.textContent).filter(x=>x!=='IPCA+').join(' ').trim();
     const val=inp.tagName==='SELECT'?inp.options[inp.selectedIndex].text:inp.value;
     return `${l}: ${un.startsWith('R$')?'R$ '+val+un.slice(2):val+(un?' '+un:'')}`;}).join(' · ') : '';
+  if(['sim','avista','planta','holding'].includes(tab)){
+    if(!resAberto) abrirResultados('seu');
+    if(viewAuto) $('printPrem').textContent=L('Premissas (cenário de mercado, automáticas): ','Supuestos (escenario de mercado, automáticos): ')+linhasPremissas(tab).map(([n,v])=>`${n}: ${String(v).replace(/<[^>]+>/g,'')}`).join(' · ');
+  }
   window.print();
 }
 addEventListener('beforeprint',()=>{imprimindo=true; renders[tab]();});
@@ -1134,7 +1144,7 @@ function wizAplicar(){
   else if(wiz.obj==='patrimonio'){ aba='holding'; alvo='p-holding'; setNum('entrada',v); }
   else if(wiz.obj==='renda'){ aba=wiz.forma==='avista'?'avista':'sim'; alvo=aba==='avista'?'p-avista':'objecao-cdi'; setNum('entrada',wiz.forma==='avista'?v:Math.round(v*0.3)); setModo('temporada'); }
   else { setNum('entrada',wiz.forma==='avista'?v:Math.round(v*0.3)); setModo('nenhum'); }
-  show(aba); irPara(alvo,true);
+  show(aba); if(!resAberto&&['sim','avista','planta','holding'].includes(aba)) abrirResultados('seu'); irPara(alvo,true);
   $('wizMsg').textContent=L('Pronto! Montamos o cenário abaixo. Ajuste qualquer número quando quiser.','¡Listo! Armamos el escenario abajo. Ajuste cualquier número cuando quiera.');
 }
 
@@ -1142,6 +1152,7 @@ function wizAplicar(){
 const ANCORA_ABA={'objecao-cdi':'sim','objecao-teto':'why','objecao-espera':'why','objecao-temporada':'why','objecao-cub-imposto':'planta','objecao-agro':'soja','porto-belo':'why','microrregioes':'why','seguranca':'why'};
 function irPara(id,destacar=true){
   const el=$(id); if(!el) return;
+  const caixa=el.closest('.resultados'); if(caixa&&caixa.hidden) abrirResultados(viewAuto?'auto':'seu');
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
     if(destacar){ el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),2200); }
@@ -1229,7 +1240,7 @@ const juros=()=>(JUROS_IMOB??REFS.jurosImob.v)/100;
 function vAuto(){ if(!autoValorManual||!autoValor) autoValor=num({planta:'pValor',holding:'hValor'}[tab]||'valor'); return autoValor; }
 
 function autoP(){ // premissas do Simulador no cenário de mercado
-  const u=premissas(), V=vAuto(), r=RM(), ent=u.valor>0?Math.min(1,u.entrada/u.valor):r.entradaPct/100;
+  const u=premissasSeu(), V=vAuto(), r=RM(), ent=u.valor>0?Math.min(1,u.entrada/u.valor):r.entradaPct/100;
   return {...u,valor:V,entrada:V*ent,custos:u.custos>0?SITE_CONFIG.itbiRegistroPct/100:0,mob:u.mob>0?SITE_CONFIG.mobiliaPadraoPct/100:0,juros:juros(),
     aluguel:V*r.aluguelMensalPctValor/100,vac:r.vacancia/100,dA:V*r.diariaAltaPctValor/100,oA:r.ocupAlta/100,mA:r.mesesAlta,dB:V*r.diariaBaixaPctValor/100,oB:r.ocupBaixa/100,
     adm:(u.modo==='temporada'?r.admTemporada:r.admAnual)/100,desp:V*r.despesasAnoPctValor/100/12,irAl:r.irAluguel/100,reaj:i12('ipca'),
@@ -1293,7 +1304,7 @@ function comparativo(aba,linhas){ // linhas: [rótulo, valorAuto, valorSeu, maio
 const tirTxt=t=>isFinite(t)?pct(t):'—';
 function renderAutoSim(){
   painelAuto('sim');
-  const pa=autoP(), ra=simular(pa), ps=premissas(), rs=simular(ps), Ta=tir(ra.fluxos), Ts=tir(rs.fluxos);
+  const pa=autoP(), ra=simular(pa), ps=premissasSeu(), rs=simular(ps), Ta=tir(ra.fluxos), Ts=tir(rs.fluxos);
   const dif=(r)=>{const d=r.fim.imovel-r.fim.cdb; return `<span class="${d>=0?'pos':'neg'}">${d>=0?'+':'−'}${brl(Math.abs(d))}</span>`;};
   const b1=p=>p.modo==='temporada'?rendaAno1(p):p.modo==='nenhum'?0:p.aluguel*12*(1-p.vac);
   comparativo('sim',[[L('Valor do imóvel','Valor del inmueble'),brl(pa.valor),brl(ps.valor)],[L(`Patrimônio em ${ps.anos} anos`,`Patrimonio en ${ps.anos} años`),brl(ra.fim.imovel),brl(rs.fim.imovel)],
@@ -1302,20 +1313,20 @@ function renderAutoSim(){
 }
 function renderAutoAvista(){
   painelAuto('avista');
-  const r=RM(), pa={...autoP(),entrada:Infinity,desc:r.descontoAvista/100}, ps={...premissas(),entrada:Infinity,desc:num('desconto')/100};
+  const r=RM(), pa={...autoP(),entrada:Infinity,desc:r.descontoAvista/100}, ps={...premissasSeu(),entrada:Infinity,desc:num('desconto')/100};
   const ra=simular(pa), rs=simular(ps), mes=x=>x.fluxos.slice(1,13).reduce((a,b)=>a+b,0)/12;
   comparativo('avista',[[L('Preço à vista','Precio al contado'),brl(ra.preco),brl(rs.preco)],[L('Renda líquida por mês (1º ano)','Renta neta por mes (1er año)'),brl(mes(ra)),brl(mes(rs))],
     [L(`Patrimônio em ${ps.anos} anos`,`Patrimonio en ${ps.anos} años`),brl(ra.fim.imovel),brl(rs.fim.imovel)],[L('Mesmo dinheiro no CDB','El mismo dinero en el CDB'),brl(ra.fim.cdb),brl(rs.fim.cdb)],['TIR',tirTxt(tir(ra.fluxos)),tirTxt(tir(rs.fluxos))]]);
 }
 function renderAutoPlanta(){
   painelAuto('planta');
-  const a=simPlanta(autoPlantaG()), s=simPlanta();
+  const a=simPlanta(autoPlantaG()), s=simPlanta(num);
   comparativo('planta',[[L('Valor de tabela','Precio de lista'),brl(a.V),brl(s.V)],[L('Você paga até as chaves','Usted paga hasta la entrega'),brl(a.totalPago),brl(s.totalPago)],[L('Valor na entrega','Valor a la entrega'),brl(a.vmN),brl(s.vmN)],
     [L('Lucro vendendo na entrega','Ganancia vendiendo a la entrega'),`<span class="${a.lucro>=0?'pos':'neg'}">${brl(a.lucro)}</span>`,`<span class="${s.lucro>=0?'pos':'neg'}">${brl(s.lucro)}</span>`],[L('ROI sobre o que pagou','ROI sobre lo pagado'),pct(a.roi,1),pct(s.roi,1)],['TIR',tirTxt(a.tir),tirTxt(s.tir)]]);
 }
 function renderAutoHolding(){
   painelAuto('holding');
-  const a=simHolding(autoHoldingG()), s=simHolding();
+  const a=simHolding(autoHoldingG()), s=simHolding(num);
   const eco=r=>{const e=r.totPf-r.totHd; return `<span class="${e>=0?'pos':'neg'}">${e>=0?'':'−'}${brl(Math.abs(e))}</span>`;};
   comparativo('holding',[[L('Valor dos imóveis','Valor de los inmuebles'),brl(a.V??vAuto()),brl(num('hValor'))],[L('Impostos e custos na pessoa física','Impuestos y costos como persona física'),brl(a.totPf),brl(s.totPf)],[L('Impostos e custos na holding','Impuestos y costos en la holding'),brl(a.totHd),brl(s.totHd)],[L('Economia com a holding','Ahorro con la holding'),eco(a),eco(s)]]);
 }
@@ -1324,7 +1335,40 @@ async function jurosAoVivo(){
     const rs=await r.json(), m=rs.reduce((a,b)=>b.data.split('/').reverse().join('')>a.data.split('/').reverse().join('')?b:a);
     const v=parseFloat(m.valor); if(v>3&&v<40){ JUROS_IMOB=v; if(['sim','avista','planta','holding'].includes(tab)) renders[tab](); } }catch{}
 }
+function abrirResultados(v){ // v: 'auto' | 'seu' | null (fecha)
+  resAberto=v; if(v) viewAuto=v==='auto';
+  document.querySelectorAll('.resultados').forEach(c=>c.hidden=!resAberto);
+  document.querySelectorAll('.vercen').forEach(b=>{
+    b.querySelectorAll('button').forEach(x=>{ x.setAttribute('aria-pressed',x.dataset.v===resAberto); x.setAttribute('aria-expanded',x.dataset.v===resAberto); });
+    b.classList.toggle('aberto',!!resAberto); b.classList.toggle('mercado',resAberto==='auto');
+    b.querySelector('.vercen-st').textContent = !resAberto ? L('Escolha um cenário para ver gráficos, tabelas e o resumo completo.','Elija un escenario para ver gráficos, tablas y el resumen completo.')
+      : resAberto==='auto' ? L('Mostrando: Cenário de mercado (automático). Clique de novo para fechar.','Mostrando: Escenario de mercado (automático). Haga clic de nuevo para cerrar.')
+      : L('Mostrando: Seu cenário. Clique de novo para fechar.','Mostrando: Su escenario. Haga clic de nuevo para cerrar.');
+  });
+  document.body.classList.toggle('ver-auto',resAberto==='auto');
+  if(['sim','avista','planta','holding'].includes(tab)) renders[tab]();
+}
+function montarResultados(){
+  for(const aba of ['sim','avista','planta','holding']){
+    const cmp=$('cmp-'+aba); if(!cmp) continue;
+    const bar=document.createElement('div'); bar.className='vercen no-print';
+    bar.innerHTML=`<div class="vercen-btns" role="group" aria-label="${L('Ver resultados','Ver resultados')}">
+      <button type="button" data-v="auto" aria-pressed="false" aria-expanded="false"><small>${L('Ver resultados','Ver resultados')}</small>${L('Cenário de mercado','Escenario de mercado')}</button>
+      <button type="button" data-v="seu" aria-pressed="false" aria-expanded="false"><small>${L('Ver resultados','Ver resultados')}</small>${L('Seu cenário','Su escenario')}</button></div>
+      <span class="vercen-st"></span>`;
+    bar.addEventListener('click',e=>{ const b=e.target.closest('button[data-v]'); if(!b) return; abrirResultados(resAberto===b.dataset.v?null:b.dataset.v); if(resAberto) bar.nextElementSibling.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); });
+    const box=document.createElement('div'); box.className='resultados stack'; box.hidden=true;
+    while(cmp.nextElementSibling) box.appendChild(cmp.nextElementSibling);
+    cmp.after(bar); bar.after(box);
+  }
+  addEventListener('beforeprint',()=>{ if(!resAberto&&['sim','avista','planta','holding'].includes(tab)) abrirResultados('seu'); });
+}
 function initAuto(){
+  montarResultados();
+  { const c=URLQ.get('cen'), f=URLQ.get('filtro'), va=+URLQ.get('vauto');
+    if(FILTROS[f]) autoFiltro=f; if(va>0){ autoValor=va; autoValorManual=true; }
+    if(c==='mercado'||c==='seu'){ resAberto=c==='mercado'?'auto':'seu'; viewAuto=c==='mercado'; } }
+  abrirResultados(resAberto);
   const w={sim:renderAutoSim,avista:renderAutoAvista,planta:renderAutoPlanta,holding:renderAutoHolding};
   for(const [k,f] of Object.entries(w)){ const orig=renders[k]; renders[k]=()=>{ orig(); f(); }; }
   // o "Seu cenário" redesenha só a própria aba: acompanha também o automático

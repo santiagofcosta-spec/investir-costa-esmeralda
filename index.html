@@ -392,6 +392,28 @@ input[type=range]{width:100%;accent-color:var(--gold-2)}
 @media print{.wizard,.btn-util,.badge,.assinatura .ass-acoes{display:none!important}.assinatura{background:none;color:var(--ink);border:1px solid var(--line)}.assinatura h2{color:var(--ink)}}
 </style>
 <style>.wa{position:fixed}
+.vercen{display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 0 2px}
+.vercen-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:min(100%,640px)}
+.vercen-btns button{appearance:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 18px;border-radius:16px;font:700 15px var(--f-body);letter-spacing:-.01em;border:1.5px solid transparent;background:var(--surface);box-shadow:var(--sh-1);color:var(--ink);transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .35s,color .35s,border-color .35s;position:relative;overflow:hidden}
+.vercen-btns button small{font:500 10.5px var(--f-body);letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.vercen-btns button[data-v="auto"]{border-color:rgba(255,195,80,.65)}
+.vercen-btns button[data-v="seu"]{border-color:rgba(15,99,208,.4)}
+.vercen-btns button:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
+.vercen-btns button:active{transform:scale(.98)}
+.vercen-btns button[data-v="auto"][aria-pressed="true"]{background:linear-gradient(135deg,#FFC350,#C5A059);color:#111416;box-shadow:0 10px 26px -6px rgba(255,195,80,.55)}
+.vercen-btns button[data-v="seu"][aria-pressed="true"]{background:linear-gradient(135deg,#0F63D0,#2f80ed);color:#fff;box-shadow:0 10px 26px -6px rgba(15,99,208,.5)}
+.vercen-btns button::after{content:"▾";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.6;transition:transform .35s var(--ease)}
+.vercen-btns button[aria-pressed="true"]::after{transform:translateY(-50%) rotate(180deg)}
+.vercen-st{font-size:12px;color:var(--muted);text-align:center}
+.vercen.mercado .vercen-st{color:var(--gold-ink);font-weight:600}
+.resultados:not([hidden]){animation:abre .55s var(--ease) both}
+@keyframes abre{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+body.ver-auto .resultados > .verdict,body.ver-auto .resultados .vantagem{box-shadow:0 0 0 2px rgba(255,195,80,.55)}
+body.ver-auto .cmp-tbl td.c-auto{background:rgba(255,195,80,.18)}
+@media (max-width:520px){.vercen-btns{gap:8px}.vercen-btns button{padding:12px 10px;font-size:14px}.vercen-btns button::after{display:none}}
+@media print{.resultados{display:flex!important}}
+@media (prefers-reduced-motion:reduce){.resultados:not([hidden]){animation:none}}
+
 .extenso{grid-column:2;justify-self:end;margin-top:-4px;font-size:11.5px;font-weight:600;color:var(--gold-ink);letter-spacing:.01em;min-height:1em}
 .extenso:empty{display:none}
 .f .in input{font-weight:600}
