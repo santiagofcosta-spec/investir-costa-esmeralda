@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-13",
+ "atualizado": "2026-11-14",
  "bcb": {
   "start": "2016-01",
   "series": {
@@ -1423,7 +1423,7 @@
     ]
    }
   ],
-  "atualizado": "2026-11-13 21:57",
+  "atualizado": "2026-11-13 21:59",
   "fonte": "Grão Direto (graodireto.com.br)",
   "cidades": {
    "comodoro": {
@@ -1485,56 +1485,56 @@
      {
       "cidade": "Campos de Júlio",
       "uf": "MT",
-      "preco": 132.15,
-      "comFrete": 130.76,
+      "preco": 132.35,
+      "comFrete": 130.96,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:30"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Sapezal",
       "uf": "MT",
-      "preco": 130.8,
-      "comFrete": 128.38,
+      "preco": 130.95,
+      "comFrete": 128.53,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:30"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
-      "preco": 130.3,
-      "comFrete": 125.97,
+      "preco": 130.45,
+      "comFrete": 126.12,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:30"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Pontes e Lacerda",
       "uf": "MT",
-      "preco": 128.85,
-      "comFrete": 125.31,
+      "preco": 129.0,
+      "comFrete": 125.46,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:30"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Campos de Júlio",
       "uf": "MT",
-      "preco": 128.55,
-      "comFrete": 123.75,
+      "preco": 128.75,
+      "comFrete": 123.95,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:30"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Sapezal",
       "uf": "MT",
-      "preco": 127.85,
-      "comFrete": 122.28,
+      "preco": 128.0,
+      "comFrete": 122.43,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:30"
+      "atualizado": "2026-11-13 17:45"
      }
     ],
     "historico": [
@@ -1585,7 +1585,7 @@
       "visto": "2026-11-13"
      },
      "2026-12": {
-      "preco": 132.15,
+      "preco": 132.35,
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
@@ -2227,6 +2227,15 @@
     ],
     "ofertas": [
      {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 142.0,
+      "comFrete": 135.33,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 20:28"
+     },
+     {
       "cidade": "Cuiabá",
       "uf": "MT",
       "preco": 130.0,
@@ -2312,8 +2321,8 @@
     "ordem": 4,
     "ultimas": {
      "disp": {
-      "preco": 130.0,
-      "cidade": "Cuiabá",
+      "preco": 142.0,
+      "cidade": "Sinop",
       "uf": "MT",
       "fob": true,
       "visto": "2026-11-13"
@@ -2381,6 +2390,15 @@
      ]
     ],
     "ofertas": [
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 142.0,
+      "comFrete": 137.66,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 20:28"
+     },
      {
       "cidade": "Cuiabá",
       "uf": "MT",
@@ -2467,8 +2485,8 @@
     "ordem": 5,
     "ultimas": {
      "disp": {
-      "preco": 130.0,
-      "cidade": "Cuiabá",
+      "preco": 142.0,
+      "cidade": "Sinop",
       "uf": "MT",
       "fob": true,
       "visto": "2026-11-13"
@@ -2536,6 +2554,15 @@
      ]
     ],
     "ofertas": [
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 142.0,
+      "comFrete": 139.34,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 20:28"
+     },
      {
       "cidade": "Cuiabá",
       "uf": "MT",
@@ -2622,8 +2649,8 @@
     "ordem": 6,
     "ultimas": {
      "disp": {
-      "preco": 130.0,
-      "cidade": "Cuiabá",
+      "preco": 142.0,
+      "cidade": "Sinop",
       "uf": "MT",
       "fob": true,
       "visto": "2026-11-13"
@@ -2698,6 +2725,15 @@
      ]
     ],
     "ofertas": [
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 142.0,
+      "comFrete": 140.46,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 20:28"
+     },
      {
       "cidade": "Cuiabá",
       "uf": "MT",
@@ -2784,8 +2820,8 @@
     "ordem": 7,
     "ultimas": {
      "disp": {
-      "preco": 130.0,
-      "cidade": "Cuiabá",
+      "preco": 142.0,
+      "cidade": "Sinop",
       "uf": "MT",
       "fob": true,
       "visto": "2026-11-13"
@@ -2863,6 +2899,15 @@
      {
       "cidade": "Sinop",
       "uf": "MT",
+      "preco": 142.0,
+      "comFrete": 141.46,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-13 20:28"
+     },
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
       "preco": 130.1,
       "comFrete": 129.56,
       "entrega": "2026-12-31",
@@ -2919,9 +2964,9 @@
      [
       "2026-11-13",
       120.6,
-      125.35,
-      130.1,
-      2
+      130.9,
+      142.0,
+      3
      ]
     ],
     "slug": "sinop",
@@ -2936,6 +2981,13 @@
      },
      "2027-04": {
       "preco": 120.6,
+      "cidade": "Sinop",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "disp": {
+      "preco": 142.0,
       "cidade": "Sinop",
       "uf": "MT",
       "fob": true,
@@ -3331,76 +3383,67 @@
     "serie": [],
     "ofertas": [
      {
-      "cidade": "Juína",
-      "uf": "MT",
-      "preco": 113.1,
-      "comFrete": 106.58,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-13 16:00"
-     },
-     {
       "cidade": "Cerejeiras",
       "uf": "RO",
-      "preco": 129.5,
-      "comFrete": 128.96,
+      "preco": 129.8,
+      "comFrete": 129.26,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:00"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Cerejeiras",
       "uf": "RO",
-      "preco": 129.5,
-      "comFrete": 128.96,
+      "preco": 129.8,
+      "comFrete": 129.26,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:00"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Cerejeiras",
       "uf": "RO",
-      "preco": 127.8,
-      "comFrete": 124.29,
+      "preco": 128.1,
+      "comFrete": 124.59,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:00"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Cerejeiras",
       "uf": "RO",
-      "preco": 127.8,
-      "comFrete": 124.29,
+      "preco": 128.1,
+      "comFrete": 124.59,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:00"
+      "atualizado": "2026-11-13 17:45"
+     },
+     {
+      "cidade": "Vilhena",
+      "uf": "RO",
+      "preco": 130.9,
+      "comFrete": 128.65,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Cerejeiras",
       "uf": "RO",
-      "preco": 120.2,
-      "comFrete": 119.66,
-      "entrega": "2027-01-31",
+      "preco": 116.8,
+      "comFrete": 116.26,
+      "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-13 16:00"
-     },
-     {
-      "cidade": "Cerejeiras",
-      "uf": "RO",
-      "preco": 120.2,
-      "comFrete": 119.66,
-      "entrega": "2027-01-31",
-      "fob": true,
-      "atualizado": "2026-11-13 16:00"
+      "atualizado": "2026-11-13 17:45"
      }
     ],
     "historico": [
      [
       "2026-11-13",
-      120.2,
-      125.83,
-      129.5,
-      6
+      116.8,
+      126.52,
+      129.8,
+      5
      ]
     ],
     "slug": "cerejeiras",
@@ -3414,14 +3457,21 @@
       "visto": "2026-11-13"
      },
      "2026-12": {
-      "preco": 129.5,
-      "cidade": "Cerejeiras",
+      "preco": 130.9,
+      "cidade": "Vilhena",
       "uf": "RO",
       "fob": true,
       "visto": "2026-11-13"
      },
      "2027-01": {
       "preco": 120.2,
+      "cidade": "Cerejeiras",
+      "uf": "RO",
+      "fob": true,
+      "visto": "2026-11-13"
+     },
+     "2027-04": {
+      "preco": 116.8,
       "cidade": "Cerejeiras",
       "uf": "RO",
       "fob": true,
@@ -3620,56 +3670,56 @@
      {
       "cidade": "Cerejeiras",
       "uf": "RO",
-      "preco": 129.7,
-      "comFrete": 129.03,
+      "preco": 129.8,
+      "comFrete": 129.13,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:45"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Vilhena",
       "uf": "RO",
-      "preco": 130.8,
-      "comFrete": 127.88,
+      "preco": 130.9,
+      "comFrete": 127.98,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:45"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
-      "preco": 133.35,
-      "comFrete": 126.35,
+      "preco": 133.45,
+      "comFrete": 126.45,
       "entrega": "2026-12-31",
       "fob": true,
-      "atualizado": "2026-11-13 16:45"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Cerejeiras",
       "uf": "RO",
-      "preco": 128.0,
-      "comFrete": 124.42,
+      "preco": 128.1,
+      "comFrete": 124.52,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:45"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Vilhena",
       "uf": "RO",
-      "preco": 125.25,
-      "comFrete": 119.04,
+      "preco": 125.35,
+      "comFrete": 119.14,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-13 16:45"
+      "atualizado": "2026-11-13 17:45"
      },
      {
       "cidade": "Vilhena",
       "uf": "RO",
-      "preco": 120.95,
-      "comFrete": 118.03,
+      "preco": 121.05,
+      "comFrete": 118.13,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-13 16:45"
+      "atualizado": "2026-11-13 17:45"
      }
     ],
     "historico": [],
@@ -3677,14 +3727,14 @@
     "ordem": 16,
     "ultimas": {
      "2026-12": {
-      "preco": 133.35,
+      "preco": 133.45,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
       "visto": "2026-11-13"
      },
      "2027-04": {
-      "preco": 120.95,
+      "preco": 121.05,
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": true,
@@ -3763,13 +3813,6 @@
     ],
     "cidades": [
      {
-      "nome": "Catalão",
-      "preco": 144.79,
-      "var": 0.53,
-      "data": "2026-11-12",
-      "tipo": "Soja FOB"
-     },
-     {
       "nome": "Anápolis",
       "preco": 142.82,
       "var": 0.34,
@@ -3777,16 +3820,23 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Cristalina",
-      "preco": 144.2,
-      "var": 0.82,
+      "nome": "Chapadão do Céu",
+      "preco": 143.84,
+      "var": 1.26,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Chapadão do Céu",
-      "preco": 143.84,
-      "var": 1.26,
+      "nome": "Catalão",
+      "preco": 144.79,
+      "var": 0.53,
+      "data": "2026-11-12",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Cristalina",
+      "preco": 144.2,
+      "var": 0.82,
       "data": "2026-11-12",
       "tipo": "Soja FOB"
      },
