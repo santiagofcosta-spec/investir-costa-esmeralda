@@ -23,6 +23,18 @@ const CONTATO = { nome:SITE_CONFIG.consultorNome, primeiroNome:SITE_CONFIG.prime
 /* ---------- referências de mercado com fonte (conferidas em 13/11/2026; atualizar à mão) ---------- */
 const REFS = {
   m2PortoBelo: { v:14712, txt:'imóveis novos vendidos no 1º semestre de 2026 (levantamento DWV publicado por Portas e NSC Total)' },
+  // m² médio de venda em Porto Belo segundo a DWV, como publicado na imprensa. t = posição no tempo (ano decimal).
+  // Excluído: R$ 18.918 para 2023 (Lance Porto Belo), incoerente com jan/2023 e 2024 da própria DWV.
+  serieDWVPortoBelo: [
+    { rot:'2020', t:2020.5, v:8066, f:'Lance Porto Belo' },
+    { rot:'2021', t:2021.5, v:8558, f:'Lance Porto Belo' },
+    { rot:'2022', t:2022.5, v:10623, f:'Lance Porto Belo' },
+    { rot:'jan/23', t:2023.0, v:11845, f:'NSC Total' },
+    { rot:'jan/24', t:2024.0, v:12333, f:'NSC Total' },
+    { rot:'2024', t:2024.5, v:13400, f:'Imobireport' },
+    { rot:'2025', t:2025.5, v:13900, f:'Imobireport' },
+    { rot:'1º sem/26', t:2026.25, v:14712, f:'Portas e NSC Total' },
+  ],
   vendasPortoBelo: { v:'R$ 2,5 bilhões', txt:'vendas de imóveis novos e lançamentos no 1º semestre de 2026 (DWV, via Portas e NSC Total)' },
   soja: { antes:{ data:'dez/2021', v:171.42, txt:'Indicador Cepea/Esalq Paranaguá, fechamento de 17/12/2021' },
           hoje:{ data:'nov/2026', v:159.87, txt:'Indicador Cepea/Esalq Paranaguá, 11/11/2026' }, areaPadrao:100 },
@@ -988,6 +1000,20 @@ function renderTeto(){
   $('regionalNota').innerHTML=L(`Porto Belo ainda negocia cerca de <b>${pct(gap,0)} abaixo</b> do m² de Balneário Camboriú, com os grandes projetos de bairro planejado e orla em andamento. Atenção: o número de Porto Belo vem de outra metodologia (imóveis novos vendidos, ${REFS.m2PortoBelo.txt}), porque a cidade não tem índice FipeZap.`,`Porto Belo todavía negocia cerca de <b>${pct(gap,0)} por debajo</b> del m² de Balneário Camboriú, con grandes proyectos de barrio planificado y costanera en marcha. Atención: el dato de Porto Belo usa otra metodología (inmuebles nuevos vendidos, encuesta DWV), porque la ciudad no tiene índice FipeZap.`);
 }
 
+/* ---------- Porto Belo: série DWV ---------- */
+function renderPBSerie(){
+  if(!$('chPBSerie')) return;
+  const S=REFS.serieDWVPortoBelo, a=S[0], b=S.at(-1), anos=b.t-a.t, cagr=Math.pow(b.v/a.v,1/anos)-1;
+  $('pbSerieKpis').innerHTML=kpiHTML([
+    [L('m² em Porto Belo hoje','m² en Porto Belo hoy'),brl(b.v),L('1º semestre de 2026 · DWV','1er semestre de 2026 · DWV'),''],
+    [L('Valorização desde 2020','Valorización desde 2020'),'+'+pct(b.v/a.v-1,0),`${brl(a.v)} → ${brl(b.v)}`,'up'],
+    [L('Média ao ano','Promedio anual'),pct(cagr,1),L(`em cerca de ${fmtN(anos,1)} anos`,`en cerca de ${fmtN(anos,1)} años`),'up'],
+    [L('Ainda abaixo de Itapema','Todavía por debajo de Itapema'),pct(1-b.v/it[LAST],0),L(`Itapema: ${brl(it[LAST])}/m² (FipeZap)`,`Itapema: ${brl(it[LAST])}/m² (FipeZap)`)],
+  ]);
+  draw('chPBSerie',{type:'bar',data:{labels:S.map(p=>p.rot),datasets:[{label:L('m² médio de venda em Porto Belo (DWV)','m² medio de venta en Porto Belo (DWV)'),data:S.map(p=>p.v),backgroundColor:S.map((p,i)=>i===S.length-1?css('--gold'):'rgba(255,195,80,.55)'),borderColor:css('--gold-2'),borderWidth:1,borderRadius:6}]},
+    options:baseOpts(v=>'R$ '+Math.round(v/1000)+' mil',{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${brl(c.parsed.y)}/m² · DWV, via ${S[c.dataIndex].f}`}}}})});
+}
+
 /* ---------- m² internacional (aba Investidor à vista) ---------- */
 function renderInternacional(){
   const el=$('intlBox'); if(!el) return;
@@ -1029,7 +1055,7 @@ function renderAgro(){
   const S0=REFS.soja, area=S0.areaPadrao, iDez21=PERKEY.indexOf('2021-12'), pb=agroCid==='portobelo';
   const cidNome=pb?'Porto Belo':'Itapema';
   // Porto Belo: m² de hoje = DWV 2026; dez/2021 estimado com a valorização de Itapema (FipeZap) no período
-  const m2Hoje=pb?REFS.m2PortoBelo.v:it[LAST], m2Antes=pb?REFS.m2PortoBelo.v*it[iDez21]/it[LAST]:it[iDez21];
+  const m2Hoje=pb?REFS.m2PortoBelo.v:it[LAST], m2Antes=pb?REFS.serieDWVPortoBelo.find(p=>p.rot==='2021').v:it[iDez21];
   const loc=precoSojaLocal(), fatorPorto=S0.antes.v/S0.hoje.v;
   // hoje: preço da cidade; dez/2021: estimado aplicando a variação de Paranaguá ao preço da cidade
   const pHoje=loc?loc.v:S0.hoje.v, pAntes=loc?loc.v*fatorPorto:S0.antes.v;
@@ -1037,12 +1063,12 @@ function renderAgro(){
   const max=Math.max(s0,s1);
   const onde=loc?L(` · soja em ${loc.nome}`,` · soja en ${loc.nome}`):L(' · soja em Paranaguá',' · soja en Paranaguá');
   const notaImovel=pb
-    ? L(`Imóvel: m² de Porto Belo hoje = ${brl(REFS.m2PortoBelo.v)}, média dos ${REFS.m2PortoBelo.txt}; dez/2021 estimado com a valorização de Itapema no período (FipeZap), porque Porto Belo não tem índice oficial.`,`Inmueble: m² de Porto Belo hoy = ${brl(REFS.m2PortoBelo.v)} (inmuebles nuevos vendidos en el 1er semestre de 2026, encuesta DWV); dic/2021 estimado con la valorización de Itapema en el período (FipeZap), porque Porto Belo no tiene índice oficial.`)
+    ? L(`Imóvel: m² médio de Porto Belo segundo a DWV: ${brl(m2Antes)} em 2021 e ${brl(m2Hoje)} no 1º semestre de 2026 (imóveis novos vendidos).`,`Inmueble: m² medio de Porto Belo según DWV: ${brl(m2Antes)} en 2021 y ${brl(m2Hoje)} en el 1er semestre de 2026 (inmuebles nuevos vendidos).`)
     : L(`Imóvel: m² médio de Itapema (FipeZap) dez/2021 e ${fmtMes(LASTKEY)}.`,`Inmueble: m² medio de Itapema (FipeZap) dic/2021 y ${fmtMes(LASTKEY)}.`);
   el.innerHTML=`<div class="agro-cid chips" role="group" aria-label="${L('Cidade do imóvel','Ciudad del inmueble')}"><button type="button" data-cid="portobelo" aria-pressed="${pb}">Porto Belo</button><button type="button" data-cid="itapema" aria-pressed="${!pb}">Itapema</button></div>
     <div class="ph"><h2>${L(`Quantas sacas compram um apartamento de ${area} m² em ${cidNome}`,`Cuántas sacas compran un departamento de ${area} m² en ${cidNome}`)}</h2><span class="note">${L('sacas de 60 kg','sacas de 60 kg')}${onde}</span></div>
     <div class="sacas">
-      <div class="sc-row"><span>${S0.antes.data}</span><div class="sc-t"><div class="sc-f old" style="width:${(s0/max*100).toFixed(1)}%"></div></div><b>${fmtN(s0)} sc</b><small>${pb?'~':''}${brl(v0)}${pb?L(' (estimado)',' (estimado)'):''} · ${L('soja','soja')} ${loc?'~':''}${brl2(pAntes)}/sc${loc?L(' (estimado)',' (estimado)'):''}</small></div>
+      <div class="sc-row"><span>${S0.antes.data}</span><div class="sc-t"><div class="sc-f old" style="width:${(s0/max*100).toFixed(1)}%"></div></div><b>${fmtN(s0)} sc</b><small>${brl(v0)} · ${L('soja','soja')} ${loc?'~':''}${brl2(pAntes)}/sc${loc?L(' (estimado)',' (estimado)'):''}</small></div>
       <div class="sc-row"><span>${L('hoje','hoy')}</span><div class="sc-t"><div class="sc-f" style="width:${(s1/max*100).toFixed(1)}%"></div></div><b>${fmtN(s1)} sc</b><small>${brl(v1)} · ${L('soja','soja')} ${brl2(pHoje)}/sc</small></div>
     </div>
     <div class="callout" style="margin-top:12px">${L(`Quem trocou <b>${fmtN(s0)} sacas</b> por um imóvel em dez/2021 tem hoje um patrimônio que equivale a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} a mais. A saca caiu e o m² subiu: o imóvel guardou o valor da safra.`,`Quien cambió <b>${fmtN(s0)} sacas</b> por un inmueble en dic/2021 hoy tiene un patrimonio equivalente a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} más. La saca bajó y el m² subió: el inmueble guardó el valor de la cosecha.`)}</div>
@@ -1133,7 +1159,7 @@ function initV2(){
   $('assWa').textContent='WhatsApp '+SITE_CONFIG.whatsappTxt;
   // renders extras
   const rw=renders.why, ra=renders.avista;
-  renders.why=()=>{ rw(); renderTeto(); renderEspera(); };
+  renders.why=()=>{ rw(); renderPBSerie(); renderTeto(); renderEspera(); };
   renders.avista=()=>{ ra(); renderInternacional(); };
   $('agroBox').addEventListener('click',e=>{ const b=e.target.closest('[data-cid]'); if(b){ agroCid=b.dataset.cid; renderAgro(); } });
   addEventListener('hashchange',rotaHash);
