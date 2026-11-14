@@ -605,6 +605,7 @@ function renderSoja(){
   const S0=D.soja;
   if(!S0||!S0.cidades){ $('sKpis').innerHTML=`<p class="note">${L('Cotações da soja ainda não carregadas.','Cotizaciones de soja aún no cargadas.')}</p>`; return; }
   montarFiltroSoja();
+  renderAgro();
   const I=infoCidade(selUF,selNome), c=I.det, nomeH=esc(I.nome), mesoH=esc(I.meso||'—'), nomeC=`${nomeH}/${esc(I.uf)}`;
   const loc=c?ofertasLocais(c):[], todas=c?(c.ofertas||[]):[], melhor=(loc.length?loc:todas).length?(loc.length?loc:todas).reduce((a,b)=>b.preco>a.preco?b:a):null;
   const regs=S0.regioes.slice().sort((a,b)=>b.valor-a.valor);
@@ -1008,18 +1009,35 @@ function renderAlavancagem(r){
 }
 
 /* ---------- #objecao-agro: poder de compra em sacas ---------- */
+function precoSojaLocal(){
+  // cotação da cidade escolhida na aba; senão média das ofertas locais; senão a da região
+  if(!D.soja||!selUF||!selNome) return null;
+  const I=infoCidade(selUF,selNome), c=I.det, loc=c?ofertasLocais(c):[];
+  const nome=`${esc(I.nome)}/${esc(I.uf)}`;
+  if(I.cot?.preco) return {v:I.cot.preco,nome,fonte:L(`cotação da cidade em ${fmtDia(I.cot.data)} (Grão Direto)`,`cotización de la ciudad el ${fmtDia(I.cot.data)} (Grão Direto)`)};
+  if(loc.length) return {v:loc.reduce((a,b)=>a+b.preco,0)/loc.length,nome,fonte:L(`média de ${loc.length} ofertas de compradores na cidade (Grão Direto)`,`promedio de ${loc.length} ofertas de compradores en la ciudad (Grão Direto)`)};
+  const r=I.reg; if(r&&(r.preco??r.valor)) return {v:r.preco??r.valor,nome,fonte:L(`cotação da região ${esc(r.nome)} (Grão Direto)`,`cotización de la región ${esc(r.nome)} (Grão Direto)`)};
+  return null;
+}
 function renderAgro(){
   const el=$('agroBox'); if(!el) return;
   const S0=REFS.soja, area=S0.areaPadrao, iDez21=PERKEY.indexOf('2021-12');
-  const v0=it[iDez21]*area, v1=it[LAST]*area, s0=v0/S0.antes.v, s1=v1/S0.hoje.v;
+  const loc=precoSojaLocal(), fatorPorto=S0.antes.v/S0.hoje.v;
+  // hoje: preço da cidade; dez/2021: estimado aplicando a variação de Paranaguá ao preço da cidade
+  const pHoje=loc?loc.v:S0.hoje.v, pAntes=loc?loc.v*fatorPorto:S0.antes.v;
+  const v0=it[iDez21]*area, v1=it[LAST]*area, s0=v0/pAntes, s1=v1/pHoje;
   const max=Math.max(s0,s1);
-  el.innerHTML=`<div class="ph"><h2>${L(`Quantas sacas compram um apartamento de ${area} m² em Itapema`,`Cuántas sacas compran un departamento de ${area} m² en Itapema`)}</h2><span class="note">${L('sacas de 60 kg','sacas de 60 kg')}</span></div>
+  const onde=loc?L(` · soja em ${loc.nome}`,` · soja en ${loc.nome}`):L(' · soja em Paranaguá',' · soja en Paranaguá');
+  el.innerHTML=`<div class="ph"><h2>${L(`Quantas sacas compram um apartamento de ${area} m² em Itapema`,`Cuántas sacas compran un departamento de ${area} m² en Itapema`)}</h2><span class="note">${L('sacas de 60 kg','sacas de 60 kg')}${onde}</span></div>
     <div class="sacas">
-      <div class="sc-row"><span>${S0.antes.data}</span><div class="sc-t"><div class="sc-f old" style="width:${(s0/max*100).toFixed(1)}%"></div></div><b>${fmtN(s0)} sc</b><small>${brl(v0)} · ${L('soja','soja')} ${brl2(S0.antes.v)}/sc</small></div>
-      <div class="sc-row"><span>${S0.hoje.data}</span><div class="sc-t"><div class="sc-f" style="width:${(s1/max*100).toFixed(1)}%"></div></div><b>${fmtN(s1)} sc</b><small>${brl(v1)} · ${L('soja','soja')} ${brl2(S0.hoje.v)}/sc</small></div>
+      <div class="sc-row"><span>${S0.antes.data}</span><div class="sc-t"><div class="sc-f old" style="width:${(s0/max*100).toFixed(1)}%"></div></div><b>${fmtN(s0)} sc</b><small>${brl(v0)} · ${L('soja','soja')} ${loc?'~':''}${brl2(pAntes)}/sc${loc?L(' (estimado)',' (estimado)'):''}</small></div>
+      <div class="sc-row"><span>${L('hoje','hoy')}</span><div class="sc-t"><div class="sc-f" style="width:${(s1/max*100).toFixed(1)}%"></div></div><b>${fmtN(s1)} sc</b><small>${brl(v1)} · ${L('soja','soja')} ${brl2(pHoje)}/sc</small></div>
     </div>
     <div class="callout" style="margin-top:12px">${L(`Quem trocou <b>${fmtN(s0)} sacas</b> por um imóvel em dez/2021 tem hoje um patrimônio que equivale a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} a mais. A saca caiu e o m² subiu: o imóvel guardou o valor da safra.`,`Quien cambió <b>${fmtN(s0)} sacas</b> por un inmueble en dic/2021 hoy tiene un patrimonio equivalente a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} más. La saca bajó y el m² subió: el inmueble guardó el valor de la cosecha.`)}</div>
-    <p class="note" style="margin-top:8px">${L(`Soja: ${S0.antes.txt}; ${S0.hoje.txt}. Imóvel: m² médio de Itapema (FipeZap) dez/2021 e ${fmtMes(LASTKEY)}.`,`Soja: Indicador Cepea/Esalq Paranaguá (17/12/2021 y 11/11/2026). Inmueble: m² medio de Itapema (FipeZap) dic/2021 y ${fmtMes(LASTKEY)}.`)}</p>`;
+    <p class="note" style="margin-top:8px">${loc
+      ? L(`Soja hoje: ${loc.fonte}. Dez/2021: estimado aplicando ao preço da cidade a mesma variação do porto de Paranaguá no período (Cepea/Esalq: ${brl2(S0.antes.v)} em 17/12/2021 → ${brl2(S0.hoje.v)} em 11/11/2026), porque não há histórico por cidade daquela época. Imóvel: m² médio de Itapema (FipeZap) dez/2021 e ${fmtMes(LASTKEY)}.`,
+          `Soja hoy: ${loc.fonte}. Dic/2021: estimado aplicando al precio de la ciudad la misma variación del puerto de Paranaguá en el período (Cepea/Esalq: ${brl2(S0.antes.v)} el 17/12/2021 → ${brl2(S0.hoje.v)} el 11/11/2026), porque no hay histórico por ciudad de esa época. Inmueble: m² medio de Itapema (FipeZap) dic/2021 y ${fmtMes(LASTKEY)}.`)
+      : L(`Sem cotação para a cidade escolhida: usamos o porto de Paranaguá. Soja: ${S0.antes.txt}; ${S0.hoje.txt}. Imóvel: m² médio de Itapema (FipeZap) dez/2021 e ${fmtMes(LASTKEY)}.`,`Sin cotización para la ciudad elegida: usamos el puerto de Paranaguá (Cepea/Esalq, 17/12/2021 y 11/11/2026). Inmueble: m² medio de Itapema (FipeZap) dic/2021 y ${fmtMes(LASTKEY)}.`)}</p>`;
 }
 
 /* ---------- Atalho guiado: monte seu cenário em 30 segundos ---------- */
@@ -1101,9 +1119,8 @@ function initV2(){
   $('assCargo').textContent=(SITE_CONFIG.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+SITE_CONFIG.creci+' · ':'')+SITE_CONFIG.imobiliaria;
   $('assWa').textContent='WhatsApp '+SITE_CONFIG.whatsappTxt;
   // renders extras
-  const rw=renders.why, rs=renders.soja, ra=renders.avista;
+  const rw=renders.why, ra=renders.avista;
   renders.why=()=>{ rw(); renderTeto(); renderEspera(); };
-  renders.soja=()=>{ rs(); renderAgro(); };
   renders.avista=()=>{ ra(); renderInternacional(); };
   addEventListener('hashchange',rotaHash);
 }
