@@ -1019,25 +1019,33 @@ function precoSojaLocal(){
   const r=I.reg; if(r&&(r.preco??r.valor)) return {v:r.preco??r.valor,nome,fonte:L(`cotação da região ${esc(r.nome)} (Grão Direto)`,`cotización de la región ${esc(r.nome)} (Grão Direto)`)};
   return null;
 }
+let agroCid='portobelo'; // Porto Belo em destaque por padrão
 function renderAgro(){
   const el=$('agroBox'); if(!el) return;
-  const S0=REFS.soja, area=S0.areaPadrao, iDez21=PERKEY.indexOf('2021-12');
+  const S0=REFS.soja, area=S0.areaPadrao, iDez21=PERKEY.indexOf('2021-12'), pb=agroCid==='portobelo';
+  const cidNome=pb?'Porto Belo':'Itapema';
+  // Porto Belo: m² de hoje = DWV 2026; dez/2021 estimado com a valorização de Itapema (FipeZap) no período
+  const m2Hoje=pb?REFS.m2PortoBelo.v:it[LAST], m2Antes=pb?REFS.m2PortoBelo.v*it[iDez21]/it[LAST]:it[iDez21];
   const loc=precoSojaLocal(), fatorPorto=S0.antes.v/S0.hoje.v;
   // hoje: preço da cidade; dez/2021: estimado aplicando a variação de Paranaguá ao preço da cidade
   const pHoje=loc?loc.v:S0.hoje.v, pAntes=loc?loc.v*fatorPorto:S0.antes.v;
-  const v0=it[iDez21]*area, v1=it[LAST]*area, s0=v0/pAntes, s1=v1/pHoje;
+  const v0=m2Antes*area, v1=m2Hoje*area, s0=v0/pAntes, s1=v1/pHoje;
   const max=Math.max(s0,s1);
   const onde=loc?L(` · soja em ${loc.nome}`,` · soja en ${loc.nome}`):L(' · soja em Paranaguá',' · soja en Paranaguá');
-  el.innerHTML=`<div class="ph"><h2>${L(`Quantas sacas compram um apartamento de ${area} m² em Itapema`,`Cuántas sacas compran un departamento de ${area} m² en Itapema`)}</h2><span class="note">${L('sacas de 60 kg','sacas de 60 kg')}${onde}</span></div>
+  const notaImovel=pb
+    ? L(`Imóvel: m² de Porto Belo hoje = ${brl(REFS.m2PortoBelo.v)}, média dos ${REFS.m2PortoBelo.txt}; dez/2021 estimado com a valorização de Itapema no período (FipeZap), porque Porto Belo não tem índice oficial.`,`Inmueble: m² de Porto Belo hoy = ${brl(REFS.m2PortoBelo.v)} (inmuebles nuevos vendidos en el 1er semestre de 2026, encuesta DWV); dic/2021 estimado con la valorización de Itapema en el período (FipeZap), porque Porto Belo no tiene índice oficial.`)
+    : L(`Imóvel: m² médio de Itapema (FipeZap) dez/2021 e ${fmtMes(LASTKEY)}.`,`Inmueble: m² medio de Itapema (FipeZap) dic/2021 y ${fmtMes(LASTKEY)}.`);
+  el.innerHTML=`<div class="agro-cid chips" role="group" aria-label="${L('Cidade do imóvel','Ciudad del inmueble')}"><button type="button" data-cid="portobelo" aria-pressed="${pb}">Porto Belo</button><button type="button" data-cid="itapema" aria-pressed="${!pb}">Itapema</button></div>
+    <div class="ph"><h2>${L(`Quantas sacas compram um apartamento de ${area} m² em ${cidNome}`,`Cuántas sacas compran un departamento de ${area} m² en ${cidNome}`)}</h2><span class="note">${L('sacas de 60 kg','sacas de 60 kg')}${onde}</span></div>
     <div class="sacas">
-      <div class="sc-row"><span>${S0.antes.data}</span><div class="sc-t"><div class="sc-f old" style="width:${(s0/max*100).toFixed(1)}%"></div></div><b>${fmtN(s0)} sc</b><small>${brl(v0)} · ${L('soja','soja')} ${loc?'~':''}${brl2(pAntes)}/sc${loc?L(' (estimado)',' (estimado)'):''}</small></div>
+      <div class="sc-row"><span>${S0.antes.data}</span><div class="sc-t"><div class="sc-f old" style="width:${(s0/max*100).toFixed(1)}%"></div></div><b>${fmtN(s0)} sc</b><small>${pb?'~':''}${brl(v0)}${pb?L(' (estimado)',' (estimado)'):''} · ${L('soja','soja')} ${loc?'~':''}${brl2(pAntes)}/sc${loc?L(' (estimado)',' (estimado)'):''}</small></div>
       <div class="sc-row"><span>${L('hoje','hoy')}</span><div class="sc-t"><div class="sc-f" style="width:${(s1/max*100).toFixed(1)}%"></div></div><b>${fmtN(s1)} sc</b><small>${brl(v1)} · ${L('soja','soja')} ${brl2(pHoje)}/sc</small></div>
     </div>
     <div class="callout" style="margin-top:12px">${L(`Quem trocou <b>${fmtN(s0)} sacas</b> por um imóvel em dez/2021 tem hoje um patrimônio que equivale a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} a mais. A saca caiu e o m² subiu: o imóvel guardou o valor da safra.`,`Quien cambió <b>${fmtN(s0)} sacas</b> por un inmueble en dic/2021 hoy tiene un patrimonio equivalente a <b>${fmtN(s1)} sacas</b>, ${pct(s1/s0-1,0)} más. La saca bajó y el m² subió: el inmueble guardó el valor de la cosecha.`)}</div>
     <p class="note" style="margin-top:8px">${loc
-      ? L(`Soja hoje: ${loc.fonte}. Dez/2021: estimado aplicando ao preço da cidade a mesma variação do porto de Paranaguá no período (Cepea/Esalq: ${brl2(S0.antes.v)} em 17/12/2021 → ${brl2(S0.hoje.v)} em 11/11/2026), porque não há histórico por cidade daquela época. Imóvel: m² médio de Itapema (FipeZap) dez/2021 e ${fmtMes(LASTKEY)}.`,
-          `Soja hoy: ${loc.fonte}. Dic/2021: estimado aplicando al precio de la ciudad la misma variación del puerto de Paranaguá en el período (Cepea/Esalq: ${brl2(S0.antes.v)} el 17/12/2021 → ${brl2(S0.hoje.v)} el 11/11/2026), porque no hay histórico por ciudad de esa época. Inmueble: m² medio de Itapema (FipeZap) dic/2021 y ${fmtMes(LASTKEY)}.`)
-      : L(`Sem cotação para a cidade escolhida: usamos o porto de Paranaguá. Soja: ${S0.antes.txt}; ${S0.hoje.txt}. Imóvel: m² médio de Itapema (FipeZap) dez/2021 e ${fmtMes(LASTKEY)}.`,`Sin cotización para la ciudad elegida: usamos el puerto de Paranaguá (Cepea/Esalq, 17/12/2021 y 11/11/2026). Inmueble: m² medio de Itapema (FipeZap) dic/2021 y ${fmtMes(LASTKEY)}.`)}</p>`;
+      ? L(`Soja hoje: ${loc.fonte}. Dez/2021: estimado aplicando ao preço da cidade a mesma variação do porto de Paranaguá no período (Cepea/Esalq: ${brl2(S0.antes.v)} em 17/12/2021 → ${brl2(S0.hoje.v)} em 11/11/2026), porque não há histórico por cidade daquela época. ${notaImovel}`,
+          `Soja hoy: ${loc.fonte}. Dic/2021: estimado aplicando al precio de la ciudad la misma variación del puerto de Paranaguá en el período (Cepea/Esalq: ${brl2(S0.antes.v)} el 17/12/2021 → ${brl2(S0.hoje.v)} el 11/11/2026), porque no hay histórico por ciudad de esa época. ${notaImovel}`)
+      : L(`Sem cotação para a cidade escolhida: usamos o porto de Paranaguá. Soja: ${S0.antes.txt}; ${S0.hoje.txt}. ${notaImovel}`,`Sin cotización para la ciudad elegida: usamos el puerto de Paranaguá (Cepea/Esalq, 17/12/2021 y 11/11/2026). ${notaImovel}`)}</p>`;
 }
 
 /* ---------- Atalho guiado: monte seu cenário em 30 segundos ---------- */
@@ -1122,6 +1130,7 @@ function initV2(){
   const rw=renders.why, ra=renders.avista;
   renders.why=()=>{ rw(); renderTeto(); renderEspera(); };
   renders.avista=()=>{ ra(); renderInternacional(); };
+  $('agroBox').addEventListener('click',e=>{ const b=e.target.closest('[data-cid]'); if(b){ agroCid=b.dataset.cid; renderAgro(); } });
   addEventListener('hashchange',rotaHash);
 }
 
