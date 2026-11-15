@@ -1017,12 +1017,16 @@ function opcoesCorr(){
 }
 function renderCorr(){
   const v=num('cValor'), ano=$('cAno').value, j=PERKEY.indexOf(ano+'-12'), ini=ano+'-12', anos=mesesEntre(ini,LASTKEY)/12;
-  const Lr=[['Itapema (FipeZap)','--c-itapema',it[LAST]/it[j]],[L('Média Brasil (FipeZap)','Promedio Brasil (FipeZap)'),'--c-brasil',REG.brasil.m2[fimDe('brasil')]/REG.brasil.m2[j]],
+  // Itapema: FipeZap real do período. Porto Belo: a série DWV é anual e tem buracos, então usa a valorização média ao ano da série (mesma dos outros simuladores) aplicada ao período.
+  const fIt=it[LAST]/it[j], aaIt=Math.pow(fIt,1/anos)-1, fPB=Math.pow(1+taxaPB(),anos), fMed=Math.pow(1+(taxaPB()+aaIt)/2,anos);
+  const Lr=[[L('Média Porto Belo + Itapema','Promedio Porto Belo + Itapema'),'--gold',fMed,'media'],[L('Porto Belo (DWV, média ao ano)','Porto Belo (DWV, promedio anual)'),'--gold-2',fPB,'portobelo'],['Itapema (FipeZap)','--c-itapema',fIt,'itapema'],[L('Média Brasil (FipeZap)','Promedio Brasil (FipeZap)'),'--c-brasil',REG.brasil.m2[fimDe('brasil')]/REG.brasil.m2[j]],
     ['CDI (bruto)','--c-cdi',acum('cdi',mi(ini),at('cdi',LASTKEY))],['IPCA','--c-ipca',acum('ipca',mi(ini),at('ipca',LASTKEY))],['IGP-M','--c-bc',acum('igpm',mi(ini),at('igpm',LASTKEY))]];
-  $('corrKpis').innerHTML=kpiHTML([[L('Valor estimado hoje','Valor estimado hoy'),brl(v*Lr[0][2]),L('pela valorização média de Itapema','según la valorización media de Itapema'),'up'],[L('Se ficasse no CDI','Si hubiera quedado en el CDI'),brl(v*Lr[2][2]),L('bruto, antes do IR','bruto, antes de impuestos')],[L('Ganho real','Ganancia real'),pct(Lr[0][2]/Lr[3][2]-1,1),L('acima do IPCA','por encima del IPCA'),'up']]);
+  const sel=Lr.find(r=>r[3]===autoFiltro)||Lr[0], ipca=Lr.find(r=>r[1]==='--c-ipca')[2], cdi=Lr.find(r=>r[1]==='--c-cdi')[2];
+  const seg=$('corrFiltro'); seg.style.setProperty('--i',['media','portobelo','itapema'].indexOf(sel[3])); seg.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===sel[3]));
+  $('corrKpis').innerHTML=kpiHTML([[L('Valor estimado hoje','Valor estimado hoy'),brl(v*sel[2]),L(`pela valorização: ${FILTROS[sel[3]].nome()}`,`según la valorización: ${FILTROS[sel[3]].nome()}`),'up'],[L('Se ficasse no CDI','Si hubiera quedado en el CDI'),brl(v*cdi),L('bruto, antes do IR','bruto, antes de impuestos')],[L('Ganho real','Ganancia real'),pct(sel[2]/ipca-1,1),L('acima do IPCA','por encima del IPCA'),'up']]);
   $('tblCorr').innerHTML=`<thead><tr><th>${L('Corrigido por','Actualizado por')}</th><th>${L('Valor hoje','Valor hoy')}</th><th>${L('Variação','Variación')}</th><th>${L('Média ao ano','Promedio anual')}</th></tr></thead><tbody>`+
     Lr.map(([n,c,f])=>`<tr><td><span class="dot" style="background:var(${c})"></span>${n}</td><td>${brl(v*f)}</td><td>${pct(f-1,1)}</td><td>${pct(Math.pow(f,1/anos)-1)}</td></tr>`).join('')+
-    `</tbody><caption class="note">${L(`De dez/${ano} até ${fmtMes(LASTKEY)}. É a média da cidade; localização, vista para o mar e padrão mudam bastante o valor de cada imóvel.`,`De dic/${ano} hasta ${fmtMes(LASTKEY)}. Es el promedio de la ciudad; ubicación, vista al mar y estándar cambian mucho el valor de cada inmueble.`)}</caption>`;
+    `</tbody><caption class="note">${L(`De dez/${ano} até ${fmtMes(LASTKEY)}. Porto Belo usa a valorização média ao ano da série DWV (${REFS.serieDWVPortoBelo.pontos[0].rot} a ${REFS.serieDWVPortoBelo.pontos.at(-1).rot}); a média soma essa taxa com a de Itapema no período e divide por dois. É a média da cidade; localização, vista para o mar e padrão mudam bastante o valor de cada imóvel.`,`De dic/${ano} hasta ${fmtMes(LASTKEY)}. Porto Belo usa la valorización media anual de la serie DWV (${REFS.serieDWVPortoBelo.pontos[0].rot} a ${REFS.serieDWVPortoBelo.pontos.at(-1).rot}); el promedio suma esa tasa con la de Itapema en el período y divide por dos. Es el promedio de la ciudad; ubicación, vista al mar y estándar cambian mucho el valor de cada inmueble.`)}</caption>`;
 }
 
 /* ---------- Banco Central ao vivo ---------- */
@@ -1507,6 +1511,7 @@ $('formCustos').addEventListener('input',e=>{
   renderCustos(sojaOfertasAtuais[ofertaSel],{nome:selNome,uf:selUF});
 });
 ['cValor','cAno'].forEach(id=>$(id).addEventListener('input',renderCorr));
+$('corrFiltro').addEventListener('click',e=>{ const b=e.target.closest('[data-f]'); if(b){ autoFiltro=b.dataset.f; renderCorr(); } });
 $('modoAluguel').addEventListener('click',e=>{const b=e.target.closest('button'); if(!b) return; setModo(b.dataset.m); renderSim();});
 document.querySelectorAll('[data-pdf]').forEach(b=>b.addEventListener('click',gerarPDF));
 document.querySelectorAll('[data-link]').forEach(b=>b.addEventListener('click',()=>copiar(linkEstado(),b.parentElement.querySelector('[data-msg]'))));

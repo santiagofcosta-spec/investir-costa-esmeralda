@@ -1102,8 +1102,10 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
       <fieldset><legend data-es="Inmueble comprado en el pasado">Imóvel comprado no passado</legend>
         <div class="f"><label for="cValor" data-es="Valor pagado">Valor pago</label><div class="in"><span>R$</span><input id="cValor" type="number" step="1000" value="500000"></div></div>
         <div class="f"><label for="cAno" data-es="Comprado en diciembre de">Comprado em dezembro de</label><div class="in"><select id="cAno"></select></div></div>
+        <div class="f" style="grid-template-columns:1fr"><label data-es="Referencia de valorización">Referência de valorização</label>
+          <div class="seg3 auto-filtro" id="corrFiltro" role="group" aria-label="Referência de valorização"><button type="button" data-f="media" data-es="Promedio PB + Itapema">Média PB + Itapema</button><button type="button" data-f="portobelo">Porto Belo</button><button type="button" data-f="itapema">Itapema</button></div></div>
       </fieldset>
-      <p class="note" data-es="Muestra al propietario cuánto valdría hoy el inmueble según la valorización media de Itapema y cuánto habría rendido el dinero en el CDI o en la inflación.">Mostra ao proprietário quanto o imóvel valeria hoje pela valorização média de Itapema e o que teria rendido se o dinheiro tivesse ficado no CDI ou na inflação.</p>
+      <p class="note" data-es="Muestra al propietario cuánto valdría hoy el inmueble según la valorización media de la región (Porto Belo, Itapema o el promedio de las dos) y cuánto habría rendido el dinero en el CDI o en la inflación.">Mostra ao proprietário quanto o imóvel valeria hoje pela valorização média da região (Porto Belo, Itapema ou a média das duas) e o que teria rendido se o dinheiro tivesse ficado no CDI ou na inflação.</p>
     </form>
     <div class="stack">
       <div class="kpis" id="corrKpis"></div>
