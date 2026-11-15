@@ -282,8 +282,30 @@ a{color:var(--sea)}
   </li>
 </ul>
 <p><b>Cálculo:</b> sacas = m² × preço do m² (Porto Belo pela DWV ou Itapema pelo FipeZap) ÷ preço líquido da saca na cidade escolhida, já sem Fethab, Funrural, frete e demais custos.</p>
+<p>Se a cidade escolhida não tem preço de soja publicado (18 estados não têm cotação, como SC, RJ e ES), aparece um aviso para escolher uma cidade próxima com cotação.</p>
 <h3>O que a sua safra vira em imóvel</h3>
-<p>Cards logo abaixo do simulador: as sacas necessárias para os m² digitados (ou quantos apartamentos as sacas compram), o aluguel por mês sem plantar, quantas sacas a mais custaria esperar a próxima safra e a escritura. Depois vem a projeção <b>"Por que compensa trocar sacas por m²"</b>, com horizonte de 5, 10 ou 15 anos e 3 cenários de valorização: imóvel + aluguel x CDI x guardar a soja.</p>
+<p>Cards logo abaixo do simulador. Todos mudam com as sacas, com a cidade da soja e com a cidade do imóvel:</p>
+<ul>
+  <li>🏠 quantos <b>m²</b> as sacas compram (ou 🌾 quantas <b>sacas</b> são precisas para os m² digitados);</li>
+  <li>🔑 o <b>aluguel por mês</b>, sem plantar;</li>
+  <li>⏳ quanto a mais custaria <b>esperar a próxima safra</b> (em R$; em sacas quando você digita os m²);</li>
+  <li>🛡️ o valor em <b>imóvel com escritura</b> no nome do cliente.</li>
+</ul>
+<h3>🧮 Simulador de fluxo</h3>
+<p>Botão logo abaixo dos cards. Para o cliente ter noção de como pagar o imóvel com entrada e parcelas.</p>
+<div class="tbl"><table>
+  <tr><th>Campo</th><th>Como funciona</th></tr>
+  <tr><td>Simular em</td><td><b>🌾 Sacas</b> ou <b>R$ Reais</b>. O que você digita numa unidade aparece também na outra.</td></tr>
+  <tr><td>Tamanho do imóvel</td><td>Em m². Começa igual ao simulador de cima.</td></tr>
+  <tr><td>Valor do m²</td><td>Vem com a <b>referência da região</b>: Porto Belo pela DWV ou Itapema pelo FipeZap, conforme o botão no topo do Agro. Pode trocar pelo valor do imóvel real; o botão <b>"usar a referência"</b> volta ao valor da região.</td></tr>
+  <tr><td>Valor do imóvel</td><td>Calculado: m² × valor do m², em sacas e em reais.</td></tr>
+  <tr><td>Entrada</td><td>Começa em 30% do valor. Digite em sacas ou em reais, conforme a unidade escolhida.</td></tr>
+  <tr><td>Número de parcelas · Frequência</td><td>Ex.: <span class="v">4</span> parcelas <b>na safra (1 por ano)</b>, a cada 6 meses ou mensais.</td></tr>
+  <tr><td>Sua produção por safra</td><td>Opcional. Mostra quanto da safra as parcelas consomem por ano (ex.: "8% da sua safra").</td></tr>
+</table></div>
+<p>O resultado mostra entrada, parcela e total em sacas e em reais, e uma tabela parcela a parcela (1ª safra no mês 12, 2ª no mês 24…). <b>Atenção:</b> a conversão usa o preço líquido da saca de hoje. Em contrato <b>em sacas</b>, a quantidade fica fixa e o valor em reais acompanha a soja; em contrato <b>em reais</b>, as parcelas costumam ser corrigidas (ex.: CUB) e a quantidade de sacas muda. As condições reais dependem do contrato com a incorporadora.</p>
+<h3>Projeção</h3>
+<p>A projeção <b>"Por que compensa trocar sacas por m²"</b>, com horizonte de 5, 10 ou 15 anos e 3 cenários de valorização: imóvel + aluguel x CDI x guardar a soja.</p>
 <h3>Botão "📊 Cotação da soja"</h3>
 <p>Abre as tabelas: preço do dia e histórico, ofertas dos compradores, última oferta vista por mês de entrega, custos da venda (Fethab, Funrural, frete, secagem, comissão), quanto sobra por saca, cidades com preço no Brasil e soja por região.</p>
 <div class="box"><b>Cotação no Mato Grosso:</b> o Grão Direto publica um preço por <b>região</b>. Comodoro, Sapezal e Sorriso usam o mesmo preço da região Norte Mato-grossense. O que muda são as <b>ofertas dos compradores</b>. Rondônia não tem cotação diária: o site mostra as ofertas e guarda a média de cada dia. Fethab em MT: <span class="v">3,23</span> R$/saca; Funrural + Senar (PF): <span class="v">1,63</span>%.</div>
@@ -316,7 +338,7 @@ a{color:var(--sea)}
   <li>Em <b>A Região</b>, mostre o bloco <b>"Imóvel ou CDI?"</b> e o quadro "Quando o CDI ganha".</li>
   <li>Em <b>Simular</b>, abra "✎ Ajustar os números", coloque o valor e o aluguel do imóvel que está oferecendo e mostre a resposta e os cards.</li>
   <li>Se o cliente compra à vista, use <b>À vista</b>. Se é lançamento, <b>Na planta</b>, preenchendo o preço de um pronto parecido.</li>
-  <li>Para cliente do agro, abra <b>Agro</b>, escolha a cidade dele e digite os m² do imóvel que ele quer: o site diz quantas sacas são.</li>
+  <li>Para cliente do agro, abra <b>Agro</b>, escolha a cidade dele e digite os m² do imóvel que ele quer: o site diz quantas sacas são. Depois abra o <b>🧮 Simulador de fluxo</b> e monte entrada + parcelas na safra, com a produção dele.</li>
   <li>Feche com <b>Gerar PDF</b> ou <b>Copiar link</b> e envie pelo WhatsApp.</li>
 </ol>
 
