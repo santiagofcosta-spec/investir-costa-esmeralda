@@ -743,8 +743,10 @@ function renderSoja(){
   const freteGD = o&&o.comFrete!=null ? Math.max(0,+(o.preco-o.comFrete).toFixed(2)) : 0;
   if(!$('sFrete').dataset.manual) setNum('sFrete', freteGD, 2);
   $('sFreteHint').textContent = o&&o.comFrete!=null ? L(`Estimativa do Grão Direto até ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`,`Estimación de Grão Direto hasta ${o.cidade}: R$ ${freteGD.toLocaleString('pt-BR',{minimumFractionDigits:2})}/sc`) : L('Informe o frete até o comprador, se for por sua conta','Informe el flete hasta el comprador, si corre por su cuenta');
-  renderCustos(o,{nome:I.nome,uf:I.uf});
+  // guarda a lista ANTES de calcular: no modo m² o v3.js recalcula as sacas dentro do renderCustos
+  // e lê sojaOfertasAtuais[ofertaSel]; com a ordem invertida ele pegava a oferta da cidade anterior
   sojaOfertasAtuais=ofs;
+  renderCustos(o,{nome:I.nome,uf:I.uf});
   // cidades acompanhadas no Brasil
   const linhas=[...detalhadas().map(x=>{const l=ofertasLocais(x); return {uf:x.uf,nome:x.nome,preco:l.length?Math.max(...l.map(y=>y.preco)):((x.serie||[]).at(-1)?.[1]??null),fonte:l.length?L(`melhor de ${l.length} ofertas`,`mejor de ${l.length} ofertas`):L('cotação da região','cotización de la región')};}),
     ...Object.entries(S0.estados||{}).flatMap(([uf,e])=>e.cidades.filter(cq=>!detalhadas().some(d=>d.uf===uf&&semAcento(d.nome)===semAcento(cq.nome))).map(cq=>({uf,nome:cq.nome,preco:cq.preco,fonte:L('cotação da cidade','cotización de la ciudad'),pts:(S0.historicoCidades?.[`${uf}|${cq.nome}`]||[]).map(h=>h[1])})))]
