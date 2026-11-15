@@ -7,7 +7,17 @@
    Roda depois do app.js e reaproveita as funções dele.
    ===================================================================== */
 (()=>{
+// avisos de material pendente (fotos, história, vídeo) só no modo corretor
+if(MODO_CORRETOR) document.body.classList.add('ver-pendentes');
+// seção "Viver aqui" (Etapa 4): entra no mesmo sistema de abas do app.js
+renders.viver=()=>{ const wa=$('viverWA'); if(wa) wa.href=waURL(L(`Olá ${CONTATO.primeiroNome}! Vi no site a seção Viver em Porto Belo e quero agendar uma visita à região.`,`¡Hola ${CONTATO.primeiroNome}! Vi en el sitio la sección Vivir en Porto Belo y quiero agendar una visita a la región.`)); };
+{ const n=$('acompNome'); if(n) n.textContent=CONTATO.nome; const i=$('acompIniciais'); if(i) i.textContent=CONTATO.nome.split(/\s+/).filter(Boolean).map((p,k,a)=>k===0||k===a.length-1?p[0]:'').join('');
+  const a=$('acompWA'); if(a) a.href=waURL(L(`Olá ${CONTATO.primeiroNome}! Vi o site Investir na Costa Esmeralda e quero conversar com você.`,`¡Hola ${CONTATO.primeiroNome}! Vi el sitio Invertir en la Costa Esmeralda y quiero conversar con usted.`)); }
+// os momentos do dia aparecem conforme o cliente rola a tela
+{ const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visto'); io.unobserve(e.target); } }),{threshold:.25}):null;
+  document.querySelectorAll('.momento').forEach(m=>io?io.observe(m):m.classList.add('visto')); }
 const GRUPOS={
+  viver:{abas:['viver'],nomes:{}},
   regiao:{abas:['why','idx'],nomes:{why:()=>L('Por que investir','Por qué invertir'),idx:()=>L('Índices do Brasil','Índices de Brasil')}},
   simular:{abas:['sim','avista','planta'],nomes:{sim:()=>L('Financiado ou com renda','Financiado o con renta'),avista:()=>L('À vista','Al contado'),planta:()=>L('Na planta','En pozo')}},
   patrimonio:{abas:['holding','corr'],nomes:{holding:()=>L('PF x Holding','Persona física x Holding'),corr:()=>L('Correção de valor','Valor actualizado')}},
@@ -216,6 +226,9 @@ for(const [aba,alvo] of Object.entries(ALVO)){
 document.querySelector('section.contato')?.setAttribute('id','contatoFim');
 const PASSO={
   porta:[null,'porta',()=>L('O que o cliente procura?','¿Qué busca el cliente?')],
+  dia:['viver','umDia',()=>L('Um dia em Porto Belo','Un día en Porto Belo')],
+  perto:['viver','pertoTit',()=>L('Tudo perto','Todo cerca')],
+  acomp:[null,'acompanha',()=>L('Quem vai te acompanhar','Quién lo acompaña')],
   prova:['why','prova',()=>L('Imóvel ou CDI: a conta','Inmueble o CDI: la cuenta')],
   pb:['why','porto-belo',()=>L('Porto Belo em transformação','Porto Belo en transformación')],
   teto:['why','objecao-teto',()=>L('Já subiu demais?','¿Ya subió demasiado?')],
@@ -236,11 +249,12 @@ const PASSO={
   fim:[null,'contatoFim',()=>L('Próximo passo','Próximo paso')],
 };
 const ROTEIRO={
-  renda:['porta','prova','pb','simRes','simCards','seg','fim'],
-  avista:['porta','prova','pb','avRes','avCards','seg','fim'],
-  planta:['porta','pb','plRes','plCards','plCub','seg','fim'],
-  agro:['porta','agIntro','agSim','agCards','agProj','seg','fim'],
-  familia:['porta','prova','hoRes','hoCards','seg','fim'],
+  // emoção primeiro (um dia em Porto Belo), depois a conta, depois confiança (segurança + quem acompanha)
+  renda:['porta','dia','prova','pb','simRes','simCards','seg','acomp','fim'],
+  avista:['porta','dia','prova','avRes','avCards','seg','acomp','fim'],
+  planta:['porta','dia','pb','plRes','plCards','plCub','seg','acomp','fim'],
+  agro:['porta','agIntro','agSim','agCards','agProj','dia','seg','acomp','fim'],
+  familia:['porta','dia','perto','prova','hoRes','hoCards','seg','acomp','fim'],
 };
 let atend=false, rot='renda', passo=0;
 const bar=document.createElement('div'); bar.className='at-bar no-print'; bar.hidden=true; bar.setAttribute('role','toolbar');

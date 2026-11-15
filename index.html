@@ -654,6 +654,7 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
 
   <div class="nav4-wrap no-print" id="nav4Wrap">
     <nav class="nav4" id="nav4" aria-label="Seções">
+      <button type="button" data-grupo="viver"><span class="ic">🌅</span><span data-es="Vivir aquí">Viver aqui</span></button>
       <button type="button" data-grupo="regiao"><span class="ic">🌊</span><span data-es="La región">A Região</span></button>
       <button type="button" data-grupo="simular"><span class="ic">📊</span><span data-es="Simular">Simular</span></button>
       <button type="button" data-grupo="patrimonio"><span class="ic">🛡️</span><span data-es="Patrimonio">Patrimônio</span></button>
@@ -674,6 +675,76 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
     <button role="tab" data-tab="corr" data-es="Valor actualizado">Correção de valor</button>
     <button role="tab" data-tab="corretor" data-es="🔒 Área restringida" hidden>🔒 Área restrita</button>
   </nav>
+
+  <!-- ============ VIVER EM PORTO BELO (emoção: um dia, tudo perto, para quem é) ============ -->
+  <section id="p-viver" class="stack viver" hidden>
+    <header class="viver-top">
+      <span class="badge" data-es="Vivir en Porto Belo">Viver em Porto Belo</span>
+      <h2 data-es="Imagine su rutina aquí">Imagine a sua rotina aqui</h2>
+      <p data-es="Antes de los números, la pregunta que importa: ¿cómo sería su día? Acompañe un día común en Porto Belo.">Antes dos números, a pergunta que importa: como seria o seu dia? Acompanhe um dia comum em Porto Belo.</p>
+    </header>
+
+    <div class="dia" id="umDia">
+      <article class="momento" data-hora="manha">
+        <div class="foto" data-foto="cafe"><span class="ic">☕</span><small data-es="📷 Foto: café en el balcón con vista al mar">📷 Foto: café na varanda com vista para o mar</small></div>
+        <div class="txt"><span class="hora">7h</span><h3 data-es="Café en el balcón, con el mar enfrente">Café na varanda, com o mar na frente</h3><p data-es="El día empieza sin tráfico ni apuro: café, brisa y la ensenada despertando.">O dia começa sem trânsito e sem pressa: café, brisa e a enseada acordando.</p></div>
+      </article>
+      <article class="momento" data-hora="praia">
+        <div class="foto" data-foto="praia"><span class="ic">🏖️</span><small data-es="📷 Foto: playa del centro, agua calma">📷 Foto: praia do centro, água calma</small></div>
+        <div class="txt"><span class="hora">9h</span><h3 data-es="Mar calmo para los niños">Mar calmo para as crianças</h3><p data-es="En la playa del centro, la Isla de Porto Belo protege la ensenada y el agua queda calma. Para caminar, el Perequê tiene 2,5 km de arena.">Na praia do centro, a Ilha de Porto Belo protege a enseada e a água fica calma. Para caminhar, o Perequê tem 2,5 km de areia.</p></div>
+      </article>
+      <article class="momento" data-hora="ilha">
+        <div class="foto" data-foto="ilha"><span class="ic">⛵</span><small data-es="📷 Foto: Isla de Porto Belo">📷 Foto: Ilha de Porto Belo</small></div>
+        <div class="txt"><span class="hora">11h</span><h3 data-es="10 minutos en barco hasta la Isla">10 minutos de barco até a Ilha</h3><p data-es="Los barcos salen del centro hacia la Isla de Porto Belo: playa, un sendero de 1,3 km en la Mata Atlántica y restaurante.">Os barcos saem do centro para a Ilha de Porto Belo: praia, uma trilha de 1,3 km na Mata Atlântica e restaurante.</p></div>
+      </article>
+      <article class="momento" data-hora="almoco">
+        <div class="foto" data-foto="almoco"><span class="ic">🦐</span><small data-es="📷 Foto: almuerzo frente al mar">📷 Foto: almoço de frente para o mar</small></div>
+        <div class="txt"><span class="hora">13h</span><h3 data-es="Almuerzo frente al mar">Almoço de frente para o mar</h3><p data-es="Mariscos en la costanera o en los bares flotantes del Caixa d'Aço, una ensenada de aguas calmas y tibias.">Frutos do mar na orla ou nos bares flutuantes do Caixa d'Aço, uma enseada de águas calmas e mornas.</p></div>
+      </article>
+      <article class="momento" data-hora="tarde">
+        <div class="foto" data-foto="tarde"><span class="ic">🌊</span><small data-es="📷 Foto: Bombinhas o Meia Praia">📷 Foto: Bombinhas ou Meia Praia</small></div>
+        <div class="txt"><span class="hora">16h</span><h3 data-es="Bombinhas e Itapema, a minutos">Bombinhas e Itapema a poucos minutos</h3><p data-es="¿Otra playa? Bombinhas, famosa por el buceo, y la Meia Praia, en Itapema, quedan a minutos en auto.">Quer outra praia? Bombinhas, famosa pelo mergulho, e a Meia Praia, em Itapema, ficam a poucos minutos de carro.</p></div>
+      </article>
+      <article class="momento" data-hora="sol">
+        <div class="foto" data-foto="sol"><span class="ic">🌅</span><small data-es="📷 Foto: atardecer en la costanera">📷 Foto: pôr do sol na orla</small></div>
+        <div class="txt"><span class="hora">18h</span><h3 data-es="Atardecer, y una ciudad viva todo el año">Pôr do sol, e uma cidade viva o ano todo</h3><p data-es="Fuera de temporada la ciudad sigue andando: comercio, salud y escuelas todo el año, no solo en verano.">Fora da temporada a cidade continua andando: comércio, saúde e escola o ano inteiro, não só no verão.</p></div>
+      </article>
+    </div>
+
+    <section class="panel perto" aria-labelledby="pertoTit">
+      <div class="ph"><h2 id="pertoTit" data-es="Todo cerca de usted">Tudo perto de você</h2><span class="note" data-es="Saliendo del Perequê, tiempos aproximados en auto, fuera del tráfico de temporada">Saindo do Perequê, tempos aproximados de carro, fora do trânsito de temporada</span></div>
+      <div class="perto-trilha">
+        <div class="perto-faixa"><b data-es="hasta 20 min">até 20 min</b>
+          <ul><li><span>🏖️</span><span data-es="Playa del centro y Caixa d'Aço">Praia do centro e Caixa d'Aço</span></li><li><span>⛵</span><span data-es="Isla de Porto Belo (10 min en barco)">Ilha de Porto Belo (10 min de barco)</span></li><li><span>🏙️</span><span data-es="Itapema · Meia Praia">Itapema · Meia Praia</span></li><li><span>🤿</span><span>Bombinhas</span></li></ul></div>
+        <div class="perto-faixa"><b data-es="hasta 45 min">até 45 min</b>
+          <ul><li><span>🌆</span><span>Balneário Camboriú</span></li><li><span>⚓</span><span>Itajaí</span></li></ul></div>
+        <div class="perto-faixa"><b data-es="hasta 1h15">até 1h15</b>
+          <ul><li><span>✈️</span><span data-es="Aeropuerto de Navegantes">Aeroporto de Navegantes</span></li><li><span>🎢</span><span>Beto Carrero World</span></li><li><span>✈️</span><span data-es="Aeropuerto de Florianópolis">Aeroporto de Florianópolis</span></li></ul></div>
+      </div>
+      <h3 class="perto-sub" data-es="En el día a día">No dia a dia</h3>
+      <div class="chips-vida">
+        <span><b>🏥</b><span data-es="UPA 24h en la ciudad y un complejo hospitalario en construcción">UPA 24h na cidade e um complexo hospitalar em construção</span></span>
+        <span><b>🛒</b><span data-es="Supermercados, farmacias y comercio en el Perequê y en el centro">Supermercados, farmácias e comércio no Perequê e no centro</span></span>
+        <span><b>🎓</b><span data-es="Escuelas públicas y privadas">Escolas públicas e particulares</span></span>
+        <span><b>🛣️</b><span data-es="Acceso directo por la BR-101">Acesso direto pela BR-101</span></span>
+      </div>
+    </section>
+
+    <section class="perfis" aria-labelledby="perfisTit">
+      <h2 id="perfisTit" data-es="¿Para quién es Porto Belo?">Para quem é Porto Belo?</h2>
+      <div class="perfis-grid">
+        <article><span class="ic">👨‍👩‍👧</span><h3 data-es="Familia">Família</h3><p data-es="Playa de agua calma para los niños, ciudad tranquila y el departamento que se vuelve punto de encuentro de la familia en las vacaciones.">Praia de água calma para as crianças, cidade tranquila e o apartamento que vira ponto de encontro da família nas férias.</p></article>
+        <article><span class="ic">🌅</span><h3 data-es="Jubilación">Aposentadoria</h3><p data-es="Ritmo tranquilo, caminata en la playa y salud cerca: la UPA 24h está en la ciudad.">Ritmo calmo, caminhada na praia e saúde por perto: a UPA 24h fica na própria cidade.</p></article>
+        <article><span class="ic">💻</span><h3 data-es="Trabajo remoto">Trabalho remoto</h3><p data-es="Trabajar desde casa y terminar el día en el mar, con la BR-101 y dos aeropuertos a mano para los viajes.">Trabalhar de casa e terminar o dia no mar, com a BR-101 e dois aeroportos à mão para as viagens.</p></article>
+        <article><span class="ic">🌎</span><h3 data-es="Quien viene de afuera">Quem vem de fora</h3><p data-es="Argentinos, uruguayos y gente de otros estados: aeropuertos a menos de 1h15 y atención en español.">Argentinos, uruguaios e gente de outros estados: aeroportos a menos de 1h15 e atendimento em espanhol.</p></article>
+      </div>
+    </section>
+
+    <div class="viver-cta">
+      <p data-es="Fotos, números y planillas ayudan. Pero nada reemplaza caminar por la costanera.">Fotos, números e planilhas ajudam. Mas nada substitui caminhar pela orla.</p>
+      <a class="btn btn-cta" id="viverWA" href="#" target="_blank" rel="noopener" data-es="Agendar una visita a Porto Belo">Agendar uma visita a Porto Belo</a>
+    </div>
+  </section>
 
   <!-- ============ POR QUE INVESTIR ============ -->
   <section id="p-why" class="stack">
@@ -1203,6 +1274,25 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
       <div class="ass-acoes"><a class="btn-cta" id="waAss" href="#" target="_blank" rel="noopener" data-es="Conversar por WhatsApp">Conversar no WhatsApp</a><span class="ass-wa" id="assWa"></span></div>
     </div>
   </section>
+  <!-- ============ QUEM VAI TE ACOMPANHAR ============ -->
+  <section class="panel acompanha" id="acompanha" aria-labelledby="acompTit">
+    <div class="acomp-foto" aria-hidden="true"><span id="acompIniciais">SC</span><small data-es="📷 su foto">📷 sua foto</small></div>
+    <div class="acomp-txt">
+      <span class="badge" data-es="Quién lo va a acompañar">Quem vai te acompanhar</span>
+      <h2 id="acompTit"><span id="acompNome"></span></h2>
+      <p class="acomp-papel" data-es="Consultoría de inversión inmobiliaria · Porto Belo (Perequê)">Consultoria em investimento imobiliário · Porto Belo (Perequê)</p>
+      <p class="acomp-historia rascunho" data-es="[Su historia: por qué eligió Porto Belo, en 3 o 4 frases. Texto a enviar por Santiago.]">[Sua história: por que você escolheu Porto Belo, em 3 ou 4 frases. Texto a enviar pelo Santiago.]</p>
+      <ul class="acomp-como">
+        <li data-es="Primero escucho su objetivo; después muestro inmuebles.">Primeiro escuto o seu objetivo; depois mostro imóveis.</li>
+        <li data-es="Verificación jurídica de cada emprendimiento antes de ofrecerlo.">Checagem jurídica de cada empreendimento antes de oferecer.</li>
+        <li data-es="Números con fuente oficial: FipeZap, Banco Central y Sinduscon.">Números com fonte oficial: FipeZap, Banco Central e Sinduscon.</li>
+        <li data-es="Atención en portugués y en español.">Atendimento em português e em espanhol.</li>
+      </ul>
+      <div class="acomp-video" data-es="🎬 Video de 30 a 60 segundos (a enviar)">🎬 Vídeo de 30 a 60 segundos (a enviar)</div>
+      <a class="btn btn-cta" id="acompWA" href="#" target="_blank" rel="noopener" data-es="Hablar con Santiago">Conversar com o Santiago</a>
+    </div>
+  </section>
+
   <section class="contato" aria-label="Contato">
     <div>
       <h2 data-es="¿Quiere ver esto para un inmueble específico?">Quer ver isso para um imóvel específico?</h2>
