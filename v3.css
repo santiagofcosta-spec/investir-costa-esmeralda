@@ -76,6 +76,9 @@
 .agro-sim .filtro .atalhos,.agro-sim .filtro .note{grid-column:1/-1}
 .agro-sim .agro-sacas{display:flex;flex-direction:column;align-items:stretch;gap:6px}
 .agro-sim .agro-sacas label{font-weight:600}
+.agro-sim .agro-qtd{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:end;max-width:560px}
+.agro-sim .agro-eq{font-size:22px;color:var(--gold-ink);padding-bottom:10px}
+.agro-sim .agro-m2 input{font-weight:700}
 details.cotacao{border-style:solid;background:var(--surface);box-shadow:var(--sh-1)}
 details.cotacao > summary{justify-content:center;font-size:15px;padding:16px}
 details.cotacao[open]{background:transparent;box-shadow:none}

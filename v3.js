@@ -97,14 +97,28 @@ recolher([P('hTbl'),P('hRegras')],'Ver a conta detalhada e as regras usadas','Ve
   // o que vai para dentro de "Cotação" (na ordem atual da página)
   const cot=[...sec.children].filter(el=>el!==ag&&el!==filtro&&el!==proj);
   ag.after(sim); if(filtro){ filtro.classList.remove('panel'); sim.appendChild(filtro); }
-  if(fSac){ fSac.classList.add('agro-sacas'); filtro.appendChild(fSac); }
+  if(fSac){ fSac.classList.add('agro-sacas');
+    // sacas ⇄ m²: digitar o tamanho do imóvel calcula as sacas necessárias (e vice-versa)
+    const q=document.createElement('div'); q.className='agro-qtd'; filtro.appendChild(q); q.appendChild(fSac);
+    q.insertAdjacentHTML('beforeend',`<span class="agro-eq" aria-hidden="true">⇄</span>
+      <div class="f agro-sacas agro-m2"><label for="sM2">${L('Ou o tamanho do imóvel','O el tamaño del inmueble')}</label><div class="in"><input id="sM2" type="number" step="1" min="1" inputmode="numeric" placeholder="90"><span>m²</span></div></div>`); }
   sim.after(cards); cards.after(proj);
   const d=document.createElement('details'); d.className='mais cotacao'; d.id='cotacao';
   d.innerHTML=`<summary>${L('📊 Cotação da soja: preços, ofertas, custos por saca e cidades','📊 Cotización de la soja: precios, ofertas, costos por saca y ciudades')}</summary>`;
   const box=document.createElement('div'); box.className='stack'; d.appendChild(box); cot.forEach(el=>box.appendChild(el));
   proj.after(d);
   // o campo saiu do formulário: repassa a digitação para o cálculo de custos
-  $('sProducao').addEventListener('input',()=>$('formCustos').dispatchEvent(new Event('input',{bubbles:true})));
+  $('sProducao').addEventListener('input',e=>{ if(e.isTrusted) AGRO.porM2=false; $('formCustos').dispatchEvent(new Event('input',{bubbles:true})); });
+  $('sM2').addEventListener('input',()=>{ const v=+$('sM2').value; if(!(v>0)) return; AGRO.porM2=true; AGRO.m2Alvo=v; sacasParaM2(); });
+}
+// estado do conversor sacas ⇄ m² (preço líquido da saca vem do cálculo de custos, a cada renderProjAgro)
+const AGRO={liq:null,porM2:false,m2Alvo:null};
+const precoM2Agro=()=>agroCid==='portobelo'?REFS.m2PortoBelo.v:it[LAST];
+function sacasParaM2(){ // fixa o m² escolhido e acha as sacas (arredonda para cima: dá para pagar o imóvel inteiro)
+  if(!AGRO.liq||!AGRO.m2Alvo) return false;
+  const n=Math.ceil(AGRO.m2Alvo*precoM2Agro()/AGRO.liq);
+  if(num('sProducao')===n) return false;
+  setNum('sProducao',n); $('sProducao').dispatchEvent(new Event('input',{bubbles:true})); return true;
 }
 
 // link de argumento (#objecao-...) ou âncora dentro de algo recolhido: abre antes de rolar
@@ -206,13 +220,20 @@ for(const [aba,alvo] of Object.entries(ALVO)){
 }
 // Agro: cards no simulador da safra, atualizados junto com a projeção
 { const orig=window.renderProjAgro;
-  window.renderProjAgro=function(liq,n,c){ orig(liq,n,c); try{ cardsAgro(liq,n); }catch(e){ console.warn('motiva agro',e); } };
+  window.renderProjAgro=function(liq,n,c){
+    if(liq>0) AGRO.liq=liq;
+    // no modo m²: se mudou a cidade da soja ou do imóvel, recalcula as sacas para manter o mesmo m² (o novo cálculo volta aqui)
+    if(AGRO.porM2&&sacasParaM2()) return;
+    orig(liq,n,c);
+    const m=$('sM2'); if(m&&document.activeElement!==m&&liq>0&&n>0) m.value=AGRO.porM2?AGRO.m2Alvo:Math.round(n*liq/precoM2Agro());
+    try{ cardsAgro(liq,n); }catch(e){ console.warn('motiva agro',e); } };
   function cardsAgro(liq,n){
     if(!(liq>0)||!(n>0)){ pintarCards('agroCards',[],''); return; }
     const R=SITE_CONFIG.referenciaMercado, pb=agroCid==='portobelo', cid=pb?'Porto Belo':'Itapema', m2=pb?REFS.m2PortoBelo.v:it[LAST], area=REFS.soja.areaPadrao, C=liq*n;
     const y=Math.max(0,(R.aluguelMensalPctValor*12/100)*(1-R.vacancia/100)*(1-R.admAnual/100)*(1-R.irAluguel/100)-R.despesasAnoPctValor/100);
     const cubAA=Math.pow(cubFim/cubIni,12/mesesEntre(CUB.inicio.mes,cubFimKey))-1, aptos=C/(m2*area), out=[];
-    out.push(card('🏠',aptos>=1?xVezes(aptos).replace('×',''):`${fmtN(C/m2)} m²`,aptos>=1?L(`apartamento(s) de ${area} m² em ${cid}`,`departamento(s) de ${area} m² en ${cid}`):L(`em ${cid}`,`en ${cid}`),L(`${fmtN(n)} sacas a ${brl2(liq)} líquidos viram ${brl(C)}: o suficiente para ${fmtN(C/m2)} m² a ${brl(m2)}/m².`,`${fmtN(n)} sacas a ${brl2(liq)} netos son ${brl(C)}: suficiente para ${fmtN(C/m2)} m² a ${brl(m2)}/m².`)));
+    if(AGRO.porM2&&AGRO.m2Alvo) out.push(card('🌾',`${fmtN(n)} sc`,L(`para um imóvel de ${fmtN(AGRO.m2Alvo)} m² em ${cid}`,`para un inmueble de ${fmtN(AGRO.m2Alvo)} m² en ${cid}`),L(`A ${brl(m2)}/m², ${fmtN(AGRO.m2Alvo)} m² custam ${brl(AGRO.m2Alvo*m2)}. Com a saca a ${brl2(liq)} líquidos, são ${fmtN(n)} sacas.`,`A ${brl(m2)}/m², ${fmtN(AGRO.m2Alvo)} m² cuestan ${brl(AGRO.m2Alvo*m2)}. Con la saca a ${brl2(liq)} netos, son ${fmtN(n)} sacas.`)));
+    else out.push(card('🏠',aptos>=1?xVezes(aptos).replace('×',''):`${fmtN(C/m2)} m²`,aptos>=1?L(`apartamento(s) de ${area} m² em ${cid}`,`departamento(s) de ${area} m² en ${cid}`):L(`em ${cid}`,`en ${cid}`),L(`${fmtN(n)} sacas a ${brl2(liq)} líquidos viram ${brl(C)}: o suficiente para ${fmtN(C/m2)} m² a ${brl(m2)}/m².`,`${fmtN(n)} sacas a ${brl2(liq)} netos son ${brl(C)}: suficiente para ${fmtN(C/m2)} m² a ${brl(m2)}/m².`)));
     if(y>0) out.push(card('🔑',brl(y*C/12),L('por mês de aluguel, sem plantar','por mes de alquiler, sin sembrar'),L(`Já líquido de administração, IR e despesas. São cerca de ${fmtN(y*C/liq)} sacas por ano, mesmo em ano de seca ou de saca barata.`,`Ya neto de administración, impuesto y gastos. Son cerca de ${fmtN(y*C/liq)} sacas por año, incluso en año de sequía o de saca barata.`)));
     if(cubAA>0) out.push(card('⏳',`${fmtN(C*cubAA/liq)} sc`,L('a mais se esperar a próxima safra','más si espera la próxima cosecha'),L(`Se o m² subir só como o custo de obra (${pct(cubAA,1)} ao ano), o mesmo imóvel custa ${brl(C*cubAA)} a mais daqui a 12 meses.`,`Si el m² sube solo como el costo de obra (${pct(cubAA,1)} anual), el mismo inmueble cuesta ${brl(C*cubAA)} más dentro de 12 meses.`)));
     out.push(card('🛡️',L('Escritura','Escritura'),L('um bem que não estraga no silo','un bien que no se echa a perder en el silo'),L('Não depende do preço da saca, não paga armazenagem e passa para os filhos com segurança.','No depende del precio de la saca, no paga almacenaje y pasa a los hijos con seguridad.')));
