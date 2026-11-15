@@ -16,15 +16,17 @@ const SITE_CONFIG = {
   whatsappTxt: '(47) 99217-6060',
   itbiRegistroPct: 3.5,        // ITBI + cartório + registro, % do valor
   mobiliaPadraoPct: 8.0,       // mobília e decoração, % do valor (locação/temporada)
-  multiplicadorTemporada: 1.45, // temporada costuma render ~1,45× o aluguel anual (referência de mercado)
-  // Cenário de mercado (automático): números SEM fonte oficial, da experiência da consultoria.
-  // provisorio:true = ainda não conferidos pelo Santiago (o site mostra "referência provisória").
+  // Cenário de mercado (automático). Temporada: média de Porto Belo no Airbnb (AirROI, nov/2025–out/2026, 661 anúncios),
+  // escolhida em 15/11/2026 por ser a referência mais conservadora (AirDNA e Airbtics/Itapema dão números maiores).
+  // Os demais itens seguem SEM fonte oficial, da experiência da consultoria.
+  // provisorio:true = itens sem fonte ainda não conferidos pelo Santiago (o site mostra "referência provisória").
   referenciaMercado: {
     provisorio: true,
+    fonteTemporada: { pt:'média de Porto Belo no Airbnb (AirROI, nov/2025 a out/2026)', es:'promedio de Porto Belo en Airbnb (AirROI, nov/2025 a oct/2026)' },
     entradaPct: 30,               // usado só se o "Seu cenário" estiver sem valor
-    diariaAltaPctValor: 0.0889,   // diária na alta, % do valor do imóvel (R$ 800 num imóvel de R$ 900 mil)
-    diariaBaixaPctValor: 0.0389,  // diária no resto do ano (R$ 350 em R$ 900 mil)
-    ocupAlta: 70, ocupBaixa: 30, mesesAlta: 3,
+    diariaAltaPctValor: 0.0710,   // diária na alta (dez–mar), % do valor do imóvel (R$ 639 num imóvel de R$ 900 mil)
+    diariaBaixaPctValor: 0.0650,  // diária no resto do ano (R$ 585 em R$ 900 mil)
+    ocupAlta: 41, ocupBaixa: 23, mesesAlta: 4,
     aluguelMensalPctValor: 0.5,   // aluguel anual tradicional, % do valor por mês
     vacancia: 8,
     admTemporada: 20, admAnual: 10, // % sobre a receita
@@ -454,7 +456,6 @@ function renderAvista(){
   const pv={...base,entrada:Infinity,desc:d};
   const r=simular(pv), T=tir(r.fluxos), f=r.fim;
   const rendaLiq1=r.fluxos.slice(1,13).reduce((a,b)=>a+b,0)/12;
-  const cdbMes=r.C0*mensal(base.cdi*base.pctCdi*0.85);
   let acc=0, pb=null; for(let m=1;m<=600;m++){ const y=Math.floor((m-1)/12), al=rendaMes(pv,m)*Math.pow(1+pv.reaj,y); acc+=al*(1-pv.adm-pv.irAl)-pv.desp*Math.pow(1+pv.ipca,y); if(acc>=r.C0){pb=m;break;} }
   $('avistaPrem').textContent=L(`Usa as premissas do Simulador: imóvel de ${brl(base.valor)}, ${base.modo==='temporada'?'aluguel por temporada':'aluguel anual'}, ${pct(base.valoriz,1)} de valorização ao ano, venda em ${base.anos} anos e CDI de ${pct(base.cdi,1)}.`,`Usa los supuestos del Simulador: inmueble de ${brl(base.valor)}, ${base.modo==='temporada'?'alquiler por temporada':'alquiler anual'}, ${pct(base.valoriz,1)} de valorización anual, venta en ${base.anos} años y CDI de ${pct(base.cdi,1)}.`);
   const ganha=f.imovel>=f.cdb;
@@ -463,7 +464,9 @@ function renderAvista(){
   $('aKpis').innerHTML=kpiHTML([
     [L('Preço à vista','Precio al contado'),brl(r.preco),L(`${brl(base.valor-r.preco)} de desconto`,`${brl(base.valor-r.preco)} de descuento`)],
     [L('Renda líquida por mês','Renta neta por mes'),brl(rendaLiq1),L('1º ano, após taxas, IR e despesas','1er año, tras comisiones, impuesto y gastos'),'up'],
-    [L('Mesmo dinheiro no CDB','El mismo dinero en el CDB'),brl(cdbMes)+L('/mês','/mes'),L('rendimento líquido de IR (15%)','rendimiento neto de impuesto (15%)')],
+    // ganho médio por mês no horizonte, os dois lados com tudo incluído e líquido (IR, corretagem, despesas)
+    ...(()=>{ const meses=base.anos*12, gI=(f.imovel-f.investido)/meses, gC=(f.cdb-f.investido)/meses;
+      return [[L('Ganho médio por mês','Ganancia media por mes'),brl(gI),L(`em ${base.anos} anos, aluguel + valorização, líquido · no CDB: ${brl(gC)}/mês`,`en ${base.anos} años, alquiler + valorización, neto · en el CDB: ${brl(gC)}/mes`),gI>=gC?'up':'']]; })(),
     [L('Renda líquida ao ano','Renta neta anual'),pct(rendaLiq1*12/r.C0),L('sobre o total desembolsado','sobre el total desembolsado')],
     [L('O aluguel paga o imóvel em','El alquiler paga el inmueble en'),pb?(pb/12).toLocaleString('pt-BR',{maximumFractionDigits:1})+L(' anos',' años'):'—',L('sem contar a valorização','sin contar la valorización')],
     ['TIR',isFinite(T)?pct(T):'—',L(`com venda em ${base.anos} anos`,`con venta en ${base.anos} años`)],
@@ -1292,7 +1295,8 @@ function initV2(){
   // copiar resumo
   $('copy').addEventListener('click',e=>{ e.stopImmediatePropagation(); copiarAnimado($('copy'),$('resumo').value); },true);
   // referência de temporada
-  $('tempRef').textContent=L(`Referência: temporada bem gerida costuma render ~${fmtN(SITE_CONFIG.multiplicadorTemporada,2)}× o aluguel anual tradicional.`,`Referencia: una temporada bien gestionada suele rendir ~${fmtN(SITE_CONFIG.multiplicadorTemporada,2)}× el alquiler anual tradicional.`);
+  { const R=SITE_CONFIG.referenciaMercado;
+    $('tempRef').textContent=L(`Referência: ${R.fonteTemporada.pt}: ocupação de ${R.ocupAlta}% de dezembro a março e ${R.ocupBaixa}% no resto do ano. Imóvel bem administrado costuma ficar acima da média.`,`Referencia: ${R.fonteTemporada.es}: ocupación de ${R.ocupAlta}% de diciembre a marzo y ${R.ocupBaixa}% el resto del año. Un inmueble bien administrado suele quedar por encima del promedio.`); }
   // assinatura e selo
   $('pbHero').innerHTML=L(`<b>★ Porto Belo</b> movimentou <b>${REFS.vendasPortoBelo.v}</b> em imóveis novos no 1º semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², ainda abaixo dos vizinhos. <a href="#porto-belo">Veja o que está sendo construído →</a>`,`<b>★ Porto Belo</b> movió <b>R$ 2.500 millones</b> en inmuebles nuevos en el 1er semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², todavía por debajo de sus vecinos. <a href="#porto-belo">Vea lo que se está construyendo →</a>`);
   document.querySelectorAll('.selo-projetos').forEach(e=>e.innerHTML=selo(REFS.projetos));
@@ -1353,7 +1357,7 @@ function linhasPremissas(aba){
     rows.push([L('CDI hoje','CDI hoy'),pct(p.cdi,2),bc+(bcbAoVivo?L(', ao vivo',', en vivo'):'')],[L('IPCA 12 meses (reajuste e despesas)','IPCA 12 meses (ajuste y gastos)'),pct(p.ipca,2),bc],[L('Poupança','Caja de ahorro'),pct(p.poup,2),bc]);
     if(aba==='sim') rows.push([L('Juros do financiamento','Interés de la financiación'),pct(p.juros,2),`${bc} (SGS 20772), ${jd}`]);
     if(p.custos>0) rows.push([L('ITBI + registro','ITBI + registro'),p1(SITE_CONFIG.itbiRegistroPct),L('configuração do site','configuración del sitio')]);
-    if(p.modo==='temporada') rows.push([L('Diária alta / resto do ano','Diaria alta / resto del año'),`${brl(p.dA)} / ${brl(p.dB)}`,L(`ocupação ${r.ocupAlta}% / ${r.ocupBaixa}%, ${r.mesesAlta} meses de alta`,`ocupación ${r.ocupAlta}% / ${r.ocupBaixa}%, ${r.mesesAlta} meses de alta`)+PROV()]);
+    if(p.modo==='temporada') rows.push([L('Diária alta / resto do ano','Diaria alta / resto del año'),`${brl(p.dA)} / ${brl(p.dB)}`,L(`ocupação ${r.ocupAlta}% / ${r.ocupBaixa}%, ${r.mesesAlta} meses de alta`,`ocupación ${r.ocupAlta}% / ${r.ocupBaixa}%, ${r.mesesAlta} meses de alta`)+(r.fonteTemporada?` <span class="tag">${L(r.fonteTemporada.pt,r.fonteTemporada.es)}</span>`:PROV())]);
     if(p.modo==='anual') rows.push([L('Aluguel por mês','Alquiler por mes'),brl(p.aluguel),L(`${p1(r.aluguelMensalPctValor)} do valor, vacância ${r.vacancia}%`,`${p1(r.aluguelMensalPctValor)} del valor, vacancia ${r.vacancia}%`)+PROV()]);
     if(p.modo!=='nenhum') rows.push([L('Administração / plataforma','Administración / plataforma'),p1(p.adm*100),PROV()]);
     rows.push([L('Despesas do proprietário','Gastos del propietario'),brl(p.desp)+L('/mês','/mes'),L(`${p1(r.despesasAnoPctValor)} do valor ao ano`,`${p1(r.despesasAnoPctValor)} del valor por año`)+PROV()],[L('Corretagem na venda','Comisión en la venta'),p1(r.corretagem),PROV()]);

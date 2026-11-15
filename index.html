@@ -578,6 +578,7 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
 @media (prefers-reduced-motion:reduce){.sobe{opacity:1;transform:none;transition:none}.kpi:hover,.reason:hover{transform:none}}
 @media print{.sobe{opacity:1!important;transform:none!important}.tabs{display:none!important}.panel,.kpi,.reason{box-shadow:none!important}}
 </style>
+<link rel="stylesheet" href="v3.css">
 </head>
 <body>
 <div class="wrap">
@@ -606,7 +607,20 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
     </div>
   </header>
 
-  <section class="wizard no-print" id="atalho" aria-label="Monte seu cenário">
+  <!-- v3: porta de entrada por objetivo -->
+  <section class="porta no-print" id="porta" aria-labelledby="portaTit">
+    <h2 id="portaTit" data-es="¿Qué busca usted?">O que você procura?</h2>
+    <p class="sub" data-es="Elija una opción y el sitio abre la cuenta lista, con datos de hoy.">Escolha uma opção e o site abre a conta pronta, com os dados de hoje.</p>
+    <div class="porta-cards">
+      <button type="button" data-porta="renda"><span class="ic">🏖️</span><b data-es="Renta con alquiler o temporada">Renda com aluguel ou temporada</b><small data-es="el inmueble paga y además se valoriza">o imóvel rende e ainda valoriza</small></button>
+      <button type="button" data-porta="planta"><span class="ic">🏗️</span><b data-es="Comprar en pozo">Comprar na planta</b><small data-es="pagar durante la obra y ganar en la entrega">pagar durante a obra e ganhar na entrega</small></button>
+      <button type="button" data-porta="avista"><span class="ic">💰</span><b data-es="Tengo el dinero al contado">Tenho o dinheiro à vista</b><small data-es="descuento, renta mensual e inmueble x CDI">desconto, renda por mês e imóvel x CDI</small></button>
+      <button type="button" data-porta="agro"><span class="ic">🌾</span><b data-es="Soy del agro">Sou do agro</b><small data-es="convertir sacas de soja en m²">trocar sacas de soja por m²</small></button>
+      <button type="button" data-porta="familia"><span class="ic">🛡️</span><b data-es="Proteger el patrimonio familiar">Proteger o patrimônio da família</b><small data-es="persona física x holding, herencia">pessoa física x holding, herança</small></button>
+    </div>
+  </section>
+
+  <section class="wizard no-print" id="atalho" aria-label="Monte seu cenário" hidden>
     <h2><span class="pill" data-es="30 segundos">30 segundos</span><span data-es="Arme su escenario en 3 preguntas">Monte seu cenário em 3 perguntas</span></h2>
     <p class="sub" data-es="Responda y el sitio abre la calculadora correcta con valores compatibles. Opcional: puede explorar libremente las pestañas de abajo.">Responda e o site abre a calculadora certa, já com valores compatíveis. É opcional: você também pode explorar as abas abaixo.</p>
     <div class="wiz-steps">
@@ -638,7 +652,18 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
     <div class="wiz-foot"><button type="button" class="btn-util" id="wizReset" hidden data-es="↺ Empezar de nuevo">↺ Recomeçar</button><span class="msg" id="wizMsg" aria-live="polite"></span></div>
   </section>
 
-  <nav class="tabs" role="tablist">
+  <div class="nav4-wrap no-print" id="nav4Wrap">
+    <nav class="nav4" id="nav4" aria-label="Seções">
+      <button type="button" data-grupo="regiao"><span class="ic">🌊</span><span data-es="La región">A Região</span></button>
+      <button type="button" data-grupo="simular"><span class="ic">📊</span><span data-es="Simular">Simular</span></button>
+      <button type="button" data-grupo="patrimonio"><span class="ic">🛡️</span><span data-es="Patrimonio">Patrimônio</span></button>
+      <button type="button" data-grupo="agro"><span class="ic">🌾</span><span data-es="Agro">Agro</span></button>
+      <button type="button" data-grupo="corretor" hidden><span class="ic">🔒</span><span data-es="Restringida">Restrita</span></button>
+    </nav>
+    <div class="subtabs" id="subtabs" role="group" aria-label="Opções da seção"></div>
+  </div>
+
+  <nav class="tabs" role="tablist" hidden>
     <button role="tab" data-tab="why" data-es="Por qué invertir">Por que investir</button>
     <button role="tab" data-tab="sim" data-es="Simulador">Simulador</button>
     <button role="tab" data-tab="avista" data-es="Inversor al contado">Investidor à vista</button>
@@ -652,7 +677,7 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
 
   <!-- ============ POR QUE INVESTIR ============ -->
   <section id="p-why" class="stack">
-    <div class="kpis reveal" id="kpisWhy"></div>
+    <section class="panel prova" id="prova" aria-labelledby="provaTit"></section>
     <section class="panel reveal" id="porto-belo">
       <div class="sec-h">
         <span class="badge" data-es="Vector de expansión">Vetor de expansão</span>
@@ -660,6 +685,8 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
         <p data-es="Grandes proyectos privados y públicos se concentran en Porto Belo y alrededores. Cada tarjeta muestra la situación actual y la fuente: son proyectos anunciados por desarrolladores y prensa, con plazos que pueden cambiar.">Grandes projetos privados e públicos estão se concentrando em Porto Belo e arredores. Cada card mostra a situação atual e a fonte: são projetos anunciados por incorporadoras e imprensa, com prazos que podem mudar.</p>
         <p class="note selo-projetos"></p>
       </div>
+      <details class="mais" id="pbDados">
+        <summary data-es="Ver el precio del m² y el dinero movido en Porto Belo">Ver o preço do m² e o dinheiro movimentado em Porto Belo</summary>
       <div class="pb-serie">
         <h3><span data-es="Precio medio del m² en Porto Belo (DWV)">Preço médio do m² em Porto Belo (DWV)</span><span id="pbSerieSelo"></span></h3>
         <div class="kpis" id="pbSerieKpis" style="margin-top:10px"></div>
@@ -672,6 +699,7 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
         <div class="chartbox sm" style="margin-top:12px"><canvas id="chPBItbi" role="img" aria-label="Dinheiro movimentado em compras de imóveis em Porto Belo, por ano"></canvas></div>
         <p class="note" style="margin-top:8px" data-es="Dato oficial del municipio, no de anuncios: cada compra registrada en Porto Belo paga ITBI de 2% sobre el valor de la transacción (Ley Municipal 2.704/2018). Dividiendo el ITBI recaudado en el año, declarado por el municipio al Tesoro Nacional (SICONFI), por 2%, se obtiene una estimación del dinero movido en escrituras. Es un piso: compras exentas y ventas en pozo que aún no fueron a escritura no entran. Muestra el volumen de negocios, no el precio del m². Valores de cada año, sin corrección por inflación.">Dado oficial da prefeitura, não de anúncio: toda compra registrada em Porto Belo paga ITBI de 2% sobre o valor da transação (Lei Municipal 2.704/2018). Dividindo o ITBI arrecadado no ano, declarado pela prefeitura ao Tesouro Nacional (SICONFI), por 2%, chega-se a uma estimativa do dinheiro movimentado em escrituras. É um piso: compras isentas e vendas na planta que ainda não foram para a escritura não entram. Mostra o volume de negócios, não o preço do m². Valores de cada ano, sem correção pela inflação.</p>
       </div>
+      </details>
       <div class="cards">
         <article class="card"><span class="ic">🌳</span><span class="st pronto" data-es="Recibiendo residentes">Recebendo moradores</span><h3>VivaPark Porto Belo</h3><span class="num" data-es="~R$ 1 mil millones">~R$ 1 bilhão</span><p data-es="Primer «barrio parque» planificado de Brasil, junto a la BR-101 (Vokkan). Hasta 30 mil residentes previstos, sello de sustentabilidad LEED, urbanismo con parques y tecnología.">Primeiro "bairro parque" planejado do Brasil, às margens da BR-101 (Vokkan). Até 30 mil moradores previstos, selo de sustentabilidade LEED, urbanismo com parques e tecnologia.</p><span class="src" data-es="Inversión inicial informada · NSC Total, MySide">Investimento inicial informado · NSC Total, MySide</span></article>
         <article class="card"><span class="ic">🎾</span><span class="st obra" data-es="Golf listo · tenis en 2028">Golfe pronto · tênis em 2028</span><h3>All Resort Club Residence</h3><span class="num" data-es="VGV R$ 600 millones">VGV R$ 600 milhões</span><p data-es="Masterplan de 182 mil m² (All Wert) con el primer campo de golf totalmente iluminado de Sudamérica y el primer Rafa Nadal Tennis Center de América del Sur, previsto para 2028.">Masterplan de 182 mil m² (All Wert) com o primeiro campo de golfe totalmente iluminado da América do Sul e o primeiro Rafa Nadal Tennis Center da América do Sul, previsto para 2028.</p><span class="src">Panrotas, InfoMoney, NSC Total</span></article>
@@ -770,6 +798,10 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
       <h2 data-es="¿Y Porto Belo?">E Porto Belo?</h2>
       <p style="margin-top:8px;max-width:80ch" data-es="Porto Belo y Bombinhas todavía no tienen un índice oficial propio: FipeZap sigue 56 ciudades y, en la Costa Esmeralda, solo Itapema forma parte. Como Porto Belo es vecina de Itapema y compite por el mismo comprador, usamos Itapema como referencia regional. En el simulador usted ingresa el precio real del inmueble.">Porto Belo e Bombinhas ainda não têm índice oficial próprio: o FipeZap acompanha 56 cidades e, na Costa Esmeralda, só Itapema entra na pesquisa. Como Porto Belo fica colada em Itapema e disputa o mesmo comprador, usamos Itapema como referência regional. No simulador você coloca o preço real do imóvel que está apresentando.</p>
     </div>
+    <details class="mais grande" id="whyMais">
+      <summary data-es="Ver todos los datos de la región">Ver todos os dados da região</summary>
+      <div class="stack" id="whyMaisBox"><div class="kpis" id="kpisWhy"></div></div>
+    </details>
   </section>
 
   <!-- ============ SIMULADOR ============ -->
@@ -802,11 +834,11 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
           <div class="f"><label for="vacancia" data-es="Vacancia">Vacância</label><div class="in"><input id="vacancia" type="number" step="1" value="8"><span>%</span></div></div>
         </div>
         <div id="grpTemp" class="inputs" style="gap:10px">
-          <div class="f"><label for="diariaAlta" data-es="Diaria en temporada alta">Diária na alta temporada</label><div class="in"><span>R$</span><input id="diariaAlta" type="number" step="10" value="800"></div></div>
-          <div class="f"><label for="ocupAlta" data-es="Ocupación en temporada alta">Ocupação na alta</label><div class="in"><input id="ocupAlta" type="number" step="1" value="70"><span>%</span></div></div>
-          <div class="f"><label for="mesesAlta" data-es="Meses de temporada alta<small>Contados desde diciembre</small>">Meses de alta<small>Contados a partir de dezembro</small></label><div class="in"><input id="mesesAlta" type="number" step="1" min="0" max="12" value="3"><span data-es="meses">meses</span></div></div>
-          <div class="f"><label for="diariaBaixa" data-es="Diaria el resto del año">Diária no resto do ano</label><div class="in"><span>R$</span><input id="diariaBaixa" type="number" step="10" value="350"></div></div>
-          <div class="f"><label for="ocupBaixa" data-es="Ocupación el resto del año">Ocupação no resto do ano</label><div class="in"><input id="ocupBaixa" type="number" step="1" value="30"><span>%</span></div></div>
+          <div class="f"><label for="diariaAlta" data-es="Diaria en temporada alta">Diária na alta temporada</label><div class="in"><span>R$</span><input id="diariaAlta" type="number" step="10" value="640"></div></div>
+          <div class="f"><label for="ocupAlta" data-es="Ocupación en temporada alta">Ocupação na alta</label><div class="in"><input id="ocupAlta" type="number" step="1" value="41"><span>%</span></div></div>
+          <div class="f"><label for="mesesAlta" data-es="Meses de temporada alta<small>Contados desde diciembre</small>">Meses de alta<small>Contados a partir de dezembro</small></label><div class="in"><input id="mesesAlta" type="number" step="1" min="0" max="12" value="4"><span data-es="meses">meses</span></div></div>
+          <div class="f"><label for="diariaBaixa" data-es="Diaria el resto del año">Diária no resto do ano</label><div class="in"><span>R$</span><input id="diariaBaixa" type="number" step="10" value="590"></div></div>
+          <div class="f"><label for="ocupBaixa" data-es="Ocupación el resto del año">Ocupação no resto do ano</label><div class="in"><input id="ocupBaixa" type="number" step="1" value="23"><span>%</span></div></div>
           <p class="note" id="tempResumo"></p>
           <p class="note" id="tempRef"></p>
         </div>
@@ -1189,5 +1221,6 @@ tbody tr:hover td{background:rgba(255,195,80,.06)}
 <script src="dados/dados.js"></script>
 <script src="dados/referencias.js"></script>
 <script src="app.js"></script>
+<script src="v3.js"></script>
 </body>
 </html>
