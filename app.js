@@ -764,7 +764,8 @@ function renderSoja(){
 let sojaOfertasAtuais=[];
 
 function renderCustos(o,c){
-  if(!o){ $('tblCustos').innerHTML=''; $('sSacas').innerHTML=''; return; }
+  // sem oferta (cidade sem preço publicado): limpa também a projeção e os cards, senão ficam os números da cidade anterior
+  if(!o){ $('tblCustos').innerHTML=''; $('sSacas').innerHTML=''; renderProjAgro(NaN,0,c); return; }
   const p=o.preco, fet=num('sFethab'), fun=p*num('sFunrural')/100, fr=num('sFrete'), arm=num('sArmaz'), com=p*num('sComissao')/100, out=num('sOutros'), n=num('sProducao');
   const liq=p-fet-fun-fr-arm-com-out;
   const lin=(t,v,cls='neg')=>{ if(cls==='neg'&&Math.abs(v)<0.005) cls=''; return `<tr><td>${t}</td><td class="${cls}">${v<0?'−':''}${brl2(Math.abs(v))}</td><td class="${cls}">${v<0?'−':''}${brl(Math.abs(v)*n)}</td></tr>`; };

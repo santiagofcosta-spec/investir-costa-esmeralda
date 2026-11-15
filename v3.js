@@ -221,14 +221,16 @@ for(const [aba,alvo] of Object.entries(ALVO)){
 // Agro: cards no simulador da safra, atualizados junto com a projeção
 { const orig=window.renderProjAgro;
   window.renderProjAgro=function(liq,n,c){
-    if(liq>0) AGRO.liq=liq;
+    // sem preço da saca: esquece o preço anterior (senão o campo m² converteria com a cidade antiga)
+    AGRO.liq=liq>0?liq:null;
     // no modo m²: se mudou a cidade da soja ou do imóvel, recalcula as sacas para manter o mesmo m² (o novo cálculo volta aqui)
-    if(AGRO.porM2&&sacasParaM2()) return;
+    if(AGRO.porM2&&AGRO.liq&&sacasParaM2()) return;
     orig(liq,n,c);
-    const m=$('sM2'); if(m&&document.activeElement!==m&&liq>0&&n>0) m.value=AGRO.porM2?AGRO.m2Alvo:Math.round(n*liq/precoM2Agro());
+    const m=$('sM2'); if(m&&document.activeElement!==m){ if(liq>0&&n>0) m.value=AGRO.porM2?AGRO.m2Alvo:Math.round(n*liq/precoM2Agro()); else if(!AGRO.porM2) m.value=''; }
     try{ cardsAgro(liq,n); }catch(e){ console.warn('motiva agro',e); } };
   function cardsAgro(liq,n){
-    if(!(liq>0)||!(n>0)){ pintarCards('agroCards',[],''); return; }
+    if(!(liq>0)||!(n>0)){ const el=$('agroCards'); assinaturas.agroCards=null;
+      el.innerHTML=!(liq>0)?`<p class="agro-sempreco">${L(`Sem preço de soja publicado para ${esc(selNome)}/${esc(selUF)}. Escolha uma cidade próxima que tenha cotação (os atalhos acima mostram as do estado) para ver quanto a safra compra.`,`Sin precio de soja publicado para ${esc(selNome)}/${esc(selUF)}. Elija una ciudad cercana con cotización (los atajos de arriba muestran las del estado) para ver cuánto compra la cosecha.`)}</p>`:''; return; }
     const R=SITE_CONFIG.referenciaMercado, pb=agroCid==='portobelo', cid=pb?'Porto Belo':'Itapema', m2=pb?REFS.m2PortoBelo.v:it[LAST], area=REFS.soja.areaPadrao, C=liq*n;
     const y=Math.max(0,(R.aluguelMensalPctValor*12/100)*(1-R.vacancia/100)*(1-R.admAnual/100)*(1-R.irAluguel/100)-R.despesasAnoPctValor/100);
     const cubAA=Math.pow(cubFim/cubIni,12/mesesEntre(CUB.inicio.mes,cubFimKey))-1, aptos=C/(m2*area), out=[];
