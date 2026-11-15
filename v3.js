@@ -269,6 +269,9 @@ for(const [aba,alvo] of Object.entries(ALVO)){
           <div class="f2"><label for="fxEntrada">${L('Entrada','Anticipo')}</label><div class="in"><input id="fxEntrada" type="number" min="0" step="1" inputmode="decimal"><span class="fx-u"></span></div><small id="fxEntradaEq"></small></div>
           <div class="f2"><label for="fxN">${L('Número de parcelas','Número de cuotas')}</label><div class="in"><input id="fxN" type="number" min="1" max="240" step="1" value="4"></div></div>
           <div class="f2"><label for="fxPer">${L('Frequência','Frecuencia')}</label><div class="in"><select id="fxPer"><option value="12" selected>${L('Na safra (1 por ano)','En la cosecha (1 por año)')}</option><option value="6">${L('A cada 6 meses','Cada 6 meses')}</option><option value="1">${L('Mensal','Mensual')}</option></select></div></div>
+          <div class="f2"><label for="fxChavesPct">${L('Saldo nas chaves','Saldo a la entrega')}</label><div class="in"><input id="fxChavesPct" type="number" min="0" max="100" step="1" value="0"><span>%</span></div><small>${L('Parte paga na entrega do imóvel (0 = sem saldo)','Parte pagada en la entrega (0 = sin saldo)')}</small></div>
+          <div class="f2"><label for="fxChavesMes">${L('Mês das chaves','Mes de la entrega')}</label><div class="in"><input id="fxChavesMes" type="number" min="1" max="360" step="1"><span>${L('mês','mes')}</span></div><small id="fxChavesMesHint"></small></div>
+          <div class="f2 fx-cub"><label class="chk"><input type="checkbox" id="fxCub"> <span>${L('Corrigir parcelas pelo CUB','Ajustar cuotas por el CUB')}</span></label><div class="in"><input id="fxCubTx" type="number" min="0" max="50" step="0.1"><span>${L('% ao ano','% anual')}</span></div><small id="fxCubHint"></small></div>
           <div class="f2"><label for="fxProd">${L('Sua produção por safra (opcional)','Su producción por cosecha (opcional)')}</label><div class="in"><input id="fxProd" type="number" min="0" step="100" inputmode="numeric" placeholder="${L('ex.: 20000','ej.: 20000')}"><span>sc</span></div></div>
         </div>
         <div id="fxRes"></div>
@@ -282,8 +285,11 @@ for(const [aba,alvo] of Object.entries(ALVO)){
     $('fxPm2').addEventListener('input',()=>{ const v=+$('fxPm2').value; if(v>0){ FLX.pm2=v; FLX.pm2Manual=true; renderFluxo(); } });
     $('fxPm2Ref').addEventListener('click',e=>{ if(e.target.closest('[data-ref]')){ FLX.pm2Manual=false; renderFluxo(true); } });
     $('fxEntrada').addEventListener('input',()=>{ const v=+$('fxEntrada').value; if(v>=0){ FLX.entrada=v; FLX.entradaManual=true; renderFluxo(); } });
-    ['fxN','fxPer','fxProd'].forEach(id=>$(id).addEventListener('input',()=>renderFluxo()));
+    ['fxN','fxPer','fxProd','fxChavesPct','fxCubTx'].forEach(id=>$(id).addEventListener('input',()=>renderFluxo()));
     $('fxPer').addEventListener('change',()=>renderFluxo());
+    $('fxCub').addEventListener('change',()=>renderFluxo());
+    $('fxChavesMes').addEventListener('input',()=>{ const v=+$('fxChavesMes').value; if(v>0){ FLX.mesChaves=v; FLX.mesChavesManual=true; renderFluxo(); } });
+    $('fxCubTx').value=(+CUB.v12m).toFixed(1); // taxa padrão: alta do CUB/SC nos últimos 12 meses (editável)
   }
   function renderFluxo(redesenharCampos){
     const res=$('fxRes'); if(!res) return;
@@ -310,29 +316,50 @@ for(const [aba,alvo] of Object.entries(ALVO)){
     $('fxValorTxt').textContent=fmtU(FLX.valor);
     $('fxValorEq').textContent='= '+outra(FLX.valor)+L(` · ${fmtN(FLX.m2)} m² × ${brl(FLX.pm2)}`,` · ${fmtN(FLX.m2)} m² × ${brl(FLX.pm2)}`);
     $('fxEntradaEq').textContent=`= ${outra(FLX.entrada)} · ${pct(FLX.valor>0?FLX.entrada/FLX.valor:0,0)} ${L('do valor','del valor')}`;
-    const N=Math.max(1,Math.min(240,Math.round(num('fxN')||1))), per=+$('fxPer').value||12, saldo=FLX.valor-FLX.entrada, parc=saldo/N;
-    const prod=num('fxProd'), porAno=parc*(12/per), toSc=v=>sc?v:v/liq, toBrl=v=>sc?v*liq:v;
+    const N=Math.max(1,Math.min(240,Math.round(num('fxN')||1))), per=+$('fxPer').value||12;
+    // saldo nas chaves: % do valor, pago no mês das chaves (padrão: junto com a última parcela)
+    const kPct=Math.max(0,Math.min(100,num('fxChavesPct')||0))/100, K=Math.min(FLX.valor*kPct,FLX.valor-FLX.entrada);
+    const parcBase=Math.max(0,FLX.valor-FLX.entrada-K)/N, ultMes=N*per;
+    if(!FLX.mesChavesManual) FLX.mesChaves=ultMes;
+    const mc=Math.max(1,Math.round(FLX.mesChaves||ultMes)), imc=$('fxChavesMes');
+    if(redesenharCampos||document.activeElement!==imc) imc.value=mc;
+    $('fxChavesMesHint').textContent=K>0?L(`Padrão: junto com a última parcela (mês ${ultMes})`,`Por defecto: junto con la última cuota (mes ${ultMes})`):L('Sem saldo nas chaves','Sin saldo a la entrega');
+    // correção pelo CUB: só faz sentido em contrato em R$ (em sacas a quantidade é fixa)
+    const cb=$('fxCub'), cubOk=!sc; cb.disabled=!cubOk; $('fxCubTx').disabled=!cubOk||!cb.checked;
+    const corr=cubOk&&cb.checked, tx=Math.max(0,num('fxCubTx')||0)/100, f=m=>corr?Math.pow(1+tx,m/12):1;
+    $('fxCubHint').textContent=sc?L('Em sacas a quantidade é fixa: a correção pelo CUB vale para contrato em R$. Mude para "R$ Reais" para usar.','En sacas la cantidad es fija: el ajuste por CUB vale para contratos en R$. Cambie a "R$ Reales" para usarlo.')
+      :L(`Padrão: alta do CUB/SC nos últimos 12 meses (${p1(CUB.v12m)}). Corrige parcelas e chaves mês a mês desde hoje.`,`Por defecto: suba del CUB/SC en los últimos 12 meses (${p1(CUB.v12m)}). Ajusta cuotas y entrega mes a mes desde hoy.`);
+    const prod=num('fxProd'), toSc=v=>sc?v:v/liq, toBrl=v=>sc?v*liq:v;
     const perTxt={12:L('na safra, 1 por ano','en la cosecha, 1 por año'),6:L('a cada 6 meses','cada 6 meses'),1:L('por mês','por mes')}[per];
-    const anos=N*per/12;
-    const tile=(lb,v,sub)=>`<div class="fx-tile"><span class="lb">${lb}</span><b>${fmtU(v)}</b><small>${outra(v)}${sub?' · '+sub:''}</small></div>`;
-    let safraTxt='';
-    if(prod>0){ const p=toSc(porAno)/prod; safraTxt=`<div class="fx-safra${p<=0.5?' ok':''}">${L(`As parcelas usam <b>${pct(p,0)} da sua safra</b> por ano (${fmtN(Math.round(toSc(porAno)))} de ${fmtN(prod)} sacas)${p<=0.5?': sobra a maior parte da produção.':p<=1?'.':'. É mais do que a produção de um ano: aumente o prazo ou a entrada.'}`,`Las cuotas usan <b>${pct(p,0)} de su cosecha</b> por año (${fmtN(Math.round(toSc(porAno)))} de ${fmtN(prod)} sacas)${p<=0.5?': queda la mayor parte de la producción.':p<=1?'.':'. Es más que la producción de un año: aumente el plazo o el anticipo.'}`)}</div>`; }
+    // eventos do fluxo (valores na unidade escolhida; em R$ já com a correção, se marcada)
     const lbl=k=>per===12?L(`${k}ª safra · mês ${k*per}`,`${k}ª cosecha · mes ${k*per}`):L(`mês ${k*per}`,`mes ${k*per}`);
-    const MAX=24, linhas=[];
-    for(let k=1;k<=Math.min(N,MAX);k++) linhas.push(`<tr><td>${k}</td><td>${lbl(k)}</td><td>${fmtN(Math.round(toSc(parc)))} sc</td><td>${brl(toBrl(parc))}</td></tr>`);
+    const ev=[{n:'0',q:L('Entrada (hoje)','Anticipo (hoy)'),m:0,v:FLX.entrada,cls:'ent'}];
+    for(let k=1;k<=N;k++) ev.push({n:String(k),q:lbl(k),m:k*per,v:parcBase*f(k*per)});
+    if(K>0) ev.push({n:'🔑',q:L(`Chaves · mês ${mc}`,`Entrega · mes ${mc}`),m:mc,v:K*f(mc),cls:'chv'});
+    ev.sort((a,b)=>a.m-b.m||(a.cls==='chv')-(b.cls==='chv'));
+    const total=ev.reduce((s,e)=>s+e.v,0), correcao=total-FLX.valor, anos=Math.max(ultMes,K>0?mc:0)/12;
+    const parc1=parcBase*f(per), parcN=parcBase*f(ultMes);
+    const tile=(lb,v,sub,cls='')=>`<div class="fx-tile ${cls}"><span class="lb">${lb}</span><b>${fmtU(v)}</b><small>${outra(v)}${sub?' · '+sub:''}</small></div>`;
+    let safraTxt='';
+    if(prod>0){ const porAno=toSc(parc1)*(12/per), p=porAno/prod, kSc=toSc(K*f(mc));
+      safraTxt=`<div class="fx-safra${p<=0.5?' ok':''}">${L(`As parcelas usam <b>${pct(p,0)} da sua safra</b> por ano (${fmtN(Math.round(porAno))} de ${fmtN(prod)} sacas${corr?', no 1º ano':''})${p<=0.5?': sobra a maior parte da produção.':p<=1?'.':'. É mais do que a produção de um ano: aumente o prazo ou a entrada.'}${K>0?` Nas chaves: ${fmtN(Math.round(kSc))} sacas, ${pct(kSc/prod,0)} de uma safra.`:''}`,`Las cuotas usan <b>${pct(p,0)} de su cosecha</b> por año (${fmtN(Math.round(porAno))} de ${fmtN(prod)} sacas${corr?', en el 1er año':''})${p<=0.5?': queda la mayor parte de la producción.':p<=1?'.':'. Es más que la producción de un año: aumente el plazo o el anticipo.'}${K>0?` En la entrega: ${fmtN(Math.round(kSc))} sacas, ${pct(kSc/prod,0)} de una cosecha.`:''}`)}</div>`; }
+    const MAX=24, parcelas=ev.filter(e=>!e.cls), outros=ev.filter(e=>e.cls);
+    const linha=e=>`<tr${e.cls?` class="${e.cls}"`:''}><td>${e.n}</td><td>${e.q}</td><td>${fmtN(Math.round(toSc(e.v)))} sc</td><td>${brl(toBrl(e.v))}</td></tr>`;
+    const corpo=parcelas.length>MAX
+      ? [...ev.filter(e=>e.cls==='ent'),...parcelas.slice(0,MAX)].map(linha).join('')+`<tr><td colspan="4">${L(`… mais ${parcelas.length-MAX} parcelas${corr?' (corrigidas)':' iguais'}`,`… ${parcelas.length-MAX} cuotas más${corr?' (ajustadas)':' iguales'}`)}</td></tr>`+outros.filter(e=>e.cls==='chv').map(linha).join('')
+      : ev.map(linha).join('');
+    const pE=FLX.valor>0?FLX.entrada/FLX.valor*100:0, pK=FLX.valor>0?K/FLX.valor*100:0;
     res.innerHTML=`<div class="fx-tiles">
         ${tile(L('Entrada (hoje)','Anticipo (hoy)'),FLX.entrada,pct(FLX.valor>0?FLX.entrada/FLX.valor:0,0))}
-        ${tile(L(`${N} parcela(s) de`,`${N} cuota(s) de`),parc,perTxt)}
-        ${tile(L('Total','Total'),FLX.valor,L(`em ${fmtN(anos,anos%1?1:0)} ano(s)`,`en ${fmtN(anos,anos%1?1:0)} año(s)`))}
+        ${tile(L(`${N} parcela(s) de`,`${N} cuota(s) de`),corr?parc1:parcBase,corr?L(`${perTxt} · a 1ª; a última ${fmtU(parcN)}`,`${perTxt} · la 1ª; la última ${fmtU(parcN)}`):perTxt)}
+        ${K>0?tile(L('Chaves','Entrega'),K*f(mc),L(`no mês ${mc} · ${pct(kPct,0)} do valor`,`en el mes ${mc} · ${pct(kPct,0)} del valor`),'chv'):''}
+        ${tile(L('Total pago','Total pagado'),total,corr?L(`inclui ${fmtU(correcao)} de correção`,`incluye ${fmtU(correcao)} de ajuste`):L(`em ${fmtN(anos,anos%1?1:0)} ano(s)`,`en ${fmtN(anos,anos%1?1:0)} año(s)`))}
       </div>
       ${safraTxt}
-      <div class="fx-barra" aria-hidden="true"><span style="width:${(FLX.valor>0?FLX.entrada/FLX.valor*100:0).toFixed(1)}%"></span></div>
-      <div class="tblwrap"><table class="fx-tbl"><thead><tr><th>#</th><th>${L('Quando','Cuándo')}</th><th>${L('Sacas','Sacas')}</th><th>R$</th></tr></thead><tbody>
-        <tr class="ent"><td>0</td><td>${L('Entrada (hoje)','Anticipo (hoy)')}</td><td>${fmtN(Math.round(toSc(FLX.entrada)))} sc</td><td>${brl(toBrl(FLX.entrada))}</td></tr>
-        ${linhas.join('')}
-        ${N>MAX?`<tr><td colspan="4">${L(`… mais ${N-MAX} parcelas iguais`,`… ${N-MAX} cuotas iguales más`)}</td></tr>`:''}
-      </tbody></table></div>
-      <p class="note">${L(`Conversão pelo preço líquido da saca hoje: ${brl2(liq)} em ${esc(selNome)}/${esc(selUF)}. É uma conta para ter noção. Em contrato <b>em sacas</b>, a quantidade fica fixa e o valor em R$ acompanha o preço da soja. Em contrato <b>em R$</b>, as parcelas costumam ser corrigidas (o CUB/SC subiu ${p1(CUB.v12m)} em 12 meses) e a quantidade de sacas muda com o preço da saca. As condições reais dependem do contrato com a incorporadora.`,`Conversión por el precio neto de la saca hoy: ${brl2(liq)} en ${esc(selNome)}/${esc(selUF)}. Es una cuenta para tener una idea. En contrato <b>en sacas</b>, la cantidad queda fija y el valor en R$ acompaña el precio de la soja. En contrato <b>en R$</b>, las cuotas suelen ajustarse (el CUB/SC subió ${p1(CUB.v12m)} en 12 meses) y la cantidad de sacas cambia con el precio de la saca. Las condiciones reales dependen del contrato con la constructora.`)}</p>`;
+      <div class="fx-barra" aria-hidden="true"><span style="width:${pE.toFixed(1)}%"></span><span class="p" style="width:${Math.max(0,100-pE-pK).toFixed(1)}%"></span><span class="k" style="width:${pK.toFixed(1)}%"></span></div>
+      <div class="fx-legenda" aria-hidden="true"><span><i></i>${L('Entrada','Anticipo')}</span><span><i class="p"></i>${L('Parcelas','Cuotas')}</span>${K>0?`<span><i class="k"></i>${L('Chaves','Entrega')}</span>`:''}</div>
+      <div class="tblwrap"><table class="fx-tbl"><thead><tr><th>#</th><th>${L('Quando','Cuándo')}</th><th>${L('Sacas','Sacas')}</th><th>R$${corr?L(' (corrigido)',' (ajustado)'):''}</th></tr></thead><tbody>${corpo}</tbody></table></div>
+      <p class="note">${L(`Conversão pelo preço líquido da saca hoje: ${brl2(liq)} em ${esc(selNome)}/${esc(selUF)}. É uma conta para ter noção. Em contrato <b>em sacas</b>, a quantidade fica fixa e o valor em R$ acompanha o preço da soja. Em contrato <b>em R$</b>, as parcelas costumam ser corrigidas pelo CUB${corr?`; aqui foram corrigidas a ${pct(tx,1)} ao ano, e as sacas de cada parcela estão no preço de hoje (a soja de amanhã pode valer mais ou menos)`:` (o CUB/SC subiu ${p1(CUB.v12m)} em 12 meses; marque a opção acima para simular)`}. As condições reais dependem do contrato com a incorporadora.`,`Conversión por el precio neto de la saca hoy: ${brl2(liq)} en ${esc(selNome)}/${esc(selUF)}. Es una cuenta para tener una idea. En contrato <b>en sacas</b>, la cantidad queda fija y el valor en R$ acompaña el precio de la soja. En contrato <b>en R$</b>, las cuotas suelen ajustarse por el CUB${corr?`; aquí se ajustaron a ${pct(tx,1)} anual, y las sacas de cada cuota están al precio de hoy (la soja de mañana puede valer más o menos)`:` (el CUB/SC subió ${p1(CUB.v12m)} en 12 meses; marque la opción de arriba para simular)`}. Las condiciones reales dependen del contrato con la constructora.`)}</p>`;
   }
   if(tab==='soja') renderSoja();
 }
