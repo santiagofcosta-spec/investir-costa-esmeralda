@@ -227,7 +227,8 @@ for(const [aba,alvo] of Object.entries(ALVO)){
     if(AGRO.porM2&&AGRO.liq&&sacasParaM2()) return;
     orig(liq,n,c);
     const m=$('sM2'); if(m&&document.activeElement!==m){ if(liq>0&&n>0) m.value=AGRO.porM2?AGRO.m2Alvo:Math.round(n*liq/precoM2Agro()); else if(!AGRO.porM2) m.value=''; }
-    try{ cardsAgro(liq,n); }catch(e){ console.warn('motiva agro',e); } };
+    try{ cardsAgro(liq,n); }catch(e){ console.warn('motiva agro',e); }
+    try{ renderFluxo(); }catch(e){ console.warn('fluxo agro',e); } };
   function cardsAgro(liq,n){
     if(!(liq>0)||!(n>0)){ const el=$('agroCards'); assinaturas.agroCards=null;
       el.innerHTML=!(liq>0)?`<p class="agro-sempreco">${L(`Sem preço de soja publicado para ${esc(selNome)}/${esc(selUF)}. Escolha uma cidade próxima que tenha cotação (os atalhos acima mostram as do estado) para ver quanto a safra compra.`,`Sin precio de soja publicado para ${esc(selNome)}/${esc(selUF)}. Elija una ciudad cercana con cotización (los atajos de arriba muestran las del estado) para ver cuánto compra la cosecha.`)}</p>`:''; return; }
@@ -247,6 +248,91 @@ for(const [aba,alvo] of Object.entries(ALVO)){
       : card('⏳',brl(C*cubAA),L('a mais se esperar a próxima safra','más si espera la próxima cosecha'),L(`Se o m² subir só como o custo de obra (${pct(cubAA,1)} ao ano), o mesmo imóvel de ${fmtN(m2Imovel)} m² custa esse valor a mais daqui a 12 meses: cerca de ${fmtN(C*cubAA/liq)} sacas.`,`Si el m² sube solo como el costo de obra (${pct(cubAA,1)} anual), el mismo inmueble de ${fmtN(m2Imovel)} m² cuesta ese valor más dentro de 12 meses: cerca de ${fmtN(C*cubAA/liq)} sacas.`)));
     out.push(card('🛡️',brl(C),L('em imóvel com escritura no seu nome','en un inmueble con escritura a su nombre'),L('Um bem que não estraga no silo, não depende do preço da saca, não paga armazenagem e passa para os filhos com segurança.','Un bien que no se echa a perder en el silo, no depende del precio de la saca, no paga almacenaje y pasa a los hijos con seguridad.')));
     pintarCards('agroCards',out,L('O que a sua safra vira em imóvel','En qué se convierte su cosecha en inmueble'));
+  }
+  /* ---------- Simulador de fluxo (entrada + parcelas, em sacas ou em R$) ----------
+     Converte pelo preço líquido da saca de hoje na cidade escolhida (AGRO.liq). O valor do imóvel acompanha o
+     simulador de cima até o cliente digitar outro. Sem correção: é para ter noção; o aviso explica a diferença
+     entre contrato em sacas (quantidade fixa) e em R$ (corrigido, ex.: CUB). */
+  // valor do imóvel = m² × valor do m² (o valor do m² vem com a referência da região e pode ser trocado)
+  const FLX={unid:'sc',m2:null,m2Manual:false,pm2:null,pm2Manual:false,valor:null,entrada:null,entradaManual:false};
+  { const d=document.createElement('details'); d.className='mais cotacao fluxo-box'; d.id='fluxoAgro';
+    d.innerHTML=`<summary>${L('🧮 Simulador de fluxo: entrada + parcelas, em sacas ou em R$','🧮 Simulador de flujo: anticipo + cuotas, en sacas o en R$')}</summary>
+      <div class="fluxo">
+        <div class="fluxo-unid" role="group" aria-label="${L('Unidade','Unidad')}">
+          <span>${L('Simular em:','Simular en:')}</span>
+          <button type="button" data-u="sc" aria-pressed="true">🌾 ${L('Sacas','Sacas')}</button><button type="button" data-u="brl" aria-pressed="false">R$ ${L('Reais','Reales')}</button>
+        </div>
+        <div class="fluxo-form">
+          <div class="f2"><label for="fxM2">${L('Tamanho do imóvel','Tamaño del inmueble')}</label><div class="in"><input id="fxM2" type="number" min="1" step="1" inputmode="numeric"><span>m²</span></div></div>
+          <div class="f2"><label for="fxPm2">${L('Valor do m²','Valor del m²')}</label><div class="in"><span>R$</span><input id="fxPm2" type="number" min="1" step="10" inputmode="numeric"></div><small id="fxPm2Ref"></small></div>
+          <div class="fx-valor"><span>${L('Valor do imóvel','Valor del inmueble')}</span><b id="fxValorTxt"></b><small id="fxValorEq"></small></div>
+          <div class="f2"><label for="fxEntrada">${L('Entrada','Anticipo')}</label><div class="in"><input id="fxEntrada" type="number" min="0" step="1" inputmode="decimal"><span class="fx-u"></span></div><small id="fxEntradaEq"></small></div>
+          <div class="f2"><label for="fxN">${L('Número de parcelas','Número de cuotas')}</label><div class="in"><input id="fxN" type="number" min="1" max="240" step="1" value="4"></div></div>
+          <div class="f2"><label for="fxPer">${L('Frequência','Frecuencia')}</label><div class="in"><select id="fxPer"><option value="12" selected>${L('Na safra (1 por ano)','En la cosecha (1 por año)')}</option><option value="6">${L('A cada 6 meses','Cada 6 meses')}</option><option value="1">${L('Mensal','Mensual')}</option></select></div></div>
+          <div class="f2"><label for="fxProd">${L('Sua produção por safra (opcional)','Su producción por cosecha (opcional)')}</label><div class="in"><input id="fxProd" type="number" min="0" step="100" inputmode="numeric" placeholder="${L('ex.: 20000','ej.: 20000')}"><span>sc</span></div></div>
+        </div>
+        <div id="fxRes"></div>
+      </div>`;
+    const cards=$('agroCards'); cards.after(d);
+    const conv=v=>FLX.unid==='sc'?v*AGRO.liq:v/AGRO.liq; // converte o número digitado para a outra unidade
+    d.querySelector('.fluxo-unid').addEventListener('click',e=>{ const b=e.target.closest('[data-u]'); if(!b||b.dataset.u===FLX.unid) return;
+      if(AGRO.liq&&FLX.entrada!=null) FLX.entrada=conv(FLX.entrada);
+      FLX.unid=b.dataset.u; renderFluxo(true); });
+    $('fxM2').addEventListener('input',()=>{ const v=+$('fxM2').value; if(v>0){ FLX.m2=v; FLX.m2Manual=true; renderFluxo(); } });
+    $('fxPm2').addEventListener('input',()=>{ const v=+$('fxPm2').value; if(v>0){ FLX.pm2=v; FLX.pm2Manual=true; renderFluxo(); } });
+    $('fxPm2Ref').addEventListener('click',e=>{ if(e.target.closest('[data-ref]')){ FLX.pm2Manual=false; renderFluxo(true); } });
+    $('fxEntrada').addEventListener('input',()=>{ const v=+$('fxEntrada').value; if(v>=0){ FLX.entrada=v; FLX.entradaManual=true; renderFluxo(); } });
+    ['fxN','fxPer','fxProd'].forEach(id=>$(id).addEventListener('input',()=>renderFluxo()));
+    $('fxPer').addEventListener('change',()=>renderFluxo());
+  }
+  function renderFluxo(redesenharCampos){
+    const res=$('fxRes'); if(!res) return;
+    const liq=AGRO.liq, sc=FLX.unid==='sc';
+    document.querySelectorAll('.fluxo-unid [data-u]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.u===FLX.unid));
+    document.querySelectorAll('.fx-u').forEach(s=>s.textContent=sc?'sc':'R$');
+    if(!liq){ res.innerHTML=`<p class="agro-sempreco">${L('Escolha acima uma cidade com preço de soja para converter sacas e reais.','Elija arriba una ciudad con precio de soja para convertir sacas y reales.')}</p>`; return; }
+    // m² e valor do m² seguem o simulador de cima e a referência da região até o cliente digitar outros
+    const ref=precoM2Agro(), cidRef=agroCid==='portobelo'?L('Porto Belo, DWV','Porto Belo, DWV'):L(`Itapema, FipeZap ${fmtMes(LASTKEY)}`,`Itapema, FipeZap ${fmtMes(LASTKEY)}`);
+    if(!FLX.m2Manual) FLX.m2=Math.max(1,Math.round(AGRO.porM2&&AGRO.m2Alvo?AGRO.m2Alvo:num('sProducao')*liq/ref));
+    if(!FLX.pm2Manual) FLX.pm2=ref;
+    const valorBrl=FLX.m2*FLX.pm2;
+    FLX.valor=sc?valorBrl/liq:valorBrl; // valor na unidade escolhida
+    if(!FLX.entradaManual) FLX.entrada=FLX.valor*0.3;
+    FLX.entrada=Math.min(FLX.entrada,FLX.valor);
+    const fmtU=v=>sc?`${fmtN(Math.round(v))} sc`:brl(v), outra=v=>sc?brl(v*liq):`${fmtN(Math.round(v/liq))} sc`;
+    const im=$('fxM2'), ip=$('fxPm2'), ie=$('fxEntrada');
+    if(redesenharCampos||document.activeElement!==im) im.value=FLX.m2;
+    if(redesenharCampos||document.activeElement!==ip) ip.value=Math.round(FLX.pm2);
+    if(redesenharCampos||document.activeElement!==ie) ie.value=Math.round(FLX.entrada);
+    $('fxPm2Ref').innerHTML=FLX.pm2Manual&&Math.round(FLX.pm2)!==Math.round(ref)
+      ? L(`Referência da região: ${brl(ref)} (${cidRef}). <button type="button" class="linkbtn" data-ref>usar a referência</button>`,`Referencia de la región: ${brl(ref)} (${cidRef}). <button type="button" class="linkbtn" data-ref>usar la referencia</button>`)
+      : L(`Referência da região (${cidRef}). Pode trocar pelo valor do imóvel real.`,`Referencia de la región (${cidRef}). Puede cambiarlo por el valor del inmueble real.`);
+    $('fxValorTxt').textContent=fmtU(FLX.valor);
+    $('fxValorEq').textContent='= '+outra(FLX.valor)+L(` · ${fmtN(FLX.m2)} m² × ${brl(FLX.pm2)}`,` · ${fmtN(FLX.m2)} m² × ${brl(FLX.pm2)}`);
+    $('fxEntradaEq').textContent=`= ${outra(FLX.entrada)} · ${pct(FLX.valor>0?FLX.entrada/FLX.valor:0,0)} ${L('do valor','del valor')}`;
+    const N=Math.max(1,Math.min(240,Math.round(num('fxN')||1))), per=+$('fxPer').value||12, saldo=FLX.valor-FLX.entrada, parc=saldo/N;
+    const prod=num('fxProd'), porAno=parc*(12/per), toSc=v=>sc?v:v/liq, toBrl=v=>sc?v*liq:v;
+    const perTxt={12:L('na safra, 1 por ano','en la cosecha, 1 por año'),6:L('a cada 6 meses','cada 6 meses'),1:L('por mês','por mes')}[per];
+    const anos=N*per/12;
+    const tile=(lb,v,sub)=>`<div class="fx-tile"><span class="lb">${lb}</span><b>${fmtU(v)}</b><small>${outra(v)}${sub?' · '+sub:''}</small></div>`;
+    let safraTxt='';
+    if(prod>0){ const p=toSc(porAno)/prod; safraTxt=`<div class="fx-safra${p<=0.5?' ok':''}">${L(`As parcelas usam <b>${pct(p,0)} da sua safra</b> por ano (${fmtN(Math.round(toSc(porAno)))} de ${fmtN(prod)} sacas)${p<=0.5?': sobra a maior parte da produção.':p<=1?'.':'. É mais do que a produção de um ano: aumente o prazo ou a entrada.'}`,`Las cuotas usan <b>${pct(p,0)} de su cosecha</b> por año (${fmtN(Math.round(toSc(porAno)))} de ${fmtN(prod)} sacas)${p<=0.5?': queda la mayor parte de la producción.':p<=1?'.':'. Es más que la producción de un año: aumente el plazo o el anticipo.'}`)}</div>`; }
+    const lbl=k=>per===12?L(`${k}ª safra · mês ${k*per}`,`${k}ª cosecha · mes ${k*per}`):L(`mês ${k*per}`,`mes ${k*per}`);
+    const MAX=24, linhas=[];
+    for(let k=1;k<=Math.min(N,MAX);k++) linhas.push(`<tr><td>${k}</td><td>${lbl(k)}</td><td>${fmtN(Math.round(toSc(parc)))} sc</td><td>${brl(toBrl(parc))}</td></tr>`);
+    res.innerHTML=`<div class="fx-tiles">
+        ${tile(L('Entrada (hoje)','Anticipo (hoy)'),FLX.entrada,pct(FLX.valor>0?FLX.entrada/FLX.valor:0,0))}
+        ${tile(L(`${N} parcela(s) de`,`${N} cuota(s) de`),parc,perTxt)}
+        ${tile(L('Total','Total'),FLX.valor,L(`em ${fmtN(anos,anos%1?1:0)} ano(s)`,`en ${fmtN(anos,anos%1?1:0)} año(s)`))}
+      </div>
+      ${safraTxt}
+      <div class="fx-barra" aria-hidden="true"><span style="width:${(FLX.valor>0?FLX.entrada/FLX.valor*100:0).toFixed(1)}%"></span></div>
+      <div class="tblwrap"><table class="fx-tbl"><thead><tr><th>#</th><th>${L('Quando','Cuándo')}</th><th>${L('Sacas','Sacas')}</th><th>R$</th></tr></thead><tbody>
+        <tr class="ent"><td>0</td><td>${L('Entrada (hoje)','Anticipo (hoy)')}</td><td>${fmtN(Math.round(toSc(FLX.entrada)))} sc</td><td>${brl(toBrl(FLX.entrada))}</td></tr>
+        ${linhas.join('')}
+        ${N>MAX?`<tr><td colspan="4">${L(`… mais ${N-MAX} parcelas iguais`,`… ${N-MAX} cuotas iguales más`)}</td></tr>`:''}
+      </tbody></table></div>
+      <p class="note">${L(`Conversão pelo preço líquido da saca hoje: ${brl2(liq)} em ${esc(selNome)}/${esc(selUF)}. É uma conta para ter noção. Em contrato <b>em sacas</b>, a quantidade fica fixa e o valor em R$ acompanha o preço da soja. Em contrato <b>em R$</b>, as parcelas costumam ser corrigidas (o CUB/SC subiu ${p1(CUB.v12m)} em 12 meses) e a quantidade de sacas muda com o preço da saca. As condições reais dependem do contrato com a incorporadora.`,`Conversión por el precio neto de la saca hoy: ${brl2(liq)} en ${esc(selNome)}/${esc(selUF)}. Es una cuenta para tener una idea. En contrato <b>en sacas</b>, la cantidad queda fija y el valor en R$ acompaña el precio de la soja. En contrato <b>en R$</b>, las cuotas suelen ajustarse (el CUB/SC subió ${p1(CUB.v12m)} en 12 meses) y la cantidad de sacas cambia con el precio de la saca. Las condiciones reales dependen del contrato con la constructora.`)}</p>`;
   }
   if(tab==='soja') renderSoja();
 }
