@@ -100,6 +100,8 @@ recolher([P('hTbl'),P('hRegras')],'Ver a conta detalhada e as regras usadas','Ve
   if(fSac){ fSac.classList.add('agro-sacas');
     // sacas ⇄ m²: digitar o tamanho do imóvel calcula as sacas necessárias (e vice-versa)
     const q=document.createElement('div'); q.className='agro-qtd'; filtro.appendChild(q); q.appendChild(fSac);
+    // líquido da venda logo abaixo das sacas (a tabela completa fica em "Cotação da soja"; preenchido pelo renderCustos)
+    q.insertAdjacentHTML('afterend','<p class="agro-liq" id="sLiqResumo" aria-live="polite"></p>');
     q.insertAdjacentHTML('beforeend',`<span class="agro-eq" aria-hidden="true">⇄</span>
       <div class="f agro-sacas agro-m2"><label for="sM2">${L('Ou o tamanho do imóvel','O el tamaño del inmueble')}</label><div class="in"><input id="sM2" type="number" step="1" min="1" inputmode="numeric" placeholder="90"><span>m²</span></div></div>`); }
   sim.after(cards); cards.after(proj);
