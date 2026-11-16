@@ -15,6 +15,7 @@ Uso:  python scripts/monitor_soja.py            (rodada normal)
 import datetime as dt
 import json
 import os
+import re
 import sys
 import time
 import urllib.parse
@@ -47,6 +48,18 @@ def entrega(o):
     return f"entrega {m}/{a[2:]}"
 
 
+def limpo(v, n=40):
+    """Texto vindo do Grão Direto: só letras, números e pontuação simples (nada de quebra de linha ou link)."""
+    return re.sub(r"[^\w .'/-]", "", str(v or ""))[:n].strip()
+
+
+def numero(v):
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
 def ler_cidade(uf, slug):
     pp = A.gd_dados(f"/ofertas/soja/{uf}/{slug}/")
     out = {"compra": {}, "venda": {}}
@@ -56,9 +69,9 @@ def ler_cidade(uf, slug):
                 if not o.get("price") or not o.get("id"):
                     continue
                 out[lado][str(o["id"])] = {
-                    "preco": round(float(o["price"]), 2), "cidade": o.get("cityName") or "", "uf": o.get("state") or "",
+                    "preco": round(float(o["price"]), 2), "cidade": limpo(o.get("cityName")), "uf": limpo(o.get("state"), 2),
                     "entrega": entrega(o), "fob": bool(o.get("priceReferenceIsFob", 1)),
-                    "kg": o.get("quantity"),
+                    "kg": numero(o.get("quantity")),
                 }
     return out
 
