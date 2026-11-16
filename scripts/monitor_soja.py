@@ -30,6 +30,31 @@ CIDADES = [("ro", "vilhena", "Vilhena/RO"), ("mt", "comodoro", "Comodoro/MT"),
 HORA_RESUMO = 18
 ARQ_ESTADO = Path(os.environ.get("MONITOR_SOJA_ESTADO") or A.RAIZ / "estado" / "monitor_soja.json")
 MAX_AVISOS = 12  # por mensagem; o resto vira "e mais N"
+ARQ_SITE = Path(os.environ.get("MONITOR_SOJA_SITE") or A.RAIZ / "dados" / "avisos_soja.json")  # lido pela aba Soja do site
+DIAS_NO_SITE = 7
+
+
+def gravar_site(hora, ok, novos=(), resumo=None):
+    """Avisos que aparecem no site (aba Investidor Agro). Só dados públicos das ofertas, já limpos."""
+    try:
+        site = json.loads(ARQ_SITE.read_text(encoding="utf-8"))
+    except Exception:
+        site = {}
+    lista = site.get("avisos", [])
+    t = hora.strftime("%Y-%m-%d %H:%M")
+    for tipo, lado, o, antes in novos:
+        lista.append({"t": t, "lado": lado, "tipo": tipo, "preco": o["preco"], "antes": antes, "cidade": o["cidade"],
+                      "uf": o["uf"], "entrega": o["entrega"], "fob": o["fob"], "sc": round(o["kg"] / 60) if o.get("kg") else None})
+    limite = (hora - dt.timedelta(days=DIAS_NO_SITE)).strftime("%Y-%m-%d")
+    site["avisos"] = [a for a in lista if a["t"] >= limite][-300:]
+    site["cidades"] = [c[2] for c in CIDADES]
+    site["verificado"] = t
+    if ok:
+        site["lido"] = t
+    if resumo is not None:
+        site["resumo"] = resumo
+    ARQ_SITE.parent.mkdir(parents=True, exist_ok=True)
+    ARQ_SITE.write_text(json.dumps(site, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def agora_brt():
@@ -150,6 +175,7 @@ def main():
         if not teste:
             ARQ_ESTADO.parent.mkdir(parents=True, exist_ok=True)
             ARQ_ESTADO.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8")
+            gravar_site(hora, ok=False)
         return 0
     if est.pop("falhas_seguidas", 0) >= 3:
         print("Grão Direto voltou a responder")
@@ -207,6 +233,9 @@ def main():
     if not teste:
         ARQ_ESTADO.parent.mkdir(parents=True, exist_ok=True)
         ARQ_ESTADO.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8")
+        novos = [] if primeira else [(t, lado, o, a) for lado in ("compra", "venda") for t, o, a in avisos[lado]]
+        resumo = {"dia": dia, "cidades": {nome: resumo_hoje.get(nome, {}) for _, _, nome in CIDADES}}
+        gravar_site(hora, ok=True, novos=novos, resumo=resumo)
     return 0
 
 

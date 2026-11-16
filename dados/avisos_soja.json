@@ -1,0 +1,28 @@
+{
+ "avisos": [],
+ "cidades": [
+  "Vilhena/RO",
+  "Comodoro/MT",
+  "Campo Novo do Parecis/MT"
+ ],
+ "verificado": "2026-11-16 14:45",
+ "lido": "2026-11-16 14:45",
+ "resumo": {
+  "dia": "2026-11-16",
+  "cidades": {
+   "Vilhena/RO": {
+    "compra_max": 132.9,
+    "compra_abertura": 132.9,
+    "venda_min": 125.0,
+    "venda_abertura": 125.0
+   },
+   "Comodoro/MT": {},
+   "Campo Novo do Parecis/MT": {
+    "compra_max": 134.35,
+    "compra_abertura": 134.35,
+    "venda_min": 125.0,
+    "venda_abertura": 125.0
+   }
+  }
+ }
+}
