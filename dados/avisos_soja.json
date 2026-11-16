@@ -155,6 +155,42 @@
    "entrega": "entrega 12/26",
    "fob": false,
    "sc": null
+  },
+  {
+   "t": "2026-11-16 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 131.5,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.25,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 02/27",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 135.15,
+   "antes": null,
+   "cidade": "São Miguel do Guaporé",
+   "uf": "RO",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -162,22 +198,22 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-16 16:05",
- "lido": "2026-11-16 16:05",
+ "verificado": "2026-11-16 17:05",
+ "lido": "2026-11-16 17:05",
  "resumo": {
   "dia": "2026-11-16",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
-     "compra_max": 133.15,
+     "compra_max": 135.15,
      "compra_abertura": 133.15
     },
     "2027": {
-     "compra_max": 125.75,
+     "compra_max": 125.8,
      "compra_abertura": 125.75
     },
     "Disponível": {
-     "compra_max": 115.95,
+     "compra_max": 116.0,
      "compra_abertura": 115.95,
      "venda_min": 125.0,
      "venda_abertura": 125.0
@@ -201,15 +237,15 @@
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 133.85,
+     "compra_max": 134.3,
      "compra_abertura": 133.85
     },
     "2027": {
-     "compra_max": 126.8,
+     "compra_max": 127.1,
      "compra_abertura": 126.8
     },
     "Disponível": {
-     "compra_max": 122.2,
+     "compra_max": 122.5,
      "compra_abertura": 122.2,
      "venda_min": 125.0,
      "venda_abertura": 125.0
