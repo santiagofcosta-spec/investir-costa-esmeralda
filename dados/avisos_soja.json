@@ -1,12 +1,133 @@
 {
- "avisos": [],
+ "avisos": [
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 121.9,
+   "antes": 121.8,
+   "cidade": "Nova Mutum",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 122.2,
+   "antes": 122.1,
+   "cidade": "Santa Rita do Trivelato",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 120.4,
+   "antes": 120.3,
+   "cidade": "Tapurah",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 121.3,
+   "antes": 121.2,
+   "cidade": "Lucas do Rio Verde",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 122.1,
+   "antes": 122.0,
+   "cidade": "Novo Horizonte do Norte",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 120.1,
+   "antes": 120.0,
+   "cidade": "Sorriso",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 126.8,
+   "antes": 126.65,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 123.4,
+   "antes": 123.3,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 121.2,
+   "antes": 121.1,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 14:53",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.25,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
+  }
+ ],
  "cidades": [
   "Vilhena/RO",
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-16 14:45",
- "lido": "2026-11-16 14:45",
+ "verificado": "2026-11-16 14:53",
+ "lido": "2026-11-16 14:53",
  "resumo": {
   "dia": "2026-11-16",
   "cidades": {
@@ -18,7 +139,7 @@
    },
    "Comodoro/MT": {},
    "Campo Novo do Parecis/MT": {
-    "compra_max": 134.35,
+    "compra_max": 133.85,
     "compra_abertura": 134.35,
     "venda_min": 125.0,
     "venda_abertura": 125.0
