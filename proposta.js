@@ -200,11 +200,14 @@
       const blob=doc.output('blob');
       const arq=new File([blob],nome,{type:'application/pdf'});
       if(urlPdf) URL.revokeObjectURL(urlPdf); urlPdf=URL.createObjectURL(blob);
-      const podeEnviar=!!(navigator.canShare&&navigator.canShare({files:[arq]}));
+      // "Enviar" só no celular: no Windows a janela de compartilhar costuma vir vazia (WhatsApp do PC não aparece nela)
+      const celular=(navigator.userAgentData&&navigator.userAgentData.mobile)||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+      const podeEnviar=celular&&!!(navigator.canShare&&navigator.canShare({files:[arq]}));
       acoes.innerHTML=(podeEnviar?`<button class="btn" type="button" id="prEnviar">${L('📤 Enviar (WhatsApp…)','📤 Enviar (WhatsApp…)')}</button>`:'')+
-        `<a class="btn${podeEnviar?' ghost':''}" id="prBaixar" href="${urlPdf}" download="${esc(nome)}">${L('⬇️ Baixar PDF','⬇️ Descargar PDF')}</a>`;
+        `<a class="btn${podeEnviar?' ghost':''}" id="prBaixar" href="${urlPdf}" download="${esc(nome)}">${L('⬇️ Baixar PDF','⬇️ Descargar PDF')}</a>`+
+        (podeEnviar?'':`<a class="btn ghost" href="https://web.whatsapp.com/" target="_blank" rel="noopener">${L('💬 Abrir WhatsApp Web','💬 Abrir WhatsApp Web')}</a>`);
       msg.textContent=podeEnviar?L(`Pronto: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Toque em "Enviar" e escolha o WhatsApp.`,`Listo: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Toque "Enviar" y elija WhatsApp.`)
-        :L(`Pronto: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Clique em "Baixar PDF" e anexe no WhatsApp (clipe 📎 → Documento).`,`Listo: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Haga clic en "Descargar PDF" y adjúntelo en WhatsApp (clip 📎 → Documento).`);
+        :L(`Pronto: o PDF foi baixado (${nome}, ${Math.max(1,Math.round(blob.size/1024))} KB, na pasta Downloads). Abra o WhatsApp Web ou o WhatsApp do computador, entre na conversa do cliente e arraste o arquivo para dentro dela (ou clipe 📎 → Documento).`,`Listo: el PDF se descargó (${nome}, ${Math.max(1,Math.round(blob.size/1024))} KB, carpeta Descargas). Abra WhatsApp Web o WhatsApp de escritorio, entre en la conversación del cliente y arrastre el archivo (o clip 📎 → Documento).`);
       const env=document.getElementById('prEnviar');
       if(env) env.addEventListener('click',async()=>{ try{ await navigator.share({files:[arq],title:nome.replace(/\.pdf$/,'')}); }
         catch(err){ if(err&&err.name!=='AbortError') msg.textContent=L('Não consegui abrir o envio. Use "Baixar PDF".','No pude abrir el envío. Use "Descargar PDF".'); } });
