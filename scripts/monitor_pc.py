@@ -10,6 +10,7 @@ Registro: C:\\Users\\pc\\monitor-soja\\monitor.log
 """
 import datetime as dt
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -47,6 +48,7 @@ def main():
     git("reset", "-q", "--hard", "origin/main")  # cópia dedicada: o GitHub manda
     antes = json.loads(git("show", f"HEAD:{ARQ}", ok=False).stdout or "{}")
     r = subprocess.run([sys.executable, "scripts/monitor_soja.py"], cwd=REPO, capture_output=True, text=True,
+                       env={**os.environ, "PYTHONIOENCODING": "utf-8"},
                        encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
     saida = " | ".join(x.strip() for x in (r.stdout + r.stderr).splitlines() if x.strip())[:600]
     log(f"monitor: {saida or '(sem saída)'}")
@@ -60,7 +62,7 @@ def main():
         return 1
     ultimo = antes.get("verificado") or "2000-01-01 00:00"
     velho = (dt.datetime.now() - dt.datetime.strptime(ultimo, "%Y-%m-%d %H:%M")).total_seconds() > ENVIAR_SEM_MUDANCA_HORAS * 3600
-    if importante(antes) == importante(depois) and not velho:
+    if importante(antes) == importante(depois) and not velho and not os.environ.get("MONITOR_PC_FORCAR"):
         git("checkout", "-q", "--", ARQ)  # só mudou o horário: não envia
         log("sem novidade; nada enviado")
         return 0
