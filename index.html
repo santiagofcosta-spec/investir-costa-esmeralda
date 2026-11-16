@@ -162,6 +162,51 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 .print-head{border-bottom:2px solid #0d6e66;padding-bottom:8px;margin-bottom:12px}
 .print-head h1{font-size:18px}
 .print-head p{font-size:11px;color:#4f625d}
+
+/* proposta para o cliente (Área restrita) */
+.prop-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
+.prop-top .f2 .in{min-width:0}
+.prop-cols{display:grid;grid-template-columns:1fr 1.3fr;gap:18px;align-items:start}
+@media (max-width:800px){.prop-cols{grid-template-columns:1fr}}
+.prop-res{list-style:none;margin:0 0 8px;padding:0}
+.prop-res li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:6px 0;font-size:13px}
+.prop-res li b{text-align:right}
+.prop-aj{gap:10px}
+.prop-g{border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.prop-g>span{font-weight:600;font-size:13px}
+.prop-tbl td,.prop-tbl th{white-space:nowrap}
+.prop-veredito{font-size:15px;margin:10px 0 6px}
+.pp{display:none}
+@media print{
+  body.print-proposta .wrap,body.print-proposta .wa,body.print-proposta #avToast{display:none!important}
+  body.print-proposta .pp{display:block}
+  html:has(body.print-proposta),body.print-proposta{background:#fff!important;padding:0!important}
+  .pp,.pp p,.pp td,.pp h1,.pp b,.pp span,.pp div{color:#10201d}
+  .pp{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-family:var(--f-body,system-ui)}
+  .pp h1,.pp h2{font-family:var(--f-display,Georgia,serif)}
+  .pp .pp-total,.pp .pp-total *{color:#fff}
+  .pp .pp-uni b,.pp h2{color:#0d6e66}
+  .pp .pp-kick,.pp .pp-uni span,.pp .pp-obs,.pp .pp-rod{color:#4f625d}
+  .pp{font-size:11.5px;color:#10201d}
+  .pp-pag{break-after:page}
+  .pp-pag:last-child{break-after:auto}
+  .pp h1{font-size:26px;margin:2px 0}
+  .pp h2{font-size:15px;margin:14px 0 6px;color:#0d6e66}
+  .pp-cab{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #0d6e66;padding-bottom:8px;margin-bottom:12px}
+  .pp-kick{text-transform:uppercase;letter-spacing:.08em;font-size:10px;color:#4f625d}
+  .pp-uni{text-align:right}.pp-uni span{display:block;font-size:10px;color:#4f625d}.pp-uni b{font-size:26px;color:#0d6e66}
+  .pp-dupla{display:grid;grid-template-columns:38% 1fr;gap:16px;align-items:start}
+  .pp-dupla img{width:100%;border-radius:8px}
+  .pp-ficha{font-weight:600;font-size:13px}
+  .pp-total{background:#0d6e66;color:#fff;border-radius:8px;padding:10px 12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+  .pp-total b{font-size:22px}
+  .pp-tab{width:100%;border-collapse:collapse}.pp-tab td{border-bottom:1px solid #d6e2df;padding:6px 4px}.pp-tab td:last-child{text-align:right;font-weight:600}
+  .pp-obs{font-size:10.5px;color:#4f625d;margin-top:8px}
+  .pp-planta{break-inside:avoid}.pp-planta img{max-height:95mm;display:block;margin:0 auto}
+  .pp-gal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.pp-gal img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:6px}
+  .pp-mapa{width:100%;border-radius:6px}
+  .pp-rod{margin-top:14px;border-top:1px solid #d6e2df;padding-top:8px;font-size:10.5px;color:#4f625d}
+}
 </style>
 <style>html{color-scheme:light} body{margin:0} [hidden]{display:none!important} img{max-width:100%}</style>
 <style>
@@ -1267,6 +1312,7 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
         </div>
         <p class="note" id="cUniMsg" style="margin-top:8px"></p>
       </div>
+      <div class="panel" id="propBox" hidden></div>
     </div>
   </section>
 
@@ -1321,6 +1367,7 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 
   <p class="note" style="margin-top:20px" data-es="Fuentes: Índice FipeZAP (Fipe), informes mensuales, precio medio residencial de venta. Banco Central de Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433, IGP-M 189, INCC 192, caja de ahorro 195, IVG-R 21340, dólar PTAX 3698). CUB/SC: Sinduscon Grande Florianópolis. Población: IBGE. Impuestos: Ley 11.196/2005, Ley 13.259/2016, Ley 15.270/2025, LC 214/2025, Ley SC 13.136/2004. Simulación ilustrativa, no es promesa de rentabilidad. Rentabilidad pasada no garantiza rentabilidad futura.">Fontes: Índice FipeZAP (Fipe), informes mensais, preço médio residencial de venda. Banco Central do Brasil, SGS (Selic 432/4189, CDI 4391, IPCA 433, IGP-M 189, INCC 192, poupança 195, IVG-R 21340, dólar PTAX 3698). CUB/SC: Sinduscon Grande Florianópolis. População: IBGE. Impostos: Lei 11.196/2005, Lei 13.259/2016, Lei 15.270/2025, LC 214/2025, Lei SC 13.136/2004. Simulação ilustrativa, não é promessa de rentabilidade. Rentabilidade passada não garante rentabilidade futura.</p>
 </div>
+<div id="propPrint" class="pp" aria-hidden="true"></div>
 <a class="wa" id="wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 7L3 29l6.4-2c2 1.1 4.3 1.7 6.6 1.7 7.2 0 13-5.7 13-12.8S23.2 3 16 3zm0 23.4c-2.1 0-4.1-.6-5.9-1.7l-.4-.2-3.8 1.2 1.2-3.7-.3-.4c-1.2-1.8-1.8-3.8-1.8-5.9C5 9.9 9.9 5.2 16 5.2s11 4.7 11 10.6-4.9 10.6-11 10.6zm6-7.9c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.7-1.6-1-.9-1.7-2-1.9-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.4 0-.6l-1-2.5c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 5.8 5 .8.4 1.4.6 1.9.7.8.3 1.5.2 2.1.1.6-.1 2-.8 2.2-1.6.3-.8.3-1.4.2-1.6-.1-.1-.3-.2-.6-.3z"/></svg>
   <span id="waLabel"></span>
@@ -1330,5 +1377,6 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 <script src="app.js"></script>
 <script src="v3.js"></script>
 <script src="avisos.js"></script>
+<script src="proposta.js"></script>
 </body>
 </html>
