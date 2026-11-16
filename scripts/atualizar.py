@@ -39,8 +39,12 @@ def baixar(url, timeout=60, tentativas=3):
                     corpo = gzip.decompress(corpo)
                 return corpo
         except urllib.error.HTTPError as e:
-            if e.code not in (304, 429, 500, 502, 503, 504) or i == tentativas - 1:
+            bloqueio = e.code == 403 and "graodireto" in url  # Grão Direto bloqueia por alguns minutos quando vê pedidos demais
+            if (e.code not in (304, 429, 500, 502, 503, 504) and not bloqueio) or i == tentativas - 1:
                 raise
+            if bloqueio or e.code == 429:
+                time.sleep(90 * (i + 1))
+                continue
         except urllib.error.URLError:
             if i == tentativas - 1:
                 raise
@@ -213,12 +217,22 @@ def municipios_ibge():
     return {"mesos": mesos, "uf": por_uf}
 
 
-CIDADES_SOJA = [  # (uf, slug) das páginas públicas do Grão Direto
+CIDADES_SOJA = [  # (uf, slug) fixas, sempre consultadas e mostradas primeiro
     ("mt", "comodoro"), ("mt", "campos-de-julio"), ("mt", "sapezal"), ("mt", "campo-novo-do-parecis"),
     ("mt", "diamantino"), ("mt", "nova-mutum"), ("mt", "lucas-do-rio-verde"), ("mt", "sorriso"), ("mt", "sinop"),
     ("mt", "querencia"), ("mt", "primavera-do-leste"), ("mt", "rondonopolis"),
     ("ro", "vilhena"), ("ro", "cerejeiras"), ("ro", "cabixi"), ("ro", "chupinguaia"), ("ro", "corumbiara"),
 ]
+# Além das fixas, o robô acompanha toda cidade onde já viu comprador com oferta (soja["acompanhar"]).
+# A lista começou com uma varredura dos 5.571 municípios e cresce sozinha: cada página de cidade do
+# Grão Direto mostra também ofertas das cidades vizinhas, e toda cidade nova que aparece entra na lista.
+# Cidade sem nenhuma oferta local há mais de DIAS_SEM_OFERTA dias sai da lista (os dados guardados ficam).
+DIAS_SEM_OFERTA = 120
+# Varredura aos poucos do Brasil todo: dados/soja_sementes.json tem 1 município por microrregião (estados
+# agrícolas) ou mesorregião (demais). Cada rodada visita SEMENTES_POR_RODADA delas, em rodízio; o que aparecer
+# com comprador entra em soja["acompanhar"] e passa a ser consultado todo dia.
+ARQ_SEMENTES = RAIZ / "dados" / "soja_sementes.json"
+SEMENTES_POR_RODADA = 20
 
 
 def gd_ofertas(pp):
@@ -271,14 +285,30 @@ def atualizar_soja(d):
         cidades.setdefault("comodoro", {})["serie"] = s.pop("comodoro")["serie"]
     if "vilhena" in s and isinstance(s["vilhena"], dict) and "historico" in s["vilhena"]:
         cidades.setdefault("vilhena", {})["historico"] = s.pop("vilhena")["historico"]
-    ok = 0
-    for uf, slug in CIDADES_SOJA:
+    acomp = s.setdefault("acompanhar", {})  # "uf|slug": último dia com oferta local
+    fixas = {f"{uf}|{slug}" for uf, slug in CIDADES_SOJA}
+    limite = (hoje - dt.timedelta(days=DIAS_SEM_OFERTA)).strftime("%Y-%m-%d")
+    for k in [k for k, v in acomp.items() if v < limite and k not in fixas]:
+        del acomp[k]
+    fila = list(CIDADES_SOJA) + sorted(tuple(k.split("|")) for k in acomp if k not in fixas)
+    vistos = set(fixas) | set(acomp)
+    ok, novas, falhas = 0, 0, 0
+    while fila:
+        uf, slug = fila.pop(0)
+        if falhas >= 3:  # bloqueado mesmo depois das pausas: para aqui e mantém os dados de ontem das demais
+            log.append(f"Soja: Grão Direto bloqueou; {len(fila) + 1} cidades ficaram com os dados anteriores")
+            break
         try:
             pc = gd_dados(f"/ofertas/soja/{uf}/{slug}/")
+            falhas = 0
         except Exception as e:  # uma cidade fora do ar não derruba as outras
             log.append(f"Soja {slug}: {e}")
+            falhas += getattr(e, "code", None) != 404
+            if getattr(e, "code", None) == 404 and f"{uf}|{slug}" not in fixas:
+                acomp.pop(f"{uf}|{slug}", None)  # página não existe com esse nome
             continue
-        c = cidades.setdefault(slug, {})
+        # fixas mantêm a chave antiga (só o nome); as demais levam a UF, pois há nomes repetidos entre estados
+        c = cidades.setdefault(slug if f"{uf}|{slug}" in fixas else f"{uf}-{slug}", {})
         c["nome"], c["uf"] = pc["city"]["name"], pc["city"]["state"]
         serie = dict(map(tuple, c.get("serie", [])))
         for q in pc.get("formattedQuotationIntraDayValues") or []:
@@ -297,9 +327,21 @@ def atualizar_soja(d):
         if locais:
             hist[dia] = [dia, min(locais), round(sum(locais) / len(locais), 2), max(locais), len(locais)]
         c["historico"] = [hist[k] for k in sorted(hist)][-600:]
-        c["slug"], c["ordem"] = slug, [x[1] for x in CIDADES_SOJA].index(slug)
+        fixa = [x[1] for x in CIDADES_SOJA]
+        c["slug"], c["ordem"] = slug, fixa.index(slug) if slug in fixa else 99
+        if locais:
+            acomp[f"{uf}|{slug}"] = dia
+        for o in c["ofertas"]:  # cidade vizinha com comprador que ainda não está na lista
+            if not (o.get("cidade") and o.get("uf")):
+                continue
+            k = f"{o['uf'].lower()}|{slug_gd(o['cidade'])}"
+            if k not in vistos:
+                vistos.add(k)
+                acomp[k] = dia
+                fila.append(tuple(k.split("|")))
+                novas += 1
         ok += 1
-        time.sleep(1)  # educação com o site
+        time.sleep(4)  # educação com o site (pedidos rápidos demais levam bloqueio 403)
     if ok == 0:
         raise RuntimeError("nenhuma cidade carregou")
     # Brasil todo: página de cada estado traz cotações de regiões e de cidades
@@ -327,7 +369,40 @@ def atualizar_soja(d):
                 h[c["data"]] = c["preco"]
             hc[k] = [[x, h[x]] for x in sorted(h)][-180:]
         ne += 1
-        time.sleep(1)
+        time.sleep(2)
+    # varredura em rodízio (por último: se o Grão Direto bloquear aqui, o resto já foi salvo)
+    try:
+        sementes = json.loads(ARQ_SEMENTES.read_text(encoding="utf-8"))
+    except Exception:
+        sementes = []
+    if sementes:
+        vz = s.setdefault("varredura", {"pos": 0, "voltas": 0})
+        visitadas, achou, falhas = 0, 0, 0
+        while visitadas < SEMENTES_POR_RODADA and falhas < 2:
+            uf, slug = sementes[vz["pos"] % len(sementes)]
+            vz["pos"] += 1
+            if vz["pos"] % len(sementes) == 0:
+                vz["voltas"] += 1
+            visitadas += 1
+            if f"{uf}|{slug}" in vistos:
+                continue
+            try:
+                pc = gd_dados(f"/ofertas/soja/{uf}/{slug}/")
+                falhas = 0
+            except Exception as e:
+                falhas += getattr(e, "code", None) != 404
+                continue
+            for o in gd_ofertas(pc):
+                if o.get("cidade") and o.get("uf"):
+                    k = f"{o['uf'].lower()}|{slug_gd(o['cidade'])}"
+                    if k not in vistos:
+                        vistos.add(k)
+                        acomp[k] = dia
+                        achou += 1
+            time.sleep(4)
+        vz["pos"] %= len(sementes)
+        vz["dia"] = dia
+        log.append(f"Soja varredura: {visitadas} regiões visitadas, {achou} cidades novas com comprador (posição {vz['pos']}/{len(sementes)}, voltas completas {vz['voltas']})")
     # lista de municípios (IBGE) com mesorregião; renovada uma vez por mês
     mun = s.get("municipios")
     if not mun or mun.get("mes") != hoje.strftime("%Y-%m"):
@@ -339,7 +414,7 @@ def atualizar_soja(d):
     log.append(f"Soja Brasil: {ne}/27 estados, {sum(len(v['cidades']) for v in estados.values())} cidades com cotação")
     s["atualizado"] = hoje.strftime("%Y-%m-%d %H:%M")
     s["fonte"] = "Grão Direto (graodireto.com.br)"
-    log.append(f"Soja: {ok}/{len(CIDADES_SOJA)} cidades, {len(regioes)} regiões")
+    log.append(f"Soja: {ok} cidades com ofertas consultadas ({novas} novas), {len(regioes)} regiões")
 
 
 # ---------------------------------------------------------------- principal

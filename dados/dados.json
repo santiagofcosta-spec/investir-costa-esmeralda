@@ -27102,6 +27102,24 @@
     ]
    },
    "mes": "2026-11"
+  },
+  "acompanhar": {
+   "ms|rio-verde-de-mato-grosso": "2026-11-16",
+   "ms|sao-gabriel-do-oeste": "2026-11-16",
+   "mt|agua-boa": "2026-11-16",
+   "mt|campo-verde": "2026-11-16",
+   "mt|cuiaba": "2026-11-16",
+   "mt|itiquira": "2026-11-16",
+   "mt|matupa": "2026-11-16",
+   "mt|pontes-e-lacerda": "2026-11-16",
+   "mt|santa-rita-do-trivelato": "2026-11-16",
+   "mt|tangara-da-serra": "2026-11-16",
+   "ro|cacoal": "2026-11-16",
+   "ro|candeias-do-jamari": "2026-11-16",
+   "ro|colorado-do-oeste": "2026-11-16",
+   "ro|porto-velho": "2026-11-16",
+   "ro|sao-francisco-do-guapore": "2026-11-16",
+   "ro|sao-miguel-do-guapore": "2026-11-16"
   }
  }
 }
