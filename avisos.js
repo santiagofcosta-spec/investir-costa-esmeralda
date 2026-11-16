@@ -51,14 +51,20 @@
     const r=AV.resumo, cards=(AV.cidades||[]).map(nome=>{
       const c=(r&&r.cidades&&r.cidades[nome])||{};
       const dif=(v,a)=>v!=null&&a!=null&&v!==a?` <span class="${v>a?'pos':'neg'}">${v>a?'+':''}${(+v-+a).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}</span>`:'';
+      // um bloco por prazo de entrega (Disponível, 2026, 2027...)
+      const prazos=Object.keys(c).filter(k=>c[k]&&typeof c[k]==='object').sort((a,b)=>(a==='Disponível'?-1:b==='Disponível'?1:a.localeCompare(b)));
+      const nomePrazo=k=>k==='Disponível'?L('Disponível','Disponible'):L(`Entrega ${esc(k)}`,`Entrega ${esc(k)}`);
       return `<div class="kpi"><div class="lb">${esc(nome)}</div>`+
-        `<div class="n">${L('Melhor compra','Mejor compra')}: <b>${c.compra_max!=null?R(c.compra_max):'—'}</b>${dif(c.compra_max,c.compra_abertura)}</div>`+
-        `<div class="n">${L('Menor venda','Menor venta')}: <b>${c.venda_min!=null?R(c.venda_min):'—'}</b>${dif(c.venda_min,c.venda_abertura)}</div></div>`;
+        (prazos.length?prazos.map(k=>{ const p=c[k];
+          return `<div class="av-prazo">${nomePrazo(k)}</div>`+
+            `<div class="n">${L('Compra','Compra')}: <b>${p.compra_max!=null?R(p.compra_max):'—'}</b>${dif(p.compra_max,p.compra_abertura)}</div>`+
+            `<div class="n">${L('Venda','Venta')}: <b>${p.venda_min!=null?R(p.venda_min):'—'}</b>${dif(p.venda_min,p.venda_abertura)}</div>`; }).join('')
+          :`<div class="n">${L('Sem ofertas hoje','Sin ofertas hoy')}</div>`)+`</div>`;
     }).join('');
     const mostrar=box.dataset.todos?lista:lista.slice(0,15);
     box.innerHTML=`<div class="ph"><h2>🔔 ${L('Avisos de ofertas','Avisos de ofertas')}</h2>`+
       `<span class="note">${L('Verificado em','Verificado el')} ${AV.verificado?fmtT(AV.verificado):'—'}</span></div>`+
-      `<p class="note" style="margin:0 0 10px">${L('Compra: avisa oferta nova ou que <b>subiu</b>. Venda: avisa oferta nova ou que <b>caiu</b>. Ofertas da cidade e das vizinhas, no Grão Direto (R$ por saca de 60 kg).','Compra: avisa oferta nueva o que <b>subió</b>. Venta: avisa oferta nueva o que <b>bajó</b>. Ofertas de la ciudad y vecinas, en Grão Direto (R$ por saca de 60 kg).')}</p>`+
+      `<p class="note" style="margin:0 0 10px">${L('Compra: avisa oferta nova ou que <b>subiu</b>. Venda: avisa oferta nova ou que <b>caiu</b>. Vale para à vista (disponível) e entrega futura (2026, 2027…), a partir de R$ 0,50 de variação. Ofertas da cidade e das vizinhas, no Grão Direto (R$ por saca de 60 kg).','Compra: avisa oferta nueva o que <b>subió</b>. Venta: avisa oferta nueva o que <b>bajó</b>. Vale para disponible y entrega futura (2026, 2027…), a partir de R$ 0,50 de variación. Ofertas de la ciudad y vecinas, en Grão Direto (R$ por saca de 60 kg).')}</p>`+
       (parado?`<p class="note neg">${L(`Coleta parada desde ${AV.lido?fmtT(AV.lido):'—'}: o Grão Direto não respondeu. Os avisos voltam sozinhos quando ele responder.`,`Recolección detenida desde ${AV.lido?fmtT(AV.lido):'—'}: Grão Direto no respondió. Los avisos vuelven solos cuando responda.`)}</p>`:'')+
       (r?`<h3 class="av-sub">${L('Hoje','Hoy')} (${esc(fmtDia(String(r.dia||'')))})</h3><div class="kpis">${cards}</div>`:'')+
       `<h3 class="av-sub">${L('Últimos avisos','Últimos avisos')}${nv.size?` · <span class="pos">${nv.size} ${L('novos','nuevos')}</span>`:''}</h3>`+

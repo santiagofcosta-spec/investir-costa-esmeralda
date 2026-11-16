@@ -97,6 +97,7 @@ def ler_cidade(uf, slug):
                 out[lado][str(o["id"])] = {
                     "preco": round(float(o["price"]), 2), "cidade": limpo(o.get("cityName")), "uf": limpo(o.get("state"), 2),
                     "entrega": entrega(o), "fob": bool(o.get("priceReferenceIsFob", 1)),
+                    "prazo": (o.get("futureModalityDate") or "")[:4] if o.get("futureModalityDate") else "Disponível",
                     "kg": numero(o.get("quantity")),
                 }
     return out
@@ -151,18 +152,22 @@ def main():
         except Exception as e:
             falhas.append(f"{nome}: {e}")
             continue
+        # resumo do dia separado por prazo de entrega: "Disponível", "2026", "2027"...
         r = resumo_hoje.setdefault(nome, {})
+        for k in [k for k, v in r.items() if not isinstance(v, dict)]:
+            del r[k]  # formato antigo (sem prazo)
         for lado in ("compra", "venda"):
             for oid, o in of[lado].items():
                 atuais[lado][oid] = o
-            precos = [o["preco"] for o in of[lado].values()]
-            if precos:
+            for prazo in sorted({o["prazo"] for o in of[lado].values()}):
+                precos = [o["preco"] for o in of[lado].values() if o["prazo"] == prazo]
+                rp = r.setdefault(prazo, {})
                 if lado == "compra":
-                    r["compra_max"] = max(precos)
-                    r.setdefault("compra_abertura", max(precos))
+                    rp["compra_max"] = max(precos)
+                    rp.setdefault("compra_abertura", max(precos))
                 else:
-                    r["venda_min"] = min(precos)
-                    r.setdefault("venda_abertura", min(precos))
+                    rp["venda_min"] = min(precos)
+                    rp.setdefault("venda_abertura", min(precos))
         if i < len(CIDADES) - 1:
             time.sleep(4)
     if len(falhas) == len(CIDADES):
@@ -225,12 +230,17 @@ def main():
     fazer_resumo = "--resumo" in sys.argv or (hora.hour >= HORA_RESUMO and est.get("resumo_dia") != dia)
     if fazer_resumo:
         linhas = []
+        def dif(v, a):
+            return f" ({'+' if v - a >= 0 else ''}{(v - a):.2f} no dia)".replace(".", ",") if v and a and v != a else ""
         for _, _, nome in CIDADES:
-            r = resumo_hoje.get(nome, {})
-            c, v = r.get("compra_max"), r.get("venda_min")
-            dc = f" ({'+' if c - r['compra_abertura'] >= 0 else ''}{(c - r['compra_abertura']):.2f} no dia)".replace(".", ",") if c and r.get("compra_abertura") else ""
-            dv = f" ({'+' if v - r['venda_abertura'] >= 0 else ''}{(v - r['venda_abertura']):.2f} no dia)".replace(".", ",") if v and r.get("venda_abertura") else ""
-            linhas.append(f"*{nome}*\n  Melhor compra: {brl(c) + dc if c else '—'}\n  Menor venda: {brl(v) + dv if v else '—'}")
+            r = {k: v for k, v in resumo_hoje.get(nome, {}).items() if isinstance(v, dict)}
+            linhas.append(f"*{nome}*" + ("" if r else "\n  sem ofertas hoje"))
+            for prazo in sorted(r, key=lambda k: (k != "Disponível", k)):
+                rp = r[prazo]
+                c, v = rp.get("compra_max"), rp.get("venda_min")
+                itens = ([f"compra {brl(c)}{dif(c, rp.get('compra_abertura'))}"] if c else []) + \
+                        ([f"venda {brl(v)}{dif(v, rp.get('venda_abertura'))}"] if v else [])
+                linhas.append(f"  {prazo}: " + " · ".join(itens))
         partes.append(f"📋 Resumo da soja {hora.strftime('%d/%m')} (Grão Direto, ofertas da cidade e vizinhas, R$/sc 60 kg)\n" + "\n".join(linhas))
         est["resumo_dia"] = dia
     for d in [d for d in dias if d < (hora - dt.timedelta(days=10)).strftime("%Y-%m-%d")]:
