@@ -191,6 +191,66 @@
    "entrega": "entrega 12/26",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-16 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 122.35,
+   "antes": 121.85,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.1,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.8,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.65,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-16 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 119.3,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -198,22 +258,22 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-16 17:05",
- "lido": "2026-11-16 17:05",
+ "verificado": "2026-11-16 18:05",
+ "lido": "2026-11-16 18:05",
  "resumo": {
   "dia": "2026-11-16",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
-     "compra_max": 135.15,
+     "compra_max": 132.85,
      "compra_abertura": 133.15
     },
     "2027": {
-     "compra_max": 125.8,
+     "compra_max": 125.9,
      "compra_abertura": 125.75
     },
     "Disponível": {
-     "compra_max": 116.0,
+     "compra_max": 116.1,
      "compra_abertura": 115.95,
      "venda_min": 125.0,
      "venda_abertura": 125.0
@@ -221,15 +281,15 @@
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 134.1,
+     "compra_max": 134.3,
      "compra_abertura": 134.1
     },
     "2027": {
-     "compra_max": 125.15,
+     "compra_max": 121.1,
      "compra_abertura": 125.15
     },
     "Disponível": {
-     "compra_max": 116.0,
+     "compra_max": 116.1,
      "compra_abertura": 116.0,
      "venda_min": 125.0,
      "venda_abertura": 125.0
@@ -245,7 +305,7 @@
      "compra_abertura": 126.8
     },
     "Disponível": {
-     "compra_max": 122.5,
+     "compra_max": 121.6,
      "compra_abertura": 122.2,
      "venda_min": 125.0,
      "venda_abertura": 125.0
