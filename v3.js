@@ -140,7 +140,7 @@ function renderProva(){
   const selic=S.selic.filter(x=>x!=null), selicMed=selic.reduce((a,b)=>a+b,0)/selic.length;
   const cubAA=Math.pow(cubFim/cubIni,1/anosPer)-1, yb=rendaAno1(T.p)/T.p.valor;
   const FT=RM().fonteTemporada, prov=FT?L(` (${FT.pt})`,` (${FT.es})`):RM().provisorio?L(' (referência de mercado ainda provisória)',' (referencia de mercado aún provisoria)'):'';
-  const bars=[[L('Imóvel com renda de temporada','Inmueble con renta de temporada'),T.f.imovel,'linear-gradient(90deg,#C5A059,#FFC350)',true],
+  const bars=[[L('Imóvel com renda de temporada','Inmueble con renta de temporada'),T.f.imovel,'linear-gradient(90deg,#A67C2E,#F5E6B3)',true],
     [L(`CDB ${Math.round(T.p.pctCdi*100)}% do CDI, já sem IR`,`CDB ${Math.round(T.p.pctCdi*100)}% del CDI, neto de impuestos`),T.f.cdb,'var(--c-cdi)',false],
     [L('Dinheiro colocado','Dinero invertido'),inv,'var(--c-brasil)',false]];
   const max=Math.max(...bars.map(b=>b[1]));

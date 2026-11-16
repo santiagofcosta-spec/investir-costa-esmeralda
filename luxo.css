@@ -1,0 +1,133 @@
+/* =====================================================================
+   TEMA LUXO · Ardósia escura + Ouro champanhe
+   Camada só de visual, carregada por último. Não muda cálculo, ID nem texto.
+   ===================================================================== */
+
+/* ---------- 1. Paleta (uma só, escura, vale para qualquer preferência do aparelho) ---------- */
+html:root,html:root[data-theme="light"],html:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0B1015; --surface:rgba(18,25,33,.72); --surface2:rgba(11,16,21,.8); --ink:#F4F4F5; --muted:#A1A1AA; --line:rgba(212,175,55,.14);
+  --sea:#D4AF37; --sea-deep:#0B1015; --sea-ink:#0B1015; --sand:#D4AF37;
+  --gold:#D4AF37; --gold-2:#A67C2E; --gold-ink:#E6C775; --gold-lt:#F5E6B3;
+  --c-itapema:#D4AF37; --c-bc:#8FB8E8; --c-floripa:#B9A3E8; --c-brasil:#9CA3AF; --c-cdi:#60A5FA; --c-ipca:#E07A5F; --c-cub:#C9A96E; --c-poup:#7DD3C0;
+  --good:#34D399; --bad:#F87171; --good-bg:rgba(16,185,129,.16); --bad-bg:rgba(248,113,113,.14);
+  --glass:rgba(18,25,33,.72); --glass-line:rgba(212,175,55,.26);
+  --sh-1:inset 0 1px 0 0 rgba(255,238,186,.16),0 20px 40px -15px rgba(0,0,0,.65);
+  --r-lg:16px; --r-md:16px;
+  --f-display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --f-body:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --gold-metal:linear-gradient(135deg,#F5E6B3 0%,#D4AF37 50%,#A67C2E 100%);
+}
+
+/* ---------- fundo: ardósia + textura mineral + luz dourada ---------- */
+html,body{overflow-x:clip}
+html{background:linear-gradient(145deg,#0B1015 0%,#121A21 50%,#0D1E1B 100%) fixed #0B1015;min-height:100%}
+body{background:transparent;color:var(--ink);font-family:var(--f-body);font-variant-numeric:tabular-nums lining-nums}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+body::after{content:"";position:fixed;top:-25vh;right:-20vw;width:75vw;height:75vh;pointer-events:none;z-index:-1;
+  background:radial-gradient(closest-side,rgba(212,175,55,.13) 0%,transparent 100%)}
+/* luz ambiente atrás dos blocos de destaque */
+.pb-hero,.prova,#p-sim .panel:first-of-type,.vantagem{position:relative;isolation:isolate}
+.pb-hero::before,.prova::before,.vantagem::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(212,175,55,.10),transparent 70%)}
+
+/* ---------- 2. tipografia ---------- */
+/* "font:" abreviado zera o estilo dos números; aqui força dígitos alinhados e de mesma largura em tudo */
+*{font-variant-numeric:lining-nums tabular-nums!important}
+h1,h2,.porta h2,.prova h2,.sec-h h2{font-family:var(--f-display);font-weight:600;letter-spacing:.005em;color:var(--ink)}
+h3,.porta-cards b,.prova-card h3{font-family:var(--f-body);font-weight:700;letter-spacing:-.005em}
+.kpi .v,.reason .big,.prova-bar b,.prova-card .big,.range-top b,.tk-a,.pa-tile b,.auto-valor b,.vantagem b{font-family:var(--f-display);font-variant-numeric:lining-nums tabular-nums}
+table,input,select,.in input,.kpi,.tk,.prova-bar{font-variant-numeric:tabular-nums lining-nums}
+.note,.prova .nota,small{color:var(--muted)}
+.text-gold-metallic,.hero h1 em,.eyebrow,.prova-card .big,.reason .big{background:var(--gold-metal);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.eyebrow{font-family:var(--f-body);font-weight:700;letter-spacing:.2em}
+.hero h1{font-family:var(--f-display);font-weight:700;letter-spacing:-.005em}
+.hero h1 em{font-style:italic}
+
+/* ---------- 3. cartões de vidro ---------- */
+.panel,.kpi,.reason,.card,.prova-card,.pb-serie,.porta-cards button,.vantagem,.verdict,.tk,.pa-tile,.motiva-grid>*,.agro-sim,.callout,.wizard,.cenarios>*{
+  background:rgba(18,25,33,.72);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+  border:1px solid rgba(212,175,55,.26);border-radius:16px;
+  box-shadow:inset 0 1px 0 0 rgba(255,238,186,.16),0 20px 40px -15px rgba(0,0,0,.65);
+  transition:border-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease)}
+.panel .kpi,.panel .card,.panel .panel{box-shadow:inset 0 1px 0 0 rgba(255,238,186,.10)}
+.kpi:hover,.reason:hover,.card:hover,.prova-card:hover,.porta-cards button:hover,.tk:hover,.pa-tile:hover,.panel:hover{border-color:rgba(212,175,55,.55)}
+.callout{border-left:3px solid var(--gold)}
+.prova-ganho{background:rgba(16,185,129,.16);color:#D1FAE5;border:1px solid rgba(52,211,153,.35)}
+.prova-bar .track,.bar .track{background:rgba(255,255,255,.06)}
+.hero{background:radial-gradient(90% 120% at 90% 0%,rgba(212,175,55,.16),transparent 60%),linear-gradient(160deg,rgba(18,26,33,.9),rgba(11,16,21,.95));border-bottom:1px solid rgba(212,175,55,.2)}
+.thesis{background:rgba(18,25,33,.6);border:1px solid rgba(212,175,55,.26)}
+
+/* ---------- 4. abas, controles e botões ---------- */
+.nav4,.subtabs,.tabs{background:rgba(18,25,33,.72);border:1px solid rgba(212,175,55,.26);box-shadow:inset 0 1px 0 rgba(255,238,186,.12),0 12px 30px -12px rgba(0,0,0,.6)}
+.nav4 button,.tabs button{color:var(--muted)}
+.nav4 button:hover,.tabs button:hover{background:rgba(212,175,55,.1);color:#F5E6B3}
+.nav4 button[aria-current="true"],.tabs button[aria-selected="true"],.subtabs button[aria-pressed="true"],[role="tablist"] [aria-selected="true"]{
+  background:rgba(212,175,55,.15);color:#F5E6B3;box-shadow:inset 0 0 0 1px #D4AF37;border-color:#D4AF37}
+.subtabs button{background:rgba(11,16,21,.6);border-color:rgba(212,175,55,.2);color:var(--muted)}
+.subtabs button:hover{color:#F5E6B3;border-color:rgba(212,175,55,.5)}
+
+.in{background:rgba(11,16,21,.8);border:1px solid rgba(212,175,55,.3);border-radius:10px}
+.in:focus-within{border-color:#D4AF37;box-shadow:0 0 0 3px rgba(212,175,55,.15)}
+.in input,.in select,input:not([type=range]):not([type=checkbox]):not([type=radio]),select,textarea{color:#F4F4F5;font-family:var(--f-body)}
+input:focus,select:focus,textarea:focus{outline:none}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid #D4AF37;outline-offset:2px}
+select option{background:#121A21;color:#F4F4F5}
+
+/* slider: trilha escura preenchida em ouro até o ponto (--p vem do luxo.js) */
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:999px;cursor:pointer;accent-color:#D4AF37;
+  background:linear-gradient(90deg,#A67C2E,#D4AF37 var(--p,50%),#1E293B var(--p,50%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;border:2px solid #F5E6B3;
+  background:radial-gradient(circle at 35% 30%,#F5E6B3,#D4AF37 55%,#A67C2E);box-shadow:0 0 12px rgba(212,175,55,.5);transition:transform .2s var(--ease)}
+input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;border:2px solid #F5E6B3;background:#D4AF37;box-shadow:0 0 12px rgba(212,175,55,.5)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.15)}
+
+/* botão principal: esmeralda + brilho */
+.btn-cta,.contato a.btn#waBox,.wa{background:linear-gradient(135deg,#059669 0%,#10B981 100%)!important;font-weight:700;
+  border:1px solid rgba(255,255,255,.12)!important;border-top-color:rgba(255,255,255,.35)!important}
+.btn-cta:hover,.contato a.btn#waBox:hover,.wa:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 10px 25px rgba(16,185,129,.35)}
+
+/* botões secundários */
+.btn:not(.btn-cta),.btn-util,.ghost-light,.linkbtn,.lang{background:rgba(11,16,21,.55);border:1px solid rgba(212,175,55,.5);color:#F5E6B3;transition:background .3s var(--ease),border-color .3s,color .3s}
+.btn:not(.btn-cta):hover,.btn-util:hover,.ghost-light:hover{background:rgba(212,175,55,.14);border-color:#D4AF37;color:#F5E6B3}
+.lang a{color:#E4E4E7}
+.lang a[aria-current="true"]{background:var(--gold-metal);color:#0B1015}
+.btn-gold,.wiz-opt{background:linear-gradient(rgba(18,25,33,.9),rgba(18,25,33,.9)) padding-box,var(--gold-metal) border-box;color:#F4F4F5}
+.wiz-opt:hover,.wiz-opt[aria-pressed="true"]{color:#0B1015}
+.seg3,.seg{background:rgba(11,16,21,.7);border:1px solid rgba(212,175,55,.22)}
+
+/* ---------- 5. tabelas ---------- */
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+th{color:#E6C775;border-bottom:1px solid rgba(212,175,55,.3)}
+td{border-bottom:1px solid rgba(212,175,55,.14)}
+tbody tr{transition:background .25s}
+tbody tr:hover{background:rgba(212,175,55,.06)}
+td.pos,td .pos,tr.win td,td.win{background:rgba(16,185,129,.16);color:#34D399}
+.pos{color:#34D399} .neg{color:#F87171}
+
+/* ---------- 6. assinatura e rodapé ---------- */
+.assinatura{background:rgba(18,25,33,.78);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid rgba(212,175,55,.26);
+  box-shadow:inset 0 1px 0 rgba(255,238,186,.16),0 20px 40px -15px rgba(0,0,0,.65);position:relative;overflow:hidden}
+.assinatura::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,#A67C2E 15%,#F5E6B3 50%,#A67C2E 85%,transparent)}
+.assinatura h2{font-family:var(--f-display);font-weight:600;font-size:1.45rem;color:#F4F4F5}
+.ass-mono{background:var(--gold-metal);color:#0B1015;font-family:var(--f-display)}
+.ass-cargo{color:#E6C775}
+.assinatura p,.ass-wa{color:#A1A1AA}
+.contato{background:rgba(18,25,33,.78);border:1px solid rgba(212,175,55,.26)}
+footer,.rodape,.fontes{color:#A1A1AA}
+
+/* ---------- celular ---------- */
+@media (max-width:620px){
+  .hero h1{font-size:clamp(1.6rem,7.5vw,2.1rem)}
+  h2{font-size:1.15rem}
+  .panel,.kpi,.reason,.card{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  body::after{width:120vw;height:50vh}
+}
+
+/* ---------- movimento reduzido ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .btn-cta::after,.wa::after{display:none}
+}

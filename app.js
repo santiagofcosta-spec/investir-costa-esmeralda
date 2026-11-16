@@ -227,7 +227,7 @@ function hero(animar=true){
     : L(`Quem comprou aqui em 2020 viu o metro quadrado <em>subir ${pct(ratio-1,0)}</em>.`,`Quien compró aquí en 2020 vio el metro cuadrado <em>subir ${pct(ratio-1,0)}</em>.`);
   $('heroLb').textContent=L(`R$ 100 aplicados em dez/2020 viraram, em ${fmtMes(LASTKEY)}:`,`R$ 100 invertidos en dic/2020 se convirtieron, en ${fmtMes(LASTKEY)}, en:`);
   const cdi=idxBCB('cdi'), ipca=idxBCB('ipca');
-  const rows=[[L('Imóvel em Itapema','Inmueble en Itapema'),100*ratio,'#FFC350'],['CDI (bruto)',cdi[LAST],'#f0a35a'],[L('CDI após IR','CDI neto de impuestos'),100+(cdi[LAST]-100)*0.85,'#c98a4e'],[L('Inflação (IPCA)','Inflación (IPCA)'),ipca[LAST],'#ef7d99']];
+  const rows=[[L('Imóvel em Itapema','Inmueble en Itapema'),100*ratio,'#D4AF37'],['CDI (bruto)',cdi[LAST],'#60A5FA'],[L('CDI após IR','CDI neto de impuestos'),100+(cdi[LAST]-100)*0.85,'#3B82C4'],[L('Inflação (IPCA)','Inflación (IPCA)'),ipca[LAST],'#E07A5F']];
   if(ES){ const u0=usdEm(BASE), u1=usdEm(LASTKEY); if(u0&&u1) rows.push(['Guardado en dólares',100*u1/u0,'#9fb4c8']); }
   const max=Math.max(...rows.map(r=>r[1]));
   $('thesisBars').innerHTML=rows.map(([n,v,c])=>`<div class="bar"><span>${n}</span><div class="track"><div class="fill" data-w="${(v/max*100).toFixed(1)}" style="background:${c}${animar?'':';width:'+(v/max*100).toFixed(1)+'%'}"></div></div><b data-v="${v}">R$ ${Math.round(v)}</b></div>`).join('');
@@ -242,7 +242,7 @@ function waves(){
   const fit=()=>{c.width=c.clientWidth*devicePixelRatio; c.height=c.clientHeight*devicePixelRatio;}; fit(); addEventListener('resize',fit);
   const frame=()=>{
     const w=c.width,h=c.height; ctx.clearRect(0,0,w,h);
-    [['rgba(255,255,255,.05)',0.9,22,0],['rgba(255,195,80,.12)',1.3,16,2],['rgba(255,195,80,.2)',0.7,12,4]].forEach(([col,sp,amp,ph],i)=>{
+    [['rgba(255,255,255,.05)',0.9,22,0],['rgba(212,175,55,.12)',1.3,16,2],['rgba(212,175,55,.2)',0.7,12,4]].forEach(([col,sp,amp,ph],i)=>{
       ctx.beginPath(); ctx.moveTo(0,h);
       for(let x=0;x<=w;x+=8) ctx.lineTo(x,h*(0.45+i*0.15)+Math.sin(x/(140*devicePixelRatio)+t*sp+ph)*amp*devicePixelRatio);
       ctx.lineTo(w,h); ctx.closePath(); ctx.fillStyle=col; ctx.fill();
@@ -1140,7 +1140,7 @@ function renderPBSerie(){
     [L('Ainda abaixo de Itapema','Todavía por debajo de Itapema'),pct(1-b.v/it[LAST],0),L(`Itapema: ${brl(it[LAST])}/m² (FipeZap)`,`Itapema: ${brl(it[LAST])}/m² (FipeZap)`)],
   ]);
   $('pbSerieSelo').innerHTML=selo(REFS.serieDWVPortoBelo);
-  draw('chPBSerie',{type:'bar',data:{labels:S.map(p=>p.rot),datasets:[{label:L('m² médio de venda em Porto Belo (DWV)','m² medio de venta en Porto Belo (DWV)'),data:S.map(p=>p.v),backgroundColor:S.map((p,i)=>i===S.length-1?css('--gold'):'rgba(255,195,80,.55)'),borderColor:css('--gold-2'),borderWidth:1,borderRadius:6}]},
+  draw('chPBSerie',{type:'bar',data:{labels:S.map(p=>p.rot),datasets:[{label:L('m² médio de venda em Porto Belo (DWV)','m² medio de venta en Porto Belo (DWV)'),data:S.map(p=>p.v),backgroundColor:S.map((p,i)=>i===S.length-1?css('--gold'):'rgba(212,175,55,.55)'),borderColor:css('--gold-2'),borderWidth:1,borderRadius:6}]},
     options:baseOpts(v=>'R$ '+Math.round(v/1000)+' mil',{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${brl(c.parsed.y)}/m² · DWV, via ${S[c.dataIndex].f}`}}}})});
   renderPBItbi();
 }
