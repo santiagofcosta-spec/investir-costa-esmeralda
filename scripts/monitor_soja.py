@@ -67,11 +67,13 @@ def brl(v):
 
 
 def entrega(o):
-    d = o.get("futureModalityDate")
-    if not d:
-        return "disponível"
-    a, m = d[:7].split("-")
-    return f"entrega {m}/{a[2:]}"
+    m = re.match(r"(\d{4})-(\d{2})", str(o.get("futureModalityDate") or ""))  # só aceita o formato esperado
+    return f"entrega {m.group(2)}/{m.group(1)[2:]}" if m else "disponível"
+
+
+def prazo(o):
+    m = re.match(r"(\d{4})-\d{2}", str(o.get("futureModalityDate") or ""))
+    return m.group(1) if m else "Disponível"
 
 
 def limpo(v, n=40):
@@ -97,7 +99,7 @@ def ler_cidade(uf, slug):
                 out[lado][str(o["id"])] = {
                     "preco": round(float(o["price"]), 2), "cidade": limpo(o.get("cityName")), "uf": limpo(o.get("state"), 2),
                     "entrega": entrega(o), "fob": bool(o.get("priceReferenceIsFob", 1)),
-                    "prazo": (o.get("futureModalityDate") or "")[:4] if o.get("futureModalityDate") else "Disponível",
+                    "prazo": prazo(o),
                     "kg": numero(o.get("quantity")),
                 }
     return out
