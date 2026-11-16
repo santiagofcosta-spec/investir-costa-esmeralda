@@ -7,6 +7,9 @@ a cada rodada ele alinha a cópia com o GitHub (descartando qualquer coisa local
 se os avisos ou o resumo mudaram (ou se faz mais de 6 h que não envia), grava e envia só
 dados/avisos_soja.json. O estado do monitor fica em estado/ (fora do Git).
 Registro: C:\\Users\\pc\\monitor-soja\\monitor.log
+
+Com --soja-site faz outra coisa (1x por dia, à noite): roda `atualizar.py --so-soja` (ofertas e cotações de
+todas as cidades acompanhadas + varredura em rodízio) e envia dados/dados.json e dados/dados.js se mudaram.
 """
 import datetime as dt
 import json
@@ -43,7 +46,42 @@ def importante(j):
     return json.dumps({"avisos": j.get("avisos"), "resumo": j.get("resumo")}, sort_keys=True)
 
 
+def soja_site():
+    git("fetch", "-q", "origin", "main")
+    git("reset", "-q", "--hard", "origin/main")
+    r = subprocess.run([sys.executable, "scripts/atualizar.py", "--so-soja"], cwd=REPO, capture_output=True, text=True,
+                       env={**os.environ, "PYTHONIOENCODING": "utf-8"}, timeout=3600,
+                       encoding="utf-8", errors="replace", creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    saida = " | ".join(x.strip() for x in (r.stdout + r.stderr).splitlines() if x.strip())[-900:]
+    log(f"soja do site: {saida or '(sem saída)'}")
+    arqs = ["dados/dados.json", "dados/dados.js"]
+    if r.returncode != 0 or not git("status", "--porcelain", "--", *arqs).stdout.strip():
+        log("soja do site: nada enviado")
+        git("checkout", "-q", "--", *arqs, ok=False)
+        return 0 if r.returncode == 0 else 1
+    git("add", *arqs)
+    git("-c", "user.name=monitor-soja-pc", "-c", "user.email=monitor-soja@localhost",
+        "commit", "-q", "-m", f"Soja do site, coletada no PC ({dt.datetime.now():%d/%m %H:%M})")
+    for _ in range(3):
+        if git("push", "-q", "origin", "HEAD:main", ok=False).returncode == 0:
+            log("soja do site: enviada")
+            return 0
+        # o robô do GitHub pode ter salvo outros dados: junta; em conflito vale a soja recém-coletada (deste commit)
+        if git("pull", "-q", "--rebase", "-X", "theirs", "origin", "main", ok=False).returncode != 0:
+            git("rebase", "--abort", ok=False)
+            break
+        # dados.js é uma linha só: refaz a partir do dados.json já juntado, para não perder o que o robô salvou
+        d = json.loads((REPO / "dados/dados.json").read_text(encoding="utf-8"))
+        (REPO / "dados/dados.js").write_text("window.DADOS = " + json.dumps(d, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
+        git("add", "dados/dados.js")
+        git("-c", "user.name=monitor-soja-pc", "-c", "user.email=monitor-soja@localhost", "commit", "-q", "--amend", "--no-edit")
+    log("soja do site: não consegui enviar para o GitHub")
+    return 1
+
+
 def main():
+    if "--soja-site" in sys.argv:
+        return soja_site()
     git("fetch", "-q", "origin", "main")
     git("reset", "-q", "--hard", "origin/main")  # cópia dedicada: o GitHub manda
     antes = json.loads(git("show", f"HEAD:{ARQ}", ok=False).stdout or "{}")

@@ -30,6 +30,7 @@ CIDADES = [("ro", "vilhena", "Vilhena/RO"), ("mt", "comodoro", "Comodoro/MT"),
 HORA_RESUMO = 18
 ARQ_ESTADO = Path(os.environ.get("MONITOR_SOJA_ESTADO") or A.RAIZ / "estado" / "monitor_soja.json")
 MAX_AVISOS = 12  # por mensagem; o resto vira "e mais N"
+VARIACAO_MIN = 0.50  # R$/saca: subida (compra) ou queda (venda) só avisa a partir disso, somando pequenas mudanças
 ARQ_SITE = Path(os.environ.get("MONITOR_SOJA_SITE") or A.RAIZ / "dados" / "avisos_soja.json")  # lido pela aba Soja do site
 DIAS_NO_SITE = 7
 
@@ -111,7 +112,7 @@ def linha(lado, o, antes=None):
         extra.append("FOB" if o["fob"] else "CIF")
     if o.get("kg"):
         extra.append(f"{o['kg'] / 60:,.0f} sc".replace(",", "."))
-    return f"{txt} · {o['cidade']}-{o['uf']} · {' · '.join(extra)}"
+    return f"{txt} · {o['cidade']}-{o['uf']}" + (f" · {' · '.join(extra)}" if extra else "")
 
 
 def enviar(texto, teste):
@@ -184,17 +185,27 @@ def main():
         voltou = False
     # compara com o que já tinha visto (uma mesma oferta aparece em várias cidades vizinhas: id único)
     for lado in ("compra", "venda"):
+        # "ref" = preço de referência da oferta: o último avisado, ou o mais desfavorável visto depois dele.
+        # Assim R$ 0,10 + 0,10 + ... avisa quando a soma chega a VARIACAO_MIN.
         for oid, o in atuais[lado].items():
             antes = vistas[lado].get(oid)
+            ref = o["preco"]
             if antes is None:
                 avisos[lado].append(("nova", o, None))
-            elif lado == "compra" and o["preco"] > antes["preco"]:
-                avisos[lado].append(("subiu", o, antes["preco"]))
-            elif lado == "venda" and o["preco"] < antes["preco"]:
-                avisos[lado].append(("caiu", o, antes["preco"]))
-        # guarda as ofertas no ar; as que saíram ficam alguns dias para não avisar de novo se voltarem
-        for oid, o in atuais[lado].items():
-            vistas[lado][oid] = {**o, "visto": dia}
+            else:
+                ref = antes.get("ref", antes["preco"])
+                if lado == "compra":
+                    if o["preco"] >= round(ref + VARIACAO_MIN, 2):
+                        avisos[lado].append(("subiu", o, ref)); ref = o["preco"]
+                    else:
+                        ref = min(ref, o["preco"])
+                else:
+                    if o["preco"] <= round(ref - VARIACAO_MIN, 2):
+                        avisos[lado].append(("caiu", o, ref)); ref = o["preco"]
+                    else:
+                        ref = max(ref, o["preco"])
+            # guarda as ofertas no ar; as que saíram ficam alguns dias para não avisar de novo se voltarem
+            vistas[lado][oid] = {**o, "ref": ref, "visto": dia}
         limite = (hora - dt.timedelta(days=7)).strftime("%Y-%m-%d")
         for oid in [k for k, v in vistas[lado].items() if v.get("visto", dia) < limite]:
             del vistas[lado][oid]

@@ -369,7 +369,7 @@ def atualizar_soja(d):
                 h[c["data"]] = c["preco"]
             hc[k] = [[x, h[x]] for x in sorted(h)][-180:]
         ne += 1
-        time.sleep(2)
+        time.sleep(4)
     # varredura em rodízio (por último: se o Grão Direto bloquear aqui, o resto já foi salvo)
     try:
         sementes = json.loads(ARQ_SEMENTES.read_text(encoding="utf-8"))
@@ -467,9 +467,13 @@ def atualizar_itbi(refs):
 
 
 def main():
+    # --so-soja: só a soja (roda no PC do Santiago, porque o Grão Direto recusa os servidores do GitHub)
+    so_soja = "--so-soja" in sys.argv
     d = json.loads(ARQ_JSON.read_text(encoding="utf-8"))
     antes = json.dumps(d, sort_keys=True)
-    for nome, fn in (("Banco Central", atualizar_bcb), ("FipeZap", atualizar_fipezap), ("CUB", atualizar_cub), ("Soja", atualizar_soja)):
+    fontes = (("Soja", atualizar_soja),) if so_soja else (
+        ("Banco Central", atualizar_bcb), ("FipeZap", atualizar_fipezap), ("CUB", atualizar_cub), ("Soja", atualizar_soja))
+    for nome, fn in fontes:
         try:
             fn(d)
         except Exception as e:  # uma fonte fora do ar não derruba as outras
@@ -479,6 +483,11 @@ def main():
                 log.append(f"{nome}: ERRO {type(e).__name__}: {e}")
     if json.dumps(d, sort_keys=True) != antes:
         d["atualizado"] = HOJE.isoformat()
+    if so_soja:
+        ARQ_JSON.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+        ARQ_JS.write_text("window.DADOS = " + json.dumps(d, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
+        print("\n".join(log))
+        return 0
     refs = json.loads(ARQ_REFS.read_text(encoding="utf-8"))
     try:
         atualizar_cepea(refs)
