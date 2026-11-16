@@ -33,10 +33,14 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add dados/
             git commit -m "Atualiza dados automaticamente ($(date +%d/%m/%Y))"
-            # alguém pode ter enviado mudança enquanto o robô rodava: junta antes de enviar
-            # (em conflito nos arquivos de dados, vale a versão do robô, que é a mais nova)
+            # alguém pode ter enviado mudança enquanto o robô rodava: junta antes de enviar.
+            # O commit do robô só tem arquivos de dados/; em conflito neles vale a versão do robô (a mais nova).
+            # Se não conseguir enviar, a rodada FALHA (aparece vermelha no GitHub e manda e-mail).
+            ok=0
             for i in 1 2 3; do
-              git pull --rebase -X theirs origin main && git push && break
+              if git pull --rebase -X theirs origin main && git push; then ok=1; break; fi
+              git rebase --abort 2>/dev/null || true
               sleep 10
             done
+            [ "$ok" = 1 ] || { echo "Não consegui salvar os dados no GitHub."; exit 1; }
           fi
