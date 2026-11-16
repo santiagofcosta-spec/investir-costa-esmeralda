@@ -75,10 +75,10 @@
       <div id="prComp"></div>
       <div class="actions" style="margin-top:12px">
         <button class="btn ghost" type="button" id="prReset">${L('Voltar à proposta inicial','Volver a la propuesta inicial')}</button>
-        <button class="btn" type="button" id="prPdf">${L('Gerar PDF para o cliente','Generar PDF para el cliente')}</button>
+        <button class="btn" type="button" id="prPdf">${L('📄 Gerar PDF para o cliente','📄 Generar PDF para el cliente')}</button>
         <button class="btn ghost" type="button" id="prFechar">${L('Fechar','Cerrar')}</button>
       </div>
-      <p class="note" id="prMsg" aria-live="polite"></p>`;
+      <p class="note" id="prMsg" aria-live="polite"></p><div class="actions" id="prArq"></div>`;
     const ler=()=>{ const g=id=>n0(document.getElementById(id).value);
       P.aj.entrada=g('prEnt'); P.aj.mensais={n:g('prMn'),valor:g('prMv'),inicio:Math.max(1,g('prMi'))};
       P.aj.baloes={n:g('prBn'),valor:g('prBv'),cada:Math.max(1,g('prBc')),inicio:Math.max(1,g('prBi'))};
@@ -137,7 +137,7 @@
   /* ---------- PDF (só a proposta final) ---------- */
   function pdf(){
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
-    const cap=IMG(f.capa), pl=IMG(u.planta), gal=(f.galeria||[]).map(IMG).filter(Boolean).slice(0,6), mapa=IMG(f.mapa);
+    const cap=IMG(f.capa), pl=IMG(u.planta), gal=(f.galeria||[]).map(IMG).filter(Boolean).slice(0,6), mapa=IMG(f.mapa), mapaRua=IMG(f.mapaRua);
     const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
     const hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
     const ficha=[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('privativos','privados')}`:'',u.vagas?`${u.vagas} ${L('vagas','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ');
@@ -148,6 +148,7 @@
       <div class="pp-dupla">${cap?`<img src="${cap}" alt="">`:''}
         <div><p class="pp-ficha">${ficha}</p>
           <p>${[e.fase,e.entrega?L('Entrega prevista ','Entrega prevista ')+fmtMesAno(e.entrega):''].filter(Boolean).join(' · ')}</p>
+          ${e.incorporacao?`<p class="pp-inc">${L('Registro de Incorporação nº','Registro de Incorporación nº')} ${e.incorporacao}</p>`:''}
           <div class="pp-total"><span>${L('Valor total','Valor total')}</span><b>${brl(m.total)}</b></div>
           <table class="pp-tab"><tbody>${resumo(a).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
           <p class="pp-obs">${a.correcao?L(`Parcelas corrigidas mensalmente pelo ${esc(a.correcao)}.`,`Cuotas ajustadas mensualmente por ${esc(a.correcao)}.`):''} ${val?L(`<b>Proposta válida até ${val}</b>, sujeita à disponibilidade da unidade e à aprovação da incorporadora.`,`<b>Propuesta válida hasta ${val}</b>, sujeta a disponibilidad de la unidad y aprobación del desarrollador.`):L('Sujeita à disponibilidade da unidade e à aprovação da incorporadora.','Sujeta a disponibilidad de la unidad y aprobación del desarrollador.')}</p>
@@ -157,16 +158,69 @@
     <div class="pp-pag">
       ${e.lazer?`<h2>${L('Lazer','Áreas comunes')}</h2><p>${e.lazer}</p>`:''}
       ${gal.length?`<div class="pp-gal">${gal.map(s=>`<img src="${s}" alt="">`).join('')}</div>`:''}
-      ${mapa?`<h2>${L('Localização','Ubicación')}</h2><img class="pp-mapa" src="${mapa}" alt="">`:''}
+      ${mapa||mapaRua?`<h2>${L('Localização','Ubicación')}</h2>
+        <p><b>${[e.endereco,e.bairro,e.cidade?e.cidade+' / SC':''].filter(Boolean).join(' · ')}</b>${e.distanciaMar?` · ${L(`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m do mar em linha reta`,`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m del mar en línea recta`)}${e.praia?` (${e.praia})`:''}`:''}</p>
+        <div class="pp-loc"><img src="${mapaRua||mapa}" alt=""></div>`:''}
       <div class="pp-rod"><b>${esc(assinatura())}</b><br>${L(`Proposta preparada em ${hoje}. Imagens ilustrativas. Valores e condições sujeitos à confirmação no contrato.`,`Propuesta preparada el ${hoje}. Imágenes ilustrativas. Valores y condiciones sujetos a confirmación en el contrato.`)}</div>
     </div>`;
-    const msg=document.getElementById('prMsg'); msg.textContent=L('Preparando o PDF…','Preparando el PDF…');
+    const nome=`Proposta ${txt(e.nome)} ${u.unidade}${P.cliente?' - '+P.cliente:''}`.replace(/[\/:*?"<>|]+/g,'').replace(/\s+/g,' ').trim()+'.pdf';
+    gerarArquivo(nome);
+  }
+  const txt=s=>{ const t=document.createElement('textarea'); t.innerHTML=String(s||''); return t.value; };
+
+  /* PDF de verdade (arquivo), para mandar no WhatsApp. Cada .pp-pag vira uma página A4:
+     html2canvas fotografa a página e o jsPDF monta o arquivo. Bibliotecas carregadas só quando precisa. */
+  const LIBS=['https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'];
+  let libPdf=null;
+  const script=src=>new Promise((ok,erro)=>{ const sc=document.createElement('script'); sc.src=src; sc.onload=()=>ok(); sc.onerror=()=>erro(new Error('lib')); document.head.appendChild(sc); });
+  const carregarLib=()=>libPdf||(libPdf=(window.html2canvas&&window.jspdf?Promise.resolve():Promise.all(LIBS.map(script))).catch(err=>{ libPdf=null; throw err; }));
+  let urlPdf=null;
+  async function gerarArquivo(nome){
+    const msg=document.getElementById('prMsg'), acoes=document.getElementById('prArq');
+    acoes.innerHTML=''; msg.textContent=L('Gerando o PDF… (alguns segundos)','Generando el PDF… (algunos segundos)');
+    document.getElementById('prPdf').disabled=true;
+    const el=document.createElement('div'); el.className='pp pp-pdf'; el.innerHTML=out.innerHTML;
+    const palco=document.createElement('div'); palco.className='pp-palco'; palco.appendChild(el);
+    const yAntes=scrollY;
+    try{
+      await carregarLib();
+      document.body.appendChild(palco);
+      await Promise.all([...el.querySelectorAll('img')].map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r;})));
+      if(document.fonts&&document.fonts.ready) await document.fonts.ready;
+      scrollTo(0,0);                                       // html2canvas usa a rolagem da página
+      const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4',orientation:'portrait',compress:true});
+      const pags=[...el.querySelectorAll('.pp-pag')];
+      for(let i=0;i<pags.length;i++){
+        const cv=await window.html2canvas(pags[i],{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,scrollX:0,scrollY:0,windowWidth:900});
+        let w=210, h=w*cv.height/cv.width; if(h>297){ h=297; w=h*cv.width/cv.height; }
+        if(i) doc.addPage();
+        doc.addImage(cv.toDataURL('image/jpeg',0.88),'JPEG',(210-w)/2,0,w,h);
+      }
+      scrollTo(0,yAntes);
+      const blob=doc.output('blob');
+      const arq=new File([blob],nome,{type:'application/pdf'});
+      if(urlPdf) URL.revokeObjectURL(urlPdf); urlPdf=URL.createObjectURL(blob);
+      const podeEnviar=!!(navigator.canShare&&navigator.canShare({files:[arq]}));
+      acoes.innerHTML=(podeEnviar?`<button class="btn" type="button" id="prEnviar">${L('📤 Enviar (WhatsApp…)','📤 Enviar (WhatsApp…)')}</button>`:'')+
+        `<a class="btn${podeEnviar?' ghost':''}" id="prBaixar" href="${urlPdf}" download="${esc(nome)}">${L('⬇️ Baixar PDF','⬇️ Descargar PDF')}</a>`;
+      msg.textContent=podeEnviar?L(`Pronto: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Toque em "Enviar" e escolha o WhatsApp.`,`Listo: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Toque "Enviar" y elija WhatsApp.`)
+        :L(`Pronto: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Clique em "Baixar PDF" e anexe no WhatsApp (clipe 📎 → Documento).`,`Listo: ${nome} (${Math.max(1,Math.round(blob.size/1024))} KB). Haga clic en "Descargar PDF" y adjúntelo en WhatsApp (clip 📎 → Documento).`);
+      const env=document.getElementById('prEnviar');
+      if(env) env.addEventListener('click',async()=>{ try{ await navigator.share({files:[arq],title:nome.replace(/\.pdf$/,'')}); }
+        catch(err){ if(err&&err.name!=='AbortError') msg.textContent=L('Não consegui abrir o envio. Use "Baixar PDF".','No pude abrir el envío. Use "Descargar PDF".'); } });
+      if(!podeEnviar) document.getElementById('prBaixar').click();
+    }catch(err){
+      msg.textContent=L('Não consegui gerar o arquivo (sem internet?). Abrindo a impressão: escolha "Salvar como PDF".','No pude generar el archivo (¿sin internet?). Abriendo la impresión: elija "Guardar como PDF".');
+      imprimir();
+    }finally{ palco.remove(); document.getElementById('prPdf').disabled=false; }
+  }
+  function imprimir(){
+    const {e,u}=P;
     Promise.all([...out.querySelectorAll('img')].map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r;}))).then(()=>{
       document.body.classList.add('print-proposta');
-      const tit=document.title; document.title=`Proposta ${e.nome.replace(/&[a-z#0-9]+;/gi,'')} ${u.unidade}${P.cliente?' - '+P.cliente:''}`;
+      const tit=document.title; document.title=`Proposta ${txt(e.nome)} ${u.unidade}${P.cliente?' - '+P.cliente:''}`;
       const fim=()=>{ document.body.classList.remove('print-proposta'); document.title=tit; removeEventListener('afterprint',fim); };
       addEventListener('afterprint',fim);
-      msg.textContent=L('Na janela de impressão, escolha "Salvar como PDF".','En la ventana de impresión, elija "Guardar como PDF".');
       window.print();
     });
   }

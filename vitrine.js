@@ -36,6 +36,7 @@
     lb.querySelector('img').src=src; lb.querySelector('.vit-lb-c').textContent=`${leg?leg+' · ':''}${lbI+1}/${lbFotos.length}`;
     lb.querySelectorAll('.vit-lb-p,.vit-lb-n').forEach(b=>b.hidden=lbFotos.length<2);
   }
+  const fotosLocal=f=>[[IMG(f.mapaRua),L('Mapa da rua (© OpenStreetMap)','Mapa de la calle (© OpenStreetMap)')],[IMG(f.mapa),L('Vista aérea','Vista aérea')]].filter(x=>x[0]);
   const rotFoto=s=>{ const n=s.split('/').pop().replace(/\.\w+$/,'').replace(/-/g,' '); return n.charAt(0).toUpperCase()+n.slice(1); };
 
   /* ---------- "Tenho X para investir" ---------- */
@@ -120,8 +121,9 @@
       return `<div class="vit-gal">${g.map((s,i)=>`<button type="button" class="vit-img" data-foto="gal" data-i="${i}"><img src="${s}" alt="${rotFoto(s)}" loading="lazy"></button>`).join('')}</div><p class="note">${L('Imagens ilustrativas do catálogo. Clique para ampliar.','Imágenes ilustrativas del catálogo. Haga clic para ampliar.')}</p>`; }
     if(k==='lazer'){ const lz=IMG(f.lazer);
       return `<p>${e.lazer||''}</p>${lz?`<button type="button" class="vit-img vit-larga" data-foto="lazer" data-i="0"><img src="${lz}" alt="${L('Planta do lazer','Planta de áreas comunes')}" loading="lazy"></button>`:''}`; }
-    if(k==='local'){ const mp=IMG(f.mapa), end=[e.endereco,e.bairro,e.cidade?e.cidade+' - SC':''].filter(Boolean).join(', ');
-      return `<p><b>${end}</b></p>${mp?`<button type="button" class="vit-img vit-larga" data-foto="mapa" data-i="0"><img src="${mp}" alt="${L('Mapa','Mapa')}" loading="lazy"></button>`:''}
+    if(k==='local'){ const fl=fotosLocal(f), end=[e.endereco,e.bairro,e.cidade?e.cidade+' - SC':''].filter(Boolean).join(', ');
+      return `<p><b>${end}</b>${e.distanciaMar?` · ${L(`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m do mar em linha reta`,`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m del mar en línea recta`)}${e.praia?` (${e.praia})`:''}`:''}</p>
+        <div class="vit-locs">${fl.map(([src,leg],i)=>`<button type="button" class="vit-img" data-foto="mapa" data-i="${i}"><img src="${src}" alt="${leg}" loading="lazy"></button>`).join('')}</div>
         <div class="actions"><a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(txt(end))}" target="_blank" rel="noopener">${L('Abrir no Google Maps','Abrir en Google Maps')}</a></div>`; }
     if(k==='cond'){ const vis=new Set(); let h='';
       e.unidades.forEach(u=>{ const c=conds(e,u); if(!c||vis.has(c)) return; vis.add(c);
@@ -164,7 +166,7 @@
     box.hidden=false;
     box.innerHTML=`<div class="vit-hero"${capa?` style="background-image:linear-gradient(180deg,rgba(11,16,21,.15),rgba(11,16,21,.92)),url('${capa}')"`:''}>
         <div class="vit-hero-txt"><span class="badge">${[e.fase,e.entrega?L('entrega ','entrega ')+fmtMesAno(e.entrega):''].filter(Boolean).join(' · ')}</span>
-          <h2>${e.nome}</h2><p>${[e.bairro,e.cidade].filter(Boolean).join(' · ')}</p>${prazo}</div>
+          <h2>${e.nome}</h2><p>${[e.bairro,e.cidade,e.incorporacao?L('Registro de Incorporação nº ','Registro de Incorporación nº ')+e.incorporacao:''].filter(Boolean).join(' · ')}</p>${prazo}</div>
         <div class="vit-placar" title="${L(`${pDisp}% das ${us.length} unidades disponíveis`,`${pDisp}% de las ${us.length} unidades disponibles`)}">
           <div class="vit-nums"><span><b>${disp}</b> ${L('disponíveis','disponibles')}</span>${res?`<span><b>${res}</b> ${L('reservadas','reservadas')}</span>`:''}${vend?`<span><b>${vend}</b> ${L('vendidas','vendidas')}</span>`:''}</div>
           <div class="vit-barra"><i style="width:${pDisp}%"></i></div><small>${pDisp}% ${L('disponível','disponible')}</small></div>
@@ -182,7 +184,8 @@
       const t=b.dataset.foto, i=+b.dataset.i;
       if(t==='pl'){ const l=e.unidades.filter(u=>IMG(u.planta)).map(u=>[IMG(u.planta),`${L('Unidade','Unidad')} ${nomeUni(u)} · ${area(u.area)}`]); abrirFoto(l,Math.max(0,l.findIndex(x=>x[0]===IMG(e.unidades[i].planta)))); }
       else if(t==='gal'){ const g=[IMG(f.capa),...(f.galeria||[]).map(IMG)].filter(Boolean); abrirFoto(g.map(s=>[s,rotFoto(s)]),i); }
-      else abrirFoto([[IMG(t==='mapa'?f.mapa:f.lazer),'']],0);
+      else if(t==='mapa') abrirFoto(fotosLocal(f),i);
+      else abrirFoto([[IMG(f.lazer),'']],0);
     }));
     box.querySelectorAll('[data-usar]').forEach(b=>b.addEventListener('click',()=>usarUnidade(+b.dataset.usar)));
     box.querySelectorAll('.vit-plantas [data-prop]').forEach(b=>b.addEventListener('click',()=>{
