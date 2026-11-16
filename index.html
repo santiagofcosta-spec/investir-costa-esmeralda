@@ -163,6 +163,52 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 .print-head h1{font-size:18px}
 .print-head p{font-size:11px;color:#4f625d}
 
+/* vitrine do empreendimento (Área restrita) */
+.vit{padding:0;overflow:hidden}
+.vit-hero{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;min-height:240px;padding:22px;background:#0B1015 center/cover no-repeat}
+.vit-hero-txt h2{font-size:clamp(26px,4vw,38px);margin:8px 0 2px;color:#fff}
+.vit-hero-txt p{margin:0 0 10px;color:#E4E4E7}
+.vit-prazo{display:inline-block;font-size:13px;padding:5px 10px;border-radius:999px;background:rgba(212,175,55,.18);color:var(--gold-lt,#F5E6B3);border:1px solid rgba(212,175,55,.35)}
+.vit-prazo.urg{background:rgba(224,122,95,.2);border-color:rgba(224,122,95,.5);color:#FBD3C7}
+.vit-prazo.fim{background:rgba(120,120,120,.25);border-color:rgba(160,160,160,.4);color:#ddd}
+.vit-placar{min-width:min(100%,230px);background:rgba(11,16,21,.72);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:#E4E4E7}
+.vit-nums{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px}.vit-nums b{font-size:17px;color:#fff}
+.vit-barra{height:6px;border-radius:6px;background:rgba(255,255,255,.12);margin:8px 0 4px;overflow:hidden}
+.vit-barra i{display:block;height:100%;background:var(--gold-metal,#D4AF37)}
+.vit-placar small{letter-spacing:.08em;text-transform:uppercase;font-size:10px;color:var(--gold-ink,#E6C775)}
+.vit-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;padding:16px}
+.vit-card{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface2,rgba(11,16,21,.8));color:inherit;cursor:pointer;font:inherit}
+.vit-card:hover,.vit-card[aria-expanded="true"]{border-color:var(--gold,#D4AF37)}
+.vit-card .ic{font-size:22px}.vit-card b{display:block;font-size:14px}.vit-card small{display:block;font-size:12px;color:var(--muted)}
+.vit-card .seta{margin-left:auto;font-size:20px;color:var(--gold,#D4AF37);transition:transform .2s}
+.vit-card[aria-expanded="true"] .seta{transform:rotate(90deg)}
+.vit-det{padding:0 16px 18px}
+.vit-img{display:block;padding:0;border:0;background:none;cursor:zoom-in;border-radius:10px;overflow:hidden;width:100%}
+.vit-img img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.vit-img:hover img{transform:scale(1.03)}
+.vit-larga{max-width:760px}
+.vit-gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.vit-gal .vit-img{aspect-ratio:4/3}
+.vit-plantas,.vit-conds{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.vit-pl{margin:0;border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.vit-pl .vit-img{background:#fff}.vit-pl .vit-img img{object-fit:contain;max-height:320px}
+.vit-pl figcaption{font-size:13px;line-height:1.6}
+.vit-preco{font-family:var(--f-display,Georgia,serif);font-size:20px;color:var(--gold-ink,#E6C775)}
+.vit-cond{border:1px solid var(--line);border-radius:12px;padding:12px}.vit-cond h3{margin:0}
+.vit-xin{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0 14px}
+.vit-x{border:1px solid var(--line);border-left-width:4px;border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.vit-x.ok{border-left-color:#34D399}.vit-x.aj{border-left-color:#D4AF37}.vit-x.nao{border-left-color:#E07A5F}
+.vit-x p{margin:4px 0}.vit-x .actions{margin-top:8px}
+.vit-x-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px}
+.vit-selo{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px}
+.vit-selo.ok{background:rgba(16,185,129,.16);color:#34D399}.vit-selo.aj{background:rgba(212,175,55,.18);color:#E6C775}.vit-selo.nao{background:rgba(224,122,95,.18);color:#F0A08A}
+.vit-lb{border:0;padding:0;background:transparent;max-width:96vw;max-height:94vh;overflow:visible}
+.vit-lb::backdrop{background:rgba(5,8,11,.88)}
+.vit-lb img{display:block;max-width:92vw;max-height:84vh;border-radius:10px;background:#fff;margin:auto}
+.vit-lb-c{text-align:center;color:#E4E4E7;font-size:13px;margin:8px 0 0}
+.vit-lb button{position:fixed;border:0;border-radius:999px;width:44px;height:44px;font-size:24px;background:rgba(18,25,33,.85);color:#F5E6B3;cursor:pointer}
+.vit-lb-x{top:max(14px,env(safe-area-inset-top));right:14px}.vit-lb-p{left:10px;top:50%}.vit-lb-n{right:10px;top:50%}
+@media print{.vit{display:none!important}}
 /* proposta para o cliente (Área restrita) */
 .prop-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
 .prop-top .f2 .in{min-width:0}
@@ -1297,6 +1343,7 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
         <button class="btn ghost" type="button" id="btnSair" data-es="Salir">Sair</button>
         <p class="note" id="cEmpInfo" style="flex-basis:100%"></p>
       </div>
+      <div class="panel vit" id="vitBox" hidden></div>
       <div class="panel">
         <div class="ph"><h2 data-es="Unidades">Unidades</h2><span class="note" data-es="Haga clic en una unidad para usarla en las simulaciones">Clique numa unidade para usar nas simulações</span></div>
         <div class="tblwrap"><table id="tblUnidades"></table></div>
@@ -1378,5 +1425,6 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 <script src="v3.js"></script>
 <script src="avisos.js"></script>
 <script src="proposta.js"></script>
+<script src="vitrine.js"></script>
 </body>
 </html>

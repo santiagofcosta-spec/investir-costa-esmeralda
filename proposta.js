@@ -129,6 +129,11 @@
     box.hidden=false; montar();
   }
 
+  /* usado pela vitrine (vitrine.js): abre a proposta de uma unidade, opcionalmente já com um fluxo ajustado */
+  window.abrirPropostaCom=(u,base,aj)=>{ if(!TAB||!u) return; abrir(base||'fluxo',u); if(!P) return;
+    if(aj){ P.aj=copia(aj); montar(); }
+    box.scrollIntoView({behavior:'smooth',block:'start'}); };
+
   /* ---------- PDF (só a proposta final) ---------- */
   function pdf(){
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
