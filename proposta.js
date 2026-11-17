@@ -41,7 +41,10 @@
   }
 
   /* ---------- tela ---------- */
-  const campo=(id,rot,val,un,pre)=>`<div class="f"><label for="${id}">${rot}</label><div class="in">${pre?`<span>${pre}</span>`:''}<input id="${id}" type="number" min="0" step="1" value="${val}" inputmode="numeric">${un?`<span>${un}</span>`:''}</div></div>`;
+  // campos em R$: ponto de milhar enquanto digita e valor por extenso embaixo (igual aos simuladores)
+  const campo=(id,rot,val,un,pre)=>pre==='R$'
+    ?`<div class="f"><label for="${id}">${rot}</label><div class="in"><span>R$</span><input id="${id}" type="text" data-num data-dinheiro data-casas="0" inputmode="numeric" autocomplete="off" value="${n0(val).toLocaleString('pt-BR')}"></div><span class="extenso" aria-hidden="true">${porExtenso(n0(val))}</span></div>`
+    :`<div class="f"><label for="${id}">${rot}</label><div class="in">${pre?`<span>${pre}</span>`:''}<input id="${id}" type="number" min="0" step="1" value="${val}" inputmode="numeric">${un?`<span>${un}</span>`:''}</div></div>`;
   function resumo(p){
     const it=[];
     if(p.entrada) it.push([L('Entrada (na assinatura)','Anticipo (a la firma)'),brl(p.entrada)]);
@@ -79,7 +82,7 @@
         <button class="btn ghost" type="button" id="prFechar">${L('Fechar','Cerrar')}</button>
       </div>
       <p class="note" id="prMsg" aria-live="polite"></p><div class="actions" id="prArq"></div>`;
-    const ler=()=>{ const g=id=>n0(document.getElementById(id).value);
+    const ler=()=>{ const g=id=>n0(lerNum(document.getElementById(id).value));
       P.aj.entrada=g('prEnt'); P.aj.mensais={n:g('prMn'),valor:g('prMv'),inicio:Math.max(1,g('prMi'))};
       P.aj.baloes={n:g('prBn'),valor:g('prBv'),cada:Math.max(1,g('prBc')),inicio:Math.max(1,g('prBi'))};
       P.aj.unico={valor:g('prUv'),mes:Math.max(1,g('prUm'))}; comparar(); };

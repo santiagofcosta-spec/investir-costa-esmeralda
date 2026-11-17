@@ -65,7 +65,7 @@
   function tenhoX(e){
     const grupos=new Map();                                 // mesma condição para várias unidades = 1 bloco só
     e.unidades.forEach((u,i)=>{ const c=conds(e,u); if(!c||u.status==='vendido') return; if(!grupos.has(c)) grupos.set(c,[]); grupos.get(c).push(i); });
-    const campo=(id,rot,val,dica)=>`<div class="f"><label for="${id}">${rot}</label><div class="in"><span>R$</span><input id="${id}" type="number" min="0" step="1000" inputmode="numeric" value="${val||''}" placeholder="0"></div>${dica?`<small class="note">${dica}</small>`:''}</div>`;
+    const campo=(id,rot,val,dica)=>`<div class="f"><label for="${id}">${rot}</label><div class="in"><span>R$</span><input id="${id}" type="text" data-num data-dinheiro data-casas="0" inputmode="numeric" autocomplete="off" value="${val?n0(val).toLocaleString('pt-BR'):''}" placeholder="0"></div><span class="extenso" aria-hidden="true">${porExtenso(n0(val))}</span>${dica?`<small class="note">${dica}</small>`:''}</div>`;
     const temX=X.e||X.m||X.b;
     let res='';
     if(temX){
@@ -192,7 +192,7 @@
       if(typeof window.abrirPropostaCom==='function') window.abrirPropostaCom(e.unidades[+b.dataset.prop],b.dataset.base,null);
     }));
     ['vxE','vxM','vxB'].forEach(id=>{ const i=document.getElementById(id); if(!i) return;
-      i.addEventListener('input',()=>{ X={e:n0(document.getElementById('vxE').value),m:n0(document.getElementById('vxM').value),b:n0(document.getElementById('vxB').value)};
+      i.addEventListener('input',()=>{ X={e:n0(lerNum(document.getElementById('vxE').value)),m:n0(lerNum(document.getElementById('vxM').value)),b:n0(lerNum(document.getElementById('vxB').value))};
         const tmp=document.createElement('div'); tmp.innerHTML=tenhoX(e);
         document.getElementById('vxRes').replaceWith(tmp.querySelector('#vxRes')); ligarRes(e); }); });
     ligarRes(e);
