@@ -30,9 +30,6 @@ const SITE_CONFIG = {
     // aluguel anual tradicional, % do valor por mês: rentabilidade de Florianópolis no FipeZap Locação (set/2026: 5,42% a.a.).
     // Itapema e Porto Belo não entram no índice; Florianópolis é o mercado oficial mais parecido (SC, litoral, m² alto).
     aluguelMensalPctValor: 0.45,
-    // aluguel anual em Porto Belo informado pelo Santiago (17/11/2026): 2 suítes de ~88 m² alugam de R$ 3.700 a R$ 4.500/mês.
-    // Vira R$/m² (3.700 ÷ 88 ≈ 42; 4.500 ÷ 88 ≈ 51) para servir a qualquer área. Valor usado: R$ 4.200 (Santiago) para 80–96 m²; fora disso, proporcional à área. Usado no PDF da proposta.
-    aluguelPortoBelo: { min: 3700, max: 4500, ref: 4200, areaRef: 88, perfil: { pt:'2 suítes de cerca de 88 m²', es:'2 suites de cerca de 88 m²' }, data: 'nov/2026' },
     fonteAluguel: { pt:'rentabilidade de Florianópolis, FipeZap Locação set/2026 (Itapema e Porto Belo não entram no índice)', es:'rentabilidad de Florianópolis, FipeZap Alquiler sep/2026 (Itapema y Porto Belo no están en el índice)' },
     vacancia: 8,
     admTemporada: 20, admAnual: 10, // % sobre a receita. Confirmados pelo Santiago em 17/11/2026 (valores praticados na região)

@@ -148,20 +148,44 @@
       {k:'mod',nome:L('Moderado','Moderado'),taxa:(cons+hist)/2,fonte:L('meio-termo entre o conservador e o histórico','punto medio entre el conservador y el histórico')},
       {k:'hist',nome:L('Histórico da região','Histórico de la región'),taxa:hist,fonte:L(`média de Porto Belo (DWV) e Itapema (FipeZap) desde 2020`,`promedio de Porto Belo (DWV) e Itapema (FipeZap) desde 2020`)}];
   }
-  function renda(V,modo,area){
+  // ---- renda pela localização do imóvel (17/11/2026) ----
+  // Aluguel anual: bairro do empreendimento (referencias.json > aluguelBairros); bairro sem dado usa a média da cidade.
+  // Temporada: cidade + nº de quartos (referencias.json > temporadaCidades). Sem cidade conhecida: referência antiga (% do valor).
+  const norm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();
+  const achar=(obj,k)=>{ if(!obj||!k) return null; const n=norm(k), kk=Object.keys(obj).find(x=>norm(x)===n); return kk?[kk,obj[kk]]:null; };
+  const quartosDe=u=>{ if(u.quartos) return +u.quartos; const m=String(u.tipo||'').match(/(\d+)\s*(su[ií]tes?|quartos?|dorm)/i); return m?+m[1]:null; };
+  const m2f=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const arred=v=>Math.round(v/50)*50;
+  function localRenda(e,u,V){
+    const r=RM(), area=u.area, AB=REFS.aluguelBairros, TC=REFS.temporadaCidades;
+    let an=null; const cid=AB&&area?achar(AB.cidades,e.cidade):null;
+    if(cid){ const [cn,c]=cid, b=achar(c.bairros,e.bairro);
+      if(b&&b[1].ref){ const [bn,x]=b, perto=Math.abs(area/x.areaRef-1)<=0.09, k=perto?1:area/x.areaRef;
+        an={mes:perto?x.ref:arred(x.ref*k),faixa:x.faixa?[x.faixa[0]*k,x.faixa[1]*k]:null,onde:`${bn}, ${cn}`,
+          fonte:L(`levantamento da consultoria para ${bn} (${cn}): apartamentos de ~${x.areaRef} m² alugam de ${brl(x.faixa[0])} a ${brl(x.faixa[1])} por mês, nov/2026${perto?'':'; valor proporcional à área'}`,
+                  `relevamiento de la consultoría para ${bn} (${cn}): departamentos de ~${x.areaRef} m² se alquilan de ${brl(x.faixa[0])} a ${brl(x.faixa[1])} por mes, nov/2026${perto?'':'; valor proporcional al área'}`)};
+      } else if(b&&b[1].m2){ const [bn,x]=b;
+        an={mes:arred(x.m2*area),m2:x.m2,onde:`${bn}, ${cn}`,fonte:L(`${AB.fonte.pt}: ${bn} (${cn}), R$ ${m2f(x.m2)}/m² por mês, ${x.n} anúncios`,`${AB.fonte.es}: ${bn} (${cn}), R$ ${m2f(x.m2)}/m² por mes, ${x.n} anuncios`)};
+      } else {
+        an={mes:arred(c.m2*area),m2:c.m2,onde:cn,media:true,fonte:L(`${AB.fonte.pt}: média de ${cn}, R$ ${m2f(c.m2)}/m² por mês (${c.n} anúncios); ${e.bairro?`${e.bairro} ainda não tem`:'o bairro não tem'} anúncios suficientes`,`${AB.fonte.es}: promedio de ${cn}, R$ ${m2f(c.m2)}/m² por mes (${c.n} anuncios); ${e.bairro?`${e.bairro} todavía no tiene`:'el barrio no tiene'} anuncios suficientes`)};
+      }
+    }
+    const semDado=e.cidade?L(` (${e.cidade} ainda sem dado próprio)`,` (${e.cidade} todavía sin dato propio)`):'';
+    if(!an) an={mes:V*r.aluguelMensalPctValor/100,onde:'',fonte:L(r.fonteAluguel.pt,r.fonteAluguel.es)+semDado};
+    let tp=null; const tc=TC?achar(TC.cidades,e.cidade):null;
+    if(tc){ const [cn,c]=tc, q0=quartosDe(u), q=q0?Math.min(3,q0):null, qq=q?c.quartos[String(q)]:null, fd=qq?qq.diaria/c.diaria:1, fo=qq?qq.ocup/c.ocup:1;
+      tp={dA:c.alta.diaria*fd,oA:Math.min(.95,c.alta.ocup*fo/100),dB:c.baixa.diaria*fd,oB:Math.min(.95,c.baixa.ocup*fo/100),onde:cn,q:qq?q0:null,
+        fonte:L(`${TC.fonte.pt}, ${cn} (${c.n.toLocaleString('pt-BR')} anúncios)${qq?`, ajustado para ${q0} ${q0===1?'quarto':'quartos'}`:''}`,`${TC.fonte.es}, ${cn} (${c.n.toLocaleString('pt-BR')} anuncios)${qq?`, ajustado a ${q0} ${q0===1?'dormitorio':'dormitorios'}`:''}`)};
+    } else tp={dA:V*r.diariaAltaPctValor/100,oA:r.ocupAlta/100,dB:V*r.diariaBaixaPctValor/100,oB:r.ocupBaixa/100,onde:'',fonte:L(r.fonteTemporada.pt,r.fonteTemporada.es)+semDado};
+    return {an,tp};
+  }
+  function renda(V,modo,lr){
     const r=RM(); let bruto, adm;
-    if(modo==='temporada'){
-      bruto=V*r.diariaAltaPctValor/100*r.ocupAlta/100*DIAS_MES*r.mesesAlta + V*r.diariaBaixaPctValor/100*r.ocupBaixa/100*DIAS_MES*(12-r.mesesAlta);
-      adm=bruto*r.admTemporada/100;
-    } else { bruto=aluguelMes(V,area)*12*(1-r.vacancia/100); adm=bruto*r.admAnual/100; }
+    if(modo==='temporada'){ const t=lr.tp; bruto=t.dA*t.oA*DIAS_MES*r.mesesAlta+t.dB*t.oB*DIAS_MES*(12-r.mesesAlta); adm=bruto*r.admTemporada/100; }
+    else { bruto=lr.an.mes*12*(1-r.vacancia/100); adm=bruto*r.admAnual/100; }
     const ir=bruto*r.irAluguel/100, desp=V*r.despesasAnoPctValor/100, liq=bruto-adm-ir-desp;
     return {bruto,adm,ir,desp,liq,mes:liq/12,yb:bruto/V,yl:liq/V};
   }
-  // aluguel anual por mês: faixa de Porto Belo (R$/m² × área) quando há área; senão % do valor (FipeZap Florianópolis)
-  const APB=()=>RM().aluguelPortoBelo;
-  const faixaM2=area=>{ const a=APB(); if(!a||!area) return null; const k=Math.abs(area/a.areaRef-1)<=0.09?1:area/a.areaRef; return [a.min*k,a.max*k]; };
-  const aluguelMes=(V,area)=>{ const a=APB(); if(!a||!area) return V*RM().aluguelMensalPctValor/100;
-    return Math.abs(area/a.areaRef-1)<=0.09?a.ref:Math.round(a.ref/a.areaRef*area/50)*50; };
   // renda líquida somada do mês das chaves até o ano H, crescendo junto com o imóvel (taxa g)
   function rendaAcum(liqAno,g,mChaves,H){ let s=0; for(let k=Math.max(1,mChaves+1);k<=H*12;k++) s+=liqAno/12*Math.pow(1+g,k/12); return s; }
 
@@ -250,9 +274,9 @@
     </div>`;
   }
 
-  function pagRenda(e,V,area){
-    const r=RM(), T=renda(V,'temporada'), A=renda(V,'anual',area), fx=faixaM2(area), apb=APB(), g=cenariosVal()[1].taxa, mCh=mesesAte(e.entrega)||0;
-    const col=(t,o,sub)=>`<div class="pp-renda"><h3>${t}</h3><p class="sub">${sub}</p>
+  function pagRenda(e,u,V){
+    const r=RM(), lr=localRenda(e,u,V), t=lr.tp, an=lr.an, T=renda(V,'temporada',lr), A=renda(V,'anual',lr), g=cenariosVal()[1].taxa, mCh=mesesAte(e.entrega)||0;
+    const col=(tit,o,sub)=>`<div class="pp-renda"><h3>${tit}</h3><p class="sub">${sub}</p>
       <table class="pp-tab"><tbody>
         <tr><td>${L('Receita bruta no ano','Ingreso bruto anual')}</td><td>${brl(o.bruto)}</td></tr>
         <tr><td>${L('Administração / plataforma','Administración / plataforma')}</td><td>− ${brl(o.adm)}</td></tr>
@@ -261,14 +285,20 @@
       </tbody></table>
       <div class="pp-total"><span>${L('Sobra por mês','Queda por mes')}</span><b>${brl(o.mes)}</b></div>
       <p class="sub">${L(`${brl(o.liq)} por ano · ${pct(o.yl,1)} líquido sobre o valor (${pct(o.yb,1)} bruto)`,`${brl(o.liq)} por año · ${pct(o.yl,1)} neto sobre el valor (${pct(o.yb,1)} bruto)`)}</p></div>`;
-    const pat=(o,h)=>V*Math.pow(1+g,h)+rendaAcum(o.liq,g,mCh,h);
+    const pat=(o,h)=>V*Math.pow(1+g,h)+rendaAcum(o.liq,g,mCh,h), oc=x=>Math.round(x*100);
+    const subT=L(`${t.onde?`<b>Airbnb em ${t.onde}${t.q?`, ${t.q} ${t.q===1?'quarto':'quartos'}`:''}.</b> `:''}Diária média de ${brl(t.dA)} de dezembro a março (${oc(t.oA)}% ocupado) e ${brl(t.dB)} no resto do ano (${oc(t.oB)}% ocupado)`,
+                 `${t.onde?`<b>Airbnb en ${t.onde}${t.q?`, ${t.q} ${t.q===1?'dormitorio':'dormitorios'}`:''}.</b> `:''}Diaria promedio de ${brl(t.dA)} de diciembre a marzo (${oc(t.oA)}% ocupado) y ${brl(t.dB)} el resto del año (${oc(t.oB)}% ocupado)`);
+    const det=an.faixa?L(`faixa da região: ${brl(an.faixa[0])} a ${brl(an.faixa[1])}`,`rango de la zona: ${brl(an.faixa[0])} a ${brl(an.faixa[1])}`):an.m2?`R$ ${m2f(an.m2)}/m² × ${u.area.toLocaleString('pt-BR')} m²`:'';
+    const subA=L(`${an.onde?`<b>${an.media?'Média de ':''}${an.onde}.</b> `:''}Contrato de 12 meses a ${brl(an.mes)} por mês${det?` (${det})`:''}, com ${r.vacancia}% de tempo vazio entre inquilinos`,
+                 `${an.onde?`<b>${an.media?'Promedio de ':''}${an.onde}.</b> `:''}Contrato de 12 meses a ${brl(an.mes)} por mes${det?` (${det})`:''}, con ${r.vacancia}% de tiempo vacío entre inquilinos`);
+    const loc=[e.bairro,e.cidade].filter(Boolean).join(', ');
     return `<div class="pp-pag">
       <div class="pp-kick">${L('Simulação','Simulación')}</div>
       <h1>${L('Quanto seu imóvel pode render','Cuánto puede rendir su inmueble')}</h1>
-      <p class="pp-lead">${L(`Duas formas de alugar a partir das chaves (${fmtMesAno(e.entrega)}), num imóvel de ${brl(V)}. Valores do primeiro ano de aluguel, em valor de hoje.`,`Dos formas de alquilar desde la entrega (${fmtMesAno(e.entrega)}), en un inmueble de ${brl(V)}. Valores del primer año de alquiler, en valor de hoy.`)}</p>
+      <p class="pp-lead">${L(`Duas formas de alugar a partir das chaves (${fmtMesAno(e.entrega)}), num imóvel de ${brl(V)}${loc?`, com os valores praticados em <b>${loc}</b>`:''}. Valores do primeiro ano de aluguel, em valor de hoje.`,`Dos formas de alquilar desde la entrega (${fmtMesAno(e.entrega)}), en un inmueble de ${brl(V)}${loc?`, con los valores de <b>${loc}</b>`:''}. Valores del primer año de alquiler, en valor de hoy.`)}</p>
       <div class="pp-dois">
-        ${col(L('🏖️ Temporada','🏖️ Temporada'),T,L(`Diária média de ${brl(V*r.diariaAltaPctValor/100)} de dezembro a março (${r.ocupAlta}% ocupado) e ${brl(V*r.diariaBaixaPctValor/100)} no resto do ano (${r.ocupBaixa}% ocupado)`,`Diaria promedio de ${brl(V*r.diariaAltaPctValor/100)} de diciembre a marzo (${r.ocupAlta}% ocupado) y ${brl(V*r.diariaBaixaPctValor/100)} el resto del año (${r.ocupBaixa}% ocupado)`))}
-        ${col(L('🏠 Aluguel anual','🏠 Alquiler anual'),A,fx?L(`Contrato de 12 meses a ${brl(aluguelMes(V,area))} por mês (Porto Belo: de ${brl(fx[0])} a ${brl(fx[1])} para esta área), com ${r.vacancia}% de tempo vazio entre inquilinos`,`Contrato de 12 meses a ${brl(aluguelMes(V,area))} por mes (Porto Belo: de ${brl(fx[0])} a ${brl(fx[1])} para esta área), con ${r.vacancia}% de tiempo vacío entre inquilinos`):L(`Contrato de 12 meses a ${brl(V*r.aluguelMensalPctValor/100)} por mês, com ${r.vacancia}% de tempo vazio entre inquilinos`,`Contrato de 12 meses a ${brl(V*r.aluguelMensalPctValor/100)} por mes, con ${r.vacancia}% de tiempo vacío entre inquilinos`))}
+        ${col(L('🏖️ Temporada','🏖️ Temporada'),T,subT)}
+        ${col(L('🏠 Aluguel anual','🏠 Alquiler anual'),A,subA)}
       </div>
       <h2>${L('Seu patrimônio somando imóvel + aluguel (cenário moderado)','Su patrimonio sumando inmueble + alquiler (escenario moderado)')}</h2>
       <table class="pp-grade"><thead><tr><th style="text-align:left"></th>${HORIZ.map(h=>`<th>${h} ${L('anos','años')}</th>`).join('')}</tr></thead><tbody>
@@ -279,8 +309,8 @@
         <tr class="dest"><td style="text-align:left"><b>${L('= Patrimônio com aluguel anual','= Patrimonio con alquiler anual')}</b></td>${HORIZ.map(h=>`<td><b>${brl(pat(A,h))}</b></td>`).join('')}</tr>
       </tbody></table>
       <div class="pp-msg"><b>${L(`Em 10 anos, com temporada, o investimento de ${brl(V)} pode virar ${brl(pat(T,10))} em patrimônio e renda.`,`En 10 años, con temporada, la inversión de ${brl(V)} puede convertirse en ${brl(pat(T,10))} en patrimonio y renta.`)}</b>
-        <span>${L(`Na alta temporada o imóvel rende até ${brl(V*r.diariaAltaPctValor/100*r.ocupAlta/100*DIAS_MES)} por mês. Fora dela, o aluguel anual dá renda estável o ano todo. Você escolhe o perfil, e pode mudar quando quiser.`,`En temporada alta el inmueble rinde hasta ${brl(V*r.diariaAltaPctValor/100*r.ocupAlta/100*DIAS_MES)} por mes. Fuera de ella, el alquiler anual da renta estable todo el año. Usted elige el perfil, y puede cambiarlo cuando quiera.`)}</span></div>
-      <p class="pp-obs">${L(`Fontes: temporada = ${r.fonteTemporada.pt}; aluguel anual = ${fx?`aluguéis de ${apb.perfil.pt} em Porto Belo, de ${brl(apb.min)} a ${brl(apb.max)} por mês (levantamento da consultoria, ${apb.data}), proporcional à área`:r.fonteAluguel.pt}. Administração de ${r.admTemporada}% (temporada) e ${r.admAnual}% (anual), IR de ${r.irAluguel}% e despesas de ${p1(r.despesasAnoPctValor)} do valor ao ano são referências da consultoria. Para temporada, considere mobiliar o imóvel (cerca de ${p1(SITE_CONFIG.mobiliaPadraoPct)} do valor). O aluguel acompanha a valorização do cenário moderado. Simulação, não garantia de renda.`,`Fuentes: temporada = ${r.fonteTemporada.es}; alquiler anual = ${fx?`alquileres de ${apb.perfil.es} en Porto Belo, de ${brl(apb.min)} a ${brl(apb.max)} por mes (relevamiento de la consultoría, ${apb.data}), proporcional al área`:r.fonteAluguel.es}. Administración de ${r.admTemporada}% (temporada) y ${r.admAnual}% (anual), impuesto de ${r.irAluguel}% y gastos de ${p1(r.despesasAnoPctValor)} del valor por año son referencias de la consultoría. Para temporada, considere amueblar (cerca de ${p1(SITE_CONFIG.mobiliaPadraoPct)} del valor). El alquiler sigue la valorización del escenario moderado. Simulación, no garantía de renta.`)}</p>
+        <span>${L(`Na alta temporada o imóvel rende até ${brl(t.dA*t.oA*DIAS_MES)} por mês. Fora dela, o aluguel anual dá renda estável o ano todo. Você escolhe o perfil, e pode mudar quando quiser.`,`En temporada alta el inmueble rinde hasta ${brl(t.dA*t.oA*DIAS_MES)} por mes. Fuera de ella, el alquiler anual da renta estable todo el año. Usted elige el perfil, y puede cambiarlo cuando quiera.`)}</span></div>
+      <p class="pp-obs">${L(`Fontes: temporada = ${t.fonte}; aluguel anual = ${an.fonte}. Administração de ${r.admTemporada}% (temporada) e ${r.admAnual}% (anual), IR de ${r.irAluguel}% e despesas de ${p1(r.despesasAnoPctValor)} do valor ao ano são referências da consultoria. Para temporada, considere mobiliar o imóvel (cerca de ${p1(SITE_CONFIG.mobiliaPadraoPct)} do valor). O aluguel acompanha a valorização do cenário moderado. Simulação, não garantia de renda.`,`Fuentes: temporada = ${t.fonte}; alquiler anual = ${an.fonte}. Administración de ${r.admTemporada}% (temporada) y ${r.admAnual}% (anual), impuesto de ${r.irAluguel}% y gastos de ${p1(r.despesasAnoPctValor)} del valor por año son referencias de la consultoría. Para temporada, considere amueblar (cerca de ${p1(SITE_CONFIG.mobiliaPadraoPct)} del valor). El alquiler sigue la valorización del escenario moderado. Simulación, no garantía de renta.`)}</p>
     </div>`;
   }
 
@@ -334,7 +364,7 @@
     </div>
     ${pagDetalhe(e,u,a,m)}
     ${pagValorizacao(m.total)}
-    ${pagRenda(e,m.total,u.area)}
+    ${pagRenda(e,u,m.total)}
     ${pagRegiao()}
     <div class="pp-pag">
       ${e.lazer?`<h2>${L('Lazer','Áreas comunes')}</h2><p>${e.lazer}</p>`:''}

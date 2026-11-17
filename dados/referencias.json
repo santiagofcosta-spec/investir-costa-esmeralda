@@ -185,5 +185,131 @@
     25726571.05
    ]
   ]
+ },
+ "aluguelBairros": {
+  "nome": "Aluguel anual por bairro (Porto Belo e Itapema)",
+  "atualizado": "2026-11-17",
+  "validadeDias": 45,
+  "fonte": {
+   "pt": "A Corrida dos Bairros, mediana de anúncios de apartamentos, nov/2026",
+   "es": "A Corrida dos Bairros, mediana de anuncios de departamentos, nov/2026"
+  },
+  "url": "https://acorridadosbairros.com.br/",
+  "obs": "R$/m² por mês, preço pedido em anúncios. Bairro com menos de 5 anúncios não tem valor: usa a média da cidade. Balneário Perequê usa o valor da consultoria (Santiago, 17/11/2026).",
+  "cidades": {
+   "Porto Belo": {
+    "m2": 53.0,
+    "n": 45,
+    "bairros": {
+     "Balneário Perequê": {
+      "ref": 4200,
+      "areaRef": 88,
+      "faixa": [
+       3700,
+       4500
+      ],
+      "m2Anuncios": 53.1,
+      "n": 36,
+      "consultoria": true
+     }
+    }
+   },
+   "Itapema": {
+    "m2": 46.1,
+    "n": 374,
+    "bairros": {
+     "Meia Praia": {
+      "m2": 42.7,
+      "n": 246
+     },
+     "Centro": {
+      "m2": 45.2,
+      "n": 40
+     },
+     "Morretes": {
+      "m2": 49.7,
+      "n": 39
+     },
+     "Tabuleiro dos Oliveiras": {
+      "m2": 56.1,
+      "n": 12
+     },
+     "Alto São Bento": {
+      "m2": 46.5,
+      "n": 12
+     },
+     "Casa Branca": {
+      "m2": 46.3,
+      "n": 7
+     }
+    }
+   }
+  }
+ },
+ "temporadaCidades": {
+  "nome": "Temporada (Airbnb) por cidade e nº de quartos",
+  "atualizado": "2026-11-17",
+  "validadeDias": 120,
+  "fonte": {
+   "pt": "AirROI, anúncios do Airbnb de nov/2025 a out/2026",
+   "es": "AirROI, anuncios de Airbnb de nov/2025 a oct/2026"
+  },
+  "obs": "Alta = dez a mar; baixa = abr a nov. Por quartos: diária e ocupação médias do ano; a alta/baixa da cidade é ajustada pela diferença do nº de quartos.",
+  "cidades": {
+   "Porto Belo": {
+    "diaria": 633,
+    "ocup": 31,
+    "alta": {
+     "diaria": 639,
+     "ocup": 41
+    },
+    "baixa": {
+     "diaria": 585,
+     "ocup": 23
+    },
+    "n": 661,
+    "quartos": {
+     "1": {
+      "diaria": 398,
+      "ocup": 30
+     },
+     "2": {
+      "diaria": 571,
+      "ocup": 33
+     },
+     "3": {
+      "diaria": 779,
+      "ocup": 31
+     }
+    }
+   },
+   "Itapema": {
+    "diaria": 692,
+    "ocup": 35,
+    "alta": {
+     "diaria": 777,
+     "ocup": 48
+    },
+    "baixa": {
+     "diaria": 659,
+     "ocup": 27
+    },
+    "n": 2972,
+    "quartos": {
+     "1": {
+      "diaria": 464,
+      "ocup": 38
+     },
+     "2": {
+      "diaria": 555,
+      "ocup": 36
+     },
+     "3": {
+      "diaria": 807,
+      "ocup": 34
+     }
+    }
+   }
+  }
  }
 }
