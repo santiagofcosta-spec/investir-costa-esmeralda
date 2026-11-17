@@ -35,7 +35,7 @@ const SITE_CONFIG = {
     aluguelPortoBelo: { min: 3700, max: 4500, ref: 4200, areaRef: 88, perfil: { pt:'2 suítes de cerca de 88 m²', es:'2 suites de cerca de 88 m²' }, data: 'nov/2026' },
     fonteAluguel: { pt:'rentabilidade de Florianópolis, FipeZap Locação set/2026 (Itapema e Porto Belo não entram no índice)', es:'rentabilidad de Florianópolis, FipeZap Alquiler sep/2026 (Itapema y Porto Belo no están en el índice)' },
     vacancia: 8,
-    admTemporada: 20, admAnual: 10, // % sobre a receita
+    admTemporada: 20, admAnual: 10, // % sobre a receita. Confirmados pelo Santiago em 17/11/2026 (valores praticados na região)
     despesasAnoPctValor: 0.53,    // IPTU, manutenção, seguro: % do valor por ano
     irAluguel: 10,                // IR efetivo sobre aluguel
     corretagem: 6,                // na venda
