@@ -256,12 +256,13 @@
 
   /* "Quem já escolheu a Costa Esmeralda" (17/11/2026): só nomes com investimento/projeto confirmado pela imprensa.
      Conferidos e DEIXADOS DE FORA: Chitãozinho & Xororó e Kevin Kisner (nada encontrado; o golfe do All Resort é de Erik Larsen),
-     PSG (só blog de imobiliária) e Cristiano Ronaldo (Balneário Camboriú, fonte fraca). Sem fotos (direito de imagem). */
+     Cristiano Ronaldo (Balneário Camboriú, fonte fraca). Sem fotos (direito de imagem). */
   const FAMOSOS=[
     {nome:'Neymar Jr.',cid:'Porto Belo · Itapema',pt:'Complexo esportivo e de lazer da família no bairro planejado Porto Belo Lagos (~R$ 250 mi); tem imóveis em Itapema e Balneário Camboriú.',es:'Complejo deportivo y de ocio de la familia en el barrio planificado Porto Belo Lagos (~R$ 250 M); tiene inmuebles en Itapema y Balneário Camboriú.',src:'NSC Total, Portas'},
     {nome:'Rafael Nadal',cid:'Porto Belo',pt:'O 1º Rafa Nadal Tennis Center da América do Sul será no All Resort, com previsão para 2028.',es:'El 1er Rafa Nadal Tennis Center de Sudamérica estará en el All Resort, previsto para 2028.',src:'InfoMoney, NSC Total'},
     {nome:'Celso Portiolli',cid:'Porto Belo',pt:'Comprou apartamento no Electra Tower e chamou a cidade de "diamante do Brasil".',es:'Compró un departamento en el Electra Tower y llamó a la ciudad "el diamante de Brasil".',src:'NSC Total'},
     {nome:'Família Werninghaus (WEG)',cid:'Porto Belo',pt:'Martin Werninghaus, do conselho da WEG, é sócio da All Wert, dona do All Resort Club Residence.',es:'Martin Werninghaus, del directorio de WEG, es socio de All Wert, dueña del All Resort Club Residence.',src:'NSC Total'},
+    {nome:'Paris Saint-Germain (PSG)',cid:'Porto Belo',pt:'Escola oficial do próprio clube, a "Paris Saint-Germain Academy Vivapark", para crianças e jovens de 2 a 17 anos, com campo oficial e áreas cobertas. Anunciada em dez/2025.',es:'Escuela oficial del propio club, la "Paris Saint-Germain Academy Vivapark", para niños y jóvenes de 2 a 17 años, con cancha oficial y áreas cubiertas. Anunciada en dic/2025.',src:'Vokkan (incorporadora do VivaPark), Diarinho'},
     {nome:'Pedro Barros',cid:'Porto Belo',pt:'O campeão de skate fez a curadoria e inaugurou o skate park do All Resort.',es:'El campeón de skate hizo la curaduría e inauguró el skate park del All Resort.',src:'IstoÉ'},
     {nome:'Zezé Di Camargo',cid:'Itapema',pt:'Cobertura no Abu Dhabi Residence, na Meia Praia.',es:'Penthouse en el Abu Dhabi Residence, en Meia Praia.',src:'imprensa e mercado local'},
     {nome:'Ratinho',cid:'Itapema',pt:'Casa no Canto da Praia de Itapema.',es:'Casa en el Canto da Praia de Itapema.',src:'imprensa e mercado local'}];
