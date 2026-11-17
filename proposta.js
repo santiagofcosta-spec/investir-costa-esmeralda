@@ -196,6 +196,17 @@
   const legenda=src=>{ const k=src.split('/').pop().replace(/\.[a-z]+$/i,''); const t=LEG[k]; return t?L(t[0],t[1]):k.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase()); };
   const fotosLazer=e=>((e.fotos&&e.fotos.galeria)||[]).map(IMG).filter(s=>s&&!/fachada/i.test(s)).slice(0,6).map(s=>[s,legenda(s)]);
 
+  // m² de referência da cidade do imóvel, para a caixa OPORTUNIDADE VIP.
+  // Porto Belo: DWV (imóveis novos VENDIDOS, mais conservador). Itapema: FipeZap (índice oficial). Outra cidade: sem caixa.
+  function refM2(e){
+    const c=norm(e.cidade);
+    if(c==='porto belo'&&REFS.m2PortoBelo) return {v:REFS.m2PortoBelo.v,cidade:'Porto Belo',
+      nota:L(`Média de imóveis novos vendidos em Porto Belo no 1º semestre de 2026: ${brl(REFS.m2PortoBelo.v)}/m² (DWV, via Portas e NSC Total).`,`Promedio de inmuebles nuevos vendidos en Porto Belo en el 1er semestre de 2026: ${brl(REFS.m2PortoBelo.v)}/m² (DWV).`)};
+    if(c==='itapema') return {v:it[LAST],cidade:'Itapema',
+      nota:L(`Preço médio do m² residencial em Itapema: ${brl(it[LAST])}/m² (FipeZap, ${fmtMes(LASTKEY)}).`,`Precio promedio del m² residencial en Itapema: ${brl(it[LAST])}/m² (FipeZap, ${fmtMes(LASTKEY)}).`)};
+    return null;
+  }
+
   function pagDetalhe(e,u,a,m){
     const cub=a.correcao?CUB.v12m/100:0, anos={};
     const chaves=mesesAte(e.entrega);
@@ -208,7 +219,7 @@
       o.tot+=v; o.corr+=v*Math.pow(1+cub,mm/12);
     }
     const ys=Object.keys(anos).sort(), z=v=>v?brl(v):'—';
-    const m2PB=REFS.m2PortoBelo?.v, m2u=u.area?m.total/u.area:null, abaixo=m2PB&&m2u&&m2u<m2PB?1-m2u/m2PB:0;
+    const ref=refM2(e), m2PB=ref?ref.v:null, m2u=u.area?m.total/u.area:null, abaixo=m2PB&&m2u&&m2u<m2PB?1-m2u/m2PB:0;
     const pctEnt=m.total?m.entrada/m.total:0, pctCh=m.corr?m.ateChaves/m.corr:0;
     return `<div class="pp-pag">
       <div class="pp-kick">${L('Proposta em detalhe','Propuesta en detalle')}</div>
@@ -228,10 +239,10 @@
       ${abaixo>0.03?(()=>{ const media=m2PB*u.area, eco=media-m.total, nUn=e.unidades.filter(x=>conds(e,x)&&x.status!=='vendida').length;
         const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade||'')?P.validade.split('-').reverse().join('/'):'';
         return `<div class="pp-vip"><div class="selo">★ ${L('OPORTUNIDADE VIP','OPORTUNIDAD VIP')} ★</div>
-        <h3>${L(`Você entra por ${brl(m2u)}/m²: ${pct(abaixo,0)} abaixo da média de Porto Belo`,`Usted entra a ${brl(m2u)}/m²: ${pct(abaixo,0)} por debajo del promedio de Porto Belo`)}</h3>
+        <h3>${L(`Você entra por ${brl(m2u)}/m²: ${pct(abaixo,0)} abaixo da média de ${ref.cidade}`,`Usted entra a ${brl(m2u)}/m²: ${pct(abaixo,0)} por debajo del promedio de ${ref.cidade}`)}</h3>
         <div class="vip-nums"><div><span>${L('Na média da cidade','Al promedio de la ciudad')}</span><s>${brl(media)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Você começa ganhando','Usted empieza ganando')}</span><b>${brl(eco)}</b></div></div>
         <p class="vip-txt">${L(`Condição de pré-lançamento reservada para poucos investidores${nUn?`: <b>${nUn===1?'apenas 1 unidade':`apenas ${nUn} unidades`}</b> nesta condição`:''}${val?`, válida até <b>${val}</b>`:''}. Os melhores negócios da cidade não chegam aos portais: ficam com quem decide primeiro. Quem entra antes do mercado é quem leva a valorização.`,`Condición de prelanzamiento reservada para pocos inversores${nUn?`: <b>${nUn===1?'solo 1 unidad':`solo ${nUn} unidades`}</b> en esta condición`:''}${val?`, válida hasta <b>${val}</b>`:''}. Los mejores negocios de la ciudad no llegan a los portales: quedan para quien decide primero. Quien entra antes que el mercado es quien se lleva la valorización.`)}</p>
-        <small>${L(`Média de imóveis novos vendidos em Porto Belo no 1º semestre de 2026: ${brl(m2PB)}/m² (DWV, via Portas e NSC Total). A média reúne todos os padrões e localizações; é referência, não avaliação.`,`Promedio de inmuebles nuevos vendidos en Porto Belo en el 1er semestre de 2026: ${brl(m2PB)}/m² (DWV). El promedio reúne todos los estándares y ubicaciones; es referencia, no tasación.`)}</small></div>`; })():''}
+        <small>${ref.nota} ${L('A média reúne todos os padrões e localizações; é referência, não avaliação.','El promedio reúne todos los estándares y ubicaciones; es referencia, no tasación.')}</small></div>`; })():''}
       <h2>${L('O que está incluído','Qué incluye')}</h2>
       <ul class="pp-lista">
         <li>${[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('privativos','privados')}`:'',u.vagas?`${u.vagas} ${L('vagas de garagem','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ')}</li>
@@ -314,24 +325,26 @@
     </div>`;
   }
 
-  function pagRegiao(){
+  function pagRegiao(e){
     const S=REFS.serieDWVPortoBelo.pontos, a=S[0], b=S.at(-1);
+    const cid=norm(e.cidade), pb=!cid||cid==='porto belo', ita=cid==='itapema', perequeBairro=/pereque/.test(norm(e.bairro));
+    const valIt=Math.round((it[LAST]/it[0]-1)*100);
     const card=(ic,t,n,p,src)=>`<div class="pp-card"><div class="t"><span>${ic}</span><b>${t}</b></div>${n?`<div class="n">${n}</div>`:''}<p>${p}</p><small>${src}</small></div>`;
     const bloco=(t,cards)=>`<h2>${t}</h2><div class="pp-cards">${cards.join('')}</div>`;
     return `<div class="pp-pag">
       <div class="pp-kick">${L('Por que investir aqui','Por qué invertir aquí')}</div>
-      <h1>${L('Porto Belo está em transformação','Porto Belo está en transformación')}</h1>
-      <p class="pp-lead">${L(`Bilhões de reais em projetos privados e públicos estão chegando a Porto Belo e à Costa Esmeralda. Quem compra antes deles ficarem prontos captura a valorização. Em Porto Belo, o m² de imóveis novos subiu ${Math.round((b.v/a.v-1)*100)}% de ${a.rot} a ${b.rot}, e só no 1º semestre de 2026 a cidade vendeu ${REFS.vendasPortoBelo?.v||'R$ 2,5 bilhões'} em imóveis novos (DWV).`,`Miles de millones de reales en proyectos privados y públicos están llegando a Porto Belo y a la Costa Esmeralda. Quien compra antes de que estén listos captura la valorización. En Porto Belo, el m² de inmuebles nuevos subió ${Math.round((b.v/a.v-1)*100)}% de ${a.rot} a ${b.rot}, y solo en el 1er semestre de 2026 la ciudad vendió ${REFS.vendasPortoBelo?.v||'R$ 2,5 bilhões'} en inmuebles nuevos (DWV).`)}</p>
+      <h1>${pb?L('Porto Belo está em transformação','Porto Belo está en transformación'):L('A Costa Esmeralda está em transformação','La Costa Esmeralda está en transformación')}</h1>
+      <p class="pp-lead">${L(`Bilhões de reais em projetos privados e públicos estão chegando a ${pb?'Porto Belo e à Costa Esmeralda':'Porto Belo, Itapema e toda a Costa Esmeralda'}. Quem compra antes deles ficarem prontos captura a valorização.${ita?` Em Itapema, o preço do m² residencial subiu ${valIt}% desde dez/2020 (FipeZap), um dos maiores do Brasil.`:''} ${pb?'Em Porto Belo':'Na vizinha Porto Belo'}, o m² de imóveis novos subiu ${Math.round((b.v/a.v-1)*100)}% de ${a.rot} a ${b.rot}, e só no 1º semestre de 2026 a cidade vendeu ${REFS.vendasPortoBelo?.v||'R$ 2,5 bilhões'} em imóveis novos (DWV).`,`Miles de millones de reales en proyectos privados y públicos están llegando a ${pb?'Porto Belo y a la Costa Esmeralda':'Porto Belo, Itapema y toda la Costa Esmeralda'}. Quien compra antes de que estén listos captura la valorización.${ita?` En Itapema, el precio del m² residencial subió ${valIt}% desde dic/2020 (FipeZap), uno de los mayores de Brasil.`:''} ${pb?'En Porto Belo':'En la vecina Porto Belo'}, el m² de inmuebles nuevos subió ${Math.round((b.v/a.v-1)*100)}% de ${a.rot} a ${b.rot}, y solo en el 1er semestre de 2026 la ciudad vendió ${REFS.vendasPortoBelo?.v||'R$ 2,5 bilhões'} en inmuebles nuevos (DWV).`)}</p>
       ${bloco(L('🏗️ Grandes projetos','🏗️ Grandes proyectos'),[
         card('🌳','VivaPark Porto Belo','~R$ 1 bi',L('Primeiro "bairro parque" planejado do Brasil, às margens da BR-101, para até 30 mil moradores, com selo LEED. Já recebe moradores.','Primer "barrio parque" planificado de Brasil, junto a la BR-101, para hasta 30 mil habitantes, con sello LEED. Ya recibe residentes.'),'NSC Total, MySide'),
         card('🎾','All Resort Club Residence',L('VGV R$ 600 mi','VGV R$ 600 M'),L('182 mil m², o 1º campo de golfe totalmente iluminado da América do Sul (pronto) e o 1º Rafa Nadal Tennis Center do continente, previsto para 2028.','182 mil m², la 1ª cancha de golf totalmente iluminada de Sudamérica (lista) y el 1er Rafa Nadal Tennis Center del continente, previsto para 2028.'),'Panrotas, InfoMoney, NSC Total'),
         card('⚽',L('Porto Belo Lagos + Ecossistema Neymar Jr.','Porto Belo Lagos + Ecosistema Neymar Jr.'),'~R$ 250 mi',L('Complexo esportivo e de lazer da família Neymar dentro de um bairro planejado de cerca de 1 milhão de m². Em licenciamento, previsão 2027.','Complejo deportivo y de ocio de la familia Neymar dentro de un barrio planificado de cerca de 1 millón de m². En licenciamiento, previsión 2027.'),'NSC Total, MySide'),
         card('🏭',L('Fábrica da Neusoft Medical','Fábrica de Neusoft Medical'),'R$ 250 mi',L('Gigante chinesa de equipamentos médicos escolheu Porto Belo para sua 1ª fábrica no Brasil (ressonância magnética). Cerca de 100 empregos diretos e qualificados. Anunciada em jun/2026.','Gigante china de equipos médicos eligió Porto Belo para su 1ª fábrica en Brasil (resonancia magnética). Cerca de 100 empleos directos y calificados. Anunciada en jun/2026.'),L('Governo de SC, NSC Total, Baguete','Gobierno de SC, NSC Total, Baguete')),
-        card('🌊',L('Nova orla do Perequê','Nueva costanera del Perequê'),L('5 etapas · 36 meses','5 etapas · 36 meses'),L('Masterplan da Prefeitura com as construtoras (ACIP): molhes dos rios Perequê e Perequezinho, nova orla do Balneário Perequê e avenidas revitalizadas. Bem na praia deste empreendimento.','Masterplan de la Municipalidad con las constructoras (ACIP): escolleras de los ríos Perequê y Perequezinho, nueva costanera del Balneário Perequê y avenidas revitalizadas. Justo en la playa de este emprendimiento.'),'NSC Total, MySide'),
-        card('🏖️',L('Alargamento da Meia Praia','Ensanche de Meia Praia'),'~R$ 60 mi · 4,75 km',L('Itapema, a 10 km, ganha até 60 m de faixa de areia: mais valor para toda a costa vizinha.','Itapema, a 10 km, gana hasta 60 m de franja de arena: más valor para toda la costa vecina.'),L('Prefeitura de Itapema e Governo de SC','Municipalidad de Itapema y Gobierno de SC'))])}
+        card('🌊',L('Nova orla do Perequê','Nueva costanera del Perequê'),L('5 etapas · 36 meses','5 etapas · 36 meses'),L('Masterplan da Prefeitura com as construtoras (ACIP): molhes dos rios Perequê e Perequezinho, nova orla do Balneário Perequê e avenidas revitalizadas. '+(perequeBairro?'Bem na praia deste empreendimento.':''),'Masterplan de la Municipalidad con las constructoras (ACIP): escolleras de los ríos Perequê y Perequezinho, nueva costanera del Balneário Perequê y avenidas revitalizadas. '+(perequeBairro?'Justo en la playa de este emprendimiento.':'')),'NSC Total, MySide'),
+        card('🏖️',L('Alargamento da Meia Praia','Ensanche de Meia Praia'),'~R$ 60 mi · 4,75 km',(ita?L('A orla de Itapema ganha até 60 m de faixa de areia: mais espaço, mais proteção e mais valor para a frente-mar.','La costa de Itapema gana hasta 60 m de franja de arena: más espacio, más protección y más valor para el frente al mar.'):L('Itapema, a 10 km, ganha até 60 m de faixa de areia: mais valor para toda a costa vizinha.','Itapema, a 10 km, gana hasta 60 m de franja de arena: más valor para toda la costa vecina.')),L('Prefeitura de Itapema e Governo de SC','Municipalidad de Itapema y Gobierno de SC'))])}
       ${bloco(L('🏥 Saúde','🏥 Salud'),[
-        card('🏥',L('Complexo hospitalar de Porto Belo','Complejo hospitalario de Porto Belo'),'R$ 200 mi · 30 mil m²',L('Maior complexo hospitalar da Costa Esmeralda e 1º hospital da cidade (6 mil m² só de hospital, mais consultórios), com 150 empregos. Primeira operação prevista para o início de 2027.','Mayor complejo hospitalario de la Costa Esmeralda y 1er hospital de la ciudad (6 mil m² solo de hospital, más consultorios), con 150 empleos. Primera operación prevista para inicios de 2027.'),'NSC Total, Estado de Minas (ago/2026)'),
-        card('🚑',L('UPA 24 horas','Guardia 24 horas'),'',L('Pronto atendimento 24h na cidade (UPA Maurílio Manoel da Silva) e hospitais de referência em Itapema, Balneário Camboriú e Itajaí, a menos de 45 minutos.','Guardia 24h en la ciudad (UPA Maurílio Manoel da Silva) y hospitales de referencia en Itapema, Balneário Camboriú e Itajaí, a menos de 45 minutos.'),L('Prefeitura de Porto Belo','Municipalidad de Porto Belo'))])}
+        card('🏥',L('Complexo hospitalar de Porto Belo','Complejo hospitalario de Porto Belo'),'R$ 200 mi · 30 mil m²',L('Maior complexo hospitalar da Costa Esmeralda e 1º hospital de Porto Belo (6 mil m² só de hospital, mais consultórios), com 150 empregos. Primeira operação prevista para o início de 2027.','Mayor complejo hospitalario de la Costa Esmeralda y 1er hospital de Porto Belo (6 mil m² solo de hospital, más consultorios), con 150 empleos. Primera operación prevista para inicios de 2027.'),'NSC Total, Estado de Minas (ago/2026)'),
+        card('🚑',L('UPA 24 horas','Guardia 24 horas'),'',L((pb?'Pronto atendimento 24h na cidade':'Pronto atendimento 24h em Porto Belo')+' (UPA Maurílio Manoel da Silva) e hospitais de referência em Itapema, Balneário Camboriú e Itajaí, a menos de 45 minutos.',(pb?'Guardia 24h en la ciudad':'Guardia 24h en Porto Belo')+' (UPA Maurílio Manoel da Silva) y hospitales de referencia en Itapema, Balneário Camboriú e Itajaí, a menos de 45 minutos.'),L('Prefeitura de Porto Belo','Municipalidad de Porto Belo'))])}
       ${bloco(L('🛣️ Mobilidade e acesso','🛣️ Movilidad y acceso'),[
         card('✈️',L('BR-101 e 2 aeroportos','BR-101 y 2 aeropuertos'),'~50 km · ~70 km',L('Acesso direto pela BR-101 duplicada, entre os aeroportos internacionais de Navegantes e Florianópolis.','Acceso directo por la BR-101 (autopista), entre los aeropuertos internacionales de Navegantes y Florianópolis.'),L('distâncias aproximadas por estrada','distancias aproximadas por ruta')),
         card('🛤️','Via Mar',L('145 km · 6 faixas','145 km · 6 carriles'),L('Nova rodovia litorânea do Governo de SC, paralela à BR-101, de Joinville à Grande Florianópolis, a até 120 km/h, para desafogar o litoral. Obras por etapas; 1º lote em licitação.','Nueva ruta costera del Gobierno de SC, paralela a la BR-101, de Joinville a la Gran Florianópolis, hasta 120 km/h, para descongestionar el litoral. Obras por etapas; 1er lote en licitación.'),'NSC Total, Canal Rural (2026)'),
@@ -365,7 +378,7 @@
     ${pagDetalhe(e,u,a,m)}
     ${pagValorizacao(m.total)}
     ${pagRenda(e,u,m.total)}
-    ${pagRegiao()}
+    ${pagRegiao(e)}
     <div class="pp-pag">
       ${e.lazer?`<h2>${L('Lazer','Áreas comunes')}</h2><p>${e.lazer}</p>`:''}
       ${gal.length?`<div class="pp-gal">${gal.map(s=>`<img src="${s}" alt="">`).join('')}</div>`:''}
