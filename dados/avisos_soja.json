@@ -251,6 +251,138 @@
    "entrega": "entrega 02/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 116.6,
+   "antes": null,
+   "cidade": "Juína",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 116.25,
+   "antes": null,
+   "cidade": "Castanheira",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 135.4,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.35,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 134.05,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 119.5,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 119.35,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 133.6,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 126.55,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.0,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-17 14:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 122.7,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -258,55 +390,53 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-16 18:05",
- "lido": "2026-11-16 18:05",
+ "verificado": "2026-11-17 14:05",
+ "lido": "2026-11-17 14:05",
  "resumo": {
-  "dia": "2026-11-16",
+  "dia": "2026-11-17",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
-     "compra_max": 132.85,
-     "compra_abertura": 133.15
+     "compra_max": 132.75,
+     "compra_abertura": 132.75
     },
     "2027": {
      "compra_max": 125.9,
-     "compra_abertura": 125.75
+     "compra_abertura": 125.9
     },
     "Disponível": {
-     "compra_max": 116.1,
-     "compra_abertura": 115.95,
+     "compra_max": 114.8,
+     "compra_abertura": 114.8,
      "venda_min": 125.0,
      "venda_abertura": 125.0
     }
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 134.3,
-     "compra_abertura": 134.1
+     "compra_max": 134.9,
+     "compra_abertura": 134.9
     },
     "2027": {
-     "compra_max": 121.1,
-     "compra_abertura": 125.15
+     "compra_max": 120.35,
+     "compra_abertura": 120.35
     },
     "Disponível": {
-     "compra_max": 116.1,
-     "compra_abertura": 116.0,
+     "compra_max": 116.6,
+     "compra_abertura": 116.6,
      "venda_min": 125.0,
      "venda_abertura": 125.0
     }
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 134.3,
-     "compra_abertura": 133.85
+     "compra_max": 135.4,
+     "compra_abertura": 135.4
     },
     "2027": {
-     "compra_max": 127.1,
-     "compra_abertura": 126.8
+     "compra_max": 126.55,
+     "compra_abertura": 126.55
     },
     "Disponível": {
-     "compra_max": 121.6,
-     "compra_abertura": 122.2,
      "venda_min": 125.0,
      "venda_abertura": 125.0
     }
