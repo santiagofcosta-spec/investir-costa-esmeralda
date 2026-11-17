@@ -137,6 +137,167 @@
     if(aj){ P.aj=copia(aj); montar(); }
     box.scrollIntoView({behavior:'smooth',block:'start'}); };
 
+  /* ---------- páginas extras do PDF (17/11/2026): proposta em detalhe, valorização, renda e região ----------
+     Taxas: Conservador = CUB/SC 12 meses (custo de construir); Histórico = média Porto Belo (DWV) + Itapema (FipeZap)
+     desde 2020, a mesma do "Cenário de mercado"; Moderado = meio-termo entre as duas. Renda: premissas de SITE_CONFIG. */
+  const HORIZ=[5,10,15];
+  function cenariosVal(){
+    const cons=CUB.v12m/100, hist=(typeof FILTROS!=='undefined'?FILTROS.media.taxa():cagrItapema());
+    return [
+      {k:'cons',nome:L('Conservador','Conservador'),taxa:cons,fonte:L(`alta do CUB/SC em 12 meses: o custo de construir um imóvel novo`,`suba del CUB/SC en 12 meses: el costo de construir un inmueble nuevo`)},
+      {k:'mod',nome:L('Moderado','Moderado'),taxa:(cons+hist)/2,fonte:L('meio-termo entre o conservador e o histórico','punto medio entre el conservador y el histórico')},
+      {k:'hist',nome:L('Histórico da região','Histórico de la región'),taxa:hist,fonte:L(`média de Porto Belo (DWV) e Itapema (FipeZap) desde 2020`,`promedio de Porto Belo (DWV) e Itapema (FipeZap) desde 2020`)}];
+  }
+  function renda(V,modo,area){
+    const r=RM(); let bruto, adm;
+    if(modo==='temporada'){
+      bruto=V*r.diariaAltaPctValor/100*r.ocupAlta/100*DIAS_MES*r.mesesAlta + V*r.diariaBaixaPctValor/100*r.ocupBaixa/100*DIAS_MES*(12-r.mesesAlta);
+      adm=bruto*r.admTemporada/100;
+    } else { bruto=aluguelMes(V,area)*12*(1-r.vacancia/100); adm=bruto*r.admAnual/100; }
+    const ir=bruto*r.irAluguel/100, desp=V*r.despesasAnoPctValor/100, liq=bruto-adm-ir-desp;
+    return {bruto,adm,ir,desp,liq,mes:liq/12,yb:bruto/V,yl:liq/V};
+  }
+  // aluguel anual por mês: faixa de Porto Belo (R$/m² × área) quando há área; senão % do valor (FipeZap Florianópolis)
+  const APB=()=>RM().aluguelPortoBelo;
+  const faixaM2=area=>{ const a=APB(); if(!a||!area) return null; const k=Math.abs(area/a.areaRef-1)<=0.09?1:area/a.areaRef; return [a.min*k,a.max*k]; };
+  const aluguelMes=(V,area)=>{ const a=APB(); if(!a||!area) return V*RM().aluguelMensalPctValor/100;
+    return Math.abs(area/a.areaRef-1)<=0.09?a.ref:Math.round(a.ref/a.areaRef*area/50)*50; };
+  // renda líquida somada do mês das chaves até o ano H, crescendo junto com o imóvel (taxa g)
+  function rendaAcum(liqAno,g,mChaves,H){ let s=0; for(let k=Math.max(1,mChaves+1);k<=H*12;k++) s+=liqAno/12*Math.pow(1+g,k/12); return s; }
+
+  function pagDetalhe(e,u,a,m){
+    const cub=a.correcao?CUB.v12m/100:0, anos={};
+    const chaves=mesesAte(e.entrega);
+    for(const [mm,v] of pagamentos(a)){
+      const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+mm); const y=d.getFullYear();
+      const tipo=mm===0?'ent':(a.mensais.n&&mm>=a.mensais.inicio&&mm<a.mensais.inicio+a.mensais.n&&v===a.mensais.valor?'men':'out');
+      const o=anos[y]||(anos[y]={ent:0,men:0,bal:0,out:0,tot:0,corr:0});
+      const ehBalao=a.baloes.n&&v===a.baloes.valor&&mm>=a.baloes.inicio&&(mm-a.baloes.inicio)%a.baloes.cada===0&&(mm-a.baloes.inicio)/a.baloes.cada<a.baloes.n;
+      if(tipo==='ent') o.ent+=v; else if(ehBalao) o.bal+=v; else if(tipo==='men') o.men+=v; else o.out+=v;
+      o.tot+=v; o.corr+=v*Math.pow(1+cub,mm/12);
+    }
+    const ys=Object.keys(anos).sort(), z=v=>v?brl(v):'—';
+    const m2PB=REFS.m2PortoBelo?.v, m2u=u.area?m.total/u.area:null, abaixo=m2PB&&m2u&&m2u<m2PB?1-m2u/m2PB:0;
+    const pctEnt=m.total?m.entrada/m.total:0, pctCh=m.corr?m.ateChaves/m.corr:0;
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Proposta em detalhe','Propuesta en detalle')}</div>
+      <h1>${L('Como você paga','Cómo usted paga')}</h1>
+      <div class="pp-kpis">
+        <div><span>${L('Valor total','Valor total')}</span><b>${brl(m.total)}</b><small>${u.area?brl(m2u)+'/m²':''}</small></div>
+        <div><span>${L('Entrada','Anticipo')}</span><b>${brl(m.entrada)}</b><small>${pct(pctEnt,0)} ${L('do total','del total')}</small></div>
+        <div><span>${L('Até as chaves','Hasta la entrega')}</span><b>${brl(m.ateChaves)}</b><small>${pct(pctCh,0)} · ${fmtMesAno(e.entrega)}</small></div>
+        <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
+      </div>
+      <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
+      <table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Mensais','Cuotas')}</th><th>${L('Balões','Refuerzos')}</th><th>${L('Outros','Otros')}</th><th>${L('Total do ano','Total del año')}</th>${cub?`<th>${L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
+        ${ys.map(y=>{const o=anos[y];return `<tr><td>${y}${chaves!=null&&+y===new Date(e.entrega+'-01T12:00').getFullYear()?' 🔑':''}</td><td>${z(o.ent)}</td><td>${z(o.men)}</td><td>${z(o.bal)}</td><td>${z(o.out)}</td><td><b>${brl(o.tot)}</b></td>${cub?`<td>${brl(o.corr)}</td>`:''}</tr>`;}).join('')}
+        <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td><td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
+      </tbody></table>
+      <p class="pp-obs">${cub?L(`Os valores da tabela de vendas são corrigidos pelo ${esc(a.correcao)}. A última coluna estima a correção usando a alta do CUB/SC dos últimos 12 meses (${p1(CUB.v12m)} ao ano); o valor real depende do índice de cada mês.`,`Los valores se ajustan por ${esc(a.correcao)}. La última columna estima el ajuste con la suba del CUB/SC de los últimos 12 meses (${p1(CUB.v12m)} anual).`):''} 🔑 = ${L('ano da entrega das chaves','año de entrega')}.</p>
+      ${abaixo>0.03?`<div class="pp-destaque"><b>${L(`${brl(m2u)}/m²: ${pct(abaixo,0)} abaixo da média de Porto Belo`,`${brl(m2u)}/m²: ${pct(abaixo,0)} por debajo del promedio de Porto Belo`)}</b>
+        <span>${L(`Imóveis novos vendidos em Porto Belo no 1º semestre de 2026 saíram, em média, por ${brl(m2PB)}/m² (DWV, via Portas e NSC Total). Nesse valor médio, esta unidade custaria ${brl(m2PB*u.area)}. A média reúne imóveis de todos os padrões e localizações; serve de referência, não de avaliação.`,`Los inmuebles nuevos vendidos en Porto Belo en el 1er semestre de 2026 salieron en promedio a ${brl(m2PB)}/m² (DWV). A ese valor promedio, esta unidad costaría ${brl(m2PB*u.area)}. El promedio reúne inmuebles de todos los estándares y ubicaciones; es una referencia, no una tasación.`)}</span></div>`:''}
+      <h2>${L('O que está incluído','Qué incluye')}</h2>
+      <ul class="pp-lista">
+        <li>${[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('privativos','privados')}`:'',u.vagas?`${u.vagas} ${L('vagas de garagem','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ')}</li>
+        ${e.lazer?`<li>${e.lazer}</li>`:''}
+        ${e.distanciaMar?`<li>${L(`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m do mar em linha reta`,`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m del mar en línea recta`)}${e.praia?` (${e.praia})`:''}</li>`:''}
+        ${e.incorporacao?`<li>${L('Registro de Incorporação nº','Registro de Incorporación nº')} ${e.incorporacao}: ${L('o empreendimento está registrado em cartório, como exige a Lei 4.591/64','el emprendimiento está registrado, como exige la Ley 4.591/64')}</li>`:''}
+      </ul>
+    </div>`;
+  }
+
+  function pagValorizacao(V){
+    const C=cenariosVal(), max=V*Math.pow(1+Math.max(...C.map(c=>c.taxa)),15), mod=C[1];
+    const v=(c,h)=>V*Math.pow(1+c.taxa,h), w=x=>Math.max(4,Math.round(x/max*100));
+    const cdiL=CDI_LIQ(), cdi10=V*Math.pow(1+cdiL,10);
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Simulação','Simulación')}</div>
+      <h1>${L('Quanto seu imóvel pode valer','Cuánto puede valer su inmueble')}</h1>
+      <p class="pp-lead">${L(`Partindo do valor desta proposta (${brl(V)}), projetamos a valorização do imóvel em 5, 10 e 15 anos, em três cenários construídos com dados oficiais da região.`,`Partiendo del valor de esta propuesta (${brl(V)}), proyectamos la valorización del inmueble en 5, 10 y 15 años, en tres escenarios construidos con datos oficiales de la región.`)}</p>
+      <table class="pp-grade pp-val"><thead><tr><th style="text-align:left">${L('Cenário','Escenario')}</th><th>${L('ao ano','anual')}</th>${HORIZ.map(h=>`<th>${h} ${L('anos','años')}</th>`).join('')}</tr></thead><tbody>
+        ${C.map(c=>`<tr class="${c.k==='mod'?'dest':''}"><td style="text-align:left"><b>${c.nome}</b><small>${c.fonte}</small></td><td>${p1(c.taxa*100)}</td>${HORIZ.map(h=>`<td><b>${brl(v(c,h))}</b><small>+${brl(v(c,h)-V)}</small></td>`).join('')}</tr>`).join('')}
+      </tbody></table>
+      <h2>${L('Cenário moderado, ano a ano','Escenario moderado, año a año')}</h2>
+      <div class="pp-barras">
+        <div><span>${L('Hoje','Hoy')}</span><i style="width:${w(V)}%"></i><b>${brlK(V)}</b></div>
+        ${HORIZ.map(h=>`<div><span>${h} ${L('anos','años')}</span><i style="width:${w(v(mod,h))}%"></i><b>${brlK(v(mod,h))}</b></div>`).join('')}
+      </div>
+      <div class="pp-msg">
+        <b>${L(`Em 10 anos, no cenário moderado, seu imóvel pode valer ${brl(v(mod,10))}: ${Math.round((v(mod,10)/V-1)*100)}% a mais do que você paga hoje.`,`En 10 años, en el escenario moderado, su inmueble puede valer ${brl(v(mod,10))}: ${Math.round((v(mod,10)/V-1)*100)}% más de lo que paga hoy.`)}</b>
+        <span>${L(`Em 15 anos, ${brl(v(mod,15))}. E isso sem contar o aluguel, que aparece na próxima página. Imóvel é patrimônio real: protege da inflação, pode ser usado pela família e gera renda ao mesmo tempo.`,`En 15 años, ${brl(v(mod,15))}. Y eso sin contar el alquiler, que aparece en la página siguiente. El inmueble es patrimonio real: protege de la inflación, puede usarlo la familia y genera renta al mismo tiempo.`)}</span>
+      </div>
+      <h2>${L('Por que estas taxas fazem sentido','Por qué estas tasas tienen sentido')}</h2>
+      <ul class="pp-lista">
+        <li>${L(`<b>Custo de construir sobe sempre:</b> o CUB/SC subiu ${p1(CUB.v12m)} em 12 meses. Um prédio novo igual ao seu custa mais a cada mês, e isso sustenta o preço de quem já comprou.`,`<b>El costo de construir siempre sube:</b> el CUB/SC subió ${p1(CUB.v12m)} en 12 meses. Un edificio nuevo igual al suyo cuesta más cada mes, y eso sostiene el precio de quien ya compró.`)}</li>
+        <li>${(()=>{const S=REFS.serieDWVPortoBelo.pontos,a=S[0],b=S.at(-1);return L(`<b>Porto Belo:</b> o m² de imóveis novos foi de ${brl(a.v)} (${a.rot}) para ${brl(b.v)} (${b.rot}), alta de ${Math.round((b.v/a.v-1)*100)}% (DWV).`,`<b>Porto Belo:</b> el m² de inmuebles nuevos pasó de ${brl(a.v)} (${a.rot}) a ${brl(b.v)} (${b.rot}), suba de ${Math.round((b.v/a.v-1)*100)}% (DWV).`);})()}</li>
+        <li>${L(`<b>Itapema</b>, vizinha de Porto Belo, tem um dos m² mais caros do Brasil no FipeZap: ${brl(it[LAST])}/m², com ${p1(cagrItapema()*100)} de alta média ao ano desde dez/2020.`,`<b>Itapema</b>, vecina de Porto Belo, tiene uno de los m² más caros de Brasil en el FipeZap: ${brl(it[LAST])}/m², con ${p1(cagrItapema()*100)} de suba promedio anual desde dic/2020.`)}</li>
+        <li>${L(`<b>Para comparar:</b> o mesmo valor aplicado no CDI líquido de IR (${pct(cdiL,1)} ao ano hoje) chegaria a ${brl(cdi10)} em 10 anos, mas sem aluguel, sem uso e sem o imóvel.`,`<b>Para comparar:</b> el mismo valor aplicado al CDI neto de impuesto (${pct(cdiL,1)} anual hoy) llegaría a ${brl(cdi10)} en 10 años, pero sin alquiler, sin uso y sin el inmueble.`)}</li>
+      </ul>
+      <p class="pp-obs">${L('Projeção, não promessa: rentabilidade passada não garante rentabilidade futura. Valores sem descontar inflação, custos de venda e impostos.','Proyección, no promesa: la rentabilidad pasada no garantiza la futura. Valores sin descontar inflación, costos de venta e impuestos.')}</p>
+    </div>`;
+  }
+
+  function pagRenda(e,V,area){
+    const r=RM(), T=renda(V,'temporada'), A=renda(V,'anual',area), fx=faixaM2(area), apb=APB(), g=cenariosVal()[1].taxa, mCh=mesesAte(e.entrega)||0;
+    const col=(t,o,sub)=>`<div class="pp-renda"><h3>${t}</h3><p class="sub">${sub}</p>
+      <table class="pp-tab"><tbody>
+        <tr><td>${L('Receita bruta no ano','Ingreso bruto anual')}</td><td>${brl(o.bruto)}</td></tr>
+        <tr><td>${L('Administração / plataforma','Administración / plataforma')}</td><td>− ${brl(o.adm)}</td></tr>
+        <tr><td>${L('Imposto de renda (estimado)','Impuesto a la renta (estimado)')}</td><td>− ${brl(o.ir)}</td></tr>
+        <tr><td>${L('IPTU, manutenção e seguro','Impuestos, mantenimiento y seguro')}</td><td>− ${brl(o.desp)}</td></tr>
+      </tbody></table>
+      <div class="pp-total"><span>${L('Sobra por mês','Queda por mes')}</span><b>${brl(o.mes)}</b></div>
+      <p class="sub">${L(`${brl(o.liq)} por ano · ${pct(o.yl,1)} líquido sobre o valor (${pct(o.yb,1)} bruto)`,`${brl(o.liq)} por año · ${pct(o.yl,1)} neto sobre el valor (${pct(o.yb,1)} bruto)`)}</p></div>`;
+    const pat=(o,h)=>V*Math.pow(1+g,h)+rendaAcum(o.liq,g,mCh,h);
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Simulação','Simulación')}</div>
+      <h1>${L('Quanto seu imóvel pode render','Cuánto puede rendir su inmueble')}</h1>
+      <p class="pp-lead">${L(`Duas formas de alugar a partir das chaves (${fmtMesAno(e.entrega)}), num imóvel de ${brl(V)}. Valores do primeiro ano de aluguel, em valor de hoje.`,`Dos formas de alquilar desde la entrega (${fmtMesAno(e.entrega)}), en un inmueble de ${brl(V)}. Valores del primer año de alquiler, en valor de hoy.`)}</p>
+      <div class="pp-dois">
+        ${col(L('🏖️ Temporada','🏖️ Temporada'),T,L(`Diária média de ${brl(V*r.diariaAltaPctValor/100)} de dezembro a março (${r.ocupAlta}% ocupado) e ${brl(V*r.diariaBaixaPctValor/100)} no resto do ano (${r.ocupBaixa}% ocupado)`,`Diaria promedio de ${brl(V*r.diariaAltaPctValor/100)} de diciembre a marzo (${r.ocupAlta}% ocupado) y ${brl(V*r.diariaBaixaPctValor/100)} el resto del año (${r.ocupBaixa}% ocupado)`))}
+        ${col(L('🏠 Aluguel anual','🏠 Alquiler anual'),A,fx?L(`Contrato de 12 meses a ${brl(aluguelMes(V,area))} por mês (Porto Belo: de ${brl(fx[0])} a ${brl(fx[1])} para esta área), com ${r.vacancia}% de tempo vazio entre inquilinos`,`Contrato de 12 meses a ${brl(aluguelMes(V,area))} por mes (Porto Belo: de ${brl(fx[0])} a ${brl(fx[1])} para esta área), con ${r.vacancia}% de tiempo vacío entre inquilinos`):L(`Contrato de 12 meses a ${brl(V*r.aluguelMensalPctValor/100)} por mês, com ${r.vacancia}% de tempo vazio entre inquilinos`,`Contrato de 12 meses a ${brl(V*r.aluguelMensalPctValor/100)} por mes, con ${r.vacancia}% de tiempo vacío entre inquilinos`))}
+      </div>
+      <h2>${L('Seu patrimônio somando imóvel + aluguel (cenário moderado)','Su patrimonio sumando inmueble + alquiler (escenario moderado)')}</h2>
+      <table class="pp-grade"><thead><tr><th style="text-align:left"></th>${HORIZ.map(h=>`<th>${h} ${L('anos','años')}</th>`).join('')}</tr></thead><tbody>
+        <tr><td style="text-align:left">${L('Imóvel valorizado','Inmueble valorizado')}</td>${HORIZ.map(h=>`<td>${brl(V*Math.pow(1+g,h))}</td>`).join('')}</tr>
+        <tr><td style="text-align:left">${L('+ aluguel recebido (temporada)','+ alquiler cobrado (temporada)')}</td>${HORIZ.map(h=>`<td>${brl(rendaAcum(T.liq,g,mCh,h))}</td>`).join('')}</tr>
+        <tr class="dest"><td style="text-align:left"><b>${L('= Patrimônio com temporada','= Patrimonio con temporada')}</b></td>${HORIZ.map(h=>`<td><b>${brl(pat(T,h))}</b></td>`).join('')}</tr>
+        <tr><td style="text-align:left">${L('+ aluguel recebido (anual)','+ alquiler cobrado (anual)')}</td>${HORIZ.map(h=>`<td>${brl(rendaAcum(A.liq,g,mCh,h))}</td>`).join('')}</tr>
+        <tr class="dest"><td style="text-align:left"><b>${L('= Patrimônio com aluguel anual','= Patrimonio con alquiler anual')}</b></td>${HORIZ.map(h=>`<td><b>${brl(pat(A,h))}</b></td>`).join('')}</tr>
+      </tbody></table>
+      <div class="pp-msg"><b>${L(`Em 10 anos, com temporada, o investimento de ${brl(V)} pode virar ${brl(pat(T,10))} em patrimônio e renda.`,`En 10 años, con temporada, la inversión de ${brl(V)} puede convertirse en ${brl(pat(T,10))} en patrimonio y renta.`)}</b>
+        <span>${L(`Na alta temporada o imóvel rende até ${brl(V*r.diariaAltaPctValor/100*r.ocupAlta/100*DIAS_MES)} por mês. Fora dela, o aluguel anual dá renda estável o ano todo. Você escolhe o perfil, e pode mudar quando quiser.`,`En temporada alta el inmueble rinde hasta ${brl(V*r.diariaAltaPctValor/100*r.ocupAlta/100*DIAS_MES)} por mes. Fuera de ella, el alquiler anual da renta estable todo el año. Usted elige el perfil, y puede cambiarlo cuando quiera.`)}</span></div>
+      <p class="pp-obs">${L(`Fontes: temporada = ${r.fonteTemporada.pt}; aluguel anual = ${fx?`aluguéis de ${apb.perfil.pt} em Porto Belo, de ${brl(apb.min)} a ${brl(apb.max)} por mês (levantamento da consultoria, ${apb.data}), proporcional à área`:r.fonteAluguel.pt}. Administração de ${r.admTemporada}% (temporada) e ${r.admAnual}% (anual), IR de ${r.irAluguel}% e despesas de ${p1(r.despesasAnoPctValor)} do valor ao ano são referências da consultoria. Para temporada, considere mobiliar o imóvel (cerca de ${p1(SITE_CONFIG.mobiliaPadraoPct)} do valor). O aluguel acompanha a valorização do cenário moderado. Simulação, não garantia de renda.`,`Fuentes: temporada = ${r.fonteTemporada.es}; alquiler anual = ${fx?`alquileres de ${apb.perfil.es} en Porto Belo, de ${brl(apb.min)} a ${brl(apb.max)} por mes (relevamiento de la consultoría, ${apb.data}), proporcional al área`:r.fonteAluguel.es}. Administración de ${r.admTemporada}% (temporada) y ${r.admAnual}% (anual), impuesto de ${r.irAluguel}% y gastos de ${p1(r.despesasAnoPctValor)} del valor por año son referencias de la consultoría. Para temporada, considere amueblar (cerca de ${p1(SITE_CONFIG.mobiliaPadraoPct)} del valor). El alquiler sigue la valorización del escenario moderado. Simulación, no garantía de renta.`)}</p>
+    </div>`;
+  }
+
+  function pagRegiao(){
+    const S=REFS.serieDWVPortoBelo.pontos, a=S[0], b=S.at(-1);
+    const card=(ic,t,n,p,src)=>`<div class="pp-card"><div class="t"><span>${ic}</span><b>${t}</b></div>${n?`<div class="n">${n}</div>`:''}<p>${p}</p><small>${src}</small></div>`;
+    const bloco=(t,cards)=>`<h2>${t}</h2><div class="pp-cards">${cards.join('')}</div>`;
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Por que investir aqui','Por qué invertir aquí')}</div>
+      <h1>${L('Porto Belo está em transformação','Porto Belo está en transformación')}</h1>
+      <p class="pp-lead">${L(`Bilhões de reais em projetos privados e públicos estão chegando a Porto Belo e à Costa Esmeralda. Quem compra antes deles ficarem prontos captura a valorização. Em Porto Belo, o m² de imóveis novos subiu ${Math.round((b.v/a.v-1)*100)}% de ${a.rot} a ${b.rot}, e só no 1º semestre de 2026 a cidade vendeu ${REFS.vendasPortoBelo?.v||'R$ 2,5 bilhões'} em imóveis novos (DWV).`,`Miles de millones de reales en proyectos privados y públicos están llegando a Porto Belo y a la Costa Esmeralda. Quien compra antes de que estén listos captura la valorización. En Porto Belo, el m² de inmuebles nuevos subió ${Math.round((b.v/a.v-1)*100)}% de ${a.rot} a ${b.rot}, y solo en el 1er semestre de 2026 la ciudad vendió ${REFS.vendasPortoBelo?.v||'R$ 2,5 bilhões'} en inmuebles nuevos (DWV).`)}</p>
+      ${bloco(L('🏗️ Grandes projetos','🏗️ Grandes proyectos'),[
+        card('🌳','VivaPark Porto Belo','~R$ 1 bi',L('Primeiro "bairro parque" planejado do Brasil, às margens da BR-101, para até 30 mil moradores, com selo LEED. Já recebe moradores.','Primer "barrio parque" planificado de Brasil, junto a la BR-101, para hasta 30 mil habitantes, con sello LEED. Ya recibe residentes.'),'NSC Total, MySide'),
+        card('🎾','All Resort Club Residence',L('VGV R$ 600 mi','VGV R$ 600 M'),L('182 mil m², o 1º campo de golfe totalmente iluminado da América do Sul (pronto) e o 1º Rafa Nadal Tennis Center do continente, previsto para 2028.','182 mil m², la 1ª cancha de golf totalmente iluminada de Sudamérica (lista) y el 1er Rafa Nadal Tennis Center del continente, previsto para 2028.'),'Panrotas, InfoMoney, NSC Total'),
+        card('⚽',L('Porto Belo Lagos + Ecossistema Neymar Jr.','Porto Belo Lagos + Ecosistema Neymar Jr.'),'~R$ 250 mi',L('Complexo esportivo e de lazer da família Neymar dentro de um bairro planejado de cerca de 1 milhão de m². Em licenciamento, previsão 2027.','Complejo deportivo y de ocio de la familia Neymar dentro de un barrio planificado de cerca de 1 millón de m². En licenciamiento, previsión 2027.'),'NSC Total, MySide'),
+        card('🏭',L('Fábrica da Neusoft Medical','Fábrica de Neusoft Medical'),'R$ 250 mi',L('Gigante chinesa de equipamentos médicos escolheu Porto Belo para sua 1ª fábrica no Brasil (ressonância magnética). Cerca de 100 empregos diretos e qualificados. Anunciada em jun/2026.','Gigante china de equipos médicos eligió Porto Belo para su 1ª fábrica en Brasil (resonancia magnética). Cerca de 100 empleos directos y calificados. Anunciada en jun/2026.'),L('Governo de SC, NSC Total, Baguete','Gobierno de SC, NSC Total, Baguete')),
+        card('🌊',L('Nova orla do Perequê','Nueva costanera del Perequê'),L('5 etapas · 36 meses','5 etapas · 36 meses'),L('Masterplan da Prefeitura com as construtoras (ACIP): molhes dos rios Perequê e Perequezinho, nova orla do Balneário Perequê e avenidas revitalizadas. Bem na praia deste empreendimento.','Masterplan de la Municipalidad con las constructoras (ACIP): escolleras de los ríos Perequê y Perequezinho, nueva costanera del Balneário Perequê y avenidas revitalizadas. Justo en la playa de este emprendimiento.'),'NSC Total, MySide'),
+        card('🏖️',L('Alargamento da Meia Praia','Ensanche de Meia Praia'),'~R$ 60 mi · 4,75 km',L('Itapema, a 10 km, ganha até 60 m de faixa de areia: mais valor para toda a costa vizinha.','Itapema, a 10 km, gana hasta 60 m de franja de arena: más valor para toda la costa vecina.'),L('Prefeitura de Itapema e Governo de SC','Municipalidad de Itapema y Gobierno de SC'))])}
+      ${bloco(L('🏥 Saúde','🏥 Salud'),[
+        card('🏥',L('Complexo hospitalar de Porto Belo','Complejo hospitalario de Porto Belo'),'R$ 200 mi · 30 mil m²',L('Maior complexo hospitalar da Costa Esmeralda e 1º hospital da cidade (6 mil m² só de hospital, mais consultórios), com 150 empregos. Primeira operação prevista para o início de 2027.','Mayor complejo hospitalario de la Costa Esmeralda y 1er hospital de la ciudad (6 mil m² solo de hospital, más consultorios), con 150 empleos. Primera operación prevista para inicios de 2027.'),'NSC Total, Estado de Minas (ago/2026)'),
+        card('🚑',L('UPA 24 horas','Guardia 24 horas'),'',L('Pronto atendimento 24h na cidade (UPA Maurílio Manoel da Silva) e hospitais de referência em Itapema, Balneário Camboriú e Itajaí, a menos de 45 minutos.','Guardia 24h en la ciudad (UPA Maurílio Manoel da Silva) y hospitales de referencia en Itapema, Balneário Camboriú e Itajaí, a menos de 45 minutos.'),L('Prefeitura de Porto Belo','Municipalidad de Porto Belo'))])}
+      ${bloco(L('🛣️ Mobilidade e acesso','🛣️ Movilidad y acceso'),[
+        card('✈️',L('BR-101 e 2 aeroportos','BR-101 y 2 aeropuertos'),'~50 km · ~70 km',L('Acesso direto pela BR-101 duplicada, entre os aeroportos internacionais de Navegantes e Florianópolis.','Acceso directo por la BR-101 (autopista), entre los aeropuertos internacionales de Navegantes y Florianópolis.'),L('distâncias aproximadas por estrada','distancias aproximadas por ruta')),
+        card('🛤️','Via Mar',L('145 km · 6 faixas','145 km · 6 carriles'),L('Nova rodovia litorânea do Governo de SC, paralela à BR-101, de Joinville à Grande Florianópolis, a até 120 km/h, para desafogar o litoral. Obras por etapas; 1º lote em licitação.','Nueva ruta costera del Gobierno de SC, paralela a la BR-101, de Joinville a la Gran Florianópolis, hasta 120 km/h, para descongestionar el litoral. Obras por etapas; 1er lote en licitación.'),'NSC Total, Canal Rural (2026)'),
+        card('🚌',L('PROMOBIS: transporte regional','PROMOBIS: transporte regional'),'US$ 342 mi',L('Sistema de ônibus rápidos (BRT) integrando 11 cidades, incluindo Porto Belo, Itapema e Bombinhas, com financiamento do Banco Mundial. Obras previstas a partir de 2027.','Sistema de buses rápidos (BRT) que integra 11 ciudades, incluidas Porto Belo, Itapema y Bombinhas, con financiamiento del Banco Mundial. Obras previstas desde 2027.'),L('Banco Mundial, Governo de SC','Banco Mundial, Gobierno de SC')),
+        card('🌉',L('Ponte Itapema ↔ Porto Belo','Puente Itapema ↔ Porto Belo'),'',L('Ponte da Rua 306 já construída, como rota alternativa à BR-101 entre as duas cidades; falta concluir o acesso do lado de Porto Belo.','Puente de la Calle 306 ya construido, como ruta alternativa a la BR-101 entre las dos ciudades; falta concluir el acceso del lado de Porto Belo.'),'ND+, Hora de Porto Belo (mai/2026)')])}
+      <p class="pp-obs">${L('Projetos anunciados por empresas, governo e imprensa; valores e prazos podem mudar. Situação conferida em novembro de 2026.','Proyectos anunciados por empresas, gobierno y prensa; valores y plazos pueden cambiar. Situación verificada en noviembre de 2026.')}</p>
+    </div>`;
+  }
+
   /* ---------- PDF (só a proposta final) ---------- */
   function pdf(){
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
@@ -158,6 +319,10 @@
         </div></div>
       ${pl?`<div class="pp-planta"><h2>${L('Planta','Planta')} · ${u.area?u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})+' m²':''}</h2><img src="${pl}" alt=""></div>`:''}
     </div>
+    ${pagDetalhe(e,u,a,m)}
+    ${pagValorizacao(m.total)}
+    ${pagRenda(e,m.total,u.area)}
+    ${pagRegiao()}
     <div class="pp-pag">
       ${e.lazer?`<h2>${L('Lazer','Áreas comunes')}</h2><p>${e.lazer}</p>`:''}
       ${gal.length?`<div class="pp-gal">${gal.map(s=>`<img src="${s}" alt="">`).join('')}</div>`:''}
