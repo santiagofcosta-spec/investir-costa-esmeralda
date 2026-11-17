@@ -311,5 +311,109 @@
     }
    }
   }
+ },
+ "vendaBairros": {
+  "nome": "Preço do m² de apartamentos à venda por bairro",
+  "atualizado": "2026-11-17",
+  "validadeDias": 45,
+  "fonte": {
+   "pt": "A Corrida dos Bairros, mediana de anúncios, nov/2026",
+   "es": "A Corrida dos Bairros, mediana de anuncios, nov/2026"
+  },
+  "obs": "Preço pedido em anúncio (não venda fechada). Usado só para LIMITAR a caixa 'abaixo da média' (conservador). Bairros com menos de 5 anúncios não entram.",
+  "cidades": {
+   "Porto Belo": {
+    "bairros": {
+     "Balneário Perequê": {
+      "v": 16362,
+      "n": 754
+     },
+     "Jardim Dourado": {
+      "v": 16420,
+      "n": 131
+     },
+     "Centro": {
+      "v": 15032,
+      "n": 127
+     },
+     "Alto Perequê": {
+      "v": 14558,
+      "n": 54
+     },
+     "Vila Nova": {
+      "v": 13893,
+      "n": 59
+     },
+     "Vivapark": {
+      "v": 18332,
+      "n": 54
+     },
+     "Santa Luzia": {
+      "v": 6695,
+      "n": 6
+     }
+    }
+   },
+   "Itapema": {
+    "bairros": {
+     "Meia Praia": {
+      "v": 17362,
+      "n": 1402
+     },
+     "Centro": {
+      "v": 19412,
+      "n": 597
+     },
+     "Ilhota": {
+      "v": 23580,
+      "n": 50
+     },
+     "Canto da Praia": {
+      "v": 19149,
+      "n": 98
+     },
+     "Morretes": {
+      "v": 13286,
+      "n": 266
+     },
+     "Jardim Praia Mar": {
+      "v": 12765,
+      "n": 75
+     },
+     "Sertãozinho": {
+      "v": 11475,
+      "n": 8
+     },
+     "Castelo Branco": {
+      "v": 15552,
+      "n": 178
+     },
+     "Andorinha": {
+      "v": 15556,
+      "n": 48
+     },
+     "Tabuleiro dos Oliveiras": {
+      "v": 13099,
+      "n": 70
+     },
+     "Alto São Bento": {
+      "v": 12080,
+      "n": 56
+     },
+     "Várzea": {
+      "v": 11944,
+      "n": 45
+     },
+     "Casa Branca": {
+      "v": 10566,
+      "n": 64
+     },
+     "Estreito": {
+      "v": 33349,
+      "n": 10
+     }
+    }
+   }
+  }
  }
 }
