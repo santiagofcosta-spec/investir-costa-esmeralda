@@ -254,6 +254,18 @@
     </div>`;
   }
 
+  /* "Quem já escolheu a Costa Esmeralda" (17/11/2026): só nomes com investimento/projeto confirmado pela imprensa.
+     Conferidos e DEIXADOS DE FORA: Chitãozinho & Xororó e Kevin Kisner (nada encontrado; o golfe do All Resort é de Erik Larsen),
+     PSG (só blog de imobiliária) e Cristiano Ronaldo (Balneário Camboriú, fonte fraca). Sem fotos (direito de imagem). */
+  const FAMOSOS=[
+    {nome:'Neymar Jr.',cid:'Porto Belo · Itapema',pt:'Complexo esportivo e de lazer da família no bairro planejado Porto Belo Lagos (~R$ 250 mi); tem imóveis em Itapema e Balneário Camboriú.',es:'Complejo deportivo y de ocio de la familia en el barrio planificado Porto Belo Lagos (~R$ 250 M); tiene inmuebles en Itapema y Balneário Camboriú.',src:'NSC Total, Portas'},
+    {nome:'Rafael Nadal',cid:'Porto Belo',pt:'O 1º Rafa Nadal Tennis Center da América do Sul será no All Resort, com previsão para 2028.',es:'El 1er Rafa Nadal Tennis Center de Sudamérica estará en el All Resort, previsto para 2028.',src:'InfoMoney, NSC Total'},
+    {nome:'Celso Portiolli',cid:'Porto Belo',pt:'Comprou apartamento no Electra Tower e chamou a cidade de "diamante do Brasil".',es:'Compró un departamento en el Electra Tower y llamó a la ciudad "el diamante de Brasil".',src:'NSC Total'},
+    {nome:'Família Werninghaus (WEG)',cid:'Porto Belo',pt:'Martin Werninghaus, do conselho da WEG, é sócio da All Wert, dona do All Resort Club Residence.',es:'Martin Werninghaus, del directorio de WEG, es socio de All Wert, dueña del All Resort Club Residence.',src:'NSC Total'},
+    {nome:'Pedro Barros',cid:'Porto Belo',pt:'O campeão de skate fez a curadoria e inaugurou o skate park do All Resort.',es:'El campeón de skate hizo la curaduría e inauguró el skate park del All Resort.',src:'IstoÉ'},
+    {nome:'Zezé Di Camargo',cid:'Itapema',pt:'Cobertura no Abu Dhabi Residence, na Meia Praia.',es:'Penthouse en el Abu Dhabi Residence, en Meia Praia.',src:'imprensa e mercado local'},
+    {nome:'Ratinho',cid:'Itapema',pt:'Casa no Canto da Praia de Itapema.',es:'Casa en el Canto da Praia de Itapema.',src:'imprensa e mercado local'}];
+
   function pagValorizacao(V){
     const C=cenariosVal(), max=V*Math.pow(1+Math.max(...C.map(c=>c.taxa)),15), mod=C[1];
     const v=(c,h)=>V*Math.pow(1+c.taxa,h), w=x=>Math.max(4,Math.round(x/max*100));
@@ -281,6 +293,9 @@
         <li>${L(`<b>Itapema</b>, vizinha de Porto Belo, tem um dos m² mais caros do Brasil no FipeZap: ${brl(it[LAST])}/m², com ${p1(cagrItapema()*100)} de alta média ao ano desde dez/2020.`,`<b>Itapema</b>, vecina de Porto Belo, tiene uno de los m² más caros de Brasil en el FipeZap: ${brl(it[LAST])}/m², con ${p1(cagrItapema()*100)} de suba promedio anual desde dic/2020.`)}</li>
         <li>${L(`<b>Para comparar:</b> o mesmo valor aplicado no CDI líquido de IR (${pct(cdiL,1)} ao ano hoje) chegaria a ${brl(cdi10)} em 10 anos, mas sem aluguel, sem uso e sem o imóvel.`,`<b>Para comparar:</b> el mismo valor aplicado al CDI neto de impuesto (${pct(cdiL,1)} anual hoy) llegaría a ${brl(cdi10)} en 10 años, pero sin alquiler, sin uso y sin el inmueble.`)}</li>
       </ul>
+      <h2>${L('Quem já escolheu a Costa Esmeralda','Quién ya eligió la Costa Esmeralda')}</h2>
+      <div class="pp-famosos">${FAMOSOS.map(f=>`<div><b>${f.nome}</b><span class="cid">${f.cid}</span><p>${L(f.pt,f.es)}</p><small>${f.src}</small></div>`).join('')}</div>
+      <p class="pp-obs">${L('Fatos publicados pela imprensa e pelo mercado. As pessoas e empresas citadas não têm relação com este empreendimento nem o recomendam.','Hechos publicados por la prensa y el mercado. Las personas y empresas citadas no tienen relación con este emprendimiento ni lo recomiendan.')}</p>
       <p class="pp-obs">${L('Projeção, não promessa: rentabilidade passada não garante rentabilidade futura. Valores sem descontar inflação, custos de venda e impostos.','Proyección, no promesa: la rentabilidad pasada no garantiza la futura. Valores sin descontar inflación, costos de venta e impuestos.')}</p>
     </div>`;
   }
