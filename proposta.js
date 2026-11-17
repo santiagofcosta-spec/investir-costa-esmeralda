@@ -165,6 +165,13 @@
   // renda líquida somada do mês das chaves até o ano H, crescendo junto com o imóvel (taxa g)
   function rendaAcum(liqAno,g,mChaves,H){ let s=0; for(let k=Math.max(1,mChaves+1);k<=H*12;k++) s+=liqAno/12*Math.pow(1+g,k/12); return s; }
 
+  // fotos do lazer para a página 2 (até 6, sem as de fachada), com legenda tirada do nome do arquivo
+  const LEG={piscinas:['Piscinas','Piscinas'],piscina:['Piscina','Piscina'],academia:['Academia','Gimnasio'],'salao-jogos':['Salão de jogos','Sala de juegos'],
+    'terraco-jogos':['Terraço de jogos','Terraza de juegos'],quiosque:['Quiosque','Quincho'],playground:['Playground','Juegos infantiles'],
+    brinquedoteca:['Brinquedoteca','Sala infantil'],'salao-festas':['Salão de festas','Salón de fiestas'],'espaco-zen':['Espaço zen','Espacio zen']};
+  const legenda=src=>{ const k=src.split('/').pop().replace(/\.[a-z]+$/i,''); const t=LEG[k]; return t?L(t[0],t[1]):k.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase()); };
+  const fotosLazer=e=>((e.fotos&&e.fotos.galeria)||[]).map(IMG).filter(s=>s&&!/fachada/i.test(s)).slice(0,6).map(s=>[s,legenda(s)]);
+
   function pagDetalhe(e,u,a,m){
     const cub=a.correcao?CUB.v12m/100:0, anos={};
     const chaves=mesesAte(e.entrega);
@@ -194,8 +201,13 @@
         <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td><td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
       </tbody></table>
       <p class="pp-obs">${cub?L(`Os valores da tabela de vendas são corrigidos pelo ${esc(a.correcao)}. A última coluna estima a correção usando a alta do CUB/SC dos últimos 12 meses (${p1(CUB.v12m)} ao ano); o valor real depende do índice de cada mês.`,`Los valores se ajustan por ${esc(a.correcao)}. La última columna estima el ajuste con la suba del CUB/SC de los últimos 12 meses (${p1(CUB.v12m)} anual).`):''} 🔑 = ${L('ano da entrega das chaves','año de entrega')}.</p>
-      ${abaixo>0.03?`<div class="pp-destaque"><b>${L(`${brl(m2u)}/m²: ${pct(abaixo,0)} abaixo da média de Porto Belo`,`${brl(m2u)}/m²: ${pct(abaixo,0)} por debajo del promedio de Porto Belo`)}</b>
-        <span>${L(`Imóveis novos vendidos em Porto Belo no 1º semestre de 2026 saíram, em média, por ${brl(m2PB)}/m² (DWV, via Portas e NSC Total). Nesse valor médio, esta unidade custaria ${brl(m2PB*u.area)}. A média reúne imóveis de todos os padrões e localizações; serve de referência, não de avaliação.`,`Los inmuebles nuevos vendidos en Porto Belo en el 1er semestre de 2026 salieron en promedio a ${brl(m2PB)}/m² (DWV). A ese valor promedio, esta unidad costaría ${brl(m2PB*u.area)}. El promedio reúne inmuebles de todos los estándares y ubicaciones; es una referencia, no una tasación.`)}</span></div>`:''}
+      ${abaixo>0.03?(()=>{ const media=m2PB*u.area, eco=media-m.total, nUn=e.unidades.filter(x=>conds(e,x)&&x.status!=='vendida').length;
+        const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade||'')?P.validade.split('-').reverse().join('/'):'';
+        return `<div class="pp-vip"><div class="selo">★ ${L('OPORTUNIDADE VIP','OPORTUNIDAD VIP')} ★</div>
+        <h3>${L(`Você entra por ${brl(m2u)}/m²: ${pct(abaixo,0)} abaixo da média de Porto Belo`,`Usted entra a ${brl(m2u)}/m²: ${pct(abaixo,0)} por debajo del promedio de Porto Belo`)}</h3>
+        <div class="vip-nums"><div><span>${L('Na média da cidade','Al promedio de la ciudad')}</span><s>${brl(media)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Você começa ganhando','Usted empieza ganando')}</span><b>${brl(eco)}</b></div></div>
+        <p class="vip-txt">${L(`Condição de pré-lançamento reservada para poucos investidores${nUn?`: <b>${nUn===1?'apenas 1 unidade':`apenas ${nUn} unidades`}</b> nesta condição`:''}${val?`, válida até <b>${val}</b>`:''}. Os melhores negócios da cidade não chegam aos portais: ficam com quem decide primeiro. Quem entra antes do mercado é quem leva a valorização.`,`Condición de prelanzamiento reservada para pocos inversores${nUn?`: <b>${nUn===1?'solo 1 unidad':`solo ${nUn} unidades`}</b> en esta condición`:''}${val?`, válida hasta <b>${val}</b>`:''}. Los mejores negocios de la ciudad no llegan a los portales: quedan para quien decide primero. Quien entra antes que el mercado es quien se lleva la valorización.`)}</p>
+        <small>${L(`Média de imóveis novos vendidos em Porto Belo no 1º semestre de 2026: ${brl(m2PB)}/m² (DWV, via Portas e NSC Total). A média reúne todos os padrões e localizações; é referência, não avaliação.`,`Promedio de inmuebles nuevos vendidos en Porto Belo en el 1er semestre de 2026: ${brl(m2PB)}/m² (DWV). El promedio reúne todos los estándares y ubicaciones; es referencia, no tasación.`)}</small></div>`; })():''}
       <h2>${L('O que está incluído','Qué incluye')}</h2>
       <ul class="pp-lista">
         <li>${[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('privativos','privados')}`:'',u.vagas?`${u.vagas} ${L('vagas de garagem','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ')}</li>
@@ -203,6 +215,7 @@
         ${e.distanciaMar?`<li>${L(`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m do mar em linha reta`,`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m del mar en línea recta`)}${e.praia?` (${e.praia})`:''}</li>`:''}
         ${e.incorporacao?`<li>${L('Registro de Incorporação nº','Registro de Incorporación nº')} ${e.incorporacao}: ${L('o empreendimento está registrado em cartório, como exige a Lei 4.591/64','el emprendimiento está registrado, como exige la Ley 4.591/64')}</li>`:''}
       </ul>
+      ${fotosLazer(e).length?`<div class="pp-fotos">${fotosLazer(e).map(([src,leg])=>`<figure><img src="${src}" alt=""><figcaption>${leg}</figcaption></figure>`).join('')}</div>`:''}
     </div>`;
   }
 
@@ -301,7 +314,7 @@
   /* ---------- PDF (só a proposta final) ---------- */
   function pdf(){
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
-    const cap=IMG(f.capa), pl=IMG(u.planta), gal=(f.galeria||[]).map(IMG).filter(Boolean).slice(0,6), mapa=IMG(f.mapa), mapaRua=IMG(f.mapaRua);
+    const cap=IMG(f.capa), pl=IMG(u.planta), usadas=fotosLazer(e).map(x=>x[0]), gal=(f.galeria||[]).map(IMG).filter(s=>s&&!usadas.includes(s)).slice(0,6), mapa=IMG(f.mapa), mapaRua=IMG(f.mapaRua);
     const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
     const hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
     const ficha=[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('privativos','privados')}`:'',u.vagas?`${u.vagas} ${L('vagas','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ');
