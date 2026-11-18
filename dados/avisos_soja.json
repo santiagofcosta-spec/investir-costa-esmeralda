@@ -539,6 +539,18 @@
    "entrega": "entrega 02/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-18 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 135.0,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -546,53 +558,55 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-17 17:05",
- "lido": "2026-11-17 17:05",
+ "verificado": "2026-11-18 10:05",
+ "lido": "2026-11-18 10:05",
  "resumo": {
-  "dia": "2026-11-17",
+  "dia": "2026-11-18",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
-     "compra_max": 132.85,
-     "compra_abertura": 132.75
+     "compra_max": 132.2,
+     "compra_abertura": 132.2
     },
     "2027": {
-     "compra_max": 125.65,
-     "compra_abertura": 125.9
+     "compra_max": 125.0,
+     "compra_abertura": 125.0
     },
     "Disponível": {
-     "compra_max": 114.8,
-     "compra_abertura": 114.8,
+     "compra_max": 135.0,
+     "compra_abertura": 135.0,
      "venda_min": 125.0,
      "venda_abertura": 125.0
     }
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 134.2,
-     "compra_abertura": 134.9
+     "compra_max": 133.65,
+     "compra_abertura": 133.65
     },
     "2027": {
-     "compra_max": 122.3,
-     "compra_abertura": 120.35
+     "compra_max": 120.45,
+     "compra_abertura": 120.45
     },
     "Disponível": {
-     "compra_max": 116.6,
-     "compra_abertura": 116.6,
+     "compra_max": 135.0,
+     "compra_abertura": 135.0,
      "venda_min": 125.0,
      "venda_abertura": 125.0
     }
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 133.75,
-     "compra_abertura": 135.4
+     "compra_max": 133.65,
+     "compra_abertura": 133.65
     },
     "2027": {
-     "compra_max": 126.4,
-     "compra_abertura": 126.55
+     "compra_max": 125.7,
+     "compra_abertura": 125.7
     },
     "Disponível": {
+     "compra_max": 135.0,
+     "compra_abertura": 135.0,
      "venda_min": 125.0,
      "venda_abertura": 125.0
     }
