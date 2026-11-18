@@ -10,14 +10,16 @@
   const CDI_LIQ=()=>(D.bcb.cdiAA/100)*(1-0.15);           // custo de oportunidade: CDI com IR de 15% (prazo longo)
   const IMG=s=>/^img\/[a-z0-9_\/-]+\.(jpg|png|webp)$/i.test(String(s||''))?s:'';
   const n0=v=>Math.max(0,Math.round(+v||0));
+  const r2=v=>Math.max(0,Math.round((+v||0)*100)/100);
+  const brlc=v=>Math.round(v*100)%100?brl2(v):brl(v);   // mostra centavos só quando o valor tem centavos   // valores em R$ com centavos (ex.: parcela de R$ 2.341,50 do Monaco); n0 só para quantidades
   let P=null; // {e,u,base,ini,aj,cliente,validade}
 
   const ctx=()=>{ const e=TAB?.empreendimentos.find(x=>x.id===cEmp); return {e,u:e?.unidades[cUni]}; };
   const conds=(e,u)=>(u&&u.condicoes)||(e&&e.condicoes)||null;
-  const copia=c=>({entrada:n0(c.entrada),
-    mensais:{n:n0(c.mensais?.n),valor:n0(c.mensais?.valor),inicio:Math.max(1,n0(c.mensais?.inicio)||1)},
-    baloes:{n:n0(c.baloes?.n),valor:n0(c.baloes?.valor),cada:Math.max(1,n0(c.baloes?.cada)||12),inicio:Math.max(1,n0(c.baloes?.inicio)||12)},
-    unico:{valor:n0(c.unico?.valor),mes:Math.max(1,n0(c.unico?.mes)||1)},
+  const copia=c=>({entrada:r2(c.entrada),
+    mensais:{n:n0(c.mensais?.n),valor:r2(c.mensais?.valor),inicio:Math.max(1,n0(c.mensais?.inicio)||1)},
+    baloes:{n:n0(c.baloes?.n),valor:r2(c.baloes?.valor),cada:Math.max(1,n0(c.baloes?.cada)||12),inicio:Math.max(1,n0(c.baloes?.inicio)||12)},
+    unico:{valor:r2(c.unico?.valor),mes:Math.max(1,n0(c.unico?.mes)||1)},
     correcao:c.correcao||''});
   const mesesAte=k=>{ if(!k) return null; const h=new Date(), [y,m]=k.split('-').map(Number); return Math.max(0,(y-h.getFullYear())*12+(m-1-h.getMonth())); };
   const mesRot=m=>{ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+m); return `${NOMES_MES[d.getMonth()]}/${d.getFullYear()}`; };
@@ -43,13 +45,13 @@
   /* ---------- tela ---------- */
   // campos em R$: ponto de milhar enquanto digita e valor por extenso embaixo (igual aos simuladores)
   const campo=(id,rot,val,un,pre)=>pre==='R$'
-    ?`<div class="f"><label for="${id}">${rot}</label><div class="in"><span>R$</span><input id="${id}" type="text" data-num data-dinheiro data-casas="0" inputmode="numeric" autocomplete="off" value="${n0(val).toLocaleString('pt-BR')}"></div><span class="extenso" aria-hidden="true">${porExtenso(n0(val))}</span></div>`
+    ?`<div class="f"><label for="${id}">${rot}</label><div class="in"><span>R$</span><input id="${id}" type="text" data-num data-dinheiro data-casas="0" inputmode="numeric" autocomplete="off" value="${r2(val).toLocaleString('pt-BR',{maximumFractionDigits:2})}"></div><span class="extenso" aria-hidden="true">${porExtenso(n0(val))}</span></div>`
     :`<div class="f"><label for="${id}">${rot}</label><div class="in">${pre?`<span>${pre}</span>`:''}<input id="${id}" type="number" min="0" step="1" value="${val}" inputmode="numeric">${un?`<span>${un}</span>`:''}</div></div>`;
   function resumo(p){
     const it=[];
-    if(p.entrada) it.push([L('Entrada (na assinatura)','Anticipo (a la firma)'),brl(p.entrada)]);
-    if(p.mensais.n&&p.mensais.valor) it.push([L('Mensais','Cuotas'),`${p.mensais.n} × ${brl(p.mensais.valor)} · ${L('a partir de','desde')} ${mesRot(p.mensais.inicio)}`]);
-    if(p.baloes.n&&p.baloes.valor) it.push([L('Balões','Refuerzos'),`${p.baloes.n} × ${brl(p.baloes.valor)} · ${p.baloes.cada===12?L('anuais','anuales'):L(`a cada ${p.baloes.cada} meses`,`cada ${p.baloes.cada} meses`)} · ${L('1º em','1º en')} ${mesRot(p.baloes.inicio)}`]);
+    if(p.entrada) it.push([L('Entrada (na assinatura)','Anticipo (a la firma)'),brlc(p.entrada)]);
+    if(p.mensais.n&&p.mensais.valor) it.push([L('Mensais','Cuotas'),`${p.mensais.n} × ${brlc(p.mensais.valor)} · ${L('a partir de','desde')} ${mesRot(p.mensais.inicio)}`]);
+    if(p.baloes.n&&p.baloes.valor) it.push([L('Balões','Refuerzos'),`${p.baloes.n} × ${brlc(p.baloes.valor)} · ${p.baloes.cada===12?L('anuais','anuales'):L(`a cada ${p.baloes.cada} meses`,`cada ${p.baloes.cada} meses`)} · ${L('1º em','1º en')} ${mesRot(p.baloes.inicio)}`]);
     if(p.unico.valor) it.push([P.base==='avista'?L('Saldo','Saldo'):(P.e.entrega&&Math.abs(p.unico.mes-mesesAte(P.e.entrega))<=1?L('Nas chaves','En la entrega'):L('Parcela única','Cuota única')),`${brl(p.unico.valor)} · ${p.unico.mes===1?L('em 30 dias','en 30 días'):mesRot(p.unico.mes)}`]);
     return it;
   }
@@ -82,10 +84,10 @@
         <button class="btn ghost" type="button" id="prFechar">${L('Fechar','Cerrar')}</button>
       </div>
       <p class="note" id="prMsg" aria-live="polite"></p><div class="actions" id="prArq"></div>`;
-    const ler=()=>{ const g=id=>n0(lerNum(document.getElementById(id).value));
-      P.aj.entrada=g('prEnt'); P.aj.mensais={n:g('prMn'),valor:g('prMv'),inicio:Math.max(1,g('prMi'))};
-      P.aj.baloes={n:g('prBn'),valor:g('prBv'),cada:Math.max(1,g('prBc')),inicio:Math.max(1,g('prBi'))};
-      P.aj.unico={valor:g('prUv'),mes:Math.max(1,g('prUm'))}; comparar(); };
+    const ler=()=>{ const g=id=>n0(lerNum(document.getElementById(id).value)), gr=id=>r2(lerNum(document.getElementById(id).value));
+      P.aj.entrada=gr('prEnt'); P.aj.mensais={n:g('prMn'),valor:gr('prMv'),inicio:Math.max(1,g('prMi'))};
+      P.aj.baloes={n:g('prBn'),valor:gr('prBv'),cada:Math.max(1,g('prBc')),inicio:Math.max(1,g('prBi'))};
+      P.aj.unico={valor:gr('prUv'),mes:Math.max(1,g('prUm'))}; comparar(); };
     box.querySelectorAll('.prop-aj input').forEach(i=>i.addEventListener('input',ler));
     box.querySelector('#prCliente').addEventListener('input',ev=>{P.cliente=ev.target.value;});
     box.querySelector('#prVal').addEventListener('input',ev=>{P.validade=ev.target.value;});
@@ -194,8 +196,10 @@
   // fotos do lazer para a página 2 (até 6, sem as de fachada), com legenda tirada do nome do arquivo
   const LEG={piscinas:['Piscinas','Piscinas'],piscina:['Piscina','Piscina'],academia:['Academia','Gimnasio'],'salao-jogos':['Salão de jogos','Sala de juegos'],
     'terraco-jogos':['Terraço de jogos','Terraza de juegos'],quiosque:['Quiosque','Quincho'],playground:['Playground','Juegos infantiles'],
-    brinquedoteca:['Brinquedoteca','Sala infantil'],'sala-jogos':['Sala de jogos','Sala de juegos'],'piscina-aquecida':['Piscina aquecida','Piscina climatizada'],'fire-place':['Fire place','Fogón exterior'],'espaco-pet':['Espaço pet','Espacio pet'],solarium:['Solário','Solárium'],'planta-lazer':['Planta do lazer','Planta de amenities'],'praia-pereque':['Praia do Perequê','Playa del Perequê'],pereque:['Balneário Perequê','Balneário Perequê'],'ilha-porto-belo':['Ilha de Porto Belo','Isla de Porto Belo'],enseada:['Enseada de Porto Belo','Ensenada de Porto Belo'],'localizacao-aerea':['Vista aérea do terreno','Vista aérea del terreno'],'salao-festas':['Salão de festas','Salón de fiestas'],'espaco-zen':['Espaço zen','Espacio zen']};
+    brinquedoteca:['Brinquedoteca','Sala infantil'],'sala-jogos':['Sala de jogos','Sala de juegos'],'piscina-aquecida':['Piscina aquecida','Piscina climatizada'],'fire-place':['Fire place','Fogón exterior'],'espaco-pet':['Espaço pet','Espacio pet'],solarium:['Solário','Solárium'],'planta-lazer':['Planta do lazer','Planta de amenities'],'praia-pereque':['Praia do Perequê','Playa del Perequê'],pereque:['Balneário Perequê','Balneário Perequê'],'ilha-porto-belo':['Ilha de Porto Belo','Isla de Porto Belo'],enseada:['Enseada de Porto Belo','Ensenada de Porto Belo'],'localizacao-aerea':['Vista aérea do terreno','Vista aérea del terreno'],'salao-festas':['Salão de festas','Salón de fiestas'],'espaco-zen':['Espaço zen','Espacio zen'],
+    'quadra-padel':['Quadra de padel','Cancha de pádel'],pub:['Pub','Pub'],'hidro-spa':['Hidro spa','Hidro spa'],'garden-grill':['Garden grill','Parrilla en el jardín'],coworking:['Coworking','Coworking'],'piscina-bar':['Piscina com bar','Piscina con bar'],'piscina-infantil':['Piscina infantil','Piscina infantil'],hall:['Hall de entrada','Hall de entrada'],'studio-living':['Studio decorado: living','Studio decorado: living'],'studio-dormitorio':['Studio decorado: dormitório','Studio decorado: dormitorio'],'vista-aerea':['Vista aérea','Vista aérea'],'planta-rooftop':['Planta do rooftop','Planta del rooftop']};
   const legenda=src=>{ const k=src.split('/').pop().replace(/\.[a-z]+$/i,''); const t=LEG[k]; return t?L(t[0],t[1]):k.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase()); };
+  window.legendaFoto=legenda;   // a vitrine (vitrine.js) usa as mesmas legendas, com acento e em espanhol
   const fotosLazer=e=>((e.fotos&&e.fotos.galeria)||[]).map(IMG).filter(s=>s&&!/fachada/i.test(s)).slice(0,6).map(s=>[s,legenda(s)]);
 
   // m² de referência da cidade do imóvel, para a caixa OPORTUNIDADE VIP.
@@ -227,10 +231,23 @@
     if(m2u&&bases.length){ alvo=bases.reduce((a,b)=>(b.v<a.v?b:a)); ab=1-m2u/alvo.v; }   // menor média = menor desconto (conservador)
     const nota=bases.map(b=>b.nota).join(' ');
     const deQuem=b=>b.tipo==='bairro'?L(`do bairro ${b.nome}`,`del barrio ${b.nome}`):L(`de ${b.nome}`,`de ${b.nome}`);
-    const especial=e.condicaoEspecial??!!e.validade;   // sem a marcação: condição com prazo de validade (ex.: Beni) conta como especial
-    if(especial&&ab>0.03){
-      const media=alvo.v*u.area, eco=media-m.total, nUn=e.unidades.filter(x=>conds(e,x)&&x.status!=='vendida').length;
+    // condição especial: marcada na UNIDADE (ex.: unidade promocional do Monaco, fora da tabela) ou no empreendimento inteiro
+    const porUnidade=u.condicaoEspecial!=null, especial=u.condicaoEspecial??e.condicaoEspecial??!!e.validade;   // sem a marcação: condição com prazo de validade (ex.: Beni) conta como especial
+    // unidade promocional: compara com a unidade de MESMA metragem mais barata da tabela da construtora (mesmo prédio)
+    const irma=porUnidade&&especial?e.unidades.filter(x=>x!==u&&!x.condicaoEspecial&&x.area===u.area&&x.status!=='vendido'&&x.valor>m.total).sort((a,b)=>a.valor-b.valor)[0]:null;
+    if(especial&&(ab>0.03||irma)){
+      const media=ab>0.03?alvo.v*u.area:0, eco=media-m.total;
+      // nº de unidades na condição: no empreendimento inteiro, conta as unidades; numa unidade promocional, só se a tabela informar (unidadesNaCondicao)
+      const nUn=porUnidade?(+u.unidadesNaCondicao||0):e.unidades.filter(x=>conds(e,x)&&x.status!=='vendido').length;
       const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade||'')?P.validade.split('-').reverse().join('/'):'';
+      if(irma){
+        const dif=irma.valor-m.total;
+        return `<div class="pp-vip"><div class="selo">★ ${L('UNIDADE PROMOCIONAL','UNIDAD PROMOCIONAL')} ★</div>
+        <h3>${L(`Mesma planta, mesmo prédio: ${brl(dif)} abaixo da tabela da construtora`,`Misma planta, mismo edificio: ${brl(dif)} por debajo de la lista de la constructora`)}</h3>
+        <div class="vip-nums"><div><span>${L(`Tabela da construtora (${u.area.toLocaleString('pt-BR')} m²)`,`Lista de la constructora (${u.area.toLocaleString('pt-BR')} m²)`)}</span><s>${brl(irma.valor)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Você economiza','Usted ahorra')}</span><b>${brl(dif)}</b><em>${pct(dif/irma.valor,0)}</em></div></div>
+        <p class="vip-txt">${L(`Unidade promocional, fora da tabela de vendas${nUn?`: <b>${nUn===1?'apenas 1 unidade':`apenas ${nUn} unidades`}</b> nesta condição`:''}${val?`, válida até <b>${val}</b>`:''}. Na tabela da construtora, a mesma metragem custa a partir de ${brl(irma.valor)}${irma.unidade?` (unidade ${esc(irma.unidade)})`:''}.${ab>0.03?` E ainda sai a ${brl(m2u)}/m², <b>${pct(ab,0)} abaixo da média ${deQuem(alvo)}</b>.`:''} Quem entra antes do mercado é quem leva a valorização.`,`Unidad promocional, fuera de la lista de ventas${nUn?`: <b>${nUn===1?'solo 1 unidad':`solo ${nUn} unidades`}</b> en esta condición`:''}${val?`, válida hasta <b>${val}</b>`:''}. En la lista de la constructora, el mismo metraje cuesta desde ${brl(irma.valor)}${irma.unidade?` (unidad ${esc(irma.unidade)})`:''}.${ab>0.03?` Y además sale a ${brl(m2u)}/m², <b>${pct(ab,0)} por debajo del promedio ${deQuem(alvo)}</b>.`:''} Quien entra antes que el mercado es quien se lleva la valorización.`)}</p>
+        <small>${L('Tabela de vendas da construtora vigente na data da proposta.','Lista de ventas de la constructora vigente en la fecha de la propuesta.')} ${ab>0.03?nota+' ':''}${L('As médias reúnem todos os padrões e localizações; são referência, não avaliação.','Los promedios reúnen todos los estándares y ubicaciones; son referencia, no tasación.')}</small></div>`;
+      }
       return `<div class="pp-vip"><div class="selo">★ ${L('OPORTUNIDADE VIP','OPORTUNIDAD VIP')} ★</div>
         <h3>${L(`Você entra por ${brl(m2u)}/m²: ${pct(ab,0)} abaixo da média ${deQuem(alvo)}`,`Usted entra a ${brl(m2u)}/m²: ${pct(ab,0)} por debajo del promedio ${deQuem(alvo)}`)}</h3>
         <div class="vip-nums"><div><span>${L('Na média','Al promedio')}</span><s>${brl(media)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Você começa ganhando','Usted empieza ganando')}</span><b>${brl(eco)}</b></div></div>

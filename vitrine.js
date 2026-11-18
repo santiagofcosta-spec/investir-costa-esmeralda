@@ -8,10 +8,21 @@
 
   const IMG=s=>/^img\/[a-z0-9_\/-]+\.(jpg|png|webp)$/i.test(String(s||''))?s:'';
   const n0=v=>Math.max(0,Math.round(+v||0));
+  const r2=v=>Math.max(0,Math.round((+v||0)*100)/100);   // R$ com centavos (parcelas da tabela do Monaco)
   const txt=s=>{ const t=document.createElement('textarea'); t.innerHTML=String(s||''); return t.value; };
   const area=a=>a?a.toLocaleString('pt-BR',{minimumFractionDigits:2})+' m²':'';
   const conds=(e,u)=>(u&&u.condicoes)||(e&&e.condicoes)||null;
   const nomeUni=u=>`${u.torre?u.torre+'-':''}${u.unidade??''}`;
+  /* empreendimento com muitas unidades (ex.: Monaco, 72): Plantas e "Tenho X" mostram a mais barata disponível de cada planta
+     (mesma metragem e tipo) + as unidades em condição especial; a lista completa fica na tabela "Unidades" da Área restrita. */
+  const MUITAS=12;
+  const resumo=e=>{ const us=e.unidades; if(us.length<=MUITAS) return us.map((u,i)=>i);
+    const melhor=new Map();
+    us.forEach((u,i)=>{ if(u.status==='vendido'||u.status==='reservado') return;
+      const k=u.condicaoEspecial?'esp'+i:`${u.area}|${u.tipo||''}`, j=melhor.get(k);
+      if(j==null||us[i].valor<us[j].valor) melhor.set(k,i); });
+    return [...melhor.values()].sort((a,b)=>(!!us[b].condicaoEspecial-!!us[a].condicaoEspecial)||(us[a].area-us[b].area)); };
+  const notaResumo=e=>e.unidades.length>MUITAS?`<p class="note">${L(`Mostrando a unidade mais barata de cada planta (${resumo(e).length} de ${e.unidades.length}). A lista completa está na tabela "Unidades", abaixo.`,`Se muestra la unidad más barata de cada planta (${resumo(e).length} de ${e.unidades.length}). La lista completa está en la tabla "Unidades", abajo.`)}</p>`:'';
   let aba=null, empAtual=null, X={e:0,m:0,b:0};   // orçamento do cliente fica só na memória desta aba
 
   /* ---------- lightbox das fotos ---------- */
@@ -37,13 +48,13 @@
     lb.querySelectorAll('.vit-lb-p,.vit-lb-n').forEach(b=>b.hidden=lbFotos.length<2);
   }
   const fotosLocal=f=>[[IMG(f.mapaRua),L('Mapa da rua (© OpenStreetMap)','Mapa de la calle (© OpenStreetMap)')],[IMG(f.mapa),L('Vista aérea','Vista aérea')]].filter(x=>x[0]);
-  const rotFoto=s=>{ const n=s.split('/').pop().replace(/\.\w+$/,'').replace(/-/g,' '); return n.charAt(0).toUpperCase()+n.slice(1); };
+  const rotFoto=s=>{ if(window.legendaFoto) return window.legendaFoto(s); const n=s.split('/').pop().replace(/\.\w+$/,'').replace(/-/g,' '); return n.charAt(0).toUpperCase()+n.slice(1); };
 
   /* ---------- "Tenho X para investir" ---------- */
   function analisar(c){
     const mn=c.mensais||{}, bl=c.baloes||{}, un=c.unico||{};
-    const n=n0(mn.n), mv=n0(mn.valor), nb=n0(bl.n), bv=n0(bl.valor), cada=Math.max(1,n0(bl.cada)||12);
-    const uv=n0(un.valor), um=Math.max(1,n0(un.mes)||1), ent=n0(c.entrada);
+    const n=n0(mn.n), mv=r2(mn.valor), nb=n0(bl.n), bv=r2(bl.valor), cada=Math.max(1,n0(bl.cada)||12);
+    const uv=r2(un.valor), um=Math.max(1,n0(un.mes)||1), ent=r2(c.entrada);
     const total=ent+n*mv+nb*bv+uv, agora=ent+(um<=1?uv:0), depois=um>1?uv:0, balAno=bv*12/cada;
     const r={total,agora,mensal:mv,balAno,n,nb,cada};
     if(!n&&!nb){                                            // à vista: tudo em até 30 dias (+ saldo posterior, se houver)
@@ -64,7 +75,7 @@
   }
   function tenhoX(e){
     const grupos=new Map();                                 // mesma condição para várias unidades = 1 bloco só
-    e.unidades.forEach((u,i)=>{ const c=conds(e,u); if(!c||u.status==='vendido') return; if(!grupos.has(c)) grupos.set(c,[]); grupos.get(c).push(i); });
+    resumo(e).forEach(i=>{ const u=e.unidades[i], c=conds(e,u); if(!c||u.status==='vendido') return; if(!grupos.has(c)) grupos.set(c,[]); grupos.get(c).push(i); });
     const campo=(id,rot,val,dica)=>`<div class="f"><label for="${id}">${rot}</label><div class="in"><span>R$</span><input id="${id}" type="text" data-num data-dinheiro data-casas="0" inputmode="numeric" autocomplete="off" value="${val?n0(val).toLocaleString('pt-BR'):''}" placeholder="0"></div><span class="extenso" aria-hidden="true">${porExtenso(n0(val))}</span>${dica?`<small class="note">${dica}</small>`:''}</div>`;
     const temX=X.e||X.m||X.b;
     let res='';
@@ -111,10 +122,10 @@
   /* ---------- conteúdo de cada cartão ---------- */
   function detalhe(e,k){
     const f=e.fotos||{};
-    if(k==='plantas') return `<div class="vit-plantas">${e.unidades.map((u,i)=>{ const pl=IMG(u.planta); return `<figure class="vit-pl">
+    if(k==='plantas') return `${notaResumo(e)}<div class="vit-plantas">${resumo(e).map(i=>{ const u=e.unidades[i], pl=IMG(u.planta); return `<figure class="vit-pl">
         ${pl?`<button type="button" class="vit-img" data-foto="pl" data-i="${i}"><img src="${pl}" alt="${L('Planta','Planta')} ${nomeUni(u)}" loading="lazy"></button>`:''}
         <figcaption><b>${L('Unidade','Unidad')} ${nomeUni(u)}</b> <span class="st ${u.status||''}">${STATUS[u.status]||u.status||''}</span><br>
-          ${[u.tipo,area(u.area),u.vagas?`${u.vagas} ${L('vagas','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ')}<br>
+          ${[u.tipo,area(u.area),u.vagas?`${u.vagas} ${u.vagas>1?L('vagas','cocheras'):L('vaga','cochera')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ')}<br>
           <b class="vit-preco">${brl(u.valor)}</b>${u.avista?` <span class="note">· ${L('à vista','contado')} ${brl(u.avista)}</span>`:''}</figcaption>
         <div class="actions"><button class="btn ghost" type="button" data-usar="${i}">${L('Usar nas simulações','Usar en las simulaciones')}</button>${conds(e,u)?`<button class="btn" type="button" data-prop="${i}" data-base="fluxo">${L('📄 Proposta','📄 Propuesta')}</button>`:''}</div></figure>`; }).join('')}</div>`;
     if(k==='galeria'){ const g=[IMG(f.capa),...(f.galeria||[]).map(IMG)].filter(Boolean);
@@ -182,7 +193,7 @@
     const f=e.fotos||{};
     box.querySelectorAll('[data-foto]').forEach(b=>b.addEventListener('click',()=>{
       const t=b.dataset.foto, i=+b.dataset.i;
-      if(t==='pl'){ const l=e.unidades.filter(u=>IMG(u.planta)).map(u=>[IMG(u.planta),`${L('Unidade','Unidad')} ${nomeUni(u)} · ${area(u.area)}`]); abrirFoto(l,Math.max(0,l.findIndex(x=>x[0]===IMG(e.unidades[i].planta)))); }
+      if(t==='pl'){ const l=resumo(e).map(j=>e.unidades[j]).filter(u=>IMG(u.planta)).map(u=>[IMG(u.planta),`${L('Unidade','Unidad')} ${nomeUni(u)} · ${area(u.area)}`]); abrirFoto(l,Math.max(0,l.findIndex(x=>x[0]===IMG(e.unidades[i].planta)))); }
       else if(t==='gal'){ const g=[IMG(f.capa),...(f.galeria||[]).map(IMG)].filter(Boolean); abrirFoto(g.map(s=>[s,rotFoto(s)]),i); }
       else if(t==='mapa') abrirFoto(fotosLocal(f),i);
       else abrirFoto([[IMG(f.lazer),'']],0);
