@@ -39,7 +39,7 @@ const showOrig=window.show;
 window.show=function(t){ showOrig(t); atualizarNav(); if(tab==='why') renderProva(); };
 $('nav4').addEventListener('click',e=>{ const b=e.target.closest('[data-grupo]'); if(!b) return; const g=b.dataset.grupo; show(ultimaAba[g]||GRUPOS[g].abas[0]); });
 $('subtabs').addEventListener('click',e=>{ const b=e.target.closest('[data-aba]'); if(b) show(b.dataset.aba); });
-if(MODO_CORRETOR) document.querySelector('#nav4 [data-grupo="corretor"]').hidden=false;
+if(MODO_CORRETOR||ORIGEM) document.querySelector('#nav4 [data-grupo="corretor"]').hidden=false;
 
 /* ---------- porta de entrada ---------- */
 const irNav=()=>$('nav4Wrap').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});

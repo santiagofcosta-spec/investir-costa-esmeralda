@@ -41,7 +41,12 @@ const SITE_CONFIG = {
     honorInventario: 5
   }
 };
+/* origem do visitante: ?origem=goya (botão flutuante do site oficial da Goya, 18/11/2026). O contato do site vira o da
+   imobiliária e a aba Restrita fica à mostra (sem os avisos internos do ?modo=corretor). Vale até fechar a aba. */
+const ORIGENS={goya:{nome:'Goya Investimentos Imobiliários',primeiroNome:'Goya',creci:'9226J',whatsapp:'5547991621026',whatsappTxt:'(47) 99162-1026',empresa:true}};
+const ORIGEM=(()=>{ const q=new URLSearchParams(location.search).get('origem'); try{ if(q&&ORIGENS[q]) sessionStorage.setItem('origem',q); const s=sessionStorage.getItem('origem'); return ORIGENS[s]?s:''; }catch{ return ORIGENS[q]?q:''; } })();
 const CONTATO = { nome:SITE_CONFIG.consultorNome, primeiroNome:SITE_CONFIG.primeiroNome, whatsapp:SITE_CONFIG.whatsappNumero, whatsappTxt:SITE_CONFIG.whatsappTxt, creci:SITE_CONFIG.creci, imobiliaria:SITE_CONFIG.imobiliaria };
+if(ORIGEM) Object.assign(CONTATO,ORIGENS[ORIGEM]);
 
 /* ---------- referências de mercado com fonte (conferidas em 13/11/2026; atualizar à mão) ---------- */
 const REFS = window.REFS_DADOS; // dados/referencias.json: números de mercado com fonte, data e validade
@@ -912,7 +917,7 @@ async function prepararLogin(){
 const CONTATO_PADRAO={...CONTATO};
 function aplicarContato(u){
   if(u){ const w=String(u.whatsapp||'').replace(/\D/g,'');
-    Object.assign(CONTATO,{nome:u.nome,primeiroNome:String(u.nome).split(/\s+/)[0],creci:u.creci||'',whatsapp:w||CONTATO_PADRAO.whatsapp,whatsappTxt:w?u.whatsappTxt:CONTATO_PADRAO.whatsappTxt,id:u.id}); }
+    Object.assign(CONTATO,{empresa:false,nome:u.nome,primeiroNome:String(u.nome).split(/\s+/)[0],creci:u.creci||'',whatsapp:w||CONTATO_PADRAO.whatsapp,whatsappTxt:w?u.whatsappTxt:CONTATO_PADRAO.whatsappTxt,id:u.id}); }
   else Object.assign(CONTATO,CONTATO_PADRAO,{id:''});
   pintarAssinatura(); contato(); atualizaWA();
 }
@@ -975,10 +980,10 @@ async function entrarCorretor(){
 
 /* ---------- contato / WhatsApp ---------- */
 let ultimoResumoWA='';
-const assinatura=()=>`${CONTATO.nome}${CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:''} · ${CONTATO.imobiliaria} · WhatsApp ${CONTATO.whatsappTxt}`;
+const assinatura=()=>`${CONTATO.nome}${CONTATO.empresa?(CONTATO.creci?' · CRECI '+CONTATO.creci:''):(CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:'')+' · '+CONTATO.imobiliaria} · WhatsApp ${CONTATO.whatsappTxt}`;
 function pintarAssinatura(){
   $('assNome').textContent=CONTATO.nome;
-  $('assCargo').textContent=(CONTATO.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+CONTATO.creci+' · ':'')+CONTATO.imobiliaria;
+  $('assCargo').textContent=CONTATO.empresa?L('Imobiliária','Inmobiliaria')+(CONTATO.creci?' · CRECI '+CONTATO.creci:''):(CONTATO.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+CONTATO.creci+' · ':'')+CONTATO.imobiliaria;
   $('assWa').textContent='WhatsApp '+CONTATO.whatsappTxt;
   const n=$('acompNome'); if(n) n.textContent=CONTATO.nome;
   const i=$('acompIniciais'); if(i) i.textContent=CONTATO.nome.split(/\s+/).filter(Boolean).map((p,k,a)=>k===0||k===a.length-1?p[0]:'').join('');
@@ -1012,6 +1017,7 @@ function linkEstado(){
   if(autoValorManual&&autoValor) q.set('vauto',Math.round(autoValor));
   q.set('aba',['planta','avista','holding','soja'].includes(tab)?tab:'sim');
   if(CONTATO.id) q.set('cor',CONTATO.id);   // cliente vê o contato do corretor que mandou o link
+  else if(ORIGEM) q.set('origem',ORIGEM);
   return location.origin+location.pathname+'?'+q.toString();
 }
 function aplicarLink(){
@@ -1337,7 +1343,7 @@ function linkPublico(id){ const q=new URLSearchParams(); if(ES) q.set('lang','es
 
 function initV2(){
   // Área restrita só no modo corretor
-  const tc=document.querySelector('.tabs [data-tab="corretor"]'); if(tc) tc.hidden=!MODO_CORRETOR;
+  const tc=document.querySelector('.tabs [data-tab="corretor"]'); if(tc) tc.hidden=!(MODO_CORRETOR||ORIGEM);   // ?origem=goya também mostra a aba
   document.body.classList.toggle('modo-corretor',MODO_CORRETOR);
   // botões "Link do argumento"
   document.querySelectorAll('[data-objecao]').forEach(sec=>{
@@ -1542,7 +1548,7 @@ function initAuto(){
 /* ---------- eventos ---------- */
 let tab='why';
 const renders={why:renderWhy,sim:renderSim,avista:renderAvista,planta:renderPlanta,holding:renderHolding,soja:renderSoja,idx:renderIdx,corr:renderCorr,corretor:renderCorretor};
-function show(t){ if(!renders[t]) t='why'; if(t==='corretor'&&!MODO_CORRETOR) t='why'; tab=t;
+function show(t){ if(!renders[t]) t='why'; if(t==='corretor'&&!MODO_CORRETOR&&!ORIGEM) t='why'; tab=t;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   for(const k of Object.keys(renders)) $('p-'+k).hidden=k!==t;
   renders[t](); atualizaWA();
