@@ -762,18 +762,18 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-18 11:05",
- "lido": "2026-11-18 11:05",
+ "verificado": "2026-11-18 12:20",
+ "lido": "2026-11-18 12:20",
  "resumo": {
   "dia": "2026-11-18",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
-     "compra_max": 133.0,
+     "compra_max": 132.35,
      "compra_abertura": 132.2
     },
     "2027": {
-     "compra_max": 125.75,
+     "compra_max": 125.05,
      "compra_abertura": 125.0
     },
     "Disponível": {
@@ -785,11 +785,11 @@
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 134.5,
+     "compra_max": 133.8,
      "compra_abertura": 133.65
     },
     "2027": {
-     "compra_max": 121.75,
+     "compra_max": 121.1,
      "compra_abertura": 120.45
     },
     "Disponível": {
@@ -801,11 +801,11 @@
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 134.5,
+     "compra_max": 133.45,
      "compra_abertura": 133.65
     },
     "2027": {
-     "compra_max": 127.7,
+     "compra_max": 126.65,
      "compra_abertura": 125.7
     },
     "Disponível": {
