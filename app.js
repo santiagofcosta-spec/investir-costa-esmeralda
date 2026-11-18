@@ -44,7 +44,8 @@ const SITE_CONFIG = {
 /* origem do visitante: ?origem=goya (botão flutuante do site oficial da Goya, 18/11/2026). O contato do site vira o da
    imobiliária e a aba Restrita fica à mostra (sem os avisos internos do ?modo=corretor). Vale até fechar a aba. */
 const ORIGENS={goya:{nome:'Goya Investimentos Imobiliários',primeiroNome:'Goya',creci:'9226J',whatsapp:'5547991621026',whatsappTxt:'(47) 99162-1026',empresa:true}};
-const ORIGEM=(()=>{ const q=new URLSearchParams(location.search).get('origem'); try{ if(q&&ORIGENS[q]) sessionStorage.setItem('origem',q); const s=sessionStorage.getItem('origem'); return ORIGENS[s]?s:''; }catch{ return ORIGENS[q]?q:''; } })();
+const origemOk=k=>typeof k==='string'&&Object.prototype.hasOwnProperty.call(ORIGENS,k);   // só as origens listadas (nada de 'constructor' etc.)
+const ORIGEM=(()=>{ const q=new URLSearchParams(location.search).get('origem'); try{ if(origemOk(q)) sessionStorage.setItem('origem',q); const s=sessionStorage.getItem('origem'); return origemOk(s)?s:''; }catch{ return origemOk(q)?q:''; } })();
 const CONTATO = { nome:SITE_CONFIG.consultorNome, primeiroNome:SITE_CONFIG.primeiroNome, whatsapp:SITE_CONFIG.whatsappNumero, whatsappTxt:SITE_CONFIG.whatsappTxt, creci:SITE_CONFIG.creci, imobiliaria:SITE_CONFIG.imobiliaria };
 if(ORIGEM) Object.assign(CONTATO,ORIGENS[ORIGEM]);
 
