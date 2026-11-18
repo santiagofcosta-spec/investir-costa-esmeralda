@@ -880,7 +880,7 @@ async function chaveDaSenha(senha,salt,iter){
 // login = e-mail: o arquivo publicado guarda só o SHA-256 do e-mail (minúsculo, sem espaços), não o e-mail
 const hashEmail=async m=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',utf8(String(m).trim().toLowerCase())))].map(b=>b.toString(16).padStart(2,'0')).join('');
 // senha só de números pode ser digitada com espaços/traços (ex.: 4827 1930 5562): usa só os dígitos
-const normSenha=s=>/^[\d\s.-]+$/.test(s)?s.replace(/\D/g,''):s;
+const normSenha=s=>/^[0-9 \t\r\n.-]+$/.test(s)?s.replace(/[^0-9]/g,''):s;   // igual a norm_senha em cifrar_tabelas.py
 async function abrirTabelas(senha,email){
   const e=await lerEnc();
   let claro;

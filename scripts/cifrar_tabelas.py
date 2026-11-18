@@ -49,7 +49,7 @@ def cifrar(dados: bytes, senha: str) -> dict:
 
 def norm_senha(s: str) -> str:
     """senha só de números pode ter espaços/traços (ex.: 4827 1930 5562): vale só os dígitos (igual ao site)."""
-    return re.sub(r"\D", "", s) if re.fullmatch(r"[\d\s.-]+", s) else s
+    return re.sub(r"[^0-9]", "", s) if re.fullmatch(r"[0-9 \t\r\n.-]+", s) else s
 
 
 def hash_email(m: str) -> str:

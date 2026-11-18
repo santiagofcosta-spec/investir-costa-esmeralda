@@ -112,6 +112,9 @@ def escolher(cs, texto):
 
 def main():
     print("=== Área do corretor: acesso dos corretores ===\n")
+    if PAGINA.exists():   # sobrou de uma vez em que a janela foi fechada no X
+        PAGINA.unlink()
+        print("Apaguei uma página de senhas que tinha ficado de uma vez anterior.\n")
     if not ct.CHAVE.exists():
         ct.CHAVE.write_bytes(os.urandom(32))
         print("Chave nova das tabelas criada (fica só neste computador).\n")
@@ -127,6 +130,7 @@ def main():
 2. Trocar a senha de um corretor
 3. Remover o acesso de um corretor
 4. Definir a MINHA senha (Santiago, digitada aqui)
+5. Trocar a CHAVE e as senhas de TODOS (use depois de remover alguém de quem você desconfia)
 0. Sair""")
     op = input("\nEscolha: ").strip()
     novas = []
@@ -153,7 +157,9 @@ def main():
             return 0
         u = quem[int(n) - 1]
         a["usuarios"] = [x for x in a["usuarios"] if x["id"] != u["id"]]
-        print(f"\nAcesso de {u['nome']} removido: a senha dele para de funcionar quando o site atualizar.")
+        print(f"\nAcesso de {u['nome']} removido: a senha dele para de funcionar quando o site atualizar.\n"
+              "Se ele tiver conhecimento técnico e já tiver entrado antes, pode ter guardado a chave das tabelas:\n"
+              "nesse caso rode de novo e use a opção 5 (chave nova e senhas novas para todos).")
         salvar_e_publicar(a, "Área restrita: acesso removido")
     elif op == "4":
         if not eu:
@@ -168,17 +174,31 @@ def main():
             return 1
         a["usuarios"] = [u for u in a["usuarios"] if u["id"] != eu["id"]] + [entrada(eu, s, chave)]
         salvar_e_publicar(a, "Área restrita: acesso do Santiago")
+    elif op == "5":
+        if input("Isto cria uma chave nova e senhas novas para TODOS os corretores (as antigas param de funcionar).\n"
+                 "Digite SIM para continuar: ").strip().upper() != "SIM":
+            return 0
+        chave = os.urandom(32)
+        ct.CHAVE.write_bytes(chave)
+        manter = {u["id"] for u in a["usuarios"]}
+        a["usuarios"] = []
+        print("\nCriando senhas novas... (alguns segundos)\n")
+        novas = criar(cs, a, chave, [c for c in cs if c["id"] in manter and c is not eu])
+        print("\nA SUA senha também precisa ser definida de novo: rode outra vez e use a opção 4.")
+        salvar_e_publicar(a, "Área restrita: chave e senhas trocadas")
     else:
         return 0
     sobra = [u["nome"] for u in a["usuarios"] if u["id"] not in validos]
     if sobra:
         print("\nAtenção: com acesso, mas fora da lista de corretores: " + ", ".join(sobra))
     if novas:
-        pagina(novas)
-        input("\nAbri uma página com as senhas e os botões de WhatsApp.\n"
-              "Depois de enviar para todos, aperte Enter aqui para APAGAR a página do computador. ")
-        PAGINA.unlink(missing_ok=True)
-        print("Página apagada. As senhas não ficam salvas em lugar nenhum.")
+        try:
+            pagina(novas)
+            input("\nAbri uma página com as senhas e os botões de WhatsApp.\n"
+                  "Depois de enviar para todos, aperte Enter aqui para APAGAR a página do computador. ")
+        finally:   # apaga mesmo se a janela for fechada com Ctrl+C ou der erro
+            PAGINA.unlink(missing_ok=True)
+            print("Página apagada. As senhas não ficam salvas em lugar nenhum.")
     return 0
 
 
