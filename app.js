@@ -1508,7 +1508,7 @@ async function dolarAoVivo(){
       if(v>2&&v<20) DOLAR={v,pct:parseFloat(j.pctChange),min:parseFloat(j.low),max:parseFloat(j.high),ts:+j.timestamp*1000,fonte:'mercado'}; } }catch{}
   if(!PTAX||Date.now()-PTAX.lido>3600e3){
     try{ const r=await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json');
-      if(r.ok){ const p=(await r.json())[0], v=parseFloat(p.valor); if(v>2&&v<20) PTAX={v,data:p.data,lido:Date.now()}; } }catch{} }
+      if(r.ok){ const p=(await r.json())[0], v=parseFloat(p.valor); if(v>2&&v<20) PTAX={v,data:/^\d{2}\/\d{2}\/\d{4}$/.test(p.data)?p.data:'',lido:Date.now()}; } }catch{} }
   if(!DOLAR&&PTAX) DOLAR={v:PTAX.v,fonte:'ptax'};
   pintarDolar();
 }
