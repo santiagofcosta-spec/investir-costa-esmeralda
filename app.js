@@ -861,24 +861,66 @@ function renderProjAgro(liq,n,c){
 /* ---------- Área do corretor: tabelas cifradas (AES-256-GCM, PBKDF2-SHA256) ----------
    O arquivo dados/tabelas.enc.json é gerado por scripts/cifrar_tabelas.py. A senha nunca sai do navegador
    e as tabelas abertas ficam só na memória desta aba (somem ao recarregar ou ao clicar em Sair). */
-let TAB=null, cEmp=null, cPav='*', cUni=null;
+let TAB=null, cEmp=null, cPav='*', cUni=null, ENC=null, USUARIO=null;
 const b64=s=>Uint8Array.from(atob(s),ch=>ch.charCodeAt(0));
-async function abrirTabelas(senha){
+const utf8=s=>new TextEncoder().encode(s);
+// formato 2 (18/11/2026): tabelas cifradas com uma chave aleatória; a chave vai cifrada uma vez por corretor (com a senha dele).
+// Login = escolher o nome + senha. Formato 1 (antigo): senha única.
+async function lerEnc(){
+  if(ENC) return ENC;
   const r=await fetch('dados/tabelas.enc.json',{cache:'no-store'});
   if(r.status===404) throw new Error('vazio');
   if(!r.ok) throw new Error('rede');
-  const e=await r.json();
-  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(senha),'PBKDF2',false,['deriveKey']);
-  const chave=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(e.salt),iterations:e.iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+  return ENC=await r.json();
+}
+async function chaveDaSenha(senha,salt,iter){
+  const base=await crypto.subtle.importKey('raw',utf8(senha),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(salt),iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+}
+// login = e-mail: o arquivo publicado guarda só o SHA-256 do e-mail (minúsculo, sem espaços), não o e-mail
+const hashEmail=async m=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',utf8(String(m).trim().toLowerCase())))].map(b=>b.toString(16).padStart(2,'0')).join('');
+// senha só de números pode ser digitada com espaços/traços (ex.: 4827 1930 5562): usa só os dígitos
+const normSenha=s=>/^[\d\s.-]+$/.test(s)?s.replace(/\D/g,''):s;
+async function abrirTabelas(senha,email){
+  const e=await lerEnc();
   let claro;
-  try{ claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},chave,b64(e.ct)); }catch{ throw new Error('senha'); }
+  if(e.v===2){
+    const h=await hashEmail(email), u=(e.usuarios||[]).find(x=>x.login===h); if(!u) throw new Error('usuario');
+    senha=normSenha(senha);
+    let bruta;
+    try{ bruta=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(u.iv),additionalData:utf8(u.id)},await chaveDaSenha(senha,u.salt,u.iter),b64(u.ck)); }catch{ throw new Error('senha'); }
+    const k=await crypto.subtle.importKey('raw',bruta,'AES-GCM',false,['decrypt']);
+    claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv),additionalData:utf8('tabelas-v2')},k,b64(e.ct));
+    USUARIO=u;
+  }else{
+    const chave=await chaveDaSenha(senha,e.salt,e.iter);
+    try{ claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},chave,b64(e.ct)); }catch{ throw new Error('senha'); }
+    USUARIO=null;
+  }
   return limparTextos(JSON.parse(new TextDecoder().decode(claro)));
+}
+// formato 2: campo de e-mail no login; lembra o último e-mail usado neste navegador
+async function prepararLogin(){
+  try{
+    const e=await lerEnc(), em=$('emailCorretor');
+    if(e.v!==2||!e.usuarios?.length){ $('rowUsuario').hidden=true; return; }
+    if(!em.value){ try{ em.value=localStorage.getItem('corretorEmail')||''; }catch{} }
+    $('rowUsuario').hidden=false;
+  }catch{}
+}
+// contato de quem atende: Santiago (padrão do site) ou o corretor que entrou / do link personalizado (?cor=id)
+const CONTATO_PADRAO={...CONTATO};
+function aplicarContato(u){
+  if(u){ const w=String(u.whatsapp||'').replace(/\D/g,'');
+    Object.assign(CONTATO,{nome:u.nome,primeiroNome:String(u.nome).split(/\s+/)[0],creci:u.creci||'',whatsapp:w||CONTATO_PADRAO.whatsapp,whatsappTxt:w?u.whatsappTxt:CONTATO_PADRAO.whatsappTxt,id:u.id}); }
+  else Object.assign(CONTATO,CONTATO_PADRAO,{id:''});
+  pintarAssinatura(); contato(); atualizaWA();
 }
 const STATUS={disponivel:L('Disponível','Disponible'),reservado:L('Reservado','Reservado'),vendido:L('Vendido','Vendido')};
 const fmtMesAno=k=>k?NOMES_MES[+k.slice(5,7)-1]+'/'+k.slice(0,4):'—';
 function renderCorretor(){
   $('formLogin').hidden=!!TAB; $('areaCorretor').hidden=!TAB;
-  if(!TAB) return;
+  if(!TAB){ prepararLogin(); return; }
   const emps=TAB.empreendimentos;
   if(!emps.some(e=>e.id===cEmp)) cEmp=emps[0].id;
   $('cEmp').innerHTML=emps.map(e=>`<option value="${e.id}"${e.id===cEmp?' selected':''}>${e.nome}${e.cidade?' · '+e.cidade:''}</option>`).join('');
@@ -921,16 +963,26 @@ function usarUnidade(i){
   renderCorretor();
 }
 async function entrarCorretor(){
-  const s=$('senhaCorretor').value; if(!s) return;
+  const s=$('senhaCorretor').value, em=$('emailCorretor').value.trim(); if(!s) return;
+  if(!$('rowUsuario').hidden&&!em){ $('loginMsg').textContent=L('Digite o seu e-mail.','Escriba su e-mail.'); return; }
   $('btnEntrar').disabled=true; $('loginMsg').textContent=L('Abrindo…','Abriendo…');
-  try{ TAB=await abrirTabelas(s); $('senhaCorretor').value=''; $('loginMsg').textContent=''; cUni=null; renderCorretor(); }
-  catch(err){ $('loginMsg').textContent= err.message==='senha'?L('Senha incorreta.','Contraseña incorrecta.'):err.message==='vazio'?L('Nenhuma tabela publicada ainda.','Todavía no hay tablas publicadas.'):L('Não consegui carregar as tabelas. Verifique a internet.','No pude cargar las tablas. Verifique internet.'); }
+  try{ TAB=await abrirTabelas(s,em); $('senhaCorretor').value=''; $('loginMsg').textContent=''; cUni=null;
+    if(USUARIO){ try{ localStorage.setItem('corretorEmail',em.toLowerCase()); }catch{} }
+    aplicarContato(USUARIO); renderCorretor(); }
+  catch(err){ $('loginMsg').textContent= err.message==='senha'?L('Senha incorreta.','Contraseña incorrecta.'):err.message==='usuario'?L('E-mail não cadastrado. Confira o e-mail ou fale com o Santiago.','E-mail no registrado. Revise el e-mail o hable con Santiago.'):err.message==='vazio'?L('Nenhuma tabela publicada ainda.','Todavía no hay tablas publicadas.'):L('Não consegui carregar as tabelas. Verifique a internet.','No pude cargar las tablas. Verifique internet.'); }
   finally{ $('btnEntrar').disabled=false; }
 }
 
 /* ---------- contato / WhatsApp ---------- */
 let ultimoResumoWA='';
 const assinatura=()=>`${CONTATO.nome}${CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:''} · ${CONTATO.imobiliaria} · WhatsApp ${CONTATO.whatsappTxt}`;
+function pintarAssinatura(){
+  $('assNome').textContent=CONTATO.nome;
+  $('assCargo').textContent=(CONTATO.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+CONTATO.creci+' · ':'')+CONTATO.imobiliaria;
+  $('assWa').textContent='WhatsApp '+CONTATO.whatsappTxt;
+  const n=$('acompNome'); if(n) n.textContent=CONTATO.nome;
+  const i=$('acompIniciais'); if(i) i.textContent=CONTATO.nome.split(/\s+/).filter(Boolean).map((p,k,a)=>k===0||k===a.length-1?p[0]:'').join('');
+}
 const waURL=msg=>`https://wa.me/${CONTATO.whatsapp}?text=${encodeURIComponent(msg)}`;
 function atualizaWA(){
   const generico=L(`Olá ${CONTATO.primeiroNome}! Vi o site Investir na Costa Esmeralda e quero saber mais sobre imóveis em Porto Belo e região.`,`¡Hola ${CONTATO.primeiroNome}! Vi el sitio Invertir en la Costa Esmeralda y quiero saber más sobre inmuebles en Porto Belo y la región.`);
@@ -951,18 +1003,20 @@ function linkEstado(){
   for(const el of CAMPOS()){
     if(el.type==='checkbox'){ if(el.checked!==el.defaultChecked) q.set(el.id,el.checked?'1':'0'); }
     else if(el.tagName==='SELECT'){ if(el.selectedIndex!==0) q.set(el.id,el.value); }
-    else if(el.value!==el.defaultValue||el.id==='modo') q.set(el.id,el.value);
+    else if(el.id==='modo'){ if(['anual','temporada'].includes(el.value)) q.set(el.id,el.value); }
+    else if(el.value!==el.defaultValue) q.set(el.id,el.value);
   }
   if(tab==='soja') q.set('cidade',`${selUF}|${selNome}`);
   if(resAberto) q.set('cen',viewAuto?'mercado':'seu');
   if(autoFiltro!=='media') q.set('filtro',autoFiltro);
   if(autoValorManual&&autoValor) q.set('vauto',Math.round(autoValor));
   q.set('aba',['planta','avista','holding','soja'].includes(tab)?tab:'sim');
+  if(CONTATO.id) q.set('cor',CONTATO.id);   // cliente vê o contato do corretor que mandou o link
   return location.origin+location.pathname+'?'+q.toString();
 }
 function aplicarLink(){
   const q=new URLSearchParams(location.search);
-  for(const el of CAMPOS()){ if(!q.has(el.id)) continue; if(el.type==='checkbox') el.checked=q.get(el.id)==='1'; else el.value=q.get(el.id); }
+  for(const el of CAMPOS()){ if(!q.has(el.id)) continue; if(el.id==='modo'&&!['anual','temporada'].includes(q.get('modo'))) continue; if(el.type==='checkbox') el.checked=q.get(el.id)==='1'; else el.value=q.get(el.id); }
   if(q.has('valoriz')){ presetSel=''; presets(); }
   if(q.get('cidade')){ const v=q.get('cidade'); if(v.includes('|')){ const [u,n]=v.split('|'); if(Object.prototype.hasOwnProperty.call(UF_NOMES,u)){ selUF=u; selNome=String(n||'').slice(0,80); } } else { const d=Object.values(D.soja?.cidades||{}).find(c=>c.slug===v); if(d){ selUF=d.uf; selNome=d.nome; } } }
   CAMPOS().forEach(formatarCampo);
@@ -1311,9 +1365,7 @@ function initV2(){
   $('pbHero').innerHTML=L(`<b>★ Porto Belo</b> movimentou <b>${REFS.vendasPortoBelo.v}</b> em imóveis novos no 1º semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², ainda abaixo dos vizinhos. <a href="#porto-belo">Veja o que está sendo construído →</a>`,`<b>★ Porto Belo</b> movió <b>R$ 2.500 millones</b> en inmuebles nuevos en el 1er semestre de 2026, a ${brl(REFS.m2PortoBelo.v)}/m², todavía por debajo de sus vecinos. <a href="#porto-belo">Vea lo que se está construyendo →</a>`);
   document.querySelectorAll('.selo-projetos').forEach(e=>e.innerHTML=selo(REFS.projetos));
   document.querySelectorAll('.selo-orla').forEach(e=>e.innerHTML=selo(REFS.orlaItapema));
-  $('assNome').textContent=SITE_CONFIG.consultorNome;
-  $('assCargo').textContent=(SITE_CONFIG.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+SITE_CONFIG.creci+' · ':'')+SITE_CONFIG.imobiliaria;
-  $('assWa').textContent='WhatsApp '+SITE_CONFIG.whatsappTxt;
+  pintarAssinatura();
   // renders extras
   const rw=renders.why, ra=renders.avista;
   renders.why=()=>{ rw(); renderPBSerie(); renderTeto(); renderEspera(); };
@@ -1512,7 +1564,7 @@ $('formLogin').addEventListener('submit',e=>{ e.preventDefault(); entrarCorretor
 $('cEmp').addEventListener('change',e=>{ cEmp=e.target.value; cPav='*'; cUni=null; renderCorretor(); });
 $('cPav').addEventListener('change',e=>{ cPav=e.target.value; renderCorretor(); });
 $('tblUnidades').addEventListener('click',e=>{ const tr=e.target.closest('tr[data-i]'); if(tr) usarUnidade(+tr.dataset.i); });
-$('btnSair').addEventListener('click',()=>{ TAB=null; cUni=null; $('loginMsg').textContent=L('Você saiu. As tabelas foram apagadas desta tela.','Usted salió. Las tablas se borraron de esta pantalla.'); renderCorretor(); });
+$('btnSair').addEventListener('click',()=>{ TAB=null; cUni=null; USUARIO=null; ENC=null; aplicarContato(null); $('loginMsg').textContent=L('Você saiu. As tabelas foram apagadas desta tela.','Usted salió. Las tablas se borraron de esta pantalla.'); renderCorretor(); });
 document.querySelectorAll('[data-ir]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.ir)));
 $('sUF').addEventListener('change',e=>{ const uf=e.target.value, est=D.soja.estados?.[uf], det=detalhadas().find(c=>c.uf===uf);
   const nome=det?.nome||est?.cidades?.[0]?.nome||munUF(uf)[0]?.[0]||''; selecionarCidade(uf,nome); });
@@ -1548,4 +1600,5 @@ contato(); setModo('temporada');
 const abaLink=aplicarLink();
 initV2(); initAuto();
 waves(); hero(); show(abaLink||(ANCORA_ABA[location.hash.slice(1)])||'why'); rotaHash();
+if(URLQ.get('cor')) lerEnc().then(e=>{ const u=(e.usuarios||[]).find(x=>x.id===URLQ.get('cor')); if(u){ aplicarContato(u); show(tab); } }).catch(()=>{});
 bcbAoVivoCarregar();

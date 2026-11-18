@@ -364,7 +364,7 @@ tr.sel td{background:var(--surface2);font-weight:600}
 .av-mais{margin-top:10px;background:none;border:1px solid var(--line);border-radius:8px;padding:6px 12px;color:inherit;cursor:pointer;font:inherit}
 .av-toast{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:50;padding:12px 16px;border:0;border-radius:12px;background:var(--good);color:#fff;font:inherit;font-weight:600;box-shadow:0 6px 24px rgba(0,0,0,.25);cursor:pointer;max-width:calc(100vw - 32px)}
 .login{max-width:520px}
-.loginrow{display:flex;gap:8px;margin-top:10px}
+.loginrow{display:flex;gap:8px;margin-top:10px}.loginrow[hidden]{display:none}
 .loginrow .in{flex:1}
 .loginrow input{text-align:left!important}
 .st{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px}
@@ -1401,7 +1401,9 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
     <form class="panel login" id="formLogin" onsubmit="return false" autocomplete="on">
       <h2 data-es="Área restringida">Área restrita</h2>
       <p class="note" data-es="Tablas de emprendimientos protegidas. Sin la contraseña, nadie puede leerlas: el archivo publicado está cifrado.">Tabelas de empreendimentos protegidas. Sem a senha, ninguém consegue ler: o arquivo publicado é cifrado.</p>
-      <input type="text" name="username" value="corretor" autocomplete="username" hidden>
+      <div class="loginrow" id="rowUsuario" hidden>
+        <div class="in"><input id="emailCorretor" name="username" type="email" autocomplete="username" placeholder="Seu e-mail" aria-label="Seu e-mail" inputmode="email"></div>
+      </div>
       <div class="loginrow">
         <div class="in"><input id="senhaCorretor" type="password" autocomplete="current-password" placeholder="Senha" aria-label="Senha"></div>
         <button class="btn" type="submit" id="btnEntrar" data-es="Entrar">Entrar</button>
@@ -1492,11 +1494,11 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
   <span id="waLabel"></span>
 </a>
 <script src="dados/dados.js"></script>
-<script src="dados/referencias.js?v=20261118a"></script>
-<script src="app.js?v=20261118a"></script>
-<script src="v3.js?v=20261118a"></script>
-<script src="avisos.js?v=20261118a"></script>
-<script src="proposta.js?v=20261118a"></script>
-<script src="vitrine.js?v=20261118a"></script>
+<script src="dados/referencias.js?v=20261118b"></script>
+<script src="app.js?v=20261118b"></script>
+<script src="v3.js?v=20261118b"></script>
+<script src="avisos.js?v=20261118b"></script>
+<script src="proposta.js?v=20261118b"></script>
+<script src="vitrine.js?v=20261118b"></script>
 </body>
 </html>
