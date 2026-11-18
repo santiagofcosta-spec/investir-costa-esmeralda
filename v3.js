@@ -95,8 +95,9 @@ recolher([P('hTbl'),P('hRegras')],'Ver a conta detalhada e as regras usadas','Ve
   sim.innerHTML=`<div class="ph"><h2>${L('Simule a sua safra','Simule su cosecha')}</h2><span class="note">${L('Escolha onde vende a soja e quantas sacas quer trocar','Elija dónde vende la soja y cuántas sacas quiere cambiar')}</span></div>`;
   const cards=document.createElement('section'); cards.className='agro-cards'; cards.id='agroCards'; cards.setAttribute('aria-live','polite');
   // o que vai para dentro de "Cotação" (na ordem atual da página)
-  const cot=[...sec.children].filter(el=>el!==ag&&el!==filtro&&el!==proj);
-  ag.after(sim); if(filtro){ filtro.classList.remove('panel'); sim.appendChild(filtro); }
+  const dolar=$('dolarBox');   // dólar ao vivo fica à mostra, entre a apresentação e o simulador (18/11/2026)
+  const cot=[...sec.children].filter(el=>el!==ag&&el!==filtro&&el!==proj&&el!==dolar);
+  ag.after(sim); if(dolar) sim.before(dolar); if(filtro){ filtro.classList.remove('panel'); sim.appendChild(filtro); }
   if(fSac){ fSac.classList.add('agro-sacas');
     // sacas ⇄ m²: digitar o tamanho do imóvel calcula as sacas necessárias (e vice-versa)
     const q=document.createElement('div'); q.className='agro-qtd'; filtro.appendChild(q); q.appendChild(fSac);

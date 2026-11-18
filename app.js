@@ -689,6 +689,7 @@ function renderSoja(){
   if(!kp.length) kp.push([nomeC,'—',L(`Sem cotação publicada para a cidade ou a região (${mesoH}).`,`Sin cotización publicada para la ciudad o la región (${mesoH}).`)]);
   kp.push([L('Maior preço do país','Mayor precio del país'),sc(regs[0].valor),regs[0].nome]);
   $('sKpis').innerHTML=kpiHTML(kp.slice(0,4));
+  SACA_REF=melhor?{preco:melhor.preco,onde:loc.length?`${I.nome}/${I.uf}`:(melhor.cidade||I.nome)}:I.cot?{preco:I.cot.preco,onde:`${I.nome}/${I.uf}`}:null; pintarDolar();
   $('sLinkGD').href=linkGD; $('sLinkGD').textContent=L(`Ver ofertas de ${nomeH} ao vivo no Grão Direto ↗`,`Ver ofertas de ${nomeH} en vivo en Grão Direto ↗`);
   // gráfico
   $('sTitGraf').textContent=L(`Preços em ${nomeC}`,`Precios en ${nomeC}`);
@@ -1496,6 +1497,39 @@ function renderAutoHolding(){
   const eco=r=>{const e=r.totPf-r.totHd; return `<span class="${e>=0?'pos':'neg'}">${e>=0?'':'−'}${brl(Math.abs(e))}</span>`;};
   comparativo('holding',[[L('Valor dos imóveis','Valor de los inmuebles'),brl(a.V??vAuto()),brl(num('hValor'))],[L('Impostos e custos na pessoa física','Impuestos y costos como persona física'),brl(a.totPf),brl(s.totPf)],[L('Impostos e custos na holding','Impuestos y costos en la holding'),brl(a.totHd),brl(s.totHd)],[L('Economia com a holding','Ahorro con la holding'),eco(a),eco(s)]]);
 }
+/* ---------- dólar ao vivo na aba Agro (pedido do Santiago, 18/11/2026) ----------
+   Dólar comercial: AwesomeAPI (economia.awesomeapi.com.br, atualiza a cada poucos segundos no pregão, sem chave).
+   PTAX: taxa oficial do Banco Central (SGS 1), a usada em contratos. O site busca a cada 60 s só com a aba Agro
+   aberta e a página visível. Se a AwesomeAPI falhar, mostra a PTAX. */
+let DOLAR=null, PTAX=null, SACA_REF=null, dolarTimer=null;
+async function dolarAoVivo(){
+  try{ const r=await fetch('https://economia.awesomeapi.com.br/json/last/USD-BRL',{cache:'no-store'});
+    if(r.ok){ const j=(await r.json()).USDBRL, v=parseFloat(j.bid);
+      if(v>2&&v<20) DOLAR={v,pct:parseFloat(j.pctChange),min:parseFloat(j.low),max:parseFloat(j.high),ts:+j.timestamp*1000,fonte:'mercado'}; } }catch{}
+  if(!PTAX||Date.now()-PTAX.lido>3600e3){
+    try{ const r=await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json');
+      if(r.ok){ const p=(await r.json())[0], v=parseFloat(p.valor); if(v>2&&v<20) PTAX={v,data:p.data,lido:Date.now()}; } }catch{} }
+  if(!DOLAR&&PTAX) DOLAR={v:PTAX.v,fonte:'ptax'};
+  pintarDolar();
+}
+function pintarDolar(){
+  const box=$('dolarBox'); if(!box) return;
+  if(!DOLAR){ box.innerHTML=`<p class="note">${L('Buscando a cotação do dólar…','Buscando la cotización del dólar…')}</p>`; return; }
+  const f4=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:4,maximumFractionDigits:4});
+  const hora=DOLAR.ts?new Date(DOLAR.ts).toLocaleTimeString(ES?'es-AR':'pt-BR',{hour:'2-digit',minute:'2-digit'}):'';
+  const kp=[[L('Dólar comercial agora','Dólar comercial ahora'),f4(DOLAR.v),DOLAR.fonte==='mercado'?L(`cotação das ${hora}`,`cotización de las ${hora}`):L('PTAX do Banco Central (cotação ao vivo indisponível agora)','PTAX del Banco Central (cotización en vivo no disponible ahora)')]];
+  if(isFinite(DOLAR.pct)) kp.push([L('Variação hoje','Variación hoy'),`${DOLAR.pct>=0?'▲ +':'▼ '}${DOLAR.pct.toLocaleString('pt-BR',{maximumFractionDigits:2})}%`,`${L('mín.','mín.')} ${f4(DOLAR.min)} · ${L('máx.','máx.')} ${f4(DOLAR.max)}`,DOLAR.pct>=0?'pos':'neg']);
+  if(PTAX) kp.push([L('PTAX (Banco Central)','PTAX (Banco Central)'),f4(PTAX.v),L(`taxa oficial de ${PTAX.data}, a usada em contratos`,`tasa oficial del ${PTAX.data}, la usada en contratos`)]);
+  if(SACA_REF) kp.push([L('Saca de soja em dólar','Bolsa de soja en dólares'),'US$ '+(SACA_REF.preco/DOLAR.v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}),`${sc(SACA_REF.preco)} · ${esc(SACA_REF.onde)}`]);
+  box.innerHTML=`<div class="ph"><h2>💵 ${L('Dólar ao vivo','Dólar en vivo')}</h2><span class="note"><span class="aovivo" aria-hidden="true"></span>${L('atualiza a cada 1 minuto','se actualiza cada 1 minuto')}</span></div>
+    <div class="kpis">${kpiHTML(kp)}</div>
+    <p class="note" style="margin-top:8px">${L('Dólar comercial (mercado, AwesomeAPI) e PTAX do Banco Central. Dólar em alta = a soja exportada vale mais em reais.','Dólar comercial (mercado, AwesomeAPI) y PTAX del Banco Central. Dólar en alza = la soja exportada vale más en reales.')}</p>`;
+}
+function dolarLigado(on){
+  clearInterval(dolarTimer); dolarTimer=null;
+  if(on){ dolarAoVivo(); dolarTimer=setInterval(()=>{ if(!document.hidden) dolarAoVivo(); },60000); }
+}
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&tab==='soja') dolarAoVivo(); });
 async function jurosAoVivo(){
   try{ const r=await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.20772/dados/ultimos/3?formato=json'); if(!r.ok) return;
     const rs=await r.json(), m=rs.reduce((a,b)=>b.data.split('/').reverse().join('')>a.data.split('/').reverse().join('')?b:a);
@@ -1552,7 +1586,7 @@ const renders={why:renderWhy,sim:renderSim,avista:renderAvista,planta:renderPlan
 function show(t){ if(!renders[t]) t='why'; if(t==='corretor'&&!MODO_CORRETOR&&!ORIGEM) t='why'; tab=t;
   document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===t));
   for(const k of Object.keys(renders)) $('p-'+k).hidden=k!==t;
-  renders[t](); atualizaWA();
+  renders[t](); atualizaWA(); dolarLigado(t==='soja');
 }
 function hints(){
   $('cdiHint').textContent=L(`Hoje: ${pct(D.bcb.cdiAA/100)}`,`Hoy: ${pct(D.bcb.cdiAA/100)}`);
