@@ -500,11 +500,26 @@
         <div class="pp-loc"><img src="${mapaRua||mapa}" alt=""></div>`:''}
       <div class="pp-rod"><b>${esc(assinatura())}</b><br>${L(`Proposta preparada em ${hoje}. Imagens ilustrativas. Valores e condições sujeitos à confirmação no contrato.`,`Propuesta preparada el ${hoje}. Imágenes ilustrativas. Valores y condiciones sujetos a confirmación en el contrato.`)}</div>
     </div>`;
+    marcarPaginas(out,hoje);
     const agora=new Date(), hora=`${String(agora.getDate()).padStart(2,'0')}-${String(agora.getMonth()+1).padStart(2,'0')} ${String(agora.getHours()).padStart(2,'0')}h${String(agora.getMinutes()).padStart(2,'0')}`;
     const nome=(`Proposta ${txt(e.nome)} ${u.unidade}${P.cliente?' - '+P.cliente:''} ${hora}`.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]+/g,'').replace(/\s+/g,' ').replace(/^[.\s]+/,'').trim().slice(0,90)||'Proposta')+'.pdf';
     gerarArquivo(nome);
   }
   const txt=s=>{ const t=document.createElement('textarea'); t.innerHTML=String(s||''); return t.value; };
+
+  /* marca da Goya em TODAS as páginas do PDF (autorizada pelo dono da imobiliária; logos enviados em 18/11/2026):
+     logo no topo, marca d'água grande e clara na diagonal (já gravada no PNG, img/goya/goya-marca.png) e rodapé de uso
+     exclusivo com quem preparou e para quem: identifica de onde saiu uma cópia. O PDF é uma imagem por página,
+     então a marca não sai com editor de PDF. */
+  const GOYA={nome:'Goya Investimentos Imobiliários',creci:'9226J',logo:'img/goya/goya-horizontal.png',marca:'img/goya/goya-marca.png'};
+  function marcarPaginas(raiz,hoje){
+    const pags=[...raiz.querySelectorAll('.pp-pag')], n=pags.length;
+    pags.forEach((p,i)=>{
+      p.classList.add('pp-goya');
+      p.insertAdjacentHTML('afterbegin',`<img class="pp-marca" src="${GOYA.marca}" alt=""><div class="pp-topo"><img src="${GOYA.logo}" alt="${GOYA.nome}"><span>${L('Página','Página')} ${i+1}/${n}</span></div>`);
+      p.insertAdjacentHTML('beforeend',`<div class="pp-excl">${L(`Material exclusivo da ${GOYA.nome} · CRECI ${GOYA.creci}. Proibida a reprodução ou o uso por terceiros. Preparado por ${esc(CONTATO.nome)}${P.cliente?` para ${esc(P.cliente)}`:''} em ${hoje}.`,`Material exclusivo de ${GOYA.nome} · CRECI ${GOYA.creci}. Prohibida la reproducción o el uso por terceros. Preparado por ${esc(CONTATO.nome)}${P.cliente?` para ${esc(P.cliente)}`:''} el ${hoje}.`)}</div>`);
+    });
+  }
 
   /* PDF de verdade (arquivo), para mandar no WhatsApp. Cada .pp-pag vira uma página A4:
      html2canvas fotografa a página e o jsPDF monta o arquivo. Bibliotecas carregadas só quando precisa. */
