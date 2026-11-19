@@ -1127,6 +1127,126 @@
    "entrega": "entrega 01/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 135.65,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.1,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.8,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 134.75,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.35,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.35,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 134.3,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 128.65,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.85,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.0,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -1134,8 +1254,8 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-19 10:05",
- "lido": "2026-11-19 10:05",
+ "verificado": "2026-11-19 11:05",
+ "lido": "2026-11-19 11:05",
  "resumo": {
   "dia": "2026-11-19",
   "cidades": {
@@ -1157,11 +1277,11 @@
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 134.9,
+     "compra_max": 135.6,
      "compra_abertura": 134.9
     },
     "2027": {
-     "compra_max": 120.25,
+     "compra_max": 123.1,
      "compra_abertura": 120.25
     },
     "Disponível": {
@@ -1173,11 +1293,11 @@
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 134.9,
+     "compra_max": 135.65,
      "compra_abertura": 134.9
     },
     "2027": {
-     "compra_max": 126.2,
+     "compra_max": 128.65,
      "compra_abertura": 126.2
     },
     "Disponível": {
