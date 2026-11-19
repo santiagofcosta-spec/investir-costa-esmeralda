@@ -1511,6 +1511,54 @@
    "entrega": "entrega 12/26",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-19 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 145.0,
+   "antes": null,
+   "cidade": "Nova Maringá",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": 833
+  },
+  {
+   "t": "2026-11-19 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 145.0,
+   "antes": null,
+   "cidade": "Cuiabá",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": 833
+  },
+  {
+   "t": "2026-11-19 16:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 128.25,
+   "antes": 127.75,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.05,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -1518,18 +1566,18 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-19 15:05",
- "lido": "2026-11-19 15:05",
+ "verificado": "2026-11-19 16:05",
+ "lido": "2026-11-19 16:05",
  "resumo": {
   "dia": "2026-11-19",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
-     "compra_max": 133.8,
+     "compra_max": 132.55,
      "compra_abertura": 133.4
     },
     "2027": {
-     "compra_max": 125.85,
+     "compra_max": 124.1,
      "compra_abertura": 125.5
     },
     "Disponível": {
@@ -1541,11 +1589,11 @@
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 134.8,
+     "compra_max": 133.55,
      "compra_abertura": 134.9
     },
     "2027": {
-     "compra_max": 122.3,
+     "compra_max": 122.45,
      "compra_abertura": 120.25
     },
     "Disponível": {
@@ -1557,11 +1605,11 @@
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 134.8,
+     "compra_max": 132.65,
      "compra_abertura": 134.9
     },
     "2027": {
-     "compra_max": 128.05,
+     "compra_max": 128.25,
      "compra_abertura": 126.2
     },
     "Disponível": {
