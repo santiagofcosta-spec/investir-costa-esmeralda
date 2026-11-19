@@ -1619,6 +1619,186 @@
    "entrega": "disponível",
    "fob": true,
    "sc": 1833
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 133.45,
+   "antes": 132.45,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 128.2,
+   "antes": 127.15,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 12/26",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 125.05,
+   "antes": 123.9,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 132.35,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 136.0,
+   "antes": null,
+   "cidade": "São Miguel do Guaporé",
+   "uf": "RO",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.1,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 02/27",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 134.65,
+   "antes": 133.55,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 133.75,
+   "antes": 132.65,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 133.35,
+   "antes": 132.2,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 131.3,
+   "antes": null,
+   "cidade": "Pontes e Lacerda",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 130.85,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 130.15,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 133.8,
+   "antes": 132.85,
+   "cidade": "Tangará da Serra",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 119.65,
+   "antes": 118.8,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 18:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 117.95,
+   "antes": 117.1,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -1626,18 +1806,18 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-19 17:05",
- "lido": "2026-11-19 17:05",
+ "verificado": "2026-11-19 18:05",
+ "lido": "2026-11-19 18:05",
  "resumo": {
   "dia": "2026-11-19",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
-     "compra_max": 132.45,
+     "compra_max": 136.0,
      "compra_abertura": 133.4
     },
     "2027": {
-     "compra_max": 123.9,
+     "compra_max": 125.05,
      "compra_abertura": 125.5
     },
     "Disponível": {
@@ -1649,7 +1829,7 @@
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 133.4,
+     "compra_max": 134.2,
      "compra_abertura": 134.9
     },
     "2027": {
@@ -1665,11 +1845,11 @@
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 133.75,
+     "compra_max": 134.65,
      "compra_abertura": 134.9
     },
     "2027": {
-     "compra_max": 118.8,
+     "compra_max": 119.65,
      "compra_abertura": 126.2
     },
     "Disponível": {
