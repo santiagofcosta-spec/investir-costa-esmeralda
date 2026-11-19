@@ -932,14 +932,15 @@ function renderCorretor(){
   if(!emps.some(e=>e.id===cEmp)) cEmp=emps[0].id;
   $('cEmp').innerHTML=emps.map(e=>`<option value="${e.id}"${e.id===cEmp?' selected':''}>${e.nome}${e.cidade?' · '+e.cidade:''}</option>`).join('');
   const e=emps.find(x=>x.id===cEmp);
-  const pavs=[...new Set(e.unidades.map(u=>`${u.torre||''}|${u.pavimento??''}`))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+  const lote=e.tipo==='loteamento', pv=u=>lote?(u.quadra??''):(u.pavimento??'');   // loteamento: agrupa por quadra
+  const pavs=[...new Set(e.unidades.map(u=>`${u.torre||''}|${pv(u)}`))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
   if(cPav!=='*'&&!pavs.includes(cPav)) cPav='*';
-  $('cPav').innerHTML=`<option value="*">${L('Todos','Todos')}</option>`+pavs.map(p=>{const [t,v]=p.split('|'); return `<option value="${p}"${p===cPav?' selected':''}>${t?L('Torre ','Torre ')+t+' · ':''}${v!==''?v+'º '+L('pavimento','piso'):''}</option>`;}).join('');
+  $('cPav').innerHTML=`<option value="*">${L('Todos','Todos')}</option>`+pavs.map(p=>{const [t,v]=p.split('|'); return `<option value="${p}"${p===cPav?' selected':''}>${t?L('Torre ','Torre ')+t+' · ':''}${v!==''?(lote?L('Quadra ','Manzana ')+v:v+'º '+L('pavimento','piso')):''}</option>`;}).join('');
   const fx=e.fluxo||{};
   $('cEmpInfo').innerHTML=[e.incorporadora,e.entrega?L('Entrega ','Entrega ')+fmtMesAno(e.entrega):'',fx.entrada!=null?L(`Fluxo: ${fx.entrada}% entrada, ${fx.mensais}% mensais, ${fx.reforcos}% reforços, ${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}% chaves`,`Plan: ${fx.entrada}% anticipo, ${fx.mensais}% cuotas, ${fx.reforcos}% refuerzos, ${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}% entrega`):'',e.atualizado?L('tabela de ','tabla del ')+fmtDia(e.atualizado):'',e.observacoes||''].filter(Boolean).join(' · ');
-  const us=e.unidades.filter(u=>cPav==='*'||`${u.torre||''}|${u.pavimento??''}`===cPav);
-  $('tblUnidades').innerHTML=`<thead><tr><th style="text-align:left">${L('Unidade','Unidad')}</th><th>${L('Pavimento','Piso')}</th><th style="text-align:left">${L('Tipo','Tipo')}</th><th>${L('Área','Área')}</th><th>${L('Valor de tabela','Precio de lista')}</th><th>R$/m²</th><th>${L('Situação','Situación')}</th></tr></thead><tbody>`+
-    us.map(u=>{const i=e.unidades.indexOf(u); return `<tr data-i="${i}"${cUni===i?' class="sel"':''}><td style="text-align:left"><b>${u.torre?u.torre+'-':''}${u.unidade??''}</b></td><td>${u.pavimento??'—'}</td><td style="text-align:left">${u.tipo||''}</td><td>${u.area?u.area.toLocaleString('pt-BR')+' m²':'—'}</td><td><b>${brl(u.valor)}</b></td><td>${u.area?brl(u.valor/u.area):'—'}</td><td><span class="st ${u.status||''}">${STATUS[u.status]||u.status||''}</span></td></tr>`;}).join('')+'</tbody>';
+  const us=e.unidades.filter(u=>cPav==='*'||`${u.torre||''}|${pv(u)}`===cPav);
+  $('tblUnidades').innerHTML=`<thead><tr><th style="text-align:left">${lote?L('Lote','Lote'):L('Unidade','Unidad')}</th><th>${lote?L('Quadra','Manzana'):L('Pavimento','Piso')}</th><th style="text-align:left">${L('Tipo','Tipo')}</th><th>${L('Área','Área')}</th><th>${L('Valor de tabela','Precio de lista')}</th><th>R$/m²</th><th>${L('Situação','Situación')}</th></tr></thead><tbody>`+
+    us.map(u=>{const i=e.unidades.indexOf(u); return `<tr data-i="${i}"${cUni===i?' class="sel"':''}><td style="text-align:left"><b>${u.torre?u.torre+'-':''}${u.unidade??''}</b></td><td>${pv(u)===''?'—':pv(u)}</td><td style="text-align:left">${u.tipo||''}</td><td>${u.area?u.area.toLocaleString('pt-BR')+' m²':'—'}</td><td><b>${brl(u.valor)}</b></td><td>${u.area?brl(u.valor/u.area):'—'}</td><td><span class="st ${u.status||''}">${STATUS[u.status]||u.status||''}</span></td></tr>`;}).join('')+'</tbody>';
   renderUnidade();
 }
 function renderUnidade(){
@@ -950,7 +951,7 @@ function renderUnidade(){
   $('cUniSub').textContent=L('Valores já enviados para as simulações','Valores ya enviados a las simulaciones');
   $('cUniKpis').innerHTML=kpiHTML([
     [L('Valor de tabela','Precio de lista'),brl(u.valor),u.tipo||''],
-    [L('Preço por m²','Precio por m²'),m2?brl(m2):'—',m2?L(`Itapema (FipeZap): ${brl(it[LAST])}/m²`,`Itapema (FipeZap): ${brl(it[LAST])}/m²`):''],
+    [L('Preço por m²','Precio por m²'),m2?brl(m2):'—',e.tipo==='loteamento'?L('m² de terreno','m² de terreno'):m2?L(`Itapema (FipeZap): ${brl(it[LAST])}/m²`,`Itapema (FipeZap): ${brl(it[LAST])}/m²`):''],
     [L('Entrega','Entrega'),fmtMesAno(e.entrega),e.cidade||''],
     [L('Fluxo','Plan de pagos'),fx.entrada!=null?`${fx.entrada}/${fx.mensais}/${fx.reforcos}/${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}`:'—',L('entrada / mensais / reforços / chaves (%)','anticipo / cuotas / refuerzos / entrega (%)')],
   ]);

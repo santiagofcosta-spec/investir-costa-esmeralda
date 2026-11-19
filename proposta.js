@@ -16,23 +16,34 @@
 
   const ctx=()=>{ const e=TAB?.empreendimentos.find(x=>x.id===cEmp); return {e,u:e?.unidades[cUni]}; };
   const conds=(e,u)=>(u&&u.condicoes)||(e&&e.condicoes)||null;
-  const copia=c=>({entrada:r2(c.entrada),
+  // entradaVezes: entrada dividida em parcelas mensais seguidas a partir da assinatura (ex.: Flores de Sal, 10% em nov/dez/jan)
+  // juros: % ao mês já embutido nas parcelas (financiamento direto, Tabela Price); só para mostrar ao cliente com clareza
+  const copia=c=>({entrada:r2(c.entrada),entradaVezes:Math.max(1,n0(c.entradaVezes)||1),
     mensais:{n:n0(c.mensais?.n),valor:r2(c.mensais?.valor),inicio:Math.max(1,n0(c.mensais?.inicio)||1)},
     baloes:{n:n0(c.baloes?.n),valor:r2(c.baloes?.valor),cada:Math.max(1,n0(c.baloes?.cada)||12),inicio:Math.max(1,n0(c.baloes?.inicio)||12)},
     unico:{valor:r2(c.unico?.valor),mes:Math.max(1,n0(c.unico?.mes)||1)},
-    correcao:c.correcao||''});
+    correcao:c.correcao||'',juros:+c.juros||0,nome:c.nome||'',aConfirmar:!!c.aConfirmar,amortizacao:c.amortizacao||''});
   const mesesAte=k=>{ if(!k) return null; const h=new Date(), [y,m]=k.split('-').map(Number); return Math.max(0,(y-h.getFullYear())*12+(m-1-h.getMonth())); };
   const mesRot=m=>{ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+m); return `${NOMES_MES[d.getMonth()]}/${d.getFullYear()}`; };
+  const LOTE=e=>!!e&&e.tipo==='loteamento';
+  const pj=v=>v.toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';   // juros ao mês (0,85%)
+  const jurosAno=j=>Math.pow(1+j/100,12)-1;
+  // índice de correção: IPCA (12 meses, Banco Central) ou CUB/SC (12 meses, Sinduscon), que é o padrão dos imóveis na planta
+  const ehIPCA=c=>/ipca/i.test(c||'');
+  const taxaCorr=c=>!c?0:ehIPCA(c)?(typeof i12==='function'?i12('ipca'):0.045):CUB.v12m/100;
+  const nomeIdx=c=>ehIPCA(c)?L('IPCA dos últimos 12 meses','IPCA de los últimos 12 meses'):L('CUB/SC dos últimos 12 meses','CUB/SC de los últimos 12 meses');
 
+  // [mês, valor, tipo]: ent = entrada, men = mensal, bal = balão/reforço, uni = parcela única/chaves
   function pagamentos(p){
-    const l=[]; if(p.entrada) l.push([0,p.entrada]);
-    for(let i=0;i<p.mensais.n;i++) l.push([p.mensais.inicio+i,p.mensais.valor]);
-    for(let j=0;j<p.baloes.n;j++) l.push([p.baloes.inicio+j*p.baloes.cada,p.baloes.valor]);
-    if(p.unico.valor) l.push([p.unico.mes,p.unico.valor]);
+    const l=[], nE=Math.max(1,p.entradaVezes||1);
+    if(p.entrada){ const parc=Math.round(p.entrada/nE*100)/100; for(let i=0;i<nE;i++) l.push([i,i<nE-1?parc:Math.round((p.entrada-parc*(nE-1))*100)/100,'ent']); }
+    for(let i=0;i<p.mensais.n;i++) l.push([p.mensais.inicio+i,p.mensais.valor,'men']);
+    for(let j=0;j<p.baloes.n;j++) l.push([p.baloes.inicio+j*p.baloes.cada,p.baloes.valor,'bal']);
+    if(p.unico.valor) l.push([p.unico.mes,p.unico.valor,'uni']);
     return l.filter(x=>x[1]>0);
   }
   function metricas(p){
-    const cub=p.correcao?CUB.v12m/100:0, cdi=CDI_LIQ(), chaves=mesesAte(P.e.entrega);
+    const cub=taxaCorr(p.correcao), cdi=CDI_LIQ(), chaves=mesesAte(P.e.entrega);
     let total=0,corr=0,vp=0,ateChaves=0,prazo=0;
     for(const [m,v] of pagamentos(p)){
       const vc=v*Math.pow(1+cub,m/12);
@@ -49,8 +60,10 @@
     :`<div class="f"><label for="${id}">${rot}</label><div class="in">${pre?`<span>${pre}</span>`:''}<input id="${id}" type="number" min="0" step="1" value="${val}" inputmode="numeric">${un?`<span>${un}</span>`:''}</div></div>`;
   function resumo(p){
     const it=[];
-    if(p.entrada) it.push([L('Entrada (na assinatura)','Anticipo (a la firma)'),brlc(p.entrada)]);
+    const nE=Math.max(1,p.entradaVezes||1);
+    if(p.entrada) it.push(nE>1?[L('Entrada','Anticipo'),`${brlc(p.entrada)} · ${nE} × ${brlc(Math.round(p.entrada/nE*100)/100)} (${mesRot(0)} ${L('a','a')} ${mesRot(nE-1)})`]:[L('Entrada (na assinatura)','Anticipo (a la firma)'),brlc(p.entrada)]);
     if(p.mensais.n&&p.mensais.valor) it.push([L('Mensais','Cuotas'),`${p.mensais.n} × ${brlc(p.mensais.valor)} · ${L('a partir de','desde')} ${mesRot(p.mensais.inicio)}`]);
+    if(p.juros) it.push([L('Juros do parcelamento','Interés de la financiación'),L(`${pj(p.juros)} ao mês (Tabela Price), já incluídos nas parcelas`,`${pj(p.juros)} mensual (sistema francés), ya incluido en las cuotas`)]);
     if(p.baloes.n&&p.baloes.valor) it.push([L('Balões','Refuerzos'),`${p.baloes.n} × ${brlc(p.baloes.valor)} · ${p.baloes.cada===12?L('anuais','anuales'):L(`a cada ${p.baloes.cada} meses`,`cada ${p.baloes.cada} meses`)} · ${L('1º em','1º en')} ${mesRot(p.baloes.inicio)}`]);
     if(p.unico.valor) it.push([P.base==='avista'?L('Saldo','Saldo'):(P.e.entrega&&Math.abs(p.unico.mes-mesesAte(P.e.entrega))<=1?L('Nas chaves','En la entrega'):L('Parcela única','Cuota única')),`${brl(p.unico.valor)} · ${p.unico.mes===1?L('em 30 dias','en 30 días'):mesRot(p.unico.mes)}`]);
     return it;
@@ -70,7 +83,7 @@
           <ul class="prop-res">${resumo(P.ini).map(([k,v])=>`<li><span>${k}</span><b>${v}</b></li>`).join('')}</ul>
           <p class="note">${P.ini.correcao?L(`Parcelas corrigidas pelo ${esc(P.ini.correcao)}.`,`Cuotas ajustadas por ${esc(P.ini.correcao)}.`):L('Sem correção.','Sin ajuste.')}</p></div>
         <div class="prop-aj inputs"><h3 class="av-sub">${L('Proposta ajustada (mexa à vontade)','Propuesta ajustada (modifique libremente)')}</h3>
-          ${campo('prEnt',L('Entrada','Anticipo'),a.entrada,'','R$')}
+          ${campo('prEnt',L('Entrada','Anticipo'),a.entrada,'','R$')}${campo('prEv',L('Entrada em','Anticipo en'),a.entradaVezes,L('vezes','veces'))}
           <div class="prop-g"><span>${L('Mensais','Cuotas')}</span>${campo('prMn',L('Quantidade','Cantidad'),a.mensais.n,'x')}${campo('prMv',L('Valor','Valor'),a.mensais.valor,'','R$')}${campo('prMi',L('1ª no mês','1ª en el mes'),a.mensais.inicio,'º')}</div>
           <div class="prop-g"><span>${L('Balões','Refuerzos')}</span>${campo('prBn',L('Quantidade','Cantidad'),a.baloes.n,'x')}${campo('prBv',L('Valor','Valor'),a.baloes.valor,'','R$')}${campo('prBc',L('A cada','Cada'),a.baloes.cada,L('meses','meses'))}${campo('prBi',L('1º no mês','1º en el mes'),a.baloes.inicio,'º')}</div>
           <div class="prop-g"><span>${P.base==='avista'?L('Saldo','Saldo'):L('Parcela única / chaves','Cuota única / entrega')}</span>${campo('prUv',L('Valor','Valor'),a.unico.valor,'','R$')}${campo('prUm',L('No mês','En el mes'),a.unico.mes,'º')}</div>
@@ -85,7 +98,7 @@
       </div>
       <p class="note" id="prMsg" aria-live="polite"></p><div class="actions" id="prArq"></div>`;
     const ler=()=>{ const g=id=>n0(lerNum(document.getElementById(id).value)), gr=id=>r2(lerNum(document.getElementById(id).value));
-      P.aj.entrada=gr('prEnt'); P.aj.mensais={n:g('prMn'),valor:gr('prMv'),inicio:Math.max(1,g('prMi'))};
+      P.aj.entrada=gr('prEnt'); P.aj.entradaVezes=Math.max(1,g('prEv')); P.aj.mensais={n:g('prMn'),valor:gr('prMv'),inicio:Math.max(1,g('prMi'))};
       P.aj.baloes={n:g('prBn'),valor:gr('prBv'),cada:Math.max(1,g('prBc')),inicio:Math.max(1,g('prBi'))};
       P.aj.unico={valor:gr('prUv'),mes:Math.max(1,g('prUm'))}; comparar(); };
     box.querySelectorAll('.prop-aj input').forEach(i=>i.addEventListener('input',ler));
@@ -109,13 +122,13 @@
       [L('Valor total','Valor total'),brl(a.total),brl(b.total),dif(a.total,b.total)],
       [L('Entrada','Anticipo'),brl(a.entrada),brl(b.entrada),dif(a.entrada,b.entrada)],
       [L('Mensal','Cuota mensual'),a.mensal?brl(a.mensal):'—',b.mensal?brl(b.mensal):'—',dif(a.mensal,b.mensal)],
-      [L(`Pago até as chaves (${fmtMesAno(P.e.entrega)})`,`Pagado hasta la entrega (${fmtMesAno(P.e.entrega)})`),brl(a.ateChaves),brl(b.ateChaves),dif(a.ateChaves,b.ateChaves)],
+      LOTE(P.e)?null:[L(`Pago até as chaves (${fmtMesAno(P.e.entrega)})`,`Pagado hasta la entrega (${fmtMesAno(P.e.entrega)})`),brl(a.ateChaves),brl(b.ateChaves),dif(a.ateChaves,b.ateChaves)],
       [L('Prazo total','Plazo total'),a.prazo?`${a.prazo} ${L('meses','meses')}`:L('à vista','contado'),b.prazo?`${b.prazo} ${L('meses','meses')}`:L('à vista','contado'),difM(a.prazo,b.prazo)],
       [L('Correção estimada','Ajuste estimado'),brl(a.correcao),brl(b.correcao),dif(a.correcao,b.correcao)],
       [L('Total com correção','Total con ajuste'),brl(a.corr),brl(b.corr),dif(a.corr,b.corr)],
       [L('<b>Custo real em valor de hoje</b>','<b>Costo real en valor de hoy</b>'),`<b>${brl(a.vp)}</b>`,`<b>${brl(b.vp)}</b>`,dif(a.vp,b.vp)],
       ['R$/m²',a.m2?brl(a.m2):'—',b.m2?brl(b.m2):'—',a.m2?dif(a.m2,b.m2):''],
-    ];
+    ].filter(Boolean);
     const c=conds(P.e,P.u), outras=Object.keys(c).filter(k=>k!==P.base&&c[k]&&typeof c[k]==='object').map(k=>[c[k].nome||k,metricas(copia(c[k]))]);
     const ganho=Math.round(a.vp-b.vp);
     document.getElementById('prComp').innerHTML=`<h3 class="av-sub">${L('Comparação','Comparación')}</h3>
@@ -123,7 +136,8 @@
       linhas.map(r=>`<tr><td style="text-align:left">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`).join('')+`</tbody></table></div>
       <p class="prop-veredito ${ganho>0?'pos':ganho<0?'neg':''}">${ganho>0?L(`A proposta ajustada é <b>${brl(ganho)} melhor</b> para o cliente, em valor de hoje.`,`La propuesta ajustada es <b>${brl(ganho)} mejor</b> para el cliente, en valor de hoy.`):ganho<0?L(`A proposta ajustada fica <b>${brl(-ganho)} mais cara</b> para o cliente, em valor de hoje.`,`La propuesta ajustada queda <b>${brl(-ganho)} más cara</b> para el cliente, en valor de hoy.`):L('A proposta ajustada é igual à inicial.','La propuesta ajustada es igual a la inicial.')}</p>
       ${outras.map(([nm,m])=>`<p class="note">${L(`Para comparar: a condição "${nm}" custa ${brl(m.vp)} em valor de hoje (${m.vp<b.vp?`${brl(b.vp-m.vp)} a menos que a ajustada`:`${brl(m.vp-b.vp)} a mais que a ajustada`}).`,`Para comparar: la condición "${nm}" cuesta ${brl(m.vp)} en valor de hoy (${m.vp<b.vp?`${brl(b.vp-m.vp)} menos que la ajustada`:`${brl(m.vp-b.vp)} más que la ajustada`}).`)}</p>`).join('')}
-      <p class="note">${L(`Correção estimada pelo CUB/SC dos últimos 12 meses (${p1(CUB.v12m)} ao ano). "Custo real em valor de hoje" desconta cada pagamento pelo CDI líquido (${pct(CDI_LIQ(),1)} ao ano): mostra quanto o cliente precisaria ter aplicado hoje para pagar tudo. Serve para comparar à vista com parcelado.`,`Ajuste estimado por el CUB/SC de los últimos 12 meses (${p1(CUB.v12m)} anual). "Costo real en valor de hoy" descuenta cada pago por el CDI neto (${pct(CDI_LIQ(),1)} anual).`)}</p>`;
+      ${b.correcao&&ehIPCA(P.aj.correcao)?`<p class="note">${L(`Esta condição é corrigida pelo IPCA: estimado pelo IPCA dos últimos 12 meses (${pct(taxaCorr('IPCA'),1)} ao ano).`,`Esta condición se ajusta por IPCA: estimado con el IPCA de los últimos 12 meses (${pct(taxaCorr('IPCA'),1)} anual).`)}</p>`:''}
+      <p class="note">${L(`${ehIPCA(P.aj.correcao)?'Nos imóveis na planta, a correção':'Correção'} estimada pelo CUB/SC dos últimos 12 meses (${p1(CUB.v12m)} ao ano). "Custo real em valor de hoje" desconta cada pagamento pelo CDI líquido (${pct(CDI_LIQ(),1)} ao ano): mostra quanto o cliente precisaria ter aplicado hoje para pagar tudo. Serve para comparar à vista com parcelado.`,`Ajuste estimado por el CUB/SC de los últimos 12 meses (${p1(CUB.v12m)} anual). "Costo real en valor de hoy" descuenta cada pago por el CDI neto (${pct(CDI_LIQ(),1)} anual).`)}</p>`;
   }
 
   function abrir(base,u){
@@ -197,6 +211,8 @@
   const LEG={piscinas:['Piscinas','Piscinas'],piscina:['Piscina','Piscina'],academia:['Academia','Gimnasio'],'salao-jogos':['Salão de jogos','Sala de juegos'],
     'terraco-jogos':['Terraço de jogos','Terraza de juegos'],quiosque:['Quiosque','Quincho'],playground:['Playground','Juegos infantiles'],
     brinquedoteca:['Brinquedoteca','Sala infantil'],'sala-jogos':['Sala de jogos','Sala de juegos'],'piscina-aquecida':['Piscina aquecida','Piscina climatizada'],'fire-place':['Fire place','Fogón exterior'],'espaco-pet':['Espaço pet','Espacio pet'],solarium:['Solário','Solárium'],'planta-lazer':['Planta do lazer','Planta de amenities'],'praia-pereque':['Praia do Perequê','Playa del Perequê'],pereque:['Balneário Perequê','Balneário Perequê'],'ilha-porto-belo':['Ilha de Porto Belo','Isla de Porto Belo'],enseada:['Enseada de Porto Belo','Ensenada de Porto Belo'],'localizacao-aerea':['Vista aérea do terreno','Vista aérea del terreno'],'salao-festas':['Salão de festas','Salón de fiestas'],'espaco-zen':['Espaço zen','Espacio zen'],
+    'parque-aereo':['Parque das Flores','Parque das Flores'],'parque-das-flores':['Parque das Flores: padel e beach tennis','Parque das Flores: pádel y beach tennis'],'quadras-coloridas':['Quadras poliesportivas','Canchas polideportivas'],'urbanismo-aereo':['Entrada, rotatória e lotes prontos','Entrada, rotonda y lotes listos'],'estacao-esgoto':['Estação própria de tratamento de esgoto','Planta propia de tratamiento cloacal'],
+    'lago-deck':['Lago com deck de madeira','Lago con muelle de madera'],'espaco-gastronomico':['Espaço gastronômico','Espacio gastronómico'],'quadras-playground':['Quadras e playground','Canchas y juegos infantiles'],praca:['Praça','Plaza'],avenida:['Avenidas com paisagismo','Avenidas con paisajismo'],calcadas:['Asfalto e calçadas com piso tátil','Asfalto y veredas con piso táctil'],'portal-entrada':['Entrada do bairro','Entrada del barrio'],'casa-flores-de-sal':['Casa Flores de Sal','Casa Flores de Sal'],'pedra-de-sal':['Monumento Pedra de Sal','Monumento Pedra de Sal'],'lote-pronto':['Lote pronto para construir','Lote listo para construir'],tendas:['Feiras e eventos no bairro','Ferias y eventos en el barrio'],
     'quadra-padel':['Quadra de padel','Cancha de pádel'],pub:['Pub','Pub'],'hidro-spa':['Hidro spa','Hidro spa'],'garden-grill':['Garden grill','Parrilla en el jardín'],coworking:['Coworking','Coworking'],'piscina-bar':['Piscina com bar','Piscina con bar'],'piscina-infantil':['Piscina infantil','Piscina infantil'],hall:['Hall de entrada','Hall de entrada'],'studio-living':['Studio decorado: living','Studio decorado: living'],'studio-dormitorio':['Studio decorado: dormitório','Studio decorado: dormitorio'],'vista-aerea':['Vista aérea','Vista aérea'],'planta-rooftop':['Planta do rooftop','Planta del rooftop']};
   const legenda=src=>{ const k=src.split('/').pop().replace(/\.[a-z]+$/i,''); const t=LEG[k]; return t?L(t[0],t[1]):k.replace(/-/g,' ').replace(/^./,c=>c.toUpperCase()); };
   window.legendaFoto=legenda;   // a vitrine (vitrine.js) usa as mesmas legendas, com acento e em espanhol
@@ -276,14 +292,12 @@
   }
 
   function pagDetalhe(e,u,a,m){
-    const cub=a.correcao?CUB.v12m/100:0, anos={};
+    const cub=taxaCorr(a.correcao), anos={};
     const chaves=mesesAte(e.entrega);
-    for(const [mm,v] of pagamentos(a)){
+    for(const [mm,v,t] of pagamentos(a)){
       const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+mm); const y=d.getFullYear();
-      const tipo=mm===0?'ent':(a.mensais.n&&mm>=a.mensais.inicio&&mm<a.mensais.inicio+a.mensais.n&&v===a.mensais.valor?'men':'out');
       const o=anos[y]||(anos[y]={ent:0,men:0,bal:0,out:0,tot:0,corr:0});
-      const ehBalao=a.baloes.n&&v===a.baloes.valor&&mm>=a.baloes.inicio&&(mm-a.baloes.inicio)%a.baloes.cada===0&&(mm-a.baloes.inicio)/a.baloes.cada<a.baloes.n;
-      if(tipo==='ent') o.ent+=v; else if(ehBalao) o.bal+=v; else if(tipo==='men') o.men+=v; else o.out+=v;
+      if(t==='ent') o.ent+=v; else if(t==='bal') o.bal+=v; else if(t==='men') o.men+=v; else o.out+=v;
       o.tot+=v; o.corr+=v*Math.pow(1+cub,mm/12);
     }
     const ys=Object.keys(anos).sort(), z=v=>v?brl(v):'—';
@@ -299,11 +313,11 @@
         <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
       </div>
       <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
-      <table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Mensais','Cuotas')}</th><th>${L('Balões','Refuerzos')}</th><th>${L('Outros','Otros')}</th><th>${L('Total do ano','Total del año')}</th>${cub?`<th>${L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
+      <table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Mensais','Cuotas')}</th><th>${L('Balões','Refuerzos')}</th><th>${L('Outros','Otros')}</th><th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
         ${ys.map(y=>{const o=anos[y];return `<tr><td>${y}${chaves!=null&&+y===new Date(e.entrega+'-01T12:00').getFullYear()?' 🔑':''}</td><td>${z(o.ent)}</td><td>${z(o.men)}</td><td>${z(o.bal)}</td><td>${z(o.out)}</td><td><b>${brl(o.tot)}</b></td>${cub?`<td>${brl(o.corr)}</td>`:''}</tr>`;}).join('')}
         <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td><td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
       </tbody></table>
-      <p class="pp-obs">${cub?L(`Os valores da tabela de vendas são corrigidos pelo ${esc(a.correcao)}. A última coluna estima a correção usando a alta do CUB/SC dos últimos 12 meses (${p1(CUB.v12m)} ao ano); o valor real depende do índice de cada mês.`,`Los valores se ajustan por ${esc(a.correcao)}. La última columna estima el ajuste con la suba del CUB/SC de los últimos 12 meses (${p1(CUB.v12m)} anual).`):''} 🔑 = ${L('ano da entrega das chaves','año de entrega')}.</p>
+      <p class="pp-obs">${cub?L(`Os valores da tabela de vendas são corrigidos pelo ${esc(a.correcao)}. A última coluna estima a correção usando o ${nomeIdx(a.correcao)} (${pct(cub,1)} ao ano); o valor real depende do índice de cada período.`,`Los valores se ajustan por ${esc(a.correcao)}. La última columna estima el ajuste con el ${nomeIdx(a.correcao)} (${pct(cub,1)} anual).`):''} 🔑 = ${L('ano da entrega das chaves','año de entrega')}.</p>
       ${caixaDestaque(e,u,m)}
       <h2>${L('O que está incluído','Qué incluye')}</h2>
       <ul class="pp-lista">
@@ -466,8 +480,232 @@
     </div>`;
   }
 
+  /* ---------- LOTEAMENTO (19/11/2026, 1º caso: Flores de Sal, Tijucas) ----------
+     PDF próprio de 7 páginas, na mesma linha das propostas de apartamento (marca da Goya, caixa de destaque, fontes),
+     mas com o que importa num lote: (1) capa com o lote no mapa, (2) como você paga, (3) juros e condições com
+     transparência (Tabela Price e amortização antecipada), (4) o bairro e a infraestrutura pronta, (5) o que dá para
+     construir (CUB/SC), (6) valorização + por que a cidade, (7) localização, galeria e contato.
+     Os dados do bairro vêm da tabela (e.loteamento); os da cidade, de CIDADES abaixo (fontes públicas). */
+  const CIDADES={
+    tijucas:{nome:'Tijucas',pop:[30960,51592],est:[2025,58695],   // IBGE: Censos 2010 e 2022 e estimativa 2025 (servicodados.ibge.gov.br, conferido 19/11/2026)
+      viaMar:true}};
+  const POP_BR=[190755799,203080756], POP_SC=[6248436,7610361];   // Censos 2010 e 2022 (IBGE)
+  const cidadeInfo=e=>CIDADES[norm(e.cidade)]||null;
+  const fotoLeg=(src)=>`<figure><img src="${src}" alt=""><figcaption>${legenda(src)}</figcaption></figure>`;
+  const lotesGal=e=>((e.fotos&&e.fotos.galeria)||[]).map(IMG).filter(Boolean);
+  const nEnt=a=>Math.max(1,a.entradaVezes||1);
+  // saldo devedor de um financiamento Price (parcela p, juros i ao mês) depois de k parcelas pagas, de n
+  const saldoPrice=(p,i,n,k)=>i>0?p*(1-Math.pow(1+i,-(n-k)))/i:p*(n-k);
+
+  function calendario(e,a,m){
+    const cub=taxaCorr(a.correcao), anos={};
+    for(const [mm,v,t] of pagamentos(a)){
+      const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+mm); const y=d.getFullYear();
+      const o=anos[y]||(anos[y]={ent:0,men:0,bal:0,out:0,tot:0,corr:0,n:0});
+      if(t==='ent') o.ent+=v; else if(t==='bal') o.bal+=v; else if(t==='men'){ o.men+=v; o.n++; } else o.out+=v;
+      o.tot+=v; o.corr+=v*Math.pow(1+cub,mm/12);
+    }
+    const ys=Object.keys(anos).sort(), z=v=>v?brl(v):'—', temBal=ys.some(y=>anos[y].bal), temOut=ys.some(y=>anos[y].out);
+    // prazo longo (ex.: 180x = 16 anos): agrupa os anos iguais do meio numa linha só, para caber na página
+    const linhas=[]; let i=0;
+    while(i<ys.length){ let j=i; const o=anos[ys[i]];
+      while(j+1<ys.length&&!o.ent&&!o.bal&&!o.out&&o.n===12&&anos[ys[j+1]].n===12&&!anos[ys[j+1]].ent&&!anos[ys[j+1]].bal&&!anos[ys[j+1]].out) j++;
+      if(j>i){ const g=ys.slice(i,j+1); linhas.push({rot:`${ys[i]} ${L('a','a')} ${ys[j]}`,k:g.length,o:{ent:0,men:o.men,bal:0,out:0,tot:o.tot,corr:g.reduce((s,y)=>s+anos[y].corr,0)/g.length},porAno:true}); }
+      else linhas.push({rot:ys[i],k:1,o});
+      i=j+1; }
+    return `<table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcelas','Cuotas')}</th>${temBal?`<th>${L('Reforços','Refuerzos')}</th>`:''}${temOut?`<th>${L('Outros','Otros')}</th>`:''}<th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
+      ${linhas.map(l=>`<tr><td>${l.rot}${l.porAno?`<small>${L('cada ano','cada año')}</small>`:''}</td><td>${z(l.o.ent)}</td><td>${z(l.o.men)}</td>${temBal?`<td>${z(l.o.bal)}</td>`:''}${temOut?`<td>${z(l.o.out)}</td>`:''}<td><b>${brl(l.o.tot)}</b></td>${cub?`<td>${brl(l.o.corr)}</td>`:''}</tr>`).join('')}
+      <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td>${temBal?`<td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td>`:''}${temOut?`<td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td>`:''}<td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
+    </tbody></table>`;
+  }
+
+  function capaLote(e,u,a,m){
+    const f=e.fotos||{}, cap=IMG(f.capa), pl=IMG(u.planta);
+    const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
+    const ficha=[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('de terreno','de terreno')}`:'',u.quadra?`${L('Quadra','Manzana')} ${String(u.quadra).padStart(2,'0')}`:''].filter(Boolean).join(' · ');
+    return `<div class="pp-pag">
+      <div class="pp-cab"><div><div class="pp-kick">${L('Proposta','Propuesta')}${P.cliente?` · ${L('para','para')} ${esc(P.cliente)}`:''}</div>
+        <h1>${e.nome}</h1><p>${[e.endereco,e.cidade?e.cidade+' / SC':''].filter(Boolean).join(' · ')}</p></div>
+        <div class="pp-uni"><span>${L('Lote','Lote')}</span><b>${u.unidade}</b></div></div>
+      <div class="pp-dupla">${cap?`<img src="${cap}" alt="">`:''}
+        <div><p class="pp-ficha">${ficha}</p>
+          ${e.fase?`<p>${e.fase}</p>`:''}
+          ${u.destaque?`<p class="pp-inc">📍 ${u.destaque}</p>`:''}
+          <div class="pp-total"><span>${L('Valor do lote','Valor del lote')}</span><b>${brlc(u.valor)}</b></div>
+          <table class="pp-tab"><tbody>${resumo(a).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
+          <p class="pp-obs">${a.correcao?L(`Parcelas corrigidas pelo ${esc(a.correcao)}.`,`Cuotas ajustadas por ${esc(a.correcao)}.`):''} ${a.amortizacao?esc(a.amortizacao)+'.':''} ${val?L(`<b>Proposta válida até ${val}</b>, sujeita à disponibilidade do lote e à aprovação da loteadora.`,`<b>Propuesta válida hasta ${val}</b>, sujeta a disponibilidad del lote y aprobación del desarrollador.`):L('Sujeita à disponibilidade do lote e à aprovação da loteadora.','Sujeta a disponibilidad del lote y aprobación del desarrollador.')}</p>
+        </div></div>
+      ${pl?`<div class="pp-planta"><h2>${L('Onde fica o seu lote','Dónde está su lote')}</h2><img class="larga" src="${pl}" alt=""><p class="pp-obs">${L('Ilustração da loteadora. Medidas e confrontações oficiais estão na planta do loteamento e na matrícula do lote.','Ilustración del desarrollador. Medidas oficiales en el plano del loteo y en la matrícula del lote.')}</p></div>`:''}
+    </div>`;
+  }
+
+  function pagLotePagamento(e,u,a,m){
+    const nE=nEnt(a), lt=e.loteamento||{}, f1=lt.fase1||null, val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
+    const vend=f1&&f1.lotes?f1.vendidos/f1.lotes:0;
+    const especial=u.condicaoEspecial??e.condicaoEspecial??!!e.validade;
+    const caixa=especial?`<div class="pp-vip"><div class="selo">★ ${L('CONDIÇÃO DE CAMPANHA','CONDICIÓN DE CAMPAÑA')} ★</div>
+        <h3>${L(`Entrada de ${brlc(m.entrada)}${nE>1?` em ${nE} vezes`:''}${a.mensais.n?` e a 1ª parcela só em ${mesRot(a.mensais.inicio)}`:''}`,`Anticipo de ${brlc(m.entrada)}${nE>1?` en ${nE} cuotas`:''}${a.mensais.n?` y la 1ª cuota recién en ${mesRot(a.mensais.inicio)}`:''}`)}</h3>
+        <div class="vip-nums q3"><div><span>${L('Entrada','Anticipo')}</span><b>${nE>1?`${nE} × ${brlc(Math.round(m.entrada/nE*100)/100)}`:brlc(m.entrada)}</b><em>${pct(m.entrada/u.valor,0)} ${L('do valor do lote','del valor del lote')}</em></div>
+          <div><span>${L('Parcelas','Cuotas')}</span><b>${a.mensais.n?`${a.mensais.n} × ${brlc(a.mensais.valor)}`:'—'}</b><em>${a.mensais.n?L(`a partir de ${mesRot(a.mensais.inicio)}`,`desde ${mesRot(a.mensais.inicio)}`):''}</em></div>
+          ${vend?`<div class="eco"><span>${L('1ª fase já vendida','1ª fase ya vendida')}</span><b>${pct(vend,1)}</b><em>${f1.vendidos} ${L('de','de')} ${f1.lotes} ${L('lotes','lotes')}</em></div>`:`<div class="eco"><span>${L('Válida até','Válida hasta')}</span><b>${val||'—'}</b></div>`}</div>
+        <p class="vip-txt">${L(`Condição especial de campanha${val?`, válida até <b>${val}</b>`:''}. ${vend?`A primeira fase do ${e.nome} já tem <b>${pct(vend,0)} dos lotes vendidos</b>: quem decide agora ainda escolhe entre os que restam. `:''}Infraestrutura pronta: você compra o lote e já pode construir.`,`Condición especial de campaña${val?`, válida hasta <b>${val}</b>`:''}. ${vend?`La primera fase de ${e.nome} ya tiene <b>${pct(vend,0)} de los lotes vendidos</b>: quien decide ahora todavía elige entre los que quedan. `:''}Infraestructura lista: usted compra el lote y ya puede construir.`)}</p>
+        <small>${vend?L('Vendas da 1ª fase: Jornal Razão, 13/11/2026 (dados da loteadora).','Ventas de la 1ª fase: Jornal Razão, 13/11/2026 (datos del desarrollador).'):''}</small></div>`:'';
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Proposta em detalhe','Propuesta en detalle')}</div>
+      <h1>${L('Como você paga','Cómo usted paga')}</h1>
+      <div class="pp-kpis">
+        <div><span>${L('Valor do lote','Valor del lote')}</span><b>${brl(u.valor)}</b><small>${u.area?brl(u.valor/u.area)+'/m²':''}</small></div>
+        <div><span>${L('Entrada','Anticipo')}</span><b>${brl(m.entrada)}</b><small>${nE>1?`${nE}× · ${mesRot(0)} ${L('a','a')} ${mesRot(nE-1)}`:L('na assinatura','a la firma')}</small></div>
+        <div><span>${L('Parcela mensal','Cuota mensual')}</span><b>${a.mensais.n?brlc(a.mensais.valor):'—'}</b><small>${a.mensais.n?`${a.mensais.n}× · ${L('1ª em','1ª en')} ${mesRot(a.mensais.inicio)}`:''}</small></div>
+        <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo+1} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
+      </div>
+      ${caixa}
+      <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
+      ${calendario(e,a,m)}
+      <p class="pp-obs">${a.correcao?L(`Parcelas corrigidas pelo ${esc(a.correcao)}; a última coluna estima a correção pelo ${nomeIdx(a.correcao)} (${pct(taxaCorr(a.correcao),1)} ao ano).`,`Cuotas ajustadas por ${esc(a.correcao)}; la última columna estima el ajuste con el ${nomeIdx(a.correcao)} (${pct(taxaCorr(a.correcao),1)} anual).`):''} ${a.juros?L(`As parcelas já incluem os juros do parcelamento (${pj(a.juros)} ao mês). Detalhes na próxima página.`,`Las cuotas ya incluyen el interés de la financiación (${pj(a.juros)} mensual). Detalles en la página siguiente.`):''}</p>
+    </div>`;
+  }
+
+  // juros e condições com transparência: valor do lote x total das parcelas, quitação antecipada e comparação das condições
+  function pagLoteJuros(e,u,a,m){
+    const c=conds(e,u)||{}, outras=Object.keys(c).filter(k=>c[k]&&typeof c[k]==='object').map(k=>{const p=copia(c[k]); return {p,m:metricas(p),sel:k===P.base}; });
+    const cdiL=CDI_LIQ(), i=a.juros/100, n=a.mensais.n, pm=a.mensais.valor, V=u.valor;
+    const ja=a.juros?jurosAno(a.juros):0, jurosTot=m.total-V, ic=taxaCorr(a.correcao), jef=(1+ja)*(1+ic)-1;   // custo efetivo: juros + índice (ex.: IPCA)
+    const quit=a.juros&&n?[24,60,120].filter(k=>k<n).map(k=>{ const s=saldoPrice(pm,i,n,k), tot=m.entrada+k*pm+s; return {k,s,tot,j:tot-V}; }):[];
+    const lin=o=>`<tr class="${o.sel?'dest':''}"><td style="text-align:left"><b>${esc(o.p.nome||'')}</b>${o.p.aConfirmar?' *':''}${o.sel?`<small>${L('condição desta proposta','condición de esta propuesta')}</small>`:''}</td><td>${nEnt(o.p)>1?`${nEnt(o.p)} × ${brlc(Math.round(o.p.entrada/nEnt(o.p)*100)/100)}`:brlc(o.p.entrada)}</td><td>${o.p.mensais.n?`${o.p.mensais.n} × ${brlc(o.p.mensais.valor)}`:'—'}</td><td>${o.p.juros?pj(o.p.juros)+L(' ao mês',' mensual'):L('sem juros','sin interés')}${o.p.correcao?`<small>+ ${esc(o.p.correcao)}</small>`:''}</td><td>${brl(o.m.corr)}</td><td><b>${brl(o.m.vp)}</b></td></tr>`;
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Transparência','Transparencia')}</div>
+      <h1>${L('Juros e condições, sem letra miúda','Interés y condiciones, sin letra chica')}</h1>
+      ${a.juros?`<p class="pp-lead">${L(`O parcelamento é direto com a loteadora, sem banco e sem análise de financiamento. As parcelas seguem a Tabela Price, com juros de <b>${pj(a.juros)} ao mês</b> (cerca de ${pct(ja,1)} ao ano) sobre o saldo${a.correcao?`, e o saldo é corrigido pelo <b>${esc(a.correcao)}</b> (${pct(ic,1)} nos últimos 12 meses): custo total estimado de <b>${pct(jef,1)} ao ano</b>`:''}. Mostramos abaixo quanto isso custa e como pagar menos.`,`La financiación es directa con el desarrollador, sin banco. Las cuotas siguen el sistema francés, con interés de <b>${pj(a.juros)} mensual</b> (cerca de ${pct(ja,1)} anual) sobre el saldo${a.correcao?`, más el ajuste por <b>${esc(a.correcao)}</b> (${pct(ic,1)} en 12 meses): costo total estimado de <b>${pct(jef,1)} anual</b>`:''}. Abajo mostramos cuánto cuesta y cómo pagar menos.`)}</p>
+      <div class="pp-kpis">
+        <div><span>${L('Valor do lote','Valor del lote')}</span><b>${brl(V)}</b><small>${L('preço de tabela','precio de lista')}</small></div>
+        <div><span>${L(`Total em ${n} parcelas`,`Total en ${n} cuotas`)}</span><b>${brl(m.total)}</b><small>${L('entrada + parcelas','anticipo + cuotas')}</small></div>
+        <div><span>${L('Juros, se levar até o fim','Interés, si llega al final')}</span><b>${brl(jurosTot)}</b><small>${L(`em ${Math.round((m.prazo+1)/12)} anos`,`en ${Math.round((m.prazo+1)/12)} años`)}</small></div>
+        <div><span>${L('Custo em valor de hoje','Costo en valor de hoy')}</span><b>${brl(m.vp)}</b><small>${L(`descontado pelo CDI líquido (${pct(cdiL,1)} a.a.)`,`descontado por el CDI neto (${pct(cdiL,1)} anual)`)}</small></div>
+      </div>
+      ${quit.length?`<h2>${L('Antecipe e pague menos: amortização sem juros','Anticipe y pague menos: amortización sin interés')}</h2>
+      <table class="pp-grade"><thead><tr><th style="text-align:left">${L('Se quitar o saldo depois de','Si cancela el saldo después de')}</th><th>${L('Saldo para quitar','Saldo a cancelar')}</th><th>${L('Total pago','Total pagado')}</th><th>${L('Juros pagos','Interés pagado')}</th></tr></thead><tbody>
+        ${quit.map(q=>`<tr><td style="text-align:left">${q.k/12} ${L('anos','años')} (${q.k} ${L('parcelas','cuotas')})</td><td>${brl(q.s)}</td><td>${brl(q.tot)}</td><td>${brl(q.j)}</td></tr>`).join('')}
+        <tr class="dest"><td style="text-align:left"><b>${L(`Até o fim (${n} parcelas)`,`Hasta el final (${n} cuotas)`)}</b></td><td>—</td><td><b>${brl(m.total)}</b></td><td><b>${brl(jurosTot)}</b></td></tr>
+      </tbody></table>${a.correcao?`<p class="pp-obs">${L(`Valores das parcelas sem a correção pelo ${esc(a.correcao)}, que é aplicada sobre o saldo ao longo do tempo.`,`Valores de las cuotas sin el ajuste por ${esc(a.correcao)}, que se aplica sobre el saldo con el tiempo.`)}</p>`:''}`:''}
+      <div class="pp-msg"><b>${cdiL>jef?L(`Hoje o CDI líquido (${pct(cdiL,1)} ao ano) rende mais que o custo do parcelamento (${pct(jef,1)} ao ano).`,`Hoy el CDI neto (${pct(cdiL,1)} anual) rinde más que el costo de la financiación (${pct(jef,1)} anual).`):L(`O custo do parcelamento (${pct(jef,1)} ao ano${a.correcao?`, juros + ${esc(a.correcao)}`:''}) está acima do CDI líquido de hoje (${pct(cdiL,1)} ao ano).`,`El costo de la financiación (${pct(jef,1)} anual${a.correcao?`, interés + ${esc(a.correcao)}`:''}) está por encima del CDI neto de hoy (${pct(cdiL,1)} anual).`)}</b>
+        <span>${cdiL>jef?L('Quem tem o dinheiro aplicado pode parcelar, deixar o resto rendendo e antecipar parcelas quando quiser.','Quien tiene el dinero invertido puede financiar, dejar el resto rindiendo y anticipar cuotas cuando quiera.'):L('Por isso vale a pena antecipar parcelas sempre que sobrar dinheiro: cada parcela antecipada sai sem os juros dela. Com o lote já seu, você constrói e paga no seu ritmo.','Por eso conviene anticipar cuotas siempre que sobre dinero: cada cuota anticipada sale sin su interés. Con el lote ya suyo, usted construye y paga a su ritmo.')}</span></div>`
+      :`<p class="pp-lead">${L('Esta condição não tem juros remuneratórios.','Esta condición no tiene interés.')}</p>`}
+      ${outras.length>1?`<h2>${L('Compare as condições disponíveis','Compare las condiciones disponibles')}</h2>
+      <table class="pp-grade pp-cmp"><thead><tr><th style="text-align:left">${L('Condição','Condición')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcelas','Cuotas')}</th><th>${L('Juros / correção','Interés / ajuste')}</th><th>${L('Total pago (estimado)','Total pagado (estimado)')}</th><th>${L('Custo em valor de hoje','Costo en valor de hoy')}</th></tr></thead><tbody>
+        ${outras.map(lin).join('')}</tbody></table>
+      <p class="pp-obs">${L(`"Total pago" inclui a correção estimada (IPCA ou CUB/SC dos últimos 12 meses). "Custo em valor de hoje" desconta cada pagamento pelo CDI líquido (${pct(cdiL,1)} ao ano): mostra quanto seria preciso ter aplicado hoje para pagar tudo, e serve para comparar as condições entre si.${outras.some(o=>o.p.aConfirmar)?' * Condição em confirmação com a loteadora.':''}`,`"Total pagado" incluye el ajuste estimado. "Costo en valor de hoy" descuenta cada pago por el CDI neto (${pct(cdiL,1)} anual) y sirve para comparar condiciones.${outras.some(o=>o.p.aConfirmar)?' * Condición en confirmación con el desarrollador.':''}`)}</p>`:''}
+      <p class="pp-obs">${L('Cálculo da consultoria a partir dos valores da campanha; os valores oficiais são os do contrato da loteadora.','Cálculo de la consultoría a partir de los valores de la campaña; los valores oficiales son los del contrato del desarrollador.')}</p>
+    </div>`;
+  }
+
+  function pagBairro(e){
+    const lt=e.loteamento||{}, f1=lt.fase1||{}, fotos=lotesGal(e).slice(0,6);
+    const kp=[lt.areaTotal?[L('Área total','Área total'),lt.areaTotal,lt.masterplan?L(`masterplan ${esc(lt.masterplan)}`,`masterplan ${esc(lt.masterplan)}`):'']:null,
+      lt.lotesTotal?[L('Lotes previstos','Lotes previstos'),lt.lotesTotal.toLocaleString('pt-BR'),L('em todas as fases','en todas las fases')]:null,
+      lt.moradores?[L('Moradores','Habitantes'),`~${lt.moradores.toLocaleString('pt-BR')}`,L('quando completo','cuando esté completo')]:null,
+      f1.lotes?[L('1ª fase','1ª fase'),`${f1.lotes} ${L('lotes','lotes')}`,f1.vendidos?L(`${pct(f1.vendidos/f1.lotes,1)} vendidos`,`${pct(f1.vendidos/f1.lotes,1)} vendidos`):'']:null].filter(Boolean);
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('O bairro','El barrio')}</div>
+      <h1>${L('Um bairro-cidade pronto para viver','Un barrio-ciudad listo para vivir')}</h1>
+      <p class="pp-lead">${L(`O ${e.nome} é um bairro planejado em ${e.cidade}${lt.areaTotal?`, com ${lt.areaTotal}`:''}: moradia, comércio, serviços, gastronomia e lazer no mesmo lugar, para viver a pé. A infraestrutura da 1ª fase já está pronta${e.entrega?`, com entrega oficial em ${fmtMesAno(e.entrega)}`:''}${lt.lotesTam?`. Lotes ${lt.lotesTam}`:''}.`,`${e.nome} es un barrio planificado en ${e.cidade}${lt.areaTotal?`, con ${lt.areaTotal}`:''}: vivienda, comercio, servicios, gastronomía y ocio en el mismo lugar. La infraestructura de la 1ª fase ya está lista.`)}</p>
+      ${kp.length?`<div class="pp-kpis">${kp.map(([t,b,s])=>`<div><span>${t}</span><b>${b}</b><small>${s}</small></div>`).join('')}</div>`:''}
+      ${lt.itens?.length?`<h2>${L('Infraestrutura do bairro','Infraestructura del barrio')}</h2><ul class="pp-lista pp-check">${lt.itens.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+      ${lt.elevacao?`<div class="pp-msg"><b>🛡️ ${L('Terreno elevado','Terreno elevado')}</b><span>${lt.elevacao}. ${L('Informação da loteadora.','Información del desarrollador.')}</span></div>`:''}
+      ${fotos.length?`<div class="pp-fotos">${fotos.map(fotoLeg).join('')}</div>`:''}
+      <p class="pp-obs">${L('Fontes: book institucional e informações da loteadora; Jornal Razão (13/11/2026 e 28/10/2026), ND+ e SCTODODIA. Imagens do próprio bairro, cedidas pela loteadora.','Fuentes: desarrollador, Jornal Razão (13/11/2026 y 28/10/2026), ND+ y SCTODODIA. Imágenes del propio barrio, cedidas por el desarrollador.')}</p>
+    </div>`;
+  }
+
+  function pagConstruir(e,u){
+    const set=IMG(e.fotos&&e.fotos.setorizacao), pad=(CUB.padroes&&CUB.padroes.itens)||[], cn=pad.find(x=>x[0]==='R1-N'), ca=pad.find(x=>x[0]==='R1-A');
+    const tams=[100,150,200], V=u.valor;
+    const usos=[['#f7f1b5',L('Residencial multifamiliar','Residencial multifamiliar'),L('casa única ou até 2 casas no mesmo lote','casa única o hasta 2 casas en el mismo lote')],
+      ['#e2b33c',L('Residencial unifamiliar','Residencial unifamiliar'),L('casa única','casa única')],
+      ['#ef8080',L('Uso misto','Uso mixto'),L('comércio + casa, prédio com lojas no térreo ou comercial','comercio + casa, edificio con locales en planta baja o comercial')],
+      ['#a64ca6',L('Uso misto comercial','Uso mixto comercial'),L('comércio geral e gastronomia','comercio general y gastronomía')]];
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Seu lote','Su lote')}</div>
+      <h1>${L('O que você pode fazer com o seu lote','Qué puede hacer con su lote')}</h1>
+      <div class="pp-set">
+        ${set?`<figure><img src="${set}" alt=""><figcaption>${L('Planta de setorização do bairro','Plano de sectorización del barrio')}</figcaption></figure>`:''}
+        <div>
+          <h2>${L('Cada quadra tem um uso definido','Cada manzana tiene un uso definido')}</h2>
+          <ul class="pp-usos">${usos.map(([c,t,s])=>`<li><i style="background:${c}"></i><b>${t}</b><span>${s}</span></li>`).join('')}</ul>
+          <p class="pp-obs">${L('O uso de cada quadra é definido no projeto do loteamento: as casas ficam entre casas, o comércio fica nas avenidas. É isso que protege o valor do seu lote no longo prazo.','El uso de cada manzana está definido en el proyecto: las casas quedan entre casas y el comercio en las avenidas. Eso protege el valor de su lote a largo plazo.')}</p>
+          <div class="pp-cards">
+            <div class="pp-card"><div class="t"><span>🏡</span><b>${L('Construir para morar','Construir para vivir')}</b></div><p>${L('Casa nova do seu jeito, num bairro com lago, parque, quadras e comércio a pé.','Casa nueva a su gusto, en un barrio con lago, parque, canchas y comercio a pie.')}</p></div>
+            <div class="pp-card"><div class="t"><span>🏘️</span><b>${L('Construir para vender ou alugar','Construir para vender o alquilar')}</b></div><p>${L('Casa pronta em bairro planejado vale mais que lote + obra. Nos lotes multifamiliares, dá para construir 2 casas no mesmo lote.','Una casa terminada en barrio planificado vale más que lote + obra. En lotes multifamiliares, se pueden construir 2 casas en el mismo lote.')}</p></div>
+            <div class="pp-card"><div class="t"><span>📈</span><b>${L('Guardar o terreno','Guardar el terreno')}</b></div><p>${L('Sem condomínio de prédio, sem inquilino: o terreno acompanha o crescimento do bairro e da cidade.','Sin expensas de edificio ni inquilino: el terreno acompaña el crecimiento del barrio y de la ciudad.')}</p></div>
+          </div>
+        </div>
+      </div>
+      ${cn?`<h2>${L('Quanto custa construir (CUB/SC)','Cuánto cuesta construir (CUB/SC)')}</h2>
+      <table class="pp-grade"><thead><tr><th style="text-align:left">${L('Casa térrea','Casa de una planta')}</th>${tams.map(t=>`<th>${t} m²</th>`).join('')}</tr></thead><tbody>
+        <tr><td style="text-align:left">${L('Obra, padrão normal','Obra, estándar normal')}<small>CUB R1-N ${brl2(cn[2])}/m²</small></td>${tams.map(t=>`<td>${brl(t*cn[2])}</td>`).join('')}</tr>
+        ${ca?`<tr><td style="text-align:left">${L('Obra, alto padrão','Obra, alto estándar')}<small>CUB R1-A ${brl2(ca[2])}/m²</small></td>${tams.map(t=>`<td>${brl(t*ca[2])}</td>`).join('')}</tr>`:''}
+        <tr class="dest"><td style="text-align:left"><b>${L('Lote + obra (padrão normal)','Lote + obra (estándar normal)')}</b></td>${tams.map(t=>`<td><b>${brl(V+t*cn[2])}</b></td>`).join('')}</tr>
+      </tbody></table>
+      <p class="pp-obs">${L(`CUB/SC de ${esc(CUB.padroes.ref)} (Sinduscon), custo médio por m² de construção. Não inclui projeto, fundações especiais, muros, piscina, ligações e taxas: o custo final costuma ficar acima do CUB. Recuos, altura e área construída permitida seguem o regulamento do loteamento e o plano diretor de ${e.cidade}.`,`CUB/SC de ${esc(CUB.padroes.ref)} (Sinduscon), costo promedio por m² de construcción. No incluye proyecto, fundaciones especiales, muros, piscina, conexiones ni tasas. Retiros, altura y área permitida siguen el reglamento del loteo y el plan director de ${e.cidade}.`)}</p>`:''}
+    </div>`;
+  }
+
+  function pagValorLote(e,u,V){
+    const C=cenariosVal().map(c=>c.k==='hist'?{...c,nome:L('Histórico do litoral vizinho','Histórico del litoral vecino'),fonte:L('média de Porto Belo (DWV) e Itapema (FipeZap) desde 2020','promedio de Porto Belo (DWV) e Itapema (FipeZap) desde 2020')}:c), mod=C[1];
+    const v=(c,h)=>V*Math.pow(1+c.taxa,h), ci=cidadeInfo(e), cdiL=CDI_LIQ(), lt=e.loteamento||{}, f1=lt.fase1||{};
+    const cres=(a)=>Math.round((a[1]/a[0]-1)*1000)/10;
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Simulação','Simulación')}</div>
+      <h1>${L('Quanto seu lote pode valer','Cuánto puede valer su lote')}</h1>
+      <p class="pp-lead">${L(`Partindo do valor do lote (${brl(V)}), projetamos a valorização em 5, 10 e 15 anos, em três cenários construídos com dados oficiais.`,`Partiendo del valor del lote (${brl(V)}), proyectamos la valorización en 5, 10 y 15 años, en tres escenarios construidos con datos oficiales.`)}</p>
+      <table class="pp-grade pp-val"><thead><tr><th style="text-align:left">${L('Cenário','Escenario')}</th><th>${L('ao ano','anual')}</th>${HORIZ.map(h=>`<th>${h} ${L('anos','años')}</th>`).join('')}</tr></thead><tbody>
+        ${C.map(c=>`<tr class="${c.k==='mod'?'dest':''}"><td style="text-align:left"><b>${c.nome}</b><small>${c.fonte}</small></td><td>${p1(c.taxa*100)}</td>${HORIZ.map(h=>`<td><b>${brl(v(c,h))}</b><small>+${brl(v(c,h)-V)}</small></td>`).join('')}</tr>`).join('')}
+      </tbody></table>
+      <div class="pp-msg"><b>${L(`Em 10 anos, no cenário moderado, seu lote pode valer ${brl(v(mod,10))}: ${Math.round((v(mod,10)/V-1)*100)}% a mais do que o valor de hoje.`,`En 10 años, en el escenario moderado, su lote puede valer ${brl(v(mod,10))}: ${Math.round((v(mod,10)/V-1)*100)}% más que el valor de hoy.`)}</b>
+        <span>${L('E se você construir, o patrimônio passa a ser lote + casa, que pode ser usada pela família, alugada ou vendida.','Y si construye, el patrimonio pasa a ser lote + casa, que puede usar la familia, alquilar o vender.')}</span></div>
+      <h2>${L(`Por que ${ci?ci.nome:e.cidade}`,`Por qué ${ci?ci.nome:e.cidade}`)}</h2>
+      <ul class="pp-lista">
+        ${ci?`<li>${L(`<b>Uma das cidades que mais crescem em SC:</b> a população de ${ci.nome} passou de ${ci.pop[0].toLocaleString('pt-BR')} (2010) para ${ci.pop[1].toLocaleString('pt-BR')} (2022), <b>+${cres(ci.pop).toLocaleString('pt-BR')}%</b> em 12 anos${ci.est?`, e o IBGE estima ${ci.est[1].toLocaleString('pt-BR')} em ${ci.est[0]}`:''}. No mesmo período, Santa Catarina cresceu ${cres(POP_SC).toLocaleString('pt-BR')}% e o Brasil, ${cres(POP_BR).toLocaleString('pt-BR')}% (IBGE, Censos 2010 e 2022).`,`<b>Una de las ciudades que más crecen en SC:</b> la población de ${ci.nome} pasó de ${ci.pop[0].toLocaleString('pt-BR')} (2010) a ${ci.pop[1].toLocaleString('pt-BR')} (2022), <b>+${cres(ci.pop).toLocaleString('pt-BR')}%</b> en 12 años. En el mismo período, Santa Catarina creció ${cres(POP_SC).toLocaleString('pt-BR')}% y Brasil, ${cres(POP_BR).toLocaleString('pt-BR')}% (IBGE).`)}</li>`:''}
+        ${f1.lotes&&f1.vendidos?`<li>${L(`<b>Demanda comprovada:</b> ${f1.vendidos} dos ${f1.lotes} lotes da 1ª fase já foram vendidos (${pct(f1.vendidos/f1.lotes,1)}), com a infraestrutura entregue antes do prazo do contrato.`,`<b>Demanda comprobada:</b> ${f1.vendidos} de los ${f1.lotes} lotes de la 1ª fase ya se vendieron (${pct(f1.vendidos/f1.lotes,1)}), con la infraestructura entregada antes del plazo del contrato.`)}</li>`:''}
+        <li>${L(`<b>Perto do litoral mais valorizado do Brasil:</b> Itapema tem um dos m² mais caros do país no FipeZap (${brl(it[LAST])}/m², ${p1(cagrItapema()*100)} de alta média ao ano desde dez/2020). Com cada vez menos terreno perto do mar, a procura se espalha para as cidades vizinhas.`,`<b>Cerca del litoral más valorizado de Brasil:</b> Itapema tiene uno de los m² más caros del país en el FipeZap (${brl(it[LAST])}/m², ${p1(cagrItapema()*100)} de suba promedio anual desde dic/2020). Con cada vez menos terreno cerca del mar, la demanda se extiende a las ciudades vecinas.`)}</li>
+        <li>${L(`<b>Custo de construir sobe sempre:</b> o CUB/SC subiu ${p1(CUB.v12m)} em 12 meses. Quanto mais caro construir, mais vale o terreno pronto, com infraestrutura.`,`<b>El costo de construir siempre sube:</b> el CUB/SC subió ${p1(CUB.v12m)} en 12 meses. Cuanto más caro construir, más vale el terreno listo, con infraestructura.`)}</li>
+        <li>${L(`<b>Para comparar:</b> ${brl(V)} no CDI líquido de IR (${pct(cdiL,1)} ao ano hoje) chegariam a ${brl(V*Math.pow(1+cdiL,10))} em 10 anos, mas sem o terreno e sem a possibilidade de construir.`,`<b>Para comparar:</b> ${brl(V)} en el CDI neto (${pct(cdiL,1)} anual hoy) llegarían a ${brl(V*Math.pow(1+cdiL,10))} en 10 años, pero sin el terreno ni la posibilidad de construir.`)}</li>
+      </ul>
+      <p class="pp-obs">${L(`${e.cidade} não tem índice oficial de preço de terrenos: os cenários usam o custo de construir (CUB/SC) e a valorização do litoral vizinho como referência. Projeção, não promessa: rentabilidade passada não garante rentabilidade futura. Valores sem descontar inflação, custos de venda e impostos.`,`${e.cidade} no tiene índice oficial de precios de terrenos: los escenarios usan el costo de construir (CUB/SC) y la valorización del litoral vecino como referencia. Proyección, no promesa. Valores sin descontar inflación, costos de venta ni impuestos.`)}</p>
+    </div>`;
+  }
+
+  function pagLocalLote(e,hoje){
+    const lt=e.loteamento||{}, ds=lt.distancias||[], ci=cidadeInfo(e), mapa=IMG(e.fotos&&e.fotos.mapa);
+    const usadas=lotesGal(e).slice(0,6), gal=lotesGal(e).filter(s=>!usadas.includes(s)).slice(0,3);
+    return `<div class="pp-pag">
+      <div class="pp-kick">${L('Localização','Ubicación')}</div>
+      <h1>${L(`${e.cidade}: entre Florianópolis e Balneário Camboriú`,`${e.cidade}: entre Florianópolis y Balneário Camboriú`)}</h1>
+      <p><b>${[e.endereco,e.cidade?e.cidade+' / SC':''].filter(Boolean).join(' · ')}</b></p>
+      ${mapa?`<div class="pp-loc baixo"><img src="${mapa}" alt=""></div><p class="pp-obs">${L('Masterplan do bairro sobre a foto de satélite (imagem da loteadora; satélite © 2024 Airbus).','Masterplan del barrio sobre la foto satelital (imagen del desarrollador; satélite © 2024 Airbus).')}</p>`:''}
+      ${ds.length?`<h2>${L('Distâncias de carro','Distancias en auto')}</h2><div class="pp-dist">${ds.map(([n,km,min])=>`<div><span>${n}</span><b>≈ ${km} km</b><small>~${min} min</small></div>`).join('')}</div>
+      <p class="pp-obs">${L('Distâncias pela estrada, a partir da Av. Flores de Sal (OpenStreetMap/OSRM); tempos sem trânsito.','Distancias por ruta desde la Av. Flores de Sal (OpenStreetMap/OSRM); tiempos sin tránsito.')}</p>`:''}
+      ${ci&&ci.viaMar?`<div class="pp-cards">
+        <div class="pp-card"><div class="t"><span>🛤️</span><b>Via Mar</b></div><div class="n">${L('145 km · 6 faixas','145 km · 6 carriles')}</div><p>${L('Nova rodovia litorânea do Governo de SC, paralela à BR-101, de Joinville à Grande Florianópolis. O trecho final liga a região entre Tijucas e Biguaçu ao Contorno Viário da Grande Florianópolis.','Nueva ruta costera del Gobierno de SC, paralela a la BR-101, de Joinville a la Gran Florianópolis. El tramo final une la zona entre Tijucas y Biguaçu con el Contorno Vial de la Gran Florianópolis.')}</p><small>NSC Total, CREA-SC</small></div>
+        <div class="pp-card"><div class="t"><span>✈️</span><b>${L('BR-101 e 2 aeroportos','BR-101 y 2 aeropuertos')}</b></div><p>${L('Acesso pela SC-410 até a BR-101 duplicada, entre os aeroportos internacionais de Florianópolis e Navegantes.','Acceso por la SC-410 hasta la BR-101 (autopista), entre los aeropuertos internacionales de Florianópolis y Navegantes.')}</p><small>${L('distâncias acima','distancias arriba')}</small></div>
+      </div>`:''}
+      ${gal.length?`<div class="pp-fotos">${gal.map(fotoLeg).join('')}</div>`:''}
+      <div class="pp-rod"><b>${esc(assinatura())}</b><br>${L(`Proposta preparada em ${hoje}. Imagens do bairro cedidas pela loteadora. Valores e condições sujeitos à confirmação no contrato.`,`Propuesta preparada el ${hoje}. Imágenes del barrio cedidas por el desarrollador. Valores y condiciones sujetos a confirmación en el contrato.`)}</div>
+    </div>`;
+  }
+
+  function pdfLote(){
+    const {e,u}=P, a=P.aj, m=metricas(a), hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
+    out.innerHTML=capaLote(e,u,a,m)+pagLotePagamento(e,u,a,m)+pagLoteJuros(e,u,a,m)+pagBairro(e)+pagConstruir(e,u)+pagValorLote(e,u,u.valor)+pagLocalLote(e,hoje);
+    marcarPaginas(out,hoje);
+    const agora=new Date(), hora=`${String(agora.getDate()).padStart(2,'0')}-${String(agora.getMonth()+1).padStart(2,'0')} ${String(agora.getHours()).padStart(2,'0')}h${String(agora.getMinutes()).padStart(2,'0')}`;
+    const nome=(`Proposta ${txt(e.nome)} Lote ${u.unidade}${P.cliente?' - '+P.cliente:''} ${hora}`.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]+/g,'').replace(/\s+/g,' ').replace(/^[.\s]+/,'').trim().slice(0,90)||'Proposta')+'.pdf';
+    gerarArquivo(nome);
+  }
+
   /* ---------- PDF (só a proposta final) ---------- */
   function pdf(){
+    if(LOTE(P.e)) return pdfLote();
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
     const cap=IMG(f.capa), pl=IMG(u.planta), usadas=fotosLazer(e).map(x=>x[0]), gal=(f.galeria||[]).map(IMG).filter(s=>s&&!usadas.includes(s)).slice(0,6), mapa=IMG(f.mapa), mapaRua=IMG(f.mapaRua);
     const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
