@@ -511,7 +511,7 @@
       o.tot+=v*f;
     }
     const z=v=>v?brl(v):'—';
-    return `<table class="pp-grade pp-cal"><thead><tr><th style="text-align:left">${L('Ano do contrato','Año del contrato')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcela mensal','Cuota mensual')}</th><th>${L('Parcelas','Cuotas')}</th><th>${L('Total no ano','Total en el año')}</th></tr></thead><tbody>
+    return `<table class="pp-grade pp-cal"><thead><tr><th style="text-align:left">${L('Ano do contrato','Año del contrato')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcela estimada','Cuota estimada')}</th><th>${L('Parcelas','Cuotas')}</th><th>${L('Total no ano (estimado)','Total en el año (estimado)')}</th></tr></thead><tbody>
       ${per.map((o,k)=>o?`<tr><td style="text-align:left">${k+1}º · ${mesRot(k*12)} ${L('a','a')} ${mesRot(k*12+11)}</td><td>${z(o.ent)}</td><td>${o.n?brlc(o.men):'—'}${k&&o.n?`<small>+${pct(Math.pow(1+r,k)-1,0)}</small>`:''}</td><td>${o.n||'—'}</td><td><b>${brl(o.tot)}</b></td></tr>`:'').join('')}
       <tr class="tot"><td style="text-align:left">${L('Total estimado','Total estimado')}</td><td>${z(m.entrada)}</td><td>—</td><td>${a.mensais.n||'—'}</td><td>${brl(m.corr)}</td></tr>
     </tbody></table>`;
