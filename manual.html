@@ -50,13 +50,14 @@ a{color:var(--sea)}
 <header><div class="in">
   <span class="eyebrow">Investir na Costa Esmeralda</span>
   <h1>Manual de uso, seção por seção</h1>
-  <p>Como o site está organizado, o que cada número significa e como apresentar ao cliente. <a href="./">Abrir o site</a> · Atualizado em 15/11/2026.</p>
+  <p>Como o site está organizado, o que cada número significa e como apresentar ao cliente. <a href="./">Abrir o site</a> · Atualizado em 19/11/2026.</p>
 </div></header>
 
 <div class="wrap">
 <nav class="toc" aria-label="Sumário">
   <a href="#comecar">Antes de começar</a>
   <a href="#organizacao">Como o site está organizado</a>
+  <a class="sub" href="#lote">Proposta de lote (loteamento)</a>
   <a href="#atendimento">Modo atendimento</a>
   <a href="#valores">Como digitar valores</a>
   <a href="#botoes">Botões em todas as seções</a>
@@ -96,6 +97,19 @@ a{color:var(--sea)}
     <b>Tenho "X" para investir</b>: digite quanto o cliente tem para a entrada, quanto paga por mês e, se quiser, um extra por ano (13º, bônus, safra). Para cada condição o site diz <b>✅ cabe</b>, <b>🟡 cabe com ajuste</b> (mesmo valor total, com o pagamento redistribuído, o que depende de a incorporadora aceitar) ou <b>❌ não cabe</b> (quanto falta por mês ou de entrada). O botão "Montar proposta com este fluxo" abre a proposta já preenchida.</li>
   <li><b>Proposta para o cliente:</b> a proposta inicial vem pronta da tabela. Na ajustada você mexe à vontade e a tela compara com a inicial (verde = melhor para o cliente, vermelho = pior), inclusive pelo "custo real em valor de hoje". "📄 Gerar PDF para o cliente" cria o <b>arquivo PDF</b> (o nome traz data e hora, para não confundir com um PDF antigo) com até 7 páginas: (1) valores e planta; (2) <b>proposta em detalhe</b>, com calendário de pagamentos ano a ano, correção estimada pelo CUB, a caixa <b>★ OPORTUNIDADE VIP ★</b> (R$/m² da unidade x média da cidade: Porto Belo pela DWV, Itapema pelo FipeZap; outras cidades não mostram a caixa) e até 6 fotos do lazer com legenda; (3) <b>quanto o imóvel pode valer</b> em 5, 10 e 15 anos, em 3 cenários (Conservador = CUB/SC 12 meses; Histórico = média Porto Belo DWV + Itapema FipeZap desde 2020; Moderado = meio-termo), mais o bloco <b>"Quem já escolheu a Costa Esmeralda"</b> (8 nomes com fonte na imprensa, sem fotos e com aviso de que não recomendam o imóvel); (4) <b>quanto pode render</b>, pela <b>localização do imóvel</b>: a temporada usa o Airbnb da cidade do empreendimento ajustado pelo número de quartos da unidade (AirROI: Porto Belo e Itapema); o aluguel anual usa o bairro (A Corrida dos Bairros: R$/m² × área; Balneário Perequê = levantamento da consultoria, R$ 4.200/mês para ~88 m², faixa R$ 3.700 a R$ 4.500). Bairro sem anúncios suficientes usa a média da cidade, e o PDF avisa. Cidade sem dados (ex.: Bombinhas) usa a referência geral, também com aviso. Mostra ainda o patrimônio somando imóvel + aluguel; (5) <b>Porto Belo em transformação</b>: grandes projetos, saúde e mobilidade, com fontes; (6) <b>Orla do Perequê: o que vem por aí</b>, só para imóveis de Porto Belo: mapa das obras (OpenStreetMap, com o pino do empreendimento quando houver) e a situação de cada uma (molhes, alargamento da faixa de areia, nova orla, passarela até a Meia Praia, Píer Oporto, avenidas); (7) lazer e mapa da rua com a distância do mar. No celular, toque em <b>"📤 Enviar"</b> e escolha o WhatsApp: o arquivo vai anexado. No computador, o PDF é baixado sozinho (pasta Downloads): clique em <b>"💬 Abrir WhatsApp Web"</b>, entre na conversa do cliente e arraste o arquivo para dentro dela (ou clipe 📎 → Documento). Nada fica salvo: ao recarregar ou clicar em Sair, tudo some.</li>
 </ul>
+
+<h3 id="lote">Proposta de lote (loteamento)</h3>
+<p>Para loteamentos (hoje o <b>Flores de Sal</b>, em Tijucas), a Área restrita mostra os lotes <b>por quadra</b> (o filtro troca "pavimento" por "Quadra"), com área do terreno, valor de tabela e R$/m² de terreno. A proposta e o botão "📄 Gerar PDF para o cliente" funcionam igual, mas o PDF é próprio para lote, com 7 páginas:</p>
+<ol>
+  <li><b>Capa:</b> quadra, lote, metragem, valor, condição escolhida e "Onde fica o seu lote" (o lote marcado na arte da loteadora ou, se não houver, a planta de setorização com as quadras coloridas).</li>
+  <li><b>Como você paga:</b> entrada (inclusive dividida mês a mês, como os 10% em 3x da campanha), parcelas e o calendário ano a ano. Mostra a caixa <b>"Condição de campanha"</b> com quanto da 1ª fase já foi vendido.</li>
+  <li><b>Juros e condições, sem letra miúda:</b> deixa claro que o parcelamento é direto com a loteadora (Tabela Price 0,85% ao mês + IPCA uma vez por ano), o custo total por ano comparado com o CDI líquido, quanto o cliente paga se quitar em 2, 5 ou 10 anos (amortização antecipada sem juros) e a comparação entre 180x, 36x e 12x.</li>
+  <li><b>O bairro:</b> números do loteamento, infraestrutura já entregue (asfalto, rede elétrica subterrânea, esgoto tratado, parque, quadras), a elevação do terreno e fotos.</li>
+  <li><b>O que fazer com o lote:</b> uso de cada setor (unifamiliar, multifamiliar, comercial/vertical) e quanto custa construir uma casa de 100, 150 ou 200 m² pelo CUB/SC.</li>
+  <li><b>Quanto o lote pode valer:</b> 3 cenários e "por que Tijucas" (população pelo IBGE, Via Mar).</li>
+  <li><b>Localização:</b> distâncias de carro (mapa de estradas), fotos e seu contato.</li>
+</ol>
+<p class="note">Condições do Flores de Sal (tabela oficial do portal Urbani de 19/11/2026): <b>12x</b> = 10% + 12x sem juros e sem IPCA; <b>36x</b> = 10% + 36x sem juros, com IPCA; <b>60 a 180x</b> = 10% + Tabela Price 0,85% ao mês, com IPCA anual. A loteadora pode mudar a tabela sem aviso: confirme a disponibilidade do lote antes de enviar a proposta.</p>
 
 <h2 id="organizacao">Como o site está organizado</h2>
 <h3>Porta de entrada: "O que você procura?"</h3>
@@ -338,6 +352,8 @@ a{color:var(--sea)}
   <tr><td>Aluguel anual</td><td>FipeZap Locação (Florianópolis)</td><td>Manual</td></tr>
   <tr><td>Soja</td><td>Grão Direto e Cepea</td><td>Todo dia útil às 19h</td></tr>
   <tr><td>População</td><td>IBGE (Censos 2010 e 2022, estimativa 2025)</td><td>Fixo</td></tr>
+  <tr><td>Lotes e condições do Flores de Sal</td><td>Tabela de vendas do portal da Urbani Cidades</td><td>Manual, quando a loteadora atualizar</td></tr>
+  <tr><td>Distâncias do loteamento</td><td>Mapa de estradas (OpenStreetMap / OSRM), não em linha reta</td><td>Fixo</td></tr>
   <tr><td>Impostos</td><td>Leis citadas em cada seção</td><td>Revisar quando a lei mudar</td></tr>
 </table></div>
 <p class="note">Distâncias e tempos de viagem são aproximados. Simulações são ilustrativas e não garantem rentabilidade.</p>
@@ -361,6 +377,9 @@ a{color:var(--sea)}
   <tr><td>"E se eu só comprar e esperar valorizar?"</td><td>Com a Selic alta, nesse caso o CDI costuma ganhar. O site mostra isso no quadro "Quando o CDI ganha". O imóvel compensa quando gera renda, principalmente na temporada.</td></tr>
   <tr><td>"Esses números de temporada são reais?"</td><td>São a média de Porto Belo no Airbnb (AirROI). A média inclui imóveis mal administrados, então um imóvel bem gerido costuma ficar acima.</td></tr>
   <tr><td>"Já não subiu demais?"</td><td>Mostre "Já subiu demais?" em A Região: o custo de construir (CUB) sobe todo ano, e Porto Belo ainda está abaixo de Itapema e Balneário Camboriú.</td></tr>
+  <tr><td>"O lote alaga?" (Flores de Sal)</td><td>Segundo a loteadora, com a terraplanagem o bairro ficou cerca de 4 m acima do nível de Tijucas e 7 m acima do nível do mar. Não há laudo para mostrar: apresente como informação da loteadora, sem prometer.</td></tr>
+  <tr><td>"0,85% ao mês é caro?"</td><td>Somando o IPCA, o custo fica perto de 15,8% ao ano, acima do CDI líquido. A página 3 do PDF mostra isso sem esconder. O ponto a favor: não tem banco nem análise de crédito, e cada parcela antecipada sai sem juros. Se o cliente tem caixa, o 12x ou o 36x sem juros saem mais baratos.</td></tr>
+  <tr><td>"O book fala em 70 mil habitantes."</td><td>A estimativa oficial do IBGE para Tijucas em 2025 é 58.695. O PDF usa o número do IBGE, porque o cliente pode conferir.</td></tr>
 </table></div>
 
 <h2 id="glossario">Glossário</h2>
