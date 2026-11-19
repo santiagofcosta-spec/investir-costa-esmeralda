@@ -1055,6 +1055,78 @@
    "entrega": "entrega 02/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-19 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.45,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.2,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 122.9,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.7,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 140.0,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-19 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.85,
+   "antes": null,
+   "cidade": "Colorado do Oeste",
+   "uf": "RO",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -1062,8 +1134,8 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-19 08:05",
- "lido": "2026-11-19 08:05",
+ "verificado": "2026-11-19 10:05",
+ "lido": "2026-11-19 10:05",
  "resumo": {
   "dia": "2026-11-19",
   "cidades": {
@@ -1073,7 +1145,7 @@
      "compra_abertura": 133.4
     },
     "2027": {
-     "compra_max": 125.5,
+     "compra_max": 140.0,
      "compra_abertura": 125.5
     },
     "Disponível": {
