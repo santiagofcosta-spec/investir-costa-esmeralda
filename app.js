@@ -869,6 +869,7 @@ function renderProjAgro(liq,n,c){
    O arquivo dados/tabelas.enc.json é gerado por scripts/cifrar_tabelas.py. A senha nunca sai do navegador
    e as tabelas abertas ficam só na memória desta aba (somem ao recarregar ou ao clicar em Sair). */
 let TAB=null, cEmp=null, cPav='*', cUni=null, ENC=null, USUARIO=null;
+let CHAVE_TAB=null;   // chave das tabelas (formato 2), só na memória desta página; abre também as praças (campanhas.js)
 const b64=s=>Uint8Array.from(atob(s),ch=>ch.charCodeAt(0));
 const utf8=s=>new TextEncoder().encode(s);
 // formato 2 (18/11/2026): tabelas cifradas com uma chave aleatória; a chave vai cifrada uma vez por corretor (com a senha dele).
@@ -898,11 +899,11 @@ async function abrirTabelas(senha,email){
     try{ bruta=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(u.iv),additionalData:utf8(u.id)},await chaveDaSenha(senha,u.salt,u.iter),b64(u.ck)); }catch{ throw new Error('senha'); }
     const k=await crypto.subtle.importKey('raw',bruta,'AES-GCM',false,['decrypt']);
     claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv),additionalData:utf8('tabelas-v2')},k,b64(e.ct));
-    USUARIO=u;
+    USUARIO=u; CHAVE_TAB=k;
   }else{
     const chave=await chaveDaSenha(senha,e.salt,e.iter);
     try{ claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},chave,b64(e.ct)); }catch{ throw new Error('senha'); }
-    USUARIO=null;
+    USUARIO=null; CHAVE_TAB=null;
   }
   return limparTextos(JSON.parse(new TextDecoder().decode(claro)));
 }
@@ -1606,7 +1607,7 @@ $('formLogin').addEventListener('submit',e=>{ e.preventDefault(); entrarCorretor
 $('cEmp').addEventListener('change',e=>{ cEmp=e.target.value; cPav='*'; cUni=null; renderCorretor(); });
 $('cPav').addEventListener('change',e=>{ cPav=e.target.value; renderCorretor(); });
 $('tblUnidades').addEventListener('click',e=>{ const tr=e.target.closest('tr[data-i]'); if(tr) usarUnidade(+tr.dataset.i); });
-$('btnSair').addEventListener('click',()=>{ TAB=null; cUni=null; USUARIO=null; ENC=null; aplicarContato(null); $('loginMsg').textContent=L('Você saiu. As tabelas foram apagadas desta tela.','Usted salió. Las tablas se borraron de esta pantalla.'); renderCorretor(); });
+$('btnSair').addEventListener('click',()=>{ TAB=null; cUni=null; USUARIO=null; ENC=null; CHAVE_TAB=null; aplicarContato(null); $('loginMsg').textContent=L('Você saiu. As tabelas foram apagadas desta tela.','Usted salió. Las tablas se borraron de esta pantalla.'); renderCorretor(); });
 document.querySelectorAll('[data-ir]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.ir)));
 $('sUF').addEventListener('change',e=>{ const uf=e.target.value, est=D.soja.estados?.[uf], det=detalhadas().find(c=>c.uf===uf);
   const nome=det?.nome||est?.cidades?.[0]?.nome||munUF(uf)[0]?.[0]||''; selecionarCidade(uf,nome); });

@@ -1443,6 +1443,11 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
       <p class="note" id="loginMsg" aria-live="polite"></p>
     </form>
     <div id="areaCorretor" class="stack" hidden>
+      <div class="seg corr-modo" id="corrModo" role="group" aria-label="Área restrita" hidden>
+        <button type="button" data-modo="emp" aria-pressed="true" data-es="Emprendimientos">Empreendimentos</button>
+        <button type="button" data-modo="camp" aria-pressed="false" data-es="Campañas por plaza">Campanhas por praça</button>
+      </div>
+      <div class="panel camp" id="campBox" hidden></div>
       <div class="filtro panel">
         <div class="f2"><label for="cEmp" data-es="Emprendimiento">Empreendimento</label><div class="in"><select id="cEmp"></select></div></div>
         <div class="f2"><label for="cPav" data-es="Torre / piso">Torre / pavimento</label><div class="in"><select id="cPav"></select></div></div>
@@ -1527,10 +1532,11 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 </a>
 <script src="dados/dados.js"></script>
 <script src="dados/referencias.js?v=20261118h"></script>
-<script src="app.js?v=20261119a"></script>
+<script src="app.js?v=20261120a"></script>
 <script src="v3.js?v=20261118h"></script>
 <script src="avisos.js?v=20261118h"></script>
 <script src="proposta.js?v=20261119d"></script>
 <script src="vitrine.js?v=20261118h"></script>
+<script src="campanhas.js?v=20261120a"></script>
 </body>
 </html>

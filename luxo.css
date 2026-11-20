@@ -131,3 +131,50 @@ footer,.rodape,.fontes{color:#A1A1AA}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .btn-cta::after,.wa::after{display:none}
 }
+
+/* ===== Área restrita: Campanhas por praça (campanhas.js) ===== */
+.corr-modo{align-self:flex-start}
+.corr-modo button{padding:9px 16px;font-size:13px}
+#areaCorretor.modo-camp > :not(#corrModo):not(#campBox){display:none!important}
+.camp-filtro{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.camp-busca{flex:1 1 260px;min-width:0}
+.camp-busca input{width:100%}
+.camp-atalhos{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.camp-chip{appearance:none;border:1px solid var(--glass-line);background:rgba(212,175,55,.08);color:var(--gold-ink);border-radius:999px;padding:6px 12px;font:600 12px var(--f-body);cursor:pointer}
+.camp-cid{font-family:var(--f-display);font-weight:400;margin:14px 0 10px}
+.camp-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.camp-card{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:var(--surface2)}
+.camp-card.on{border-color:var(--gold)}
+.camp-st{font:600 11px var(--f-body);letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.camp-st.ok{background:var(--good-bg);color:var(--good)}
+.camp-st.pesq{background:rgba(212,175,55,.14);color:var(--gold-ink)}
+.camp-st.nao{background:rgba(161,161,170,.14);color:var(--muted)}
+.camp-erro{color:var(--bad)}
+.camp-mat{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+.camp-cab{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:flex-start}
+.camp-cab h3{font-family:var(--f-display);font-weight:400;margin:6px 0 2px}
+.camp-mapa{height:420px;border-radius:12px;overflow:hidden;margin:12px 0 6px;border:1px solid var(--line);background:#e8e4da}
+.camp-mapa.sem{height:auto;padding:12px;background:var(--surface2)}
+.camp-mapa .leaflet-popup-content{color:#1E212C}
+.camp-leg{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}
+.camp-leg span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:var(--c);vertical-align:-1px}
+.camp-lista{margin:10px 0}
+.camp-lista ul,.camp-conf{list-style:none;padding:0;margin:8px 0;font-size:13px}
+.camp-lista li,.camp-conf li{padding:6px 0;border-bottom:1px solid var(--line)}
+.camp-lista .sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.camp-h{font-family:var(--f-display);font-weight:400;font-size:20px;margin:20px 0 8px}
+.camp-prio{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.camp-bloco{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0;background:var(--surface2)}
+.camp-bloco h4{margin:0 0 4px;font-size:15px}
+.camp-copia{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:13px}
+.camp-check{list-style:none;padding:0;margin:10px 0;font-size:13px}
+.camp-check li{padding:4px 0}
+.camp-aviso{border:1px dashed var(--glass-line);border-radius:10px;padding:10px}
+.destaque-camp{border-left:3px solid var(--gold);padding:10px 12px;background:rgba(212,175,55,.06);border-radius:0 10px 10px 0;margin:8px 0}
+.camp-tit td{vertical-align:top}
+.btn.mini{padding:3px 9px;font-size:11px;margin-left:6px}
+.camp-down{margin-top:14px}
+@media (max-width:600px){.camp-mapa{height:320px}.camp-copia{flex-direction:column;align-items:flex-start}}
+.camp-busca input{text-align:left}
+.camp-tit{width:100%;table-layout:fixed}
+.camp-tit th,.camp-tit td{text-align:left!important;white-space:normal}
