@@ -348,6 +348,92 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 .pp-pdf .pp-pag{padding:30px 34px;background:#fff}
 .pp-pdf .pp-pag{min-height:0}
 .pp-pdf,.pp-pdf *{letter-spacing:normal!important;font-variant-numeric:normal!important;font-feature-settings:normal!important;text-rendering:auto!important}
+/* ===== Proposta Prisma Esmeralda (proposta.js, pdfPrisma): esmeralda noturna + ouro champanhe =====
+   Valores grandes em Plus Jakarta fina (no PDF a Playfair perde os números alinhados). */
+.pp-pdf .pz{min-height:1075px;box-sizing:border-box}
+.pp .pz-escura{background:radial-gradient(120% 90% at 80% 0%,#134238 0%,#0B231F 55%,#071613 100%)!important}
+.pp .pz-escura p,.pp .pz-escura td,.pp .pz-escura b,.pp .pz-escura span,.pp .pz-escura div,.pp .pz-escura h1{color:#EEE8DA}
+.pp .pz-escura .pp-marca{display:none}
+.pp .pz-escura .pp-topo{border-color:rgba(212,175,55,.25)}
+.pp .pz-escura .pp-topo span,.pp .pz-escura .pp-excl{color:#8FA39B!important;border-color:rgba(212,175,55,.2)}
+.pp .pz-kick{font-size:10px;letter-spacing:.28em!important;text-transform:uppercase;color:#D4AF37!important;font-weight:600}
+.pp .pz-h1{font-family:var(--f-display,Georgia,serif);font-weight:400;font-size:46px;line-height:1.08;margin:8px 0 6px;color:#EEE8DA}
+.pp .pz-h1-m{font-size:25px;line-height:1.2;margin:4px 0}
+.pp .pz-sub{font-size:13px;color:#C9C3B4!important;margin:0}
+.pp .pz-lead{font-size:12.5px;line-height:1.55;color:#C9C3B4!important;max-width:640px;margin:4px 0 0}
+.pp-pdf .pz-capa{padding:0!important;position:relative;display:flex;flex-direction:column}
+.pp .pz-hero{height:690px;background-size:cover;background-position:center;position:relative}
+.pp .pz-hero-grad{position:absolute;left:0;top:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(7,22,19,.55) 0%,rgba(7,22,19,0) 26%,rgba(11,35,31,.55) 72%,#0B231F 100%)}
+.pp .pz-topo-capa{position:absolute;top:30px;left:40px;z-index:3}
+.pp .pz-capa-txt{padding:0 44px 34px;margin-top:-150px;position:relative;z-index:2}
+.pp .pz-ficha{display:flex;margin:22px 0 0;border-top:1px solid rgba(212,175,55,.38);border-bottom:1px solid rgba(212,175,55,.38)}
+.pp .pz-ficha div{flex:1;padding:12px 0}
+.pp .pz-ficha div+div{border-left:1px solid rgba(212,175,55,.25);padding-left:18px}
+.pp .pz-ficha span,.pp .pz-valor span{display:block;font-size:9.5px;letter-spacing:.24em!important;text-transform:uppercase;color:#8FA39B!important}
+.pp .pz-ficha b{display:block;font-size:23px;font-weight:300;color:#EEE8DA;margin-top:2px}
+.pp .pz-valor{margin:24px 0 6px}
+.pp .pz-valor b{display:block;font-weight:200;font-size:54px;color:#D4AF37!important;line-height:1.05}
+.pp .pz-valor small{font-size:12px;color:#8FA39B!important}
+.pp .pz-nota{font-size:10.5px;color:#8FA39B!important;margin-top:14px;line-height:1.5}
+.pp .pz-assin,.pp .pz-topo-capa{display:flex;align-items:center;gap:12px}
+.pp .pz-wm{font-family:var(--f-display,Georgia,serif);font-size:19px;white-space:nowrap;color:#0B231F}
+.pp .pz-wm i{color:#B08F1F;font-style:italic}
+.pp .pz-escura .pz-wm,.pp .pz-fecho .pz-wm,.pp .pz-topo-capa .pz-wm{color:#EEE8DA!important}
+.pp .pz-escura .pz-wm i,.pp .pz-fecho .pz-wm i,.pp .pz-topo-capa .pz-wm i{color:#D4AF37!important}
+.pp .pz-fio{display:block;width:1px;height:30px;background:#D4AF37;opacity:.75}
+.pp .pz-goya{height:32px;width:auto}
+.pp .pz .pp-topo{border-color:#E3DBC6}
+.pp .pp-prisma{background:#F7F4EC!important}
+.pp .pp-prisma h1{font-weight:400;font-size:28px;color:#0B231F;line-height:1.2}
+.pp .pp-prisma h2{color:#134238}
+.pp .pp-prisma .pp-kick{color:#B08F1F;letter-spacing:.24em!important;font-weight:600}
+.pp .pp-prisma .pp-grade th{background:#0B231F;color:#D4AF37!important}
+.pp .pp-prisma .pp-grade tr.tot td{background:#EFE9D8;border-top-color:#134238}
+.pp .pp-prisma .pp-grade tr.dest td{background:#F3EBD3}
+.pp .pp-prisma .pp-kpis div{background:#fff;border-color:#E3DBC6}
+.pp .pp-prisma .pp-kpis b{color:#134238;font-weight:300;font-size:18px}
+.pp .pp-prisma .pp-msg{background:linear-gradient(135deg,#134238,#0B231F)}
+.pp .pp-prisma .pp-msg b{color:#D4AF37}
+.pp .pp-prisma .pp-obs,.pp .pp-prisma .pp-kick+h1+p{color:#6F6A5E}
+.pp .pp-prisma .pp-val td b{color:#0B231F}
+.pp .pz-planta img{display:block;border-radius:6px;width:auto;max-width:100%;max-height:430px;margin:0 auto}
+.pp .pp-prisma .pp-fotos img{aspect-ratio:16/9}
+.pp .pz-mp img{max-height:270px}
+.pp .pp-prisma .pz-quote.pz-aviao{margin:10px 0 8px;background:#0F2E28!important;border-left:3px solid #D4AF37}
+.pp .pz-aviao b{color:#D4AF37!important}.pp .pz-aviao span{color:#EEE8DA!important;display:block}.pp .pz-aviao small{display:block;color:#8FA39B!important;font-size:8.5px;margin-top:5px}
+.pp .pz-tab{width:100%;border-collapse:collapse;margin-top:12px;font-size:12px}
+.pp .pz-tab td{padding:7px 4px;border-bottom:1px solid #E3DBC6}
+.pp .pz-tab td:first-child{color:#6F6A5E;width:36%}
+.pp .pz-tab td:last-child{font-weight:600;color:#0B231F}
+.pp .pz-tab small{display:block;font-weight:400;color:#8a8475;font-size:9.5px}
+.pp .pz-quote{margin-top:14px;border-left:3px solid #D4AF37;background:#fff;padding:10px 14px}
+.pp .pz-quote b{display:block;color:#134238;font-family:var(--f-display,Georgia,serif);font-size:15px;font-weight:400;margin-bottom:3px}
+.pp .pz-quote span{font-size:11.5px;line-height:1.5}
+.pp .pz-kpis{display:grid;grid-template-columns:repeat(4,1fr);margin:12px 0 12px;border-top:1px solid rgba(212,175,55,.3);border-bottom:1px solid rgba(212,175,55,.3)}
+.pp .pz-kpis div{padding:11px 8px}
+.pp .pz-kpis b{display:block;font-weight:200;font-size:27px;color:#D4AF37!important;line-height:1.1}
+.pp .pz-kpis span{display:block;font-size:10.5px;color:#EEE8DA;margin-top:2px}
+.pp .pz-kpis small{display:block;font-size:8.5px;color:#8FA39B!important;margin-top:2px}
+.pp .pz-eco{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pp .pz-card{background:rgba(255,255,255,.04);border:1px solid rgba(212,175,55,.2);border-radius:8px;overflow:hidden}
+.pp .pz-card-img{height:84px;background-size:cover;background-position:center}
+.pp .pz-card-txt{padding:7px 12px 9px}
+.pp .pz-card-k{font-size:8.5px;letter-spacing:.24em!important;text-transform:uppercase;color:#D4AF37!important}
+.pp .pz-card b{display:block;font-family:var(--f-display,Georgia,serif);font-weight:400;font-size:14.5px;margin:3px 0 4px;line-height:1.25}
+.pp .pz-card p{font-size:10px;line-height:1.4;margin:0;color:#C9C3B4!important}
+.pp .pz-card small{display:block;font-size:8.5px;color:#8FA39B!important;margin-top:4px}
+.pp .pz-fonte{font-size:9px;color:#8FA39B!important;margin-top:12px;line-height:1.45}
+.pp .pz-etapas{display:grid;gap:10px;margin:14px 0}
+.pp .pz-etapas div{display:grid;grid-template-columns:38px 1fr;column-gap:12px;background:#fff;border:1px solid #E3DBC6;border-radius:8px;padding:12px 14px}
+.pp .pz-etapas span{grid-row:span 2;font-family:var(--f-display,Georgia,serif);font-size:30px;color:#B08F1F;line-height:1}
+.pp .pz-etapas b{font-size:13px;color:#0B231F}
+.pp .pz-etapas p{margin:3px 0 0;font-size:11.5px;line-height:1.5}
+.pp .pz-fecho{margin-top:18px;background:radial-gradient(120% 120% at 80% 0%,#134238,#071613);border-radius:10px;padding:18px 20px;text-align:center}
+.pp .pz-fecho .pz-assin{justify-content:center;margin-bottom:8px}
+.pp .pz-fecho p{color:#EEE8DA!important;font-size:11.5px;line-height:1.5;margin:4px 0}
+.pp .pz-fecho small{color:#8FA39B!important;font-size:9px}
+.pp .pp-prisma .pp-dist div{background:#fff;border-color:#E3DBC6}
+.pp .pp-prisma .pp-dist b{color:#134238}
 @media print{
   body.print-proposta .wrap,body.print-proposta .wa,body.print-proposta #avToast{display:none!important}
   body.print-proposta .pp{display:block}
@@ -1535,7 +1621,7 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 <script src="app.js?v=20261120a"></script>
 <script src="v3.js?v=20261118h"></script>
 <script src="avisos.js?v=20261118h"></script>
-<script src="proposta.js?v=20261119d"></script>
+<script src="proposta.js?v=20261120f"></script>
 <script src="vitrine.js?v=20261118h"></script>
 <script src="campanhas.js?v=20261120e"></script>
 </body>

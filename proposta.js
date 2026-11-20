@@ -29,13 +29,14 @@
   const pj=v=>v.toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';   // juros ao mês (0,85%)
   const jurosAno=j=>Math.pow(1+j/100,12)-1;
   // índice de correção: IPCA (12 meses, Banco Central) ou CUB/SC (12 meses, Sinduscon), que é o padrão dos imóveis na planta
-  const ehIPCA=c=>/ipca/i.test(c||'');
-  const taxaCorr=c=>!c?0:ehIPCA(c)?(typeof i12==='function'?i12('ipca'):0.045):CUB.v12m/100;
+  const ehINCC=c=>/^\s*incc/i.test(c||'');   // INCC (FGV, série 192 do Banco Central): obras na planta (ex.: ALL Resort, 20/11/2026)
+  const ehIPCA=c=>!ehINCC(c)&&/ipca/i.test(c||'');
+  const taxaCorr=c=>!c?0:ehINCC(c)?(typeof i12==='function'?i12('incc'):0.06):ehIPCA(c)?(typeof i12==='function'?i12('ipca'):0.045):CUB.v12m/100;
   // lote com IPCA: a parcela fica igual por 12 meses e é reajustada a cada aniversário do contrato (degrau anual);
   // imóvel na planta (CUB): correção mês a mês
   const anual=c=>LOTE(P.e)&&ehIPCA(c);
   const fatorCorr=(c,mm)=>{ const r=taxaCorr(c); return anual(c)?Math.pow(1+r,Math.floor(mm/12)):Math.pow(1+r,mm/12); };
-  const nomeIdx=c=>ehIPCA(c)?L('IPCA dos últimos 12 meses','IPCA de los últimos 12 meses'):L('CUB/SC dos últimos 12 meses','CUB/SC de los últimos 12 meses');
+  const nomeIdx=c=>ehINCC(c)?L('INCC dos últimos 12 meses','INCC de los últimos 12 meses'):ehIPCA(c)?L('IPCA dos últimos 12 meses','IPCA de los últimos 12 meses'):L('CUB/SC dos últimos 12 meses','CUB/SC de los últimos 12 meses');
 
   // [mês, valor, tipo]: ent = entrada, men = mensal, bal = balão/reforço, uni = parcela única/chaves
   function pagamentos(p){
@@ -317,7 +318,7 @@
         <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
       </div>
       <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
-      <table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Mensais','Cuotas')}</th><th>${L('Balões','Refuerzos')}</th><th>${L('Outros','Otros')}</th><th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
+      <table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Mensais','Cuotas')}</th><th>${L('Balões','Refuerzos')}</th><th>${L('Outros','Otros')}</th><th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehINCC(a.correcao)?L('Com INCC estimado','Con INCC estimado'):ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
         ${ys.map(y=>{const o=anos[y];return `<tr><td>${y}${chaves!=null&&+y===new Date(e.entrega+'-01T12:00').getFullYear()?' 🔑':''}</td><td>${z(o.ent)}</td><td>${z(o.men)}</td><td>${z(o.bal)}</td><td>${z(o.out)}</td><td><b>${brl(o.tot)}</b></td>${cub?`<td>${brl(o.corr)}</td>`:''}</tr>`;}).join('')}
         <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td><td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
       </tbody></table>
@@ -534,7 +535,7 @@
       if(j>i){ const g=ys.slice(i,j+1); linhas.push({rot:`${ys[i]} ${L('a','a')} ${ys[j]}`,k:g.length,o:{ent:0,men:o.men,bal:0,out:0,tot:o.tot,corr:g.reduce((s,y)=>s+anos[y].corr,0)/g.length},porAno:true}); }
       else linhas.push({rot:ys[i],k:1,o});
       i=j+1; }
-    return `<table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcelas','Cuotas')}</th>${temBal?`<th>${L('Reforços','Refuerzos')}</th>`:''}${temOut?`<th>${L('Outros','Otros')}</th>`:''}<th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
+    return `<table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcelas','Cuotas')}</th>${temBal?`<th>${L('Reforços','Refuerzos')}</th>`:''}${temOut?`<th>${L('Outros','Otros')}</th>`:''}<th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehINCC(a.correcao)?L('Com INCC estimado','Con INCC estimado'):ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
       ${linhas.map(l=>`<tr><td>${l.rot}${l.porAno?`<small>${L('cada ano','cada año')}</small>`:''}</td><td>${z(l.o.ent)}</td><td>${z(l.o.men)}</td>${temBal?`<td>${z(l.o.bal)}</td>`:''}${temOut?`<td>${z(l.o.out)}</td>`:''}<td><b>${brl(l.o.tot)}</b></td>${cub?`<td>${brl(l.o.corr)}</td>`:''}</tr>`).join('')}
       <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td>${temBal?`<td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td>`:''}${temOut?`<td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td>`:''}<td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
     </tbody></table>`;
@@ -715,7 +716,110 @@
     </div>`;
   }
 
+  /* ---------- PRISMA ESMERALDA (20/11/2026, 1º caso: ALL Resort Club Residence · Porto Belo Tennis) ----------
+     Linha de alto padrão do Manual de Comunicação Goya · Prisma Esmeralda: esmeralda noturna + ouro champanhe,
+     assinatura dupla "Prisma Esmeralda | goya", tom calmo e todo número com fonte. Reaproveita os cálculos do lote
+     (pagamento, calendário, valorização) e troca a apresentação. Dados do empreendimento em e.resort. */
+  const PRISMA=e=>!!e&&e.linha==='prisma';
+  // escura=true: logo clara (o html2canvas não aplica filtro de cor, então a versão clara é um arquivo próprio)
+  const pzLogo=(escura)=>`<span class="pz-wm">Prisma <i>Esmeralda</i></span><span class="pz-fio"></span><img class="pz-goya" src="${escura?'img/goya/goya-horizontal-clara.png':GOYA.logo}" alt="Goya">`;
+  const pzArea=u=>u.area?u.area.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+  const pzTipo=u=>(String(u.tipo||'').match(/tipologia\s+(\S+)/i)||[])[1]||'';
+
+  function capaPrisma(e,u,a,m){
+    const cap=IMG(e.fotos&&e.fotos.capa), m2=u.area?u.valor/u.area:0, tp=pzTipo(u);
+    return `<div class="pp-pag pz-escura pz-capa">
+      ${cap?`<div class="pz-hero" style="background-image:url('${cap}')"><div class="pz-hero-grad"></div></div>`:''}
+      <div class="pz-capa-txt">
+        <div class="pz-kick">${L('Proposta reservada','Propuesta reservada')}${P.cliente?` · ${L('para','para')} ${esc(P.cliente)}`:''}</div>
+        <h1 class="pz-h1">${e.nome}</h1>
+        <p class="pz-sub">${e.marca?`${e.marca} · `:''}${e.cidade} · Santa Catarina</p>
+        <div class="pz-ficha">
+          <div><span>${L('Lote','Lote')}</span><b>${u.unidade}</b></div>
+          <div><span>${L('Terreno','Terreno')}</span><b>${pzArea(u)} m²</b></div>
+          ${tp?`<div><span>${L('Tipologia','Tipología')}</span><b>${tp}</b></div>`:''}
+        </div>
+        <div class="pz-valor"><span>${L('Valor do lote','Valor del lote')}</span><b>${brl(u.valor)}</b>${m2?`<small>${brl(m2)} ${L('por m²','por m²')}</small>`:''}</div>
+        <p class="pz-nota">${[e.fase,e.incorporacao?L(`Registro: ${e.incorporacao}`,`Registro: ${e.incorporacao}`):''].filter(Boolean).join(' · ')}</p>
+      </div>
+    </div>`;
+  }
+
+  function pagEcossistema(e){
+    const r=e.resort||{}, cards=r.cards||[], kp=r.kpis||[];
+    return `<div class="pp-pag pz-escura">
+      <div class="pz-kick">${L('O ALL Resort','El ALL Resort')}</div>
+      <h1 class="pz-h1 pz-h1-m">${r.titulo||''}</h1>
+      ${r.lead?`<p class="pz-lead">${r.lead}</p>`:''}
+      ${kp.length?`<div class="pz-kpis">${kp.map(([b,t,s])=>`<div><b>${b}</b><span>${t}</span>${s?`<small>${s}</small>`:''}</div>`).join('')}</div>`:''}
+      <div class="pz-eco">${cards.map(c=>`<div class="pz-card">${IMG(c.img)?`<div class="pz-card-img" style="background-image:url('${IMG(c.img)}')"></div>`:''}
+        <div class="pz-card-txt"><div class="pz-card-k">${c.k||''}</div><b>${c.t||''}</b><p>${c.p||''}</p>${c.f?`<small>${c.f}</small>`:''}</div></div>`).join('')}</div>
+      ${r.fontes?`<p class="pz-fonte">${r.fontes}</p>`:''}
+    </div>`;
+  }
+
+  function pagSeuLote(e,u){
+    const pl=IMG(u.planta), tp=pzTipo(u), m2=u.area?u.valor/u.area:0;
+    const lin=[[L('Lote','Lote'),u.unidade],tp?[L('Tipologia','Tipología'),`${tp} <small>${L('classificação da incorporadora no masterplan','clasificación del desarrollador en el masterplan')}</small>`]:null,
+      [L('Área do terreno','Área del terreno'),`${pzArea(u)} m²`],[L('Valor do lote','Valor del lote'),brl(u.valor)],m2?[L('Valor por m²','Valor por m²'),brl(m2)]:null,
+      e.entrega?[L('Conclusão das obras','Conclusión de las obras'),fmtMesAno(e.entrega)]:null,e.incorporacao?[L('Registro','Registro'),e.incorporacao]:null,
+      e.incorporadora?[L('Incorporadora','Desarrollador'),e.incorporadora]:null].filter(Boolean);
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('O seu lote','Su lote')}</div>
+      <h1>${L(`Lote ${u.unidade}, no coração do ${e.nome}`,`Lote ${u.unidade}, en el corazón de ${e.nome}`)}</h1>
+      ${pl?`<div class="pz-planta"><img src="${pl}" alt=""></div><p class="pp-obs">${L('Masterplan da incorporadora, com o lote em destaque. Medidas e confrontações oficiais estão na planta do loteamento e na matrícula.','Masterplan del desarrollador, con el lote destacado. Medidas oficiales en el plano del loteo y en la matrícula.')}</p>`:''}
+      <table class="pz-tab"><tbody>${lin.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
+      ${e.lazer?`<div class="pz-quote"><b>${L('Ao lado de casa','Al lado de casa')}</b><span>${e.lazer}.</span></div>`:''}
+    </div>`;
+  }
+
+  function pagCondicoesPrisma(e,u,a,m){
+    const ch=mesesAte(e.entrega), pagos=pagamentos(a).filter(([mm])=>ch==null||mm<=ch), ate=pagos.reduce((s,[,v])=>s+v,0);
+    const nAte=pagos.filter(x=>x[2]==='men').length, resto=Math.max(0,a.mensais.n-nAte);
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('Transparência','Transparencia')}</div>
+      <h1>${L('As regras do pagamento, sem letra miúda','Las reglas del pago, sin letra chica')}</h1>
+      <p class="pp-lead">${L(`A condição desta proposta é <b>${esc(a.nome||'')}</b>, direto com a incorporadora, sem banco.`,`La condición de esta propuesta es <b>${esc(a.nome||'')}</b>, directo con el desarrollador, sin banco.`)}</p>
+      <div class="pz-etapas">
+        <div><span>1</span><b>${L('Na assinatura','A la firma')}</b><p>${L(`Ato de ${brlc(a.entrada)} (${pct(a.entrada/u.valor,0)} do valor do lote).`,`Acto de ${brlc(a.entrada)} (${pct(a.entrada/u.valor,0)} del valor).`)}</p></div>
+        <div><span>2</span><b>${L(`Durante a obra (até ${fmtMesAno(e.entrega)})`,`Durante la obra (hasta ${fmtMesAno(e.entrega)})`)}</b><p>${L(`${nAte} parcelas de ${brlc(a.mensais.valor)}, sem juros, corrigidas mês a mês pelo ${nomeIdx(a.correcao).replace(' dos últimos 12 meses','')} (${pct(taxaCorr(a.correcao),1)} nos últimos 12 meses). Até a entrega: cerca de ${brl(ate)} pagos, sem a correção.`,`${nAte} cuotas de ${brlc(a.mensais.valor)}, sin interés, ajustadas por el INCC. Hasta la entrega: cerca de ${brl(ate)}.`)}</p></div>
+        <div><span>3</span><b>${L('Depois da entrega','Después de la entrega')}</b><p>${L(`As ${resto} parcelas restantes seguem a regra pós-obra da incorporadora: <b>IPCA + 1% na Tabela Price</b>. Os valores exatos dessa fase saem no contrato.`,`Las ${resto} cuotas restantes siguen la regla post-obra: <b>IPCA + 1% en sistema francés</b>. Los valores exactos salen en el contrato.`)}</p></div>
+      </div>
+      <div class="pp-msg"><b>${L('O lote é seu desde a assinatura do contrato, e você acompanha a obra de perto.','El lote es suyo desde la firma del contrato, y usted acompaña la obra de cerca.')}</b>
+        <span>${L('Antecipar parcelas reduz o saldo que passa para a fase pós-obra. Simulamos com você, sem compromisso, qualquer combinação de ato, parcelas e antecipações.','Anticipar cuotas reduce el saldo que pasa a la fase post-obra. Simulamos con usted, sin compromiso, cualquier combinación.')}</span></div>
+      <p class="pp-obs">${L('Valores da tabela oficial da incorporadora de 01/11/2026, sujeitos a disponibilidade e à aprovação da incorporadora. A correção estimada usa o índice dos últimos 12 meses (Banco Central); o valor real depende do índice de cada mês.','Valores de la tabla oficial del desarrollador del 01/11/2026, sujetos a disponibilidad y aprobación.')}</p>
+    </div>`;
+  }
+
+  function pagLocalPrisma(e,hoje){
+    const lt=e.loteamento||{}, ds=lt.distancias||[], mapa=IMG(e.fotos&&e.fotos.mapa), gal=lotesGal(e).filter(s=>/praia-deck|casas-lago|tennis-restaurante/.test(s)).slice(0,3);
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('Localização','Ubicación')}</div>
+      <h1>${L('Porto Belo, entre a baía e as montanhas','Porto Belo, entre la bahía y las montañas')}</h1>
+      ${mapa?`<div class="pz-planta pz-mp"><img src="${mapa}" alt=""></div><p class="pp-obs">${L('Masterplan ilustrado do ALL Resort: Golf, Tennis, Beach e Terra (ilustração da incorporadora; a fase Beach ainda pode mudar).','Masterplan ilustrado del ALL Resort (ilustración del desarrollador; la fase Beach aún puede cambiar).')}</p>`:''}
+      ${(e.resort||{}).aviacao?`<div class="pz-quote pz-aviao"><b>✈ ${e.resort.aviacao.t}</b><span>${e.resort.aviacao.p}</span><small>${e.resort.aviacao.f||''}</small></div>`:''}
+      ${lt.marReta?`<p class="pp-lead">${L(`A cerca de <b>${String(lt.marReta).replace('.',',')} km do mar em linha reta</b>, com acesso pela BR-101, entre os aeroportos de Navegantes e Florianópolis.`,`A unos <b>${String(lt.marReta).replace('.',',')} km del mar en línea recta</b>, con acceso por la BR-101, entre los aeropuertos de Navegantes y Florianópolis.`)}</p>`:''}
+      ${ds.length?`<div class="pp-dist">${ds.map(([n,km,min])=>`<div><span>${n}</span><b>≈ ${km} km</b><small>~${min} min</small></div>`).join('')}</div>
+      <p class="pp-obs">${L('Distâncias de carro a partir da BR-101, junto ao ALL Resort (OpenStreetMap/OSRM, sem trânsito); distância do mar em linha reta até a Praia do Perequê.','Distancias en auto desde la BR-101, junto al ALL Resort (OpenStreetMap/OSRM, sin tránsito).')}</p>`:''}
+      ${gal.length&&!(e.resort||{}).aviacao?`<div class="pp-fotos">${gal.map(fotoLeg).join('')}</div>`:''}
+      <div class="pz-fecho"><div class="pz-assin">${pzLogo(true)}</div>
+        <p>${esc(assinatura())}<br>${L('Atendimento reservado · frente-mar, Porto Belo','Atención reservada · frente al mar, Porto Belo')}</p>
+        <small>${L(`Proposta preparada em ${hoje}. Imagens ilustrativas da incorporadora. Valores e condições sujeitos à confirmação no contrato.`,`Propuesta preparada el ${hoje}. Imágenes ilustrativas del desarrollador. Valores y condiciones sujetos a confirmación en el contrato.`)}</small></div>
+    </div>`;
+  }
+
+  function pdfPrisma(){
+    const {e,u}=P, a=P.aj, m=metricas(a), hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
+    out.innerHTML=capaPrisma(e,u,a,m)+pagEcossistema(e)+pagSeuLote(e,u)+pagLotePagamento(e,u,a,m).replace('class="pp-pag"','class="pp-pag pp-prisma"')
+      +pagCondicoesPrisma(e,u,a,m)+pagValorLote(e,u,u.valor).replace('class="pp-pag"','class="pp-pag pp-prisma"')+pagLocalPrisma(e,hoje);
+    marcarPaginas(out,hoje);
+    const agora=new Date(), hora=`${String(agora.getDate()).padStart(2,'0')}-${String(agora.getMonth()+1).padStart(2,'0')} ${String(agora.getHours()).padStart(2,'0')}h${String(agora.getMinutes()).padStart(2,'0')}`;
+    const nome=(`Proposta ${txt(e.nome)} Lote ${u.unidade}${P.cliente?' - '+P.cliente:''} ${hora}`.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]+/g,'').replace(/\s+/g,' ').replace(/^[.\s]+/,'').trim().slice(0,90)||'Proposta')+'.pdf';
+    gerarArquivo(nome);
+  }
+
   function pdfLote(){
+    if(PRISMA(P.e)) return pdfPrisma();
     const {e,u}=P, a=P.aj, m=metricas(a), hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
     out.innerHTML=capaLote(e,u,a,m)+pagLotePagamento(e,u,a,m)+pagLoteJuros(e,u,a,m)+pagBairro(e)+pagConstruir(e,u)+pagValorLote(e,u,u.valor)+pagLocalLote(e,hoje);
     marcarPaginas(out,hoje);
@@ -773,9 +877,14 @@
   const GOYA={nome:'Goya Investimentos Imobiliários',creci:'9226J',logo:'img/goya/goya-horizontal.png',marca:'img/goya/goya-marca.png'};
   function marcarPaginas(raiz,hoje){
     const pags=[...raiz.querySelectorAll('.pp-pag')], n=pags.length;
+    const prisma=PRISMA(P&&P.e);
     pags.forEach((p,i)=>{
-      p.classList.add('pp-goya');
-      p.insertAdjacentHTML('afterbegin',`<img class="pp-marca" src="${GOYA.marca}" alt=""><div class="pp-topo"><img src="${GOYA.logo}" alt="${GOYA.nome}"><span>${L('Página','Página')} ${i+1}/${n}</span></div>`);
+      p.classList.add('pp-goya'); if(prisma) p.classList.add('pz');
+      if(prisma&&p.classList.contains('pz-capa'))   // capa Prisma: sem cabeçalho (a assinatura dupla vai no topo da foto)
+        p.insertAdjacentHTML('afterbegin',`<div class="pz-topo-capa">${pzLogo(true)}</div>`);
+      else p.insertAdjacentHTML('afterbegin',`<img class="pp-marca" src="${GOYA.marca}" alt="">`+(prisma
+        ?`<div class="pp-topo pz-topo"><div class="pz-assin">${pzLogo(p.classList.contains('pz-escura'))}</div><span>${L('Página','Página')} ${i+1}/${n}</span></div>`
+        :`<div class="pp-topo"><img src="${GOYA.logo}" alt="${GOYA.nome}"><span>${L('Página','Página')} ${i+1}/${n}</span></div>`));
       p.insertAdjacentHTML('beforeend',`<div class="pp-excl">${L(`Material exclusivo da ${GOYA.nome} · CRECI ${GOYA.creci}. Proibida a reprodução ou o uso por terceiros. Preparado por ${esc(CONTATO.nome)}${P.cliente?` para ${esc(P.cliente)}`:''} em ${hoje}.`,`Material exclusivo de ${GOYA.nome} · CRECI ${GOYA.creci}. Prohibida la reproducción o el uso por terceros. Preparado por ${esc(CONTATO.nome)}${P.cliente?` para ${esc(P.cliente)}`:''} el ${hoje}.`)}</div>`);
     });
   }
