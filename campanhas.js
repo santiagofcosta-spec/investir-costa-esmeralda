@@ -17,9 +17,11 @@
   const corDe=p=>p.acao==='excluir'?EXC:p.linha==='goya'?GOYA:COR[p.pilar];
   const dia=s=>{ const [a,m,d]=String(s||'').split('-'); return d?`${d}/${m}/${a}`:''; };
   const idadeDias=s=>(Date.now()-new Date(s+'T12:00:00'))/864e5;
-  // pedidos (mapeamento, atualização, "sei onde fica") vão SEMPRE para o WhatsApp do Santiago:
-  // CONTATO_PADRAO vira o comercial da Goya quando o site é aberto com ?origem=goya (corrigido em 20/11/2026)
-  const wa=msg=>`https://wa.me/${String(SITE_CONFIG.whatsappNumero).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`;
+  // "Solicitar mapeamento" vai SEMPRE para o WhatsApp do Santiago (pedido dele, 20/11/2026);
+  // os demais (atualização, "sei onde fica") usam o contato da página (com ?origem=goya, o comercial da Goya)
+  const waNum=n=>String(n).replace(/\D/g,'');
+  const wa=msg=>`https://wa.me/${waNum(CONTATO_PADRAO.whatsapp)}?text=${encodeURIComponent(msg)}`;
+  const waSantiago=msg=>`https://wa.me/${waNum(SITE_CONFIG.whatsappNumero)}?text=${encodeURIComponent(msg)}`;
   const quem=()=>USUARIO?.nome?txt(USUARIO.nome):L('corretor','corredor');
   // comando do Claude Code para atender o pedido (.claude/commands/mapear-praca.md); visível só no login do Santiago
   const SANTIAGO='santiago-fernandes-costa', ehSantiago=()=>USUARIO?.id===SANTIAGO;
@@ -91,7 +93,7 @@
       if(st?.estado==='conferida') corpo=`<span class="camp-st ok">${L('Conferida','Verificada')} · ${dia(st.desde)}</span><button class="btn" type="button" data-abrir="${l}">${L('Abrir material da campanha','Abrir material de campaña')}</button>`;
       else if(st?.estado==='em pesquisa') corpo=`<span class="camp-st pesq">${L('Em pesquisa desde','En investigación desde')} ${dia(st.desde)}</span><p class="note">${L('O pedido já foi aceito. Aguarde a pesquisa ficar pronta.','El pedido ya fue aceptado. Espere a que la investigación esté lista.')}</p>`;
       else { const cid=`${nome}${sel.pais!=='BR'?', '+PAISES.find(x=>x[0]===sel.pais)[1]:''}`, cmd=comando(cid,l);
-        corpo=`<span class="camp-st nao">${L('Não mapeada','No mapeada')}</span><a class="btn" target="_blank" rel="noopener" href="${wa(`Pedido de mapeamento: ${cid}, linha ${n}. Solicitado por ${quem()}.\n\nComando para o Claude: ${cmd}`)}">${L('Solicitar mapeamento','Solicitar mapeo')}</a>${caixaCmd(cmd)}`; }
+        corpo=`<span class="camp-st nao">${L('Não mapeada','No mapeada')}</span><a class="btn" target="_blank" rel="noopener" href="${waSantiago(`Pedido de mapeamento: ${cid}, linha ${n}. Solicitado por ${quem()}.\n\nComando para o Claude: ${cmd}`)}">${L('Solicitar mapeamento','Solicitar mapeo')}</a>${caixaCmd(cmd)}`; }
       return `<div class="camp-card${aberto&&aberto[1]===l&&p&&aberto[0]===p.id?' on':''}"><b>${n}</b>${corpo}</div>`;
     }).join('');
     return `<h3 class="camp-cid">${esc(nome)}${p?` <span class="note">· ${L('praça','plaza')} ${p.titulo}</span>`:''}</h3>
