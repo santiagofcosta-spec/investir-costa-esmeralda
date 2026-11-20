@@ -178,3 +178,6 @@ footer,.rodape,.fontes{color:#A1A1AA}
 .camp-busca input{text-align:left}
 .camp-tit{width:100%;table-layout:fixed}
 .camp-tit th,.camp-tit td{text-align:left!important;white-space:normal}
+.camp-cmd{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px;width:100%}
+.camp-cmd code{font:12px ui-monospace,Consolas,monospace;background:rgba(212,175,55,.08);border:1px solid var(--glass-line);border-radius:6px;padding:4px 8px;color:var(--gold-ink);word-break:break-word}
+.camp-cmd .btn.mini{margin-left:0}

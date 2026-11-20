@@ -19,6 +19,10 @@
   const idadeDias=s=>(Date.now()-new Date(s+'T12:00:00'))/864e5;
   const wa=msg=>`https://wa.me/${CONTATO_PADRAO.whatsapp}?text=${encodeURIComponent(msg)}`;
   const quem=()=>USUARIO?.nome?txt(USUARIO.nome):L('corretor','corredor');
+  // comando do Claude Code para atender o pedido (.claude/commands/mapear-praca.md); visível só no login do Santiago
+  const SANTIAGO='santiago-fernandes-costa', ehSantiago=()=>USUARIO?.id===SANTIAGO;
+  const comando=(cidade,linha,extra='')=>`/mapear-praca ${cidade} | ${linha}${extra}`;
+  const caixaCmd=c=>ehSantiago()?`<div class="camp-cmd"><span class="note">${L('Comando para o Claude:','Comando para Claude:')}</span><code>${esc(c)}</code><button class="btn ghost mini" type="button" data-copiar="${esc(c)}">${L('Copiar comando','Copiar comando')}</button></div>`:'';
 
   let modoAtual='emp', PK=null, MERC=null, pais='BR', sel=null, aberto=null /* [pracaId, linha] */, prio='A', mapa=null, erro='';
 
@@ -82,7 +86,8 @@
       const st=p?.[l]; let corpo;
       if(st?.estado==='conferida') corpo=`<span class="camp-st ok">${L('Conferida','Verificada')} · ${dia(st.desde)}</span><button class="btn" type="button" data-abrir="${l}">${L('Abrir material da campanha','Abrir material de campaña')}</button>`;
       else if(st?.estado==='em pesquisa') corpo=`<span class="camp-st pesq">${L('Em pesquisa desde','En investigación desde')} ${dia(st.desde)}</span><p class="note">${L('O pedido já foi aceito. Aguarde a pesquisa ficar pronta.','El pedido ya fue aceptado. Espere a que la investigación esté lista.')}</p>`;
-      else corpo=`<span class="camp-st nao">${L('Não mapeada','No mapeada')}</span><a class="btn" target="_blank" rel="noopener" href="${wa(`Pedido de mapeamento: ${nome}${sel.pais!=='BR'?' ('+PAISES.find(x=>x[0]===sel.pais)[1]+')':''}, linha ${n}. Solicitado por ${quem()}.`)}">${L('Solicitar mapeamento','Solicitar mapeo')}</a>`;
+      else { const cid=`${nome}${sel.pais!=='BR'?', '+PAISES.find(x=>x[0]===sel.pais)[1]:''}`, cmd=comando(cid,l);
+        corpo=`<span class="camp-st nao">${L('Não mapeada','No mapeada')}</span><a class="btn" target="_blank" rel="noopener" href="${wa(`Pedido de mapeamento: ${cid}, linha ${n}. Solicitado por ${quem()}.\n\nComando para o Claude: ${cmd}`)}">${L('Solicitar mapeamento','Solicitar mapeo')}</a>${caixaCmd(cmd)}`; }
       return `<div class="camp-card${aberto&&aberto[1]===l&&p&&aberto[0]===p.id?' on':''}"><b>${n}</b>${corpo}</div>`;
     }).join('');
     return `<h3 class="camp-cid">${esc(nome)}${p?` <span class="note">· ${L('praça','plaza')} ${p.titulo}</span>`:''}</h3>
@@ -116,7 +121,7 @@
     return `<div class="camp-mat">
       <div class="camp-cab"><div><span class="badge">${LINHAS.find(x=>x[0]===linha)[1]}</span><h3>${p.titulo}</h3>
         <p class="note">${L('Conferida em','Verificada el')} ${dia(st.desde)} · ${L('pesquisa de','investigación del')} ${d.pesquisado_em||''}</p></div>
-        ${velha?`<a class="btn ghost" target="_blank" rel="noopener" href="${wa(`Pedido de atualização: ${txt(p.titulo)}, linha ${LINHAS.find(x=>x[0]===linha)[1]}. Solicitado por ${quem()}.`)}">${L('Pesquisa antiga: solicitar atualização','Investigación antigua: solicitar actualización')}</a>`:''}</div>
+        ${velha?`<div><a class="btn ghost" target="_blank" rel="noopener" href="${wa(`Pedido de atualização: ${txt(p.titulo)}, linha ${LINHAS.find(x=>x[0]===linha)[1]}. Solicitado por ${quem()}.\n\nComando para o Claude: ${comando(txt(p.titulo),linha,' (atualização)')}`)}">${L('Pesquisa antiga: solicitar atualização','Investigación antigua: solicitar actualización')}</a>${caixaCmd(comando(txt(p.titulo),linha,' (atualização)'))}</div>`:''}</div>
       <div class="camp-mapa" id="campMapa" role="img" aria-label="${L('Mapa dos pinos','Mapa de los pines')}"></div>
       <div class="camp-leg">${linha==='prisma'?Object.entries(PIL).map(([k,n])=>`<span style="--c:${COR[k]}">${n}</span>`).join(''):''}<span style="--c:${GOYA}">Goya</span><span style="--c:${EXC}">${L('Exclusão','Exclusión')}</span></div>
       <details class="camp-lista"><summary>${L('Lista dos pinos','Lista de los pines')} (${todos.length})</summary><ul>${todos.map(x=>`<li><span class="sw" style="background:${corDe(x)}"></span><b>${x.nome}</b> · ${x.cidade} · ${String(x.raio_km).replace('.',',')} km${x.prioridade?' · '+x.prioridade:''}${x.acao==='excluir'?' · '+L('exclusão','exclusión'):''}</li>`).join('')}</ul></details>
