@@ -78,10 +78,10 @@
    "txt": "Indicador Cepea/Esalq Paranaguá, fechamento de 17/12/2021"
   },
   "hoje": {
-   "data": "18/11/2026",
-   "v": 167.94,
-   "txt": "Indicador Cepea/Esalq Paranaguá, 18/11/2026",
-   "atualizado": "2026-11-19",
+   "data": "19/11/2026",
+   "v": 168.69,
+   "txt": "Indicador Cepea/Esalq Paranaguá, 19/11/2026",
+   "atualizado": "2026-11-20",
    "validadeDias": 10,
    "auto": true,
    "nome": "Soja em Paranaguá (Cepea)"
@@ -132,7 +132,7 @@
   "aliquota": 0.02,
   "aliquotaDesde": 2019,
   "aliquotaTxt": "2% desde a Lei Municipal 2.704/2018 (era 3% pela Lei 2.145/2014)",
-  "atualizado": "2026-11-19",
+  "atualizado": "2026-11-20",
   "validadeDias": 400,
   "auto": true,
   "serie": [
