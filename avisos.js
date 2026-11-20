@@ -1,4 +1,4 @@
-/* Avisos de ofertas de soja (Vilhena, Comodoro, Campo Novo do Parecis) na aba Investidor Agro.
+/* Avisos de ofertas de soja (Vilhena, Comodoro, Campos de Júlio) na aba Investidor Agro.
    Os avisos vêm de dados/avisos_soja.json, gravado pelo scripts/monitor_soja.py.
    Com a página aberta, confere de novo a cada 10 minutos; o que chegou desde a última visita
    ganha destaque e um contador na aba (lembrado só neste navegador). */

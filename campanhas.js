@@ -21,7 +21,9 @@
   const quem=()=>USUARIO?.nome?txt(USUARIO.nome):L('corretor','corredor');
   // comando do Claude Code para atender o pedido (.claude/commands/mapear-praca.md); visível só no login do Santiago
   const SANTIAGO='santiago-fernandes-costa', ehSantiago=()=>USUARIO?.id===SANTIAGO;
-  const comando=(cidade,linha,extra='')=>`/mapear-praca ${cidade} | ${linha}${extra}`;
+  // o comando é só um atalho (não é segredo); o nome entra limpo: sem quebra de linha, sem "|" e símbolos, até 80 caracteres
+  const limpaArg=s=>txt(s).replace(/[^\p{L}\p{N} .,'()\-]/gu,' ').replace(/\s+/g,' ').trim().slice(0,80);
+  const comando=(cidade,linha,extra='')=>`/mapear-praca ${limpaArg(cidade)} | ${linha==='goya'?'goya':'prisma'}${extra}`;
   const caixaCmd=c=>ehSantiago()?`<div class="camp-cmd"><span class="note">${L('Comando para o Claude:','Comando para Claude:')}</span><code>${esc(c)}</code><button class="btn ghost mini" type="button" data-copiar="${esc(c)}">${L('Copiar comando','Copiar comando')}</button></div>`:'';
 
   let modoAtual='emp', PK=null, MERC=null, pais='BR', sel=null, aberto=null /* [pracaId, linha] */, prio='A', mapa=null, erro='';

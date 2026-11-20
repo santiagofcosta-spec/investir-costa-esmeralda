@@ -26,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import atualizar as A  # reaproveita gd_dados (com pausa no bloqueio 403)
 
 CIDADES = [("ro", "vilhena", "Vilhena/RO"), ("mt", "comodoro", "Comodoro/MT"),
-           ("mt", "campo-novo-do-parecis", "Campo Novo do Parecis/MT")]
+           ("mt", "campos-de-julio", "Campos de Júlio/MT")]   # 20/11/2026: era Campo Novo do Parecis (pedido do Santiago)
 HORA_RESUMO = 18
 ARQ_ESTADO = Path(os.environ.get("MONITOR_SOJA_ESTADO") or A.RAIZ / "estado" / "monitor_soja.json")
 MAX_AVISOS = 12  # por mensagem; o resto vira "e mais N"
@@ -139,7 +139,10 @@ def main():
         est = json.loads(ARQ_ESTADO.read_text(encoding="utf-8"))
     except Exception:
         est = {}
-    primeira = not any((est.get("ofertas") or {}).values())  # nada visto ainda (1ª rodada que leu algo)
+    lista = [c[1] for c in CIDADES]
+    # nada visto ainda, ou a lista de cidades mudou: recomeça sem avisar em massa as ofertas da cidade nova
+    primeira = not any((est.get("ofertas") or {}).values()) or est.get("lista") != lista
+    est["lista"] = lista
     vistas = est.setdefault("ofertas", {"compra": {}, "venda": {}})
     dias = est.setdefault("dias", {})  # dia -> cidade -> {"compra_max":..., "venda_min":...}
     avisos = {"compra": [], "venda": []}
