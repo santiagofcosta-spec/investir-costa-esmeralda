@@ -17,7 +17,9 @@
   const corDe=p=>p.acao==='excluir'?EXC:p.linha==='goya'?GOYA:COR[p.pilar];
   const dia=s=>{ const [a,m,d]=String(s||'').split('-'); return d?`${d}/${m}/${a}`:''; };
   const idadeDias=s=>(Date.now()-new Date(s+'T12:00:00'))/864e5;
-  const wa=msg=>`https://wa.me/${CONTATO_PADRAO.whatsapp}?text=${encodeURIComponent(msg)}`;
+  // pedidos (mapeamento, atualização, "sei onde fica") vão SEMPRE para o WhatsApp do Santiago:
+  // CONTATO_PADRAO vira o comercial da Goya quando o site é aberto com ?origem=goya (corrigido em 20/11/2026)
+  const wa=msg=>`https://wa.me/${String(SITE_CONFIG.whatsappNumero).replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`;
   const quem=()=>USUARIO?.nome?txt(USUARIO.nome):L('corretor','corredor');
   // comando do Claude Code para atender o pedido (.claude/commands/mapear-praca.md); visível só no login do Santiago
   const SANTIAGO='santiago-fernandes-costa', ehSantiago=()=>USUARIO?.id===SANTIAGO;
