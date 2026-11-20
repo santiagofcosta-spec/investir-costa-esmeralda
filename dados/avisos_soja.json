@@ -1806,57 +1806,49 @@
   "Comodoro/MT",
   "Campo Novo do Parecis/MT"
  ],
- "verificado": "2026-11-19 18:05",
- "lido": "2026-11-19 18:05",
+ "verificado": "2026-11-20 10:13",
+ "lido": "2026-11-20 10:13",
  "resumo": {
-  "dia": "2026-11-19",
+  "dia": "2026-11-20",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
      "compra_max": 136.0,
-     "compra_abertura": 133.4
+     "compra_abertura": 136.0
     },
     "2027": {
      "compra_max": 125.05,
-     "compra_abertura": 125.5
+     "compra_abertura": 125.05
     },
     "Disponível": {
      "compra_max": 145.0,
-     "compra_abertura": 135.0,
-     "venda_min": 125.0,
-     "venda_abertura": 125.0
+     "compra_abertura": 145.0
     }
    },
    "Comodoro/MT": {
     "2026": {
-     "compra_max": 134.2,
-     "compra_abertura": 134.9
-    },
-    "2027": {
-     "compra_max": 122.25,
-     "compra_abertura": 120.25
+     "compra_max": 134.5,
+     "compra_abertura": 134.5
     },
     "Disponível": {
      "compra_max": 145.0,
-     "compra_abertura": 135.0,
-     "venda_min": 125.0,
-     "venda_abertura": 125.0
+     "compra_abertura": 145.0
     }
    },
    "Campo Novo do Parecis/MT": {
     "2026": {
-     "compra_max": 134.65,
-     "compra_abertura": 134.9
+     "compra_max": 134.5,
+     "compra_abertura": 134.5
     },
     "2027": {
-     "compra_max": 119.65,
-     "compra_abertura": 126.2
+     "compra_max": 119.5,
+     "compra_abertura": 119.5
     },
     "Disponível": {
      "compra_max": 160.0,
-     "compra_abertura": 135.0,
+     "compra_abertura": 160.0,
      "venda_min": 145.0,
-     "venda_abertura": 125.0
+     "venda_abertura": 145.0
     }
    }
   }
