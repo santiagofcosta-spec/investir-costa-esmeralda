@@ -17,8 +17,8 @@
   const corDe=p=>p.acao==='excluir'?EXC:p.linha==='goya'?GOYA:COR[p.pilar];
   const dia=s=>{ const [a,m,d]=String(s||'').split('-'); return d?`${d}/${m}/${a}`:''; };
   const idadeDias=s=>(Date.now()-new Date(s+'T12:00:00'))/864e5;
-  // "Solicitar mapeamento" vai SEMPRE para o WhatsApp do Santiago (pedido dele, 20/11/2026);
-  // os demais (atualização, "sei onde fica") usam o contato da página (com ?origem=goya, o comercial da Goya)
+  // "Solicitar mapeamento" e "Sei onde fica" vão SEMPRE para o WhatsApp do Santiago (pedido dele, 20/11/2026);
+  // o pedido de atualização usa o contato da página (com ?origem=goya, o comercial da Goya)
   const waNum=n=>String(n).replace(/\D/g,'');
   const wa=msg=>`https://wa.me/${waNum(CONTATO_PADRAO.whatsapp)}?text=${encodeURIComponent(msg)}`;
   const waSantiago=msg=>`https://wa.me/${waNum(SITE_CONFIG.whatsappNumero)}?text=${encodeURIComponent(msg)}`;
@@ -148,7 +148,7 @@
         <button class="btn" type="button" data-baixar="ficha">${L('Baixar ficha (PDF)','Descargar ficha (PDF)')}</button>
         <button class="btn" type="button" data-baixar="planilha">${L('Baixar planilha (Excel)','Descargar planilla (Excel)')}</button>
       </div>
-      ${conferir.length?`<h4 class="camp-h">${L('A conferir (fora do mapa e da lista)','A verificar (fuera del mapa y de la lista)')}</h4><ul class="camp-conf">${conferir.map(x=>`<li><b>${x.nome}</b> · ${x.cidade}${x.obs?` · <span class="note">${x.obs}</span>`:''} <a class="btn ghost mini" target="_blank" rel="noopener" href="${wa(`Sei onde fica: ${txt(x.nome)} (${txt(x.cidade)}), praça ${txt(p.titulo)}. Endereço: `)}">${L('Sei onde fica','Sé dónde queda')}</a></li>`).join('')}</ul>`:''}
+      ${conferir.length?`<h4 class="camp-h">${L('A conferir (fora do mapa e da lista)','A verificar (fuera del mapa y de la lista)')}</h4><ul class="camp-conf">${conferir.map(x=>`<li><b>${x.nome}</b> · ${x.cidade}${x.obs?` · <span class="note">${x.obs}</span>`:''} <a class="btn ghost mini" target="_blank" rel="noopener" href="${waSantiago(`Sei onde fica: ${txt(x.nome)} (${txt(x.cidade)}), praça ${txt(p.titulo)}. Endereço: `)}">${L('Sei onde fica','Sé dónde queda')}</a></li>`).join('')}</ul>`:''}
     </div>`;
   }
 
