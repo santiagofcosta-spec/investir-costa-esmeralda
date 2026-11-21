@@ -874,7 +874,7 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 @media print{.sobe{opacity:1!important;transform:none!important}.tabs{display:none!important}.panel,.kpi,.reason{box-shadow:none!important}}
 </style>
 <link rel="stylesheet" href="v3.css">
-<link rel="stylesheet" href="luxo.css">
+<link rel="stylesheet" href="luxo.css?v=20261121a">
 </head>
 <body>
 <div class="wrap">
@@ -1532,8 +1532,10 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
       <div class="seg corr-modo" id="corrModo" role="group" aria-label="Área restrita" hidden>
         <button type="button" data-modo="emp" aria-pressed="true" data-es="Emprendimientos">Empreendimentos</button>
         <button type="button" data-modo="camp" aria-pressed="false" data-es="Campañas por plaza">Campanhas por praça</button>
+        <button type="button" data-modo="pecas" aria-pressed="false" data-es="Piezas listas">Peças prontas</button>
       </div>
       <div class="panel camp" id="campBox" hidden></div>
+      <div class="panel camp" id="pecaBox" hidden></div>
       <div class="filtro panel">
         <div class="f2"><label for="cEmp" data-es="Emprendimiento">Empreendimento</label><div class="in"><select id="cEmp"></select></div></div>
         <div class="f2"><label for="cPav" data-es="Torre / piso">Torre / pavimento</label><div class="in"><select id="cPav"></select></div></div>
@@ -1624,5 +1626,6 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 <script src="proposta.js?v=20261120f"></script>
 <script src="vitrine.js?v=20261118h"></script>
 <script src="campanhas.js?v=20261120e"></script>
+<script src="pecas.js?v=20261121a"></script>
 </body>
 </html>

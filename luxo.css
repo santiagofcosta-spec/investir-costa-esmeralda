@@ -181,3 +181,20 @@ footer,.rodape,.fontes{color:#A1A1AA}
 .camp-cmd{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px;width:100%}
 .camp-cmd code{font:12px ui-monospace,Consolas,monospace;background:rgba(212,175,55,.08);border:1px solid var(--glass-line);border-radius:6px;padding:4px 8px;color:var(--gold-ink);word-break:break-word}
 .camp-cmd .btn.mini{margin-left:0}
+
+/* ===== Área restrita: Peças prontas (pecas.js) ===== */
+#areaCorretor.modo-pecas > :not(#corrModo):not(#pecaBox){display:none!important}
+.corr-modo{flex-wrap:wrap}
+.peca-videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.peca-card{border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:6px;background:var(--surface2)}
+.peca-tela{aspect-ratio:9/16;border-radius:8px;overflow:hidden;background:#050C0A}
+.peca-tela img,.peca-tela video{width:100%;height:100%;object-fit:cover;display:block}
+.peca-acoes{display:flex;gap:6px;margin-top:auto;padding-top:4px}
+.peca-acoes .btn.mini{margin-left:0;flex:1}
+.peca-car{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin:6px 0 10px}
+.peca-img{position:relative;appearance:none;border:1px solid var(--line);border-radius:8px;padding:0;overflow:hidden;cursor:pointer;background:#050C0A;aspect-ratio:4/5}
+.peca-img img{width:100%;height:100%;object-fit:cover;display:block}
+.peca-img span{position:absolute;left:6px;bottom:6px;font:600 11px var(--f-body);color:#EEE8DA;background:rgba(5,12,10,.7);border-radius:999px;padding:2px 8px}
+.peca-img.erro{border-color:var(--bad)}
+.peca-texto{white-space:pre-wrap;font-size:13px;line-height:1.55;margin:8px 0 0}
+@media (max-width:600px){.peca-videos{grid-template-columns:repeat(2,minmax(0,1fr))}.peca-car{grid-template-columns:repeat(3,minmax(0,1fr))}}
