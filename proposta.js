@@ -854,7 +854,7 @@
       u.areaTotal?[L('Área total aproximada','Área total aproximada'),`${pzArea2(u.areaTotal)} m²`]:null,
       u.suites?[L('Suítes','Suites'),u.suites]:null,u.vagas?[L('Vagas de garagem','Cocheras'),u.vagas]:null,
       [L('Valor de tabela','Valor de lista'),brl(u.valor)],m2?[L('Valor por m² privativo','Valor por m² privado'),brl(m2)]:null,
-      e.entrega?[L('Entrega prevista','Entrega prevista'),fmtMesAno(e.entrega)]:null,e.incorporadora?[L('Incorporadora','Desarrollador'),e.incorporadora]:null].filter(Boolean);
+      e.entrega?[L('Entrega prevista','Entrega prevista'),`${fmtMesAno(e.entrega)} ${L('(cronograma de obra)','(cronograma de obra)')}${e.entregaContratual?` · ${L('prazo contratual','plazo contractual')} ${e.entregaContratual}`:''}`]:null,e.incorporadora?[L('Incorporadora','Desarrollador'),e.incorporadora]:null].filter(Boolean);
     return `<div class="pp-pag pp-prisma">
       <div class="pp-kick">${L('A sua residência','Su residencia')}</div>
       <h1>${u.casa?`${u.casa}, ${L(`no ${u.pavimento}º andar da ${u.torre||''}`,`en el piso ${u.pavimento} de la ${u.torre||''}`)}`:e.nome}</h1>
@@ -880,8 +880,8 @@
       ${bal&&a.mensais.n?`<p class="pp-lead">${L(`Mais ${bal.n} reforços de ${brlc(bal.valor)}, a cada ${bal.cada} meses (o 1º em ${mesRot(bal.inicio)}).`,`Más ${bal.n} refuerzos de ${brlc(bal.valor)}, cada ${bal.cada} meses (el 1º en ${mesRot(bal.inicio)}).`)}</p>`:''}
       <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
       ${calendario(e,a,m)}
-      ${ch!=null&&e.entrega?`<div class="pp-msg"><b>${L(`Até a entrega das chaves (${fmtMesAno(e.entrega)}): ${brl(ate)} pagos, ${pct(ate/m.total,0)} do total, sem a correção.`,`Hasta la entrega de llaves (${fmtMesAno(e.entrega)}): ${brl(ate)} pagados, ${pct(ate/m.total,0)} del total, sin el ajuste.`)}</b>
-        <span>${depois?L(`Depois da entrega ficam ${brl(m.total-ate)} (${depois} ${depois===1?'pagamento':'pagamentos'}), corrigidos pelo INPC + 0,89% ao mês, como manda a tabela da incorporadora.`,`Después de la entrega quedan ${brl(m.total-ate)} (${depois} pagos), ajustados por INPC + 0,89% mensual, según la tabla del desarrollador.`):L('Nesta condição, tudo é pago até a entrega das chaves: não há saldo na fase do INPC + 0,89% ao mês.','En esta condición todo se paga hasta la entrega: no hay saldo en la fase de INPC + 0,89% mensual.')}</span></div>`:''}
+      ${ch!=null&&e.entrega?`<div class="pp-msg"><b>${L(`Até a entrega das chaves (previsão: ${fmtMesAno(e.entrega)}): ${brl(ate)} pagos, ${pct(ate/m.total,0)} do total, sem a correção.`,`Hasta la entrega de llaves (previsión: ${fmtMesAno(e.entrega)}): ${brl(ate)} pagados, ${pct(ate/m.total,0)} del total, sin el ajuste.`)}</b>
+        <span>${depois?L(`Depois da entrega ficam ${brl(m.total-ate)} (${depois} ${depois===1?'pagamento':'pagamentos'}), corrigidos pelo INPC + 0,89% ao mês, como manda a tabela da incorporadora. Previsão pelo cronograma de obra${e.entregaContratual?`; o prazo contratual de entrega é ${e.entregaContratual}`:''}.`,`Después de la entrega quedan ${brl(m.total-ate)} (${depois} pagos), ajustados por INPC + 0,89% mensual, según la tabla del desarrollador.`):L('Nesta condição, tudo é pago até a entrega das chaves: não há saldo na fase do INPC + 0,89% ao mês.','En esta condición todo se paga hasta la entrega: no hay saldo en la fase de INPC + 0,89% mensual.')}</span></div>`:''}
       <p class="pp-obs">${L(`A última coluna estima a correção pelo CUB/SC dos últimos 12 meses (${pct(taxaCorr(a.correcao),1)} ao ano) em todo o prazo; depois da entrega, a regra real (INPC + 0,89% ao mês) pesa mais. Veja a próxima página.`,`La última columna estima el ajuste por el CUB/SC de los últimos 12 meses (${pct(taxaCorr(a.correcao),1)} anual) en todo el plazo; después de la entrega la regla real (INPC + 0,89% mensual) pesa más.`)}</p>
     </div>`;
   }
