@@ -49,19 +49,19 @@
     const kits=IDX?.kits||[];
     if(!kitId||!kits.some(k=>k.id===kitId)) kitId=(kits.find(k=>k.id===cEmp)||kits[0])?.id||null;
     if(!lg) lg=L('pt','es');
-    const k=kits.find(x=>x.id===kitId);
+    const k=kits.find(x=>x.id===kitId), idi=k?.idiomas||['pt','es'];
     box.innerHTML=`
       <div class="ph"><h2>${L('Peças prontas','Piezas listas')}</h2><span class="note">${L('Vídeos, carrossel e legendas de campanha, prontos para publicar','Videos, carrusel y textos de campaña, listos para publicar')}</span></div>
       ${erro?`<p class="note camp-erro">${erro}</p>`:''}
       ${kits.length?`<div class="camp-filtro">
-        <div class="seg" role="group" aria-label="${L('Empreendimento','Emprendimiento')}">${kits.map(x=>`<button type="button" data-kit="${esc(x.id)}" aria-pressed="${x.id===kitId}">${esc(x.titulo)}</button>`).join('')}</div>
-        <div class="seg" role="group" aria-label="${L('Idioma do material','Idioma del material')}">${[['pt','Português'],['es','Español']].map(([c,n])=>`<button type="button" data-lg="${c}" aria-pressed="${c===lg}">${n}</button>`).join('')}</div>
+        <div class="in peca-sel"><select id="pecaKit" aria-label="${L('Empreendimento','Emprendimiento')}">${kits.map(x=>`<option value="${esc(x.id)}"${x.id===kitId?' selected':''}>${esc(x.titulo)}</option>`).join('')}</select></div>
+        ${idi.length>1?`<div class="seg" role="group" aria-label="${L('Idioma do material','Idioma del material')}">${[['pt','Português'],['es','Español']].map(([c,n])=>`<button type="button" data-lg="${c}" aria-pressed="${c===lg}">${n}</button>`).join('')}</div>`:`<span class="note">${L('Material em português','Material en portugués')}</span>`}
         <button class="btn ghost" type="button" id="pecaSair">${L('Sair','Salir')}</button></div>`:(erro?'':`<p class="note">${L('Ainda não há peças publicadas.','Aún no hay piezas publicadas.')}</p>`)}
       ${k?kitHtml(k):''}`;
     ligar();
   }
   function kitHtml(k){
-    const i=lg==='es'?1:0, car=k.carrossel[lg]||k.carrossel.pt||[], LEG=[['pt','Português'],['py','Español · Paraguay'],['ar','Español · Argentina']], lt=k.legendas[leg]||{};
+    const i=lg==='es'?1:0, car=k.carrossel[lg]||k.carrossel.pt||[], LEG=[['pt','Português'],['py','Español · Paraguay'],['ar','Español · Argentina']], lt=k.legendas[leg]||{}, temLeg=Object.keys(k.legendas||{}).length>0;
     return `
       <p class="note destaque-camp">${L('Material exclusivo da Goya Investimentos Imobiliários (CRECI 9226J). Não repasse os arquivos a outras imobiliárias. Os vídeos vão sem música: escolha uma calma no próprio Instagram.','Material exclusivo de Goya Investimentos Imobiliários (CRECI 9226J). No comparta los archivos con otras inmobiliarias. Los videos van sin música: elija una tranquila en el propio Instagram.')}</p>
       <h3 class="camp-h">${L('Vídeos','Videos')}</h3>
@@ -73,15 +73,15 @@
           <span class="note">${seg(v.dur)} · ${mb(a.mb)} · 1080×1920</span>
           <div class="peca-acoes"><button class="btn ghost mini" type="button" data-ver="${esc(v.id)}">${L('Ver','Ver')}</button><button class="btn mini" type="button" data-baixar-v="${esc(v.id)}">${L('Baixar','Descargar')}</button></div>
         </div>`; }).join('')}</div>
-      <h3 class="camp-h">${L('Carrossel (5 imagens, 1080×1350)','Carrusel (5 imágenes, 1080×1350)')}</h3>
+      ${car.length?`<h3 class="camp-h">${L('Carrossel (5 imagens, 1080×1350)','Carrusel (5 imágenes, 1080×1350)')}</h3>
       <div class="peca-car">${car.map((c,n)=>`<button type="button" class="peca-img" data-img="${n}" title="${L('Baixar esta imagem','Descargar esta imagen')}"><img src="${esc(c.mini)}" alt="${n+1}" loading="lazy"><span>${n+1}</span></button>`).join('')}</div>
-      <p><button class="btn mini" type="button" id="pecaCar5">${L('Baixar as 5 imagens','Descargar las 5 imágenes')}</button> <span class="note">${L('Publique as 5 juntas, na ordem 1 a 5.','Publique las 5 juntas, en el orden 1 a 5.')}</span></p>
-      <h3 class="camp-h">${L('Legendas','Textos')}</h3>
+      <p><button class="btn mini" type="button" id="pecaCar5">${L('Baixar as 5 imagens','Descargar las 5 imágenes')}</button> <span class="note">${L('Publique as 5 juntas, na ordem 1 a 5.','Publique las 5 juntas, en el orden 1 a 5.')}</span></p>`:''}
+      ${temLeg?`<h3 class="camp-h">${L('Legendas','Textos')}</h3>
       <div class="seg" role="group" aria-label="${L('Legenda','Texto')}">${LEG.map(([c,n])=>`<button type="button" data-leg="${c}" aria-pressed="${c===leg}">${n}</button>`).join('')}</div>
       <div class="camp-bloco"><div class="camp-copia"><b>${L('Legenda do post (filme e carrossel)','Texto del post (película y carrusel)')}</b><button class="btn ghost mini" type="button" data-copiar="${esc(lt.post||'')}">${L('Copiar','Copiar')}</button></div>
         <p class="peca-texto">${esc(lt.post||'')}</p></div>
       <div class="camp-bloco"><b>${L('Textos curtos para os Stories','Textos cortos para las Historias')}</b>
-        ${(lt.stories||[]).map(s=>`<div class="camp-copia"><span>${esc(s)}</span><button class="btn ghost mini" type="button" data-copiar="${esc(s.replace(/^[^:]+:\s*/,'').replace(/^"|"$/g,''))}">${L('Copiar','Copiar')}</button></div>`).join('')}</div>`;
+        ${(lt.stories||[]).map(s=>`<div class="camp-copia"><span>${esc(s)}</span><button class="btn ghost mini" type="button" data-copiar="${esc(s.replace(/^[^:]+:\s*/,'').replace(/^"|"$/g,''))}">${L('Copiar','Copiar')}</button></div>`).join('')}</div>`:''}`;
   }
 
   // ---------- ações ----------
@@ -98,7 +98,7 @@
     const v=b.textContent; b.textContent=L('Copiado ✓','Copiado ✓'); setTimeout(()=>{ b.textContent=v; },1500);
   }
   function ligar(){
-    box.querySelectorAll('[data-kit]').forEach(b=>b.addEventListener('click',()=>{ kitId=b.dataset.kit; pintar(); }));
+    box.querySelector('#pecaKit')?.addEventListener('change',e=>{ kitId=e.target.value; pintar(); });
     box.querySelectorAll('[data-lg]').forEach(b=>b.addEventListener('click',()=>{ lg=b.dataset.lg; leg=lg==='es'?(leg==='pt'?'py':leg):'pt'; pintar(); }));
     box.querySelectorAll('[data-leg]').forEach(b=>b.addEventListener('click',()=>{ leg=b.dataset.leg; pintar(); }));
     box.querySelector('#pecaSair')?.addEventListener('click',()=>document.getElementById('btnSair').click());
