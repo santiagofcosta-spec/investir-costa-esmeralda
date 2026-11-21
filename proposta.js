@@ -748,7 +748,7 @@
   function pagEcossistema(e){
     const r=e.resort||{}, cards=r.cards||[], kp=r.kpis||[];
     return `<div class="pp-pag pz-escura">
-      <div class="pz-kick">${L('O ALL Resort','El ALL Resort')}</div>
+      <div class="pz-kick">${r.kick||L('O ALL Resort','El ALL Resort')}</div>
       <h1 class="pz-h1 pz-h1-m">${r.titulo||''}</h1>
       ${r.lead?`<p class="pz-lead">${r.lead}</p>`:''}
       ${kp.length?`<div class="pz-kpis">${kp.map(([b,t,s])=>`<div><b>${b}</b><span>${t}</span>${s?`<small>${s}</small>`:''}</div>`).join('')}</div>`:''}
@@ -818,6 +818,120 @@
     gerarArquivo(nome);
   }
 
+
+  /* ---------- PRISMA ESMERALDA · APARTAMENTO (21/11/2026, 1º caso: Ocean Hill Residence) ----------
+     Mesma linha visual da proposta Prisma do lote, com páginas próprias de apartamento: a residência (planta,
+     suítes, vagas, andar), o pagamento com calendário, todas as condições lado a lado (inclusive as de campanha)
+     e as regras com transparência (correção antes e depois da entrega, terreno de marinha quando houver). */
+  const pzArea2=v=>(+v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const pzUni=u=>String(u.unidade||'').split(' · ')[0];
+  const fmtDataBR=s=>/^\d{4}-\d{2}-\d{2}$/.test(s||'')?s.split('-').reverse().join('/'):(s||'');
+
+  function capaPrismaApto(e,u){
+    const cap=IMG(e.fotos&&e.fotos.capa), m2=u.area?u.valor/u.area:0;
+    return `<div class="pp-pag pz-escura pz-capa">
+      ${cap?`<div class="pz-hero" style="background-image:url('${cap}')"><div class="pz-hero-grad"></div></div>`:''}
+      <div class="pz-capa-txt">
+        <div class="pz-kick">${L('Proposta reservada','Propuesta reservada')}${P.cliente?` · ${L('para','para')} ${esc(P.cliente)}`:''}</div>
+        <h1 class="pz-h1">${e.nome}</h1>
+        <p class="pz-sub">${[u.casa,u.torre,`${e.bairro?e.bairro+', ':''}${e.cidade} · Santa Catarina`].filter(Boolean).join(' · ')}</p>
+        <div class="pz-ficha">
+          <div><span>${L('Unidade','Unidad')}</span><b>${pzUni(u)}</b></div>
+          <div><span>${L('Área privativa','Área privada')}</span><b>${pzArea2(u.area)} m²</b></div>
+          ${u.suites?`<div><span>${L('Suítes','Suites')}</span><b>${u.suites}</b></div>`:''}
+          ${u.vagas?`<div><span>${L('Vagas','Cocheras')}</span><b>${u.vagas}</b></div>`:''}
+        </div>
+        <div class="pz-valor"><span>${L('Valor de tabela','Valor de lista')}</span><b>${brl(u.valor)}</b>${m2?`<small>${brl(m2)} ${L('por m² privativo','por m² privado')}</small>`:''}</div>
+        <p class="pz-nota">${[e.fase,e.incorporadora].filter(Boolean).join(' · ')}</p>
+      </div>
+    </div>`;
+  }
+
+  function pagResidencia(e,u){
+    const pl=IMG(u.planta), m2=u.area?u.valor/u.area:0, rs=(e.residencias||{})[u.casa]||'';
+    const lin=[[L('Unidade','Unidad'),`${pzUni(u)} · ${u.torre||''}`],u.pavimento?[L('Andar','Piso'),`${u.pavimento}º`]:null,
+      [L('Tipologia','Tipología'),u.tipo||''],[L('Área privativa','Área privada'),`${pzArea2(u.area)} m²`],
+      u.areaTotal?[L('Área total aproximada','Área total aproximada'),`${pzArea2(u.areaTotal)} m²`]:null,
+      u.suites?[L('Suítes','Suites'),u.suites]:null,u.vagas?[L('Vagas de garagem','Cocheras'),u.vagas]:null,
+      [L('Valor de tabela','Valor de lista'),brl(u.valor)],m2?[L('Valor por m² privativo','Valor por m² privado'),brl(m2)]:null,
+      e.entrega?[L('Entrega prevista','Entrega prevista'),fmtMesAno(e.entrega)]:null,e.incorporadora?[L('Incorporadora','Desarrollador'),e.incorporadora]:null].filter(Boolean);
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('A sua residência','Su residencia')}</div>
+      <h1>${u.casa?`${u.casa}, ${L(`no ${u.pavimento}º andar da ${u.torre||''}`,`en el piso ${u.pavimento} de la ${u.torre||''}`)}`:e.nome}</h1>
+      ${rs?`<p class="pp-lead">${rs}</p>`:''}
+      ${pl?`<div class="pz-planta"><img src="${pl}" alt=""></div><p class="pp-obs">${L('Planta ilustrativa da incorporadora, com sugestão de decoração. Medidas e acabamentos oficiais estão no memorial descritivo e no contrato.','Planta ilustrativa del desarrollador. Medidas y terminaciones oficiales en el memorial descriptivo y en el contrato.')}</p>`:''}
+      <table class="pz-tab"><tbody>${lin.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
+    </div>`;
+  }
+
+  function pagPagamentoPrisma(e,u,a,m){
+    const nE=nEnt(a), bal=a.baloes&&a.baloes.n?a.baloes:null, ch=mesesAte(e.entrega), pg=pagamentos(a);
+    const ate=ch==null?0:pg.filter(([mm])=>mm<=ch).reduce((s,[,v])=>s+v,0), depois=ch==null?0:pg.filter(([mm])=>mm>ch).length;
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('Proposta em detalhe','Propuesta en detalle')}</div>
+      <h1>${L('Como você paga','Cómo usted paga')}</h1>
+      <p class="pp-lead">${L(`Condição desta proposta: <b>${esc(a.nome||'')}</b>, direto com a incorporadora, sem banco.`,`Condición de esta propuesta: <b>${esc(a.nome||'')}</b>, directo con el desarrollador, sin banco.`)}</p>
+      <div class="pp-kpis">
+        <div><span>${L('Valor desta condição','Valor de esta condición')}</span><b>${brl(m.total)}</b><small>${Math.abs(m.total-u.valor)>1?L(`tabela ${brl(u.valor)}`,`lista ${brl(u.valor)}`):L('valor de tabela','valor de lista')}</small></div>
+        <div><span>${L('Entrada','Anticipo')}</span><b>${nE>1?`${nE} × ${brlc(Math.round(a.entrada/nE*100)/100)}`:brlc(a.entrada)}</b><small>${pct(a.entrada/m.total,0)} · ${nE>1?`${mesRot(0)} ${L('a','a')} ${mesRot(nE-1)}`:L('na assinatura','a la firma')}</small></div>
+        <div><span>${bal&&!a.mensais.n?L('Semestrais','Semestrales'):L('Parcela mensal','Cuota mensual')}</span><b>${a.mensais.n?brlc(a.mensais.valor):bal?brlc(bal.valor):'—'}</b><small>${a.mensais.n?`${a.mensais.n}× · ${L('1ª em','1ª en')} ${mesRot(a.mensais.inicio)}`:bal?`${bal.n}× · ${L('a cada','cada')} ${bal.cada} ${L('meses','meses')}`:''}</small></div>
+        <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo+1} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
+      </div>
+      ${bal&&a.mensais.n?`<p class="pp-lead">${L(`Mais ${bal.n} reforços de ${brlc(bal.valor)}, a cada ${bal.cada} meses (o 1º em ${mesRot(bal.inicio)}).`,`Más ${bal.n} refuerzos de ${brlc(bal.valor)}, cada ${bal.cada} meses (el 1º en ${mesRot(bal.inicio)}).`)}</p>`:''}
+      <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
+      ${calendario(e,a,m)}
+      ${ch!=null&&e.entrega?`<div class="pp-msg"><b>${L(`Até a entrega das chaves (${fmtMesAno(e.entrega)}): ${brl(ate)} pagos, ${pct(ate/m.total,0)} do total, sem a correção.`,`Hasta la entrega de llaves (${fmtMesAno(e.entrega)}): ${brl(ate)} pagados, ${pct(ate/m.total,0)} del total, sin el ajuste.`)}</b>
+        <span>${depois?L(`Depois da entrega ficam ${brl(m.total-ate)} (${depois} ${depois===1?'pagamento':'pagamentos'}), corrigidos pelo INPC + 0,89% ao mês, como manda a tabela da incorporadora.`,`Después de la entrega quedan ${brl(m.total-ate)} (${depois} pagos), ajustados por INPC + 0,89% mensual, según la tabla del desarrollador.`):L('Nesta condição, tudo é pago até a entrega das chaves: não há saldo na fase do INPC + 0,89% ao mês.','En esta condición todo se paga hasta la entrega: no hay saldo en la fase de INPC + 0,89% mensual.')}</span></div>`:''}
+      <p class="pp-obs">${L(`A última coluna estima a correção pelo CUB/SC dos últimos 12 meses (${pct(taxaCorr(a.correcao),1)} ao ano) em todo o prazo; depois da entrega, a regra real (INPC + 0,89% ao mês) pesa mais. Veja a próxima página.`,`La última columna estima el ajuste por el CUB/SC de los últimos 12 meses (${pct(taxaCorr(a.correcao),1)} anual) en todo el plazo; después de la entrega la regla real (INPC + 0,89% mensual) pesa más.`)}</p>
+    </div>`;
+  }
+
+  function pagCondicoesPrismaApto(e,u,a,m){
+    const c=conds(e,u)||{}, ops=Object.keys(c).filter(k=>c[k]&&typeof c[k]==='object').map(k=>{ const p=copia(c[k]); return {k,p,m:metricas(p),camp:!!c[k].campanha,sel:k===P.base}; });
+    const parc=p=>[p.mensais.n?`${p.mensais.n} × ${brlc(p.mensais.valor)}`:'',p.baloes.n?`${p.baloes.n} × ${brlc(p.baloes.valor)} <small>${L(`a cada ${p.baloes.cada} meses`,`cada ${p.baloes.cada} meses`)}</small>`:''].filter(Boolean).join('<br>')||'—';
+    const lin=o=>`<tr class="${o.sel?'dest':''}"><td style="text-align:left"><b>${esc(o.p.nome||'')}</b>${o.sel?`<small>${L('condição desta proposta','condición de esta propuesta')}</small>`:''}</td><td>${brl(o.m.total)}</td><td>${nEnt(o.p)>1?`${nEnt(o.p)} × ${brlc(Math.round(o.p.entrada/nEnt(o.p)*100)/100)}`:brlc(o.p.entrada)}</td><td>${parc(o.p)}<small>${L('prazo','plazo')} ${o.m.prazo+1} ${L('meses','meses')}</small></td></tr>`;
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('Transparência','Transparencia')}</div>
+      <h1>${L('Todas as condições, lado a lado','Todas las condiciones, lado a lado')}</h1>
+      <table class="pp-grade"><thead><tr><th style="text-align:left">${L('Condição','Condición')}</th><th>${L('Valor','Valor')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcelas e prazo','Cuotas y plazo')}</th></tr></thead><tbody>
+        ${ops.filter(o=>!o.camp).map(lin).join('')}
+        ${ops.some(o=>o.camp)?`<tr><td colspan="4" style="text-align:left"><small><b>${L('Descontos de campanha da incorporadora','Descuentos de campaña del desarrollador')}</b> · ${L('quanto maior a entrada, maior o desconto; não acumulam com permuta','cuanto mayor el anticipo, mayor el descuento; no se acumulan con permuta')}</small></td></tr>${ops.filter(o=>o.camp).map(lin).join('')}`:''}
+      </tbody></table>
+      <div class="pz-etapas">
+        <div><span>1</span><b>${L('Até a entrega das chaves','Hasta la entrega de llaves')}</b><p>${L('Parcelas sem juros, corrigidas pelo CUB-SC (só quando o índice é positivo).','Cuotas sin interés, ajustadas por el CUB-SC (solo cuando el índice es positivo).')}</p></div>
+        <div><span>2</span><b>${L('Depois da entrega','Después de la entrega')}</b><p>${L('O saldo que faltar passa a ser corrigido pelo <b>INPC + 0,89% ao mês</b>. Por isso, quanto mais você paga até as chaves, menor esse custo.','El saldo restante pasa a ajustarse por <b>INPC + 0,89% mensual</b>. Cuanto más pague hasta la entrega, menor ese costo.')}</p></div>
+        <div><span>3</span><b>${L('Usar um bem na negociação','Usar un bien en la negociación')}</b><p>${L('A incorporadora pode aceitar um bem aprovado por até 50% do valor, com a entrada de 20% em dinheiro. Sob consulta; não acumula com os descontos de campanha.','El desarrollador puede aceptar un bien aprobado hasta el 50% del valor, con anticipo del 20% en efectivo. Bajo consulta; no se acumula con los descuentos.')}</p></div>
+      </div>
+      ${e.marinha?`<div class="pz-quote"><b>${L('Terreno de marinha','Terreno de marina')}</b><span>${e.marinha}</span></div>`:''}
+      <p class="pp-obs">${L(`Valores da tabela oficial da incorporadora de ${fmtDataBR(e.atualizado)}, sujeitos a disponibilidade, à simulação oficial e à aprovação da incorporadora. Os preços são atualizados todo mês.`,`Valores de la tabla oficial del desarrollador del ${fmtDataBR(e.atualizado)}, sujetos a disponibilidad, simulación oficial y aprobación del desarrollador. Los precios se actualizan cada mes.`)}</p>
+    </div>`;
+  }
+
+  function pagLocalPrismaApto(e,hoje){
+    const lc=e.local||{}, mapa=IMG(e.fotos&&e.fotos.mapa), ds=lc.distancias||[];
+    const gal=(lc.fotos||[]).map(IMG).filter(Boolean).slice(0,3);
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('Localização','Ubicación')}</div>
+      <h1>${lc.titulo||e.cidade}</h1>
+      ${lc.lead?`<p class="pp-lead">${lc.lead}</p>`:''}
+      ${mapa?`<div class="pz-planta pz-mp"><img src="${mapa}" alt=""></div>${lc.mapaFonte?`<p class="pp-obs">${lc.mapaFonte}</p>`:''}`:''}
+      ${ds.length?`<div class="pp-dist">${ds.map(([n,km,min])=>`<div><span>${n}</span><b>≈ ${String(km).replace('.',',')} km</b>${min?`<small>~${min} min</small>`:''}</div>`).join('')}</div>${lc.distFonte?`<p class="pp-obs">${lc.distFonte}</p>`:''}`:''}
+      ${gal.length?`<div class="pp-fotos">${gal.map(s=>`<figure><img src="${s}" alt=""></figure>`).join('')}</div>`:''}
+      <div class="pz-fecho"><div class="pz-assin">${pzLogo(true)}</div>
+        <p>${esc(assinatura())}<br>${L('Atendimento reservado · frente-mar, Porto Belo','Atención reservada · frente al mar, Porto Belo')}</p>
+        <small>${L(`Proposta preparada em ${hoje}. Imagens ilustrativas da incorporadora. Valores e condições sujeitos à confirmação no contrato.`,`Propuesta preparada el ${hoje}. Imágenes ilustrativas del desarrollador. Valores y condiciones sujetos a confirmación en el contrato.`)}</small></div>
+    </div>`;
+  }
+
+  function pdfPrismaApto(){
+    const {e,u}=P, a=P.aj, m=metricas(a), hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
+    out.innerHTML=capaPrismaApto(e,u)+pagEcossistema(e)+pagResidencia(e,u)+pagPagamentoPrisma(e,u,a,m)+pagCondicoesPrismaApto(e,u,a,m)+pagLocalPrismaApto(e,hoje);
+    marcarPaginas(out,hoje);
+    const agora=new Date(), hora=`${String(agora.getDate()).padStart(2,'0')}-${String(agora.getMonth()+1).padStart(2,'0')} ${String(agora.getHours()).padStart(2,'0')}h${String(agora.getMinutes()).padStart(2,'0')}`;
+    const nome=(`Proposta ${txt(e.nome)} ${pzUni(u)} ${u.torre||''}${P.cliente?' - '+P.cliente:''} ${hora}`.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]+/g,'').replace(/\s+/g,' ').replace(/^[.\s]+/,'').trim().slice(0,90)||'Proposta')+'.pdf';
+    gerarArquivo(nome);
+  }
+
   function pdfLote(){
     if(PRISMA(P.e)) return pdfPrisma();
     const {e,u}=P, a=P.aj, m=metricas(a), hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
@@ -831,6 +945,7 @@
   /* ---------- PDF (só a proposta final) ---------- */
   function pdf(){
     if(LOTE(P.e)) return pdfLote();
+    if(PRISMA(P.e)) return pdfPrismaApto();
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
     const cap=IMG(f.capa), pl=IMG(u.planta), usadas=fotosLazer(e).map(x=>x[0]), gal=(f.galeria||[]).map(IMG).filter(s=>s&&!usadas.includes(s)).slice(0,6), mapa=IMG(f.mapa), mapaRua=IMG(f.mapaRua);
     const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
