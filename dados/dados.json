@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-20",
+ "atualizado": "2026-11-21",
  "bcb": {
   "start": "2016-01",
   "series": {
@@ -1423,7 +1423,7 @@
     ]
    }
   ],
-  "atualizado": "2026-11-20 20:15",
+  "atualizado": "2026-11-20 23:57",
   "fonte": "Grão Direto (graodireto.com.br)",
   "cidades": {
    "comodoro": {
@@ -3908,29 +3908,11 @@
      {
       "cidade": "Querência",
       "uf": "MT",
-      "preco": 129.5,
-      "comFrete": 128.96,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-20 10:00"
-     },
-     {
-      "cidade": "Querência",
-      "uf": "MT",
       "preco": 125.5,
       "comFrete": 124.96,
       "entrega": "2027-04-30",
       "fob": true,
       "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Querência",
-      "uf": "MT",
-      "preco": 125.9,
-      "comFrete": 125.36,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-20 10:00"
      },
      {
       "cidade": "Querência",
@@ -3942,22 +3924,22 @@
       "atualizado": "2026-11-19 17:45"
      },
      {
-      "cidade": "Querência",
+      "cidade": "Água Boa",
       "uf": "MT",
-      "preco": 123.55,
-      "comFrete": 123.01,
-      "entrega": "2027-02-28",
+      "preco": 126.45,
+      "comFrete": 122.31,
+      "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 10:00"
+      "atualizado": "2026-11-19 17:45"
      },
      {
-      "cidade": "Querência",
+      "cidade": "Água Boa",
       "uf": "MT",
-      "preco": 123.4,
-      "comFrete": 122.86,
+      "preco": 124.95,
+      "comFrete": 120.81,
       "entrega": "2027-03-31",
       "fob": true,
-      "atualizado": "2026-11-20 10:00"
+      "atualizado": "2026-11-19 17:45"
      }
     ],
     "historico": [
@@ -3998,18 +3980,18 @@
      ],
      [
       "2026-11-20",
-      123.4,
-      125.32,
-      129.5,
-      6
+      124.05,
+      124.78,
+      125.5,
+      2
      ]
     ],
     "slug": "querencia",
     "ordem": 9,
     "ultimas": {
      "2027-03": {
-      "preco": 124.05,
-      "cidade": "Querência",
+      "preco": 124.95,
+      "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
       "visto": "2026-11-20"
@@ -4029,8 +4011,8 @@
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 125.9,
-      "cidade": "Querência",
+      "preco": 126.45,
+      "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
       "visto": "2026-11-20"
@@ -5054,6 +5036,10 @@
      [
       "2026-11-18",
       146.53
+     ],
+     [
+      "2026-11-19",
+      147.82
      ]
     ],
     "ofertas": [
@@ -5094,57 +5080,12 @@
       "atualizado": "2026-11-16 09:35"
      },
      {
-      "cidade": "São Gabriel do Oeste",
-      "uf": "MS",
-      "preco": 130.5,
-      "comFrete": 125.7,
-      "entrega": "2027-04-30",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "São Gabriel do Oeste",
-      "uf": "MS",
-      "preco": 129.3,
-      "comFrete": 124.5,
-      "entrega": "2027-03-31",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "São Gabriel do Oeste",
-      "uf": "MS",
-      "preco": 126.65,
-      "comFrete": 121.85,
-      "entrega": "2027-02-28",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Maracaju",
-      "uf": "MS",
-      "preco": 132.65,
-      "comFrete": 122.53,
-      "entrega": "2027-04-30",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Maracaju",
-      "uf": "MS",
-      "preco": 130.85,
-      "comFrete": 120.73,
-      "entrega": "2027-03-31",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Maracaju",
-      "uf": "MS",
-      "preco": 125.1,
-      "comFrete": 114.98,
-      "entrega": "2027-02-28",
-      "fob": false,
+      "cidade": "Itiquira",
+      "uf": "MT",
+      "preco": 132.0,
+      "comFrete": 127.36,
+      "entrega": "2027-05-31",
+      "fob": true,
       "atualizado": "2026-11-19 17:45"
      }
     ],
@@ -5164,11 +5105,11 @@
       "visto": "2026-11-20"
      },
      "2027-05": {
-      "preco": 134.4,
-      "cidade": "Maracaju",
-      "uf": "MS",
-      "fob": false,
-      "visto": "2026-11-18"
+      "preco": 132.0,
+      "cidade": "Itiquira",
+      "uf": "MT",
+      "fob": true,
+      "visto": "2026-11-20"
      },
      "2027-02": {
       "preco": 126.65,
@@ -6685,6 +6626,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [
@@ -7850,6 +7795,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [
@@ -8061,6 +8010,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [],
@@ -9018,15 +8971,6 @@
       "atualizado": "2026-11-19 17:45"
      },
      {
-      "cidade": "Vera",
-      "uf": "MT",
-      "preco": 127.95,
-      "comFrete": 127.41,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-20 11:00"
-     },
-     {
       "cidade": "Matupá",
       "uf": "MT",
       "preco": 143.25,
@@ -9045,21 +8989,30 @@
       "atualizado": "2026-11-19 17:45"
      },
      {
-      "cidade": "Vera",
-      "uf": "MT",
-      "preco": 124.75,
-      "comFrete": 124.21,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-20 11:00"
-     },
-     {
       "cidade": "Matupá",
       "uf": "MT",
       "preco": 144.1,
       "comFrete": 135.4,
       "entrega": "2026-12-31",
       "fob": false,
+      "atualizado": "2026-11-19 17:45"
+     },
+     {
+      "cidade": "Sinop",
+      "uf": "MT",
+      "preco": 134.75,
+      "comFrete": 133.37,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-19 17:45"
+     },
+     {
+      "cidade": "Vera",
+      "uf": "MT",
+      "preco": 122.7,
+      "comFrete": 122.16,
+      "entrega": "2027-04-30",
+      "fob": true,
       "atualizado": "2026-11-19 17:45"
      }
     ],
@@ -9079,7 +9032,7 @@
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 124.75,
+      "preco": 122.7,
       "cidade": "Vera",
       "uf": "MT",
       "fob": true,
@@ -9131,10 +9084,10 @@
      ],
      [
       "2026-11-20",
-      124.75,
-      127.92,
+      122.7,
+      127.23,
       130.35,
-      4
+      3
      ]
     ],
     "slug": "vera",
@@ -10007,6 +9960,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [
@@ -10828,6 +10785,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [
@@ -11273,11 +11234,20 @@
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 150.05,
+      "preco": 160.0,
+      "comFrete": 156.05,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 14:53"
+     },
+     {
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 145.0,
+      "comFrete": 141.05,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 17:24"
      },
      {
       "cidade": "Apucarana",
@@ -11291,8 +11261,8 @@
     ],
     "ultimas": {
      "disp": {
-      "preco": 157.0,
-      "cidade": "Apucarana",
+      "preco": 160.0,
+      "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
       "visto": "2026-11-20"
@@ -11411,17 +11381,30 @@
      [
       "2026-11-18",
       159.61
+     ],
+     [
+      "2026-11-19",
+      160.53
      ]
     ],
     "ofertas": [
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 148.87,
+      "preco": 160.0,
+      "comFrete": 154.87,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 14:53"
+     },
+     {
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 145.0,
+      "comFrete": 139.87,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 17:24"
      },
      {
       "cidade": "Apucarana",
@@ -11431,66 +11414,12 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 09:14"
-     },
-     {
-      "cidade": "Rio Bonito do Iguaçu",
-      "uf": "PR",
-      "preco": 147.95,
-      "comFrete": 147.41,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Bonito do Iguaçu",
-      "uf": "PR",
-      "preco": 144.7,
-      "comFrete": 144.16,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Bonito do Iguaçu",
-      "uf": "PR",
-      "preco": 141.5,
-      "comFrete": 140.96,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Bonito do Iguaçu",
-      "uf": "PR",
-      "preco": 137.95,
-      "comFrete": 137.41,
-      "entrega": "2027-02-28",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Prudentópolis",
-      "uf": "PR",
-      "preco": 151.3,
-      "comFrete": 147.85,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Laranjeiras do Sul",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 147.71,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
      "disp": {
-      "preco": 157.0,
-      "cidade": "Apucarana",
+      "preco": 160.0,
+      "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
       "visto": "2026-11-20"
@@ -11623,17 +11552,30 @@
      [
       "2026-11-18",
       159.61
+     ],
+     [
+      "2026-11-19",
+      160.53
      ]
     ],
     "ofertas": [
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 149.7,
+      "preco": 160.0,
+      "comFrete": 155.7,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 14:53"
+     },
+     {
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 145.0,
+      "comFrete": 140.7,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 17:24"
      },
      {
       "cidade": "Apucarana",
@@ -11643,66 +11585,12 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 09:14"
-     },
-     {
-      "cidade": "Porto Barreiro",
-      "uf": "PR",
-      "preco": 147.95,
-      "comFrete": 147.41,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Porto Barreiro",
-      "uf": "PR",
-      "preco": 147.95,
-      "comFrete": 147.41,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Porto Barreiro",
-      "uf": "PR",
-      "preco": 144.7,
-      "comFrete": 144.16,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Porto Barreiro",
-      "uf": "PR",
-      "preco": 144.7,
-      "comFrete": 144.16,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Porto Barreiro",
-      "uf": "PR",
-      "preco": 141.5,
-      "comFrete": 140.96,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Porto Barreiro",
-      "uf": "PR",
-      "preco": 141.5,
-      "comFrete": 140.96,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
      "disp": {
-      "preco": 157.0,
-      "cidade": "Apucarana",
+      "preco": 160.0,
+      "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
       "visto": "2026-11-20"
@@ -12151,6 +12039,15 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 09:14"
+     },
+     {
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 145.0,
+      "comFrete": 138.3,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 17:24"
      },
      {
       "cidade": "Macatuba",
@@ -13797,15 +13694,6 @@
       "atualizado": "2026-11-18 15:20"
      },
      {
-      "cidade": "Tabaporã",
-      "uf": "MT",
-      "preco": 126.0,
-      "comFrete": 125.46,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-20 10:30"
-     },
-     {
       "cidade": "Matupá",
       "uf": "MT",
       "preco": 143.25,
@@ -13813,15 +13701,6 @@
       "entrega": "2026-12-31",
       "fob": true,
       "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Tabaporã",
-      "uf": "MT",
-      "preco": 123.1,
-      "comFrete": 122.56,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-20 10:30"
      },
      {
       "cidade": "Matupá",
@@ -13833,19 +13712,37 @@
       "atualizado": "2026-11-19 17:45"
      },
      {
-      "cidade": "Tabaporã",
-      "uf": "MT",
-      "preco": 121.3,
-      "comFrete": 120.76,
-      "entrega": "2027-03-31",
-      "fob": true,
-      "atualizado": "2026-11-20 10:30"
-     },
-     {
       "cidade": "Sinop",
       "uf": "MT",
       "preco": 134.75,
       "comFrete": 131.38,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-19 17:45"
+     },
+     {
+      "cidade": "Ipiranga do Norte",
+      "uf": "MT",
+      "preco": 131.4,
+      "comFrete": 128.24,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-19 17:45"
+     },
+     {
+      "cidade": "Lucas do Rio Verde",
+      "uf": "MT",
+      "preco": 133.0,
+      "comFrete": 126.81,
+      "entrega": "2026-12-31",
+      "fob": true,
+      "atualizado": "2026-11-19 17:45"
+     },
+     {
+      "cidade": "Sorriso",
+      "uf": "MT",
+      "preco": 131.2,
+      "comFrete": 126.16,
       "entrega": "2026-12-31",
       "fob": true,
       "atualizado": "2026-11-19 17:45"
@@ -13991,6 +13888,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [
@@ -14428,6 +14329,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [],
@@ -14557,6 +14462,10 @@
      [
       "2026-11-18",
       135.4
+     ],
+     [
+      "2026-11-19",
+      135.13
      ]
     ],
     "ofertas": [
@@ -15063,60 +14972,6 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 00:21"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 144.77,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 147.6,
-      "comFrete": 143.39,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Porto Barreiro",
-      "uf": "PR",
-      "preco": 147.95,
-      "comFrete": 142.85,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Bonito do Iguaçu",
-      "uf": "PR",
-      "preco": 147.95,
-      "comFrete": 142.66,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 145.0,
-      "comFrete": 141.52,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Laranjeiras do Sul",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 142.66,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
@@ -15665,6 +15520,10 @@
      [
       "2026-11-18",
       158.59
+     ],
+     [
+      "2026-11-19",
+      158.4
      ]
     ],
     "ofertas": [
@@ -15680,11 +15539,11 @@
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 147.32,
+      "preco": 160.0,
+      "comFrete": 153.32,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 14:53"
      },
      {
       "cidade": "Apucarana",
@@ -15696,6 +15555,15 @@
       "atualizado": "2026-11-17 09:14"
      },
      {
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 145.0,
+      "comFrete": 138.32,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 17:24"
+     },
+     {
       "cidade": "Macatuba",
       "uf": "SP",
       "preco": 160.0,
@@ -15705,57 +15573,12 @@
       "atualizado": "2026-11-16 15:51"
      },
      {
-      "cidade": "Ventania",
-      "uf": "PR",
-      "preco": 149.05,
-      "comFrete": 148.51,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
       "cidade": "Paranaguá",
       "uf": "PR",
       "preco": 170.6,
       "comFrete": 161.22,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Ventania",
-      "uf": "PR",
-      "preco": 145.8,
-      "comFrete": 145.26,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Ventania",
-      "uf": "PR",
-      "preco": 142.1,
-      "comFrete": 141.56,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Ventania",
-      "uf": "PR",
-      "preco": 140.7,
-      "comFrete": 140.16,
-      "entrega": "2027-02-28",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Castro",
-      "uf": "PR",
-      "preco": 152.05,
-      "comFrete": 150.48,
-      "entrega": "2027-06-30",
-      "fob": true,
       "atualizado": "2026-11-19 17:45"
      }
     ],
@@ -16404,79 +16227,25 @@
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 147.3,
+      "preco": 160.0,
+      "comFrete": 153.3,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 14:53"
      },
      {
-      "cidade": "Mato Castelhano",
-      "uf": "RS",
-      "preco": 138.0,
-      "comFrete": 131.03,
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 145.0,
+      "comFrete": 138.3,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-14 13:46"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 147.6,
-      "comFrete": 147.06,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 144.4,
-      "comFrete": 143.86,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 141.2,
-      "comFrete": 140.66,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 137.95,
-      "comFrete": 137.41,
-      "entrega": "2027-02-28",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 147.34,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Laranjeiras do Sul",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 146.11,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 17:24"
      }
     ],
     "ultimas": {
      "disp": {
-      "preco": 154.0,
+      "preco": 160.0,
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
@@ -16625,60 +16394,6 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 00:21"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 142.89,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 147.6,
-      "comFrete": 141.49,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 145.0,
-      "comFrete": 139.64,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 144.4,
-      "comFrete": 138.29,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 141.8,
-      "comFrete": 136.44,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 141.2,
-      "comFrete": 135.09,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
@@ -17644,60 +17359,6 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 00:21"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 143.56,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 147.6,
-      "comFrete": 142.13,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 145.0,
-      "comFrete": 140.31,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Bonito do Iguaçu",
-      "uf": "PR",
-      "preco": 147.95,
-      "comFrete": 140.98,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 144.4,
-      "comFrete": 138.93,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 141.8,
-      "comFrete": 137.11,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
@@ -17980,60 +17641,6 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 00:21"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 141.94,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 147.6,
-      "comFrete": 140.57,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 145.0,
-      "comFrete": 138.69,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 144.4,
-      "comFrete": 137.37,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 141.8,
-      "comFrete": 135.49,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Verê",
-      "uf": "PR",
-      "preco": 141.2,
-      "comFrete": 134.17,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
@@ -18770,42 +18377,6 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 00:21"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 148.25,
-      "comFrete": 141.66,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 145.0,
-      "comFrete": 138.41,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 141.8,
-      "comFrete": 135.21,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Renascença",
-      "uf": "PR",
-      "preco": 138.55,
-      "comFrete": 131.96,
-      "entrega": "2027-02-28",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
@@ -19865,71 +19436,7 @@
       158.48
      ]
     ],
-    "ofertas": [
-     {
-      "cidade": "Rio Grande",
-      "uf": "RS",
-      "preco": 169.7,
-      "comFrete": 161.06,
-      "entrega": null,
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Santa Maria",
-      "uf": "RS",
-      "preco": 115.0,
-      "comFrete": 110.21,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-17 00:21"
-     },
-     {
-      "cidade": "Rio Grande",
-      "uf": "RS",
-      "preco": 171.75,
-      "comFrete": 163.11,
-      "entrega": "2026-12-31",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Grande",
-      "uf": "RS",
-      "preco": 161.9,
-      "comFrete": 153.26,
-      "entrega": "2027-07-31",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Grande",
-      "uf": "RS",
-      "preco": 158.95,
-      "comFrete": 150.31,
-      "entrega": "2027-06-30",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Grande",
-      "uf": "RS",
-      "preco": 156.05,
-      "comFrete": 147.41,
-      "entrega": "2027-05-31",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Rio Grande",
-      "uf": "RS",
-      "preco": 152.5,
-      "comFrete": 143.86,
-      "entrega": "2027-04-30",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     }
-    ],
+    "ofertas": [],
     "ultimas": {
      "disp": {
       "preco": 169.7,
@@ -21108,6 +20615,15 @@
     ],
     "ofertas": [
      {
+      "cidade": "Goiás",
+      "uf": "GO",
+      "preco": 156.0,
+      "comFrete": 152.18,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 16:06"
+     },
+     {
       "cidade": "Rio Verde",
       "uf": "GO",
       "preco": 144.0,
@@ -21155,15 +20671,6 @@
      {
       "cidade": "Uberlândia",
       "uf": "MG",
-      "preco": 158.0,
-      "comFrete": 149.21,
-      "entrega": null,
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Uberlândia",
-      "uf": "MG",
       "preco": 137.8,
       "comFrete": 129.01,
       "entrega": "2027-03-31",
@@ -21182,10 +20689,10 @@
     ],
     "ultimas": {
      "disp": {
-      "preco": 158.0,
-      "cidade": "Uberlândia",
-      "uf": "MG",
-      "fob": false,
+      "preco": 156.0,
+      "cidade": "Goiás",
+      "uf": "GO",
+      "fob": true,
       "visto": "2026-11-20"
      },
      "2027-03": {
@@ -21721,6 +21228,10 @@
      [
       "2026-11-18",
       148.34
+     ],
+     [
+      "2026-11-19",
+      148.56
      ]
     ],
     "ofertas": [
@@ -21752,30 +21263,12 @@
       "atualizado": "2026-11-19 17:45"
      },
      {
-      "cidade": "Luís Eduardo Magalhães",
-      "uf": "BA",
-      "preco": 138.9,
-      "comFrete": 137.27,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
       "cidade": "Barreiras",
       "uf": "BA",
       "preco": 131.5,
       "comFrete": 127.99,
       "entrega": "2027-01-31",
       "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Luís Eduardo Magalhães",
-      "uf": "BA",
-      "preco": 138.15,
-      "comFrete": 136.52,
-      "entrega": "2027-05-31",
-      "fob": true,
       "atualizado": "2026-11-19 17:45"
      }
     ],
@@ -21971,20 +21464,20 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 141.15,
-      "comFrete": 139.79,
+      "preco": 141.2,
+      "comFrete": 139.84,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-20 11:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.55,
-      "comFrete": 139.19,
+      "preco": 140.6,
+      "comFrete": 139.24,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 11:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberlândia",
@@ -21998,11 +21491,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 136.85,
-      "comFrete": 135.49,
+      "preco": 136.95,
+      "comFrete": 135.59,
       "entrega": "2027-03-31",
       "fob": true,
-      "atualizado": "2026-11-20 11:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberlândia",
@@ -22016,11 +21509,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 132.95,
-      "comFrete": 131.59,
+      "preco": 133.0,
+      "comFrete": 131.64,
       "entrega": "2027-02-28",
       "fob": true,
-      "atualizado": "2026-11-20 11:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
@@ -22041,7 +21534,7 @@
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 140.55,
+      "preco": 140.6,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": true,
@@ -22792,38 +22285,38 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 141.05,
-      "comFrete": 136.97,
+      "preco": 141.2,
+      "comFrete": 137.12,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Jaboticabal",
       "uf": "SP",
-      "preco": 144.4,
-      "comFrete": 143.86,
+      "preco": 144.6,
+      "comFrete": 144.06,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Jaboticabal",
       "uf": "SP",
-      "preco": 142.1,
-      "comFrete": 141.56,
+      "preco": 142.3,
+      "comFrete": 141.76,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.4,
-      "comFrete": 136.32,
+      "preco": 140.6,
+      "comFrete": 136.52,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Frutal",
@@ -22837,11 +22330,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 136.75,
-      "comFrete": 132.67,
+      "preco": 136.95,
+      "comFrete": 132.87,
       "entrega": "2027-03-31",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Frutal",
@@ -22869,7 +22362,7 @@
       "visto": "2026-11-19"
      },
      "2027-05": {
-      "preco": 144.4,
+      "preco": 144.6,
       "cidade": "Jaboticabal",
       "uf": "SP",
       "fob": true,
@@ -22883,14 +22376,14 @@
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 142.1,
+      "preco": 142.3,
       "cidade": "Jaboticabal",
       "uf": "SP",
       "fob": true,
       "visto": "2026-11-20"
      },
      "2027-03": {
-      "preco": 136.75,
+      "preco": 136.95,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": true,
@@ -22914,9 +22407,9 @@
      ],
      [
       "2026-11-20",
-      142.1,
-      143.25,
-      144.4,
+      142.3,
+      143.45,
+      144.6,
       2
      ]
     ],
@@ -22958,29 +22451,38 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.45,
-      "comFrete": 133.91,
+      "preco": 141.2,
+      "comFrete": 134.66,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.2,
-      "comFrete": 133.66,
+      "preco": 145.0,
+      "comFrete": 138.46,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 11:10"
+     },
+     {
+      "cidade": "Uberaba",
+      "uf": "MG",
+      "preco": 140.6,
+      "comFrete": 134.06,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 136.5,
-      "comFrete": 129.96,
+      "preco": 136.95,
+      "comFrete": 130.41,
       "entrega": "2027-03-31",
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
@@ -22994,11 +22496,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 132.35,
-      "comFrete": 125.81,
+      "preco": 133.0,
+      "comFrete": 126.46,
       "entrega": "2027-02-28",
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
@@ -23028,14 +22530,14 @@
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 140.2,
+      "preco": 140.6,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": true,
       "visto": "2026-11-20"
      },
      "2027-03": {
-      "preco": 136.5,
+      "preco": 136.95,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": true,
@@ -23166,11 +22668,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 141.4,
-      "comFrete": 138.94,
+      "preco": 141.2,
+      "comFrete": 138.74,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-20 14:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Ibiá",
@@ -23202,20 +22704,20 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.7,
-      "comFrete": 138.24,
+      "preco": 140.6,
+      "comFrete": 138.14,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 14:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 137.05,
-      "comFrete": 134.59,
+      "preco": 136.95,
+      "comFrete": 134.49,
       "entrega": "2027-03-31",
       "fob": true,
-      "atualizado": "2026-11-20 14:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberlândia",
@@ -23227,13 +22729,13 @@
       "atualizado": "2026-11-19 17:45"
      },
      {
-      "cidade": "Uberaba",
+      "cidade": "Uberlândia",
       "uf": "MG",
-      "preco": 133.1,
-      "comFrete": 130.64,
+      "preco": 137.0,
+      "comFrete": 130.55,
       "entrega": "2027-02-28",
-      "fob": true,
-      "atualizado": "2026-11-20 14:30"
+      "fob": false,
+      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
@@ -23245,8 +22747,8 @@
       "visto": "2026-11-20"
      },
      "2027-02": {
-      "preco": 135.6,
-      "cidade": "Frutal",
+      "preco": 137.0,
+      "cidade": "Uberlândia",
       "uf": "MG",
       "fob": false,
       "visto": "2026-11-20"
@@ -23259,7 +22761,7 @@
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 140.7,
+      "preco": 140.6,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": true,
@@ -23359,6 +22861,15 @@
     ],
     "ofertas": [
      {
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 160.0,
+      "comFrete": 157.39,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 14:53"
+     },
+     {
       "cidade": "Apucarana",
       "uf": "PR",
       "preco": 157.0,
@@ -23370,11 +22881,11 @@
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 151.39,
+      "preco": 145.0,
+      "comFrete": 142.39,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 17:24"
      },
      {
       "cidade": "Macatuba",
@@ -23389,8 +22900,8 @@
     "ultimas": {
      "disp": {
       "preco": 160.0,
-      "cidade": "Macatuba",
-      "uf": "SP",
+      "cidade": "Campo Mourão",
+      "uf": "PR",
       "fob": true,
       "visto": "2026-11-20"
      },
@@ -23524,11 +23035,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 141.05,
-      "comFrete": 134.37,
+      "preco": 141.2,
+      "comFrete": 134.52,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Apucarana",
@@ -23551,29 +23062,29 @@
      {
       "cidade": "Jaboticabal",
       "uf": "SP",
-      "preco": 144.4,
-      "comFrete": 141.16,
+      "preco": 144.6,
+      "comFrete": 141.36,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Jaboticabal",
       "uf": "SP",
-      "preco": 142.1,
-      "comFrete": 138.86,
+      "preco": 142.3,
+      "comFrete": 139.06,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.4,
-      "comFrete": 133.72,
+      "preco": 140.6,
+      "comFrete": 133.92,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Frutal",
@@ -23587,11 +23098,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 136.75,
-      "comFrete": 130.07,
+      "preco": 136.95,
+      "comFrete": 130.27,
       "entrega": "2027-03-31",
       "fob": true,
-      "atualizado": "2026-11-20 12:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Frutal",
@@ -23612,14 +23123,14 @@
       "visto": "2026-11-20"
      },
      "2027-05": {
-      "preco": 144.4,
+      "preco": 144.6,
       "cidade": "Jaboticabal",
       "uf": "SP",
       "fob": true,
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 142.1,
+      "preco": 142.3,
       "cidade": "Jaboticabal",
       "uf": "SP",
       "fob": true,
@@ -23633,7 +23144,7 @@
       "visto": "2026-11-19"
      },
      "2027-03": {
-      "preco": 136.75,
+      "preco": 136.95,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": true,
@@ -23758,6 +23269,15 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 09:14"
+     },
+     {
+      "cidade": "Campo Mourão",
+      "uf": "PR",
+      "preco": 145.0,
+      "comFrete": 137.85,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-20 17:24"
      },
      {
       "cidade": "Macatuba",
@@ -25027,20 +24547,29 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.9,
-      "comFrete": 137.58,
+      "preco": 141.2,
+      "comFrete": 137.88,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-20 15:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 140.3,
-      "comFrete": 136.98,
+      "preco": 140.6,
+      "comFrete": 137.28,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-20 15:30"
+      "atualizado": "2026-11-20 16:00"
+     },
+     {
+      "cidade": "Uberaba",
+      "uf": "MG",
+      "preco": 136.95,
+      "comFrete": 133.63,
+      "entrega": "2027-03-31",
+      "fob": true,
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberlândia",
@@ -25054,20 +24583,11 @@
      {
       "cidade": "Uberaba",
       "uf": "MG",
-      "preco": 136.65,
-      "comFrete": 133.33,
-      "entrega": "2027-03-31",
-      "fob": true,
-      "atualizado": "2026-11-20 15:30"
-     },
-     {
-      "cidade": "Uberaba",
-      "uf": "MG",
-      "preco": 132.7,
-      "comFrete": 129.38,
+      "preco": 133.0,
+      "comFrete": 129.68,
       "entrega": "2027-02-28",
       "fob": true,
-      "atualizado": "2026-11-20 15:30"
+      "atualizado": "2026-11-20 16:00"
      },
      {
       "cidade": "Uberaba",
@@ -25097,7 +24617,7 @@
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 140.3,
+      "preco": 140.6,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": true,
@@ -25196,17 +24716,21 @@
      [
       "2026-11-18",
       158.59
+     ],
+     [
+      "2026-11-19",
+      158.4
      ]
     ],
     "ofertas": [
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 148.66,
+      "preco": 160.0,
+      "comFrete": 154.66,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 14:53"
      },
      {
       "cidade": "Apucarana",
@@ -25218,64 +24742,37 @@
       "atualizado": "2026-11-17 09:14"
      },
      {
-      "cidade": "Santa Mariana",
+      "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 147.45,
-      "comFrete": 146.91,
-      "entrega": "2027-06-30",
+      "preco": 145.0,
+      "comFrete": 139.66,
+      "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 17:24"
      },
      {
-      "cidade": "Santa Mariana",
-      "uf": "PR",
-      "preco": 144.55,
-      "comFrete": 144.01,
+      "cidade": "Jaboticabal",
+      "uf": "SP",
+      "preco": 144.6,
+      "comFrete": 137.81,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 16:00"
      },
      {
-      "cidade": "Santa Mariana",
-      "uf": "PR",
-      "preco": 141.3,
-      "comFrete": 140.76,
+      "cidade": "Jaboticabal",
+      "uf": "SP",
+      "preco": 142.3,
+      "comFrete": 135.51,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Santa Mariana",
-      "uf": "PR",
-      "preco": 138.65,
-      "comFrete": 138.11,
-      "entrega": "2027-02-28",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Castro",
-      "uf": "PR",
-      "preco": 152.05,
-      "comFrete": 147.38,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Wenceslau Braz",
-      "uf": "PR",
-      "preco": 149.35,
-      "comFrete": 146.42,
-      "entrega": "2027-06-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 16:00"
      }
     ],
     "ultimas": {
      "disp": {
-      "preco": 157.0,
-      "cidade": "Apucarana",
+      "preco": 160.0,
+      "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
       "visto": "2026-11-20"
@@ -25288,16 +24785,16 @@
       "visto": "2026-11-20"
      },
      "2027-05": {
-      "preco": 144.55,
-      "cidade": "Santa Mariana",
-      "uf": "PR",
+      "preco": 144.6,
+      "cidade": "Jaboticabal",
+      "uf": "SP",
       "fob": true,
       "visto": "2026-11-20"
      },
      "2027-04": {
-      "preco": 141.3,
-      "cidade": "Santa Mariana",
-      "uf": "PR",
+      "preco": 142.3,
+      "cidade": "Jaboticabal",
+      "uf": "SP",
       "fob": true,
       "visto": "2026-11-20"
      },
@@ -25545,6 +25042,10 @@
      [
       "2026-11-18",
       158.59
+     ],
+     [
+      "2026-11-19",
+      158.4
      ]
     ],
     "ofertas": [
@@ -25560,11 +25061,11 @@
      {
       "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 154.0,
-      "comFrete": 147.99,
+      "preco": 160.0,
+      "comFrete": 153.99,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-16 13:02"
+      "atualizado": "2026-11-20 14:53"
      },
      {
       "cidade": "Apucarana",
@@ -25576,13 +25077,13 @@
       "atualizado": "2026-11-17 09:14"
      },
      {
-      "cidade": "Curiúva",
+      "cidade": "Campo Mourão",
       "uf": "PR",
-      "preco": 148.7,
-      "comFrete": 148.16,
-      "entrega": "2027-06-30",
+      "preco": 145.0,
+      "comFrete": 138.99,
+      "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-19 17:45"
+      "atualizado": "2026-11-20 17:24"
      },
      {
       "cidade": "Paranaguá",
@@ -25591,42 +25092,6 @@
       "comFrete": 160.29,
       "entrega": "2026-12-31",
       "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Curiúva",
-      "uf": "PR",
-      "preco": 145.5,
-      "comFrete": 144.96,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Curiúva",
-      "uf": "PR",
-      "preco": 141.8,
-      "comFrete": 141.26,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Curiúva",
-      "uf": "PR",
-      "preco": 140.4,
-      "comFrete": 139.86,
-      "entrega": "2027-02-28",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Castro",
-      "uf": "PR",
-      "preco": 152.05,
-      "comFrete": 149.73,
-      "entrega": "2027-06-30",
-      "fob": true,
       "atualizado": "2026-11-19 17:45"
      }
     ],
@@ -25832,18 +25297,13 @@
      [
       "2026-11-18",
       146.53
+     ],
+     [
+      "2026-11-19",
+      147.82
      ]
     ],
     "ofertas": [
-     {
-      "cidade": "Amambaí",
-      "uf": "MS",
-      "preco": 154.1,
-      "comFrete": 147.77,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
      {
       "cidade": "Campo Grande",
       "uf": "MS",
@@ -25861,66 +25321,12 @@
       "entrega": null,
       "fob": true,
       "atualizado": "2026-11-17 10:50"
-     },
-     {
-      "cidade": "Maracaju",
-      "uf": "MS",
-      "preco": 132.65,
-      "comFrete": 126.44,
-      "entrega": "2027-04-30",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Amambaí",
-      "uf": "MS",
-      "preco": 133.25,
-      "comFrete": 126.92,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "São Gabriel do Oeste",
-      "uf": "MS",
-      "preco": 130.5,
-      "comFrete": 124.83,
-      "entrega": "2027-04-30",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Maracaju",
-      "uf": "MS",
-      "preco": 130.85,
-      "comFrete": 124.64,
-      "entrega": "2027-03-31",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "São Gabriel do Oeste",
-      "uf": "MS",
-      "preco": 129.3,
-      "comFrete": 123.63,
-      "entrega": "2027-03-31",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "São Gabriel do Oeste",
-      "uf": "MS",
-      "preco": 126.65,
-      "comFrete": 120.98,
-      "entrega": "2027-02-28",
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
      }
     ],
     "ultimas": {
      "disp": {
-      "preco": 154.1,
-      "cidade": "Amambaí",
+      "preco": 144.44,
+      "cidade": "Campo Grande",
       "uf": "MS",
       "fob": true,
       "visto": "2026-11-20"
@@ -25984,62 +25390,7 @@
     "nome": "Miranorte",
     "uf": "TO",
     "serie": [],
-    "ofertas": [
-     {
-      "cidade": "Miranorte",
-      "uf": "TO",
-      "preco": 132.65,
-      "comFrete": 132.11,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Miranorte",
-      "uf": "TO",
-      "preco": 130.25,
-      "comFrete": 129.71,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Guaraí",
-      "uf": "TO",
-      "preco": 132.95,
-      "comFrete": 131.5,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Paraíso do Tocantins",
-      "uf": "TO",
-      "preco": 132.0,
-      "comFrete": 130.51,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Guaraí",
-      "uf": "TO",
-      "preco": 130.55,
-      "comFrete": 129.1,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Paraíso do Tocantins",
-      "uf": "TO",
-      "preco": 128.95,
-      "comFrete": 127.46,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     }
-    ],
+    "ofertas": [],
     "ultimas": {
      "2027-05": {
       "preco": 132.95,
@@ -26126,71 +25477,7 @@
     "nome": "Guaraí",
     "uf": "TO",
     "serie": [],
-    "ofertas": [
-     {
-      "cidade": "Porto Franco",
-      "uf": "MA",
-      "preco": 142.65,
-      "comFrete": 133.12,
-      "entrega": null,
-      "fob": false,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Guaraí",
-      "uf": "TO",
-      "preco": 132.95,
-      "comFrete": 132.41,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Guaraí",
-      "uf": "TO",
-      "preco": 130.55,
-      "comFrete": 130.01,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Pedro Afonso",
-      "uf": "TO",
-      "preco": 132.45,
-      "comFrete": 131.43,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Miranorte",
-      "uf": "TO",
-      "preco": 132.65,
-      "comFrete": 131.2,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Paraíso do Tocantins",
-      "uf": "TO",
-      "preco": 132.0,
-      "comFrete": 129.07,
-      "entrega": "2027-05-31",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Pedro Afonso",
-      "uf": "TO",
-      "preco": 130.05,
-      "comFrete": 129.03,
-      "entrega": "2027-04-30",
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     }
-    ],
+    "ofertas": [],
     "ultimas": {
      "disp": {
       "preco": 142.65,
@@ -26493,44 +25780,7 @@
     "nome": "São Domingos do Azeitão",
     "uf": "MA",
     "serie": [],
-    "ofertas": [
-     {
-      "cidade": "São Domingos do Azeitão",
-      "uf": "MA",
-      "preco": 134.9,
-      "comFrete": 134.36,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "São Domingos do Azeitão",
-      "uf": "MA",
-      "preco": 134.9,
-      "comFrete": 134.36,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Riachão",
-      "uf": "MA",
-      "preco": 137.3,
-      "comFrete": 132.62,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     },
-     {
-      "cidade": "Balsas",
-      "uf": "MA",
-      "preco": 133.95,
-      "comFrete": 130.47,
-      "entrega": null,
-      "fob": true,
-      "atualizado": "2026-11-19 17:45"
-     }
-    ],
+    "ofertas": [],
     "ultimas": {
      "disp": {
       "preco": 137.3,
@@ -27161,16 +26411,16 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Cristalina",
-      "preco": 142.76,
-      "var": -0.67,
+      "nome": "Catalão",
+      "preco": 141.53,
+      "var": -1.44,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Catalão",
-      "preco": 141.53,
-      "var": -1.44,
+      "nome": "Cristalina",
+      "preco": 142.76,
+      "var": -0.67,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
@@ -27213,16 +26463,16 @@
       "tipo": "Soja Disponível"
      },
      {
-      "nome": "Sudeste MT",
-      "preco": 143.31,
-      "var": 0.15,
+      "nome": "Norte Mato-grossense",
+      "preco": 135.13,
+      "var": -0.2,
       "data": "2026-11-19",
       "tipo": "Soja Disponível"
      },
      {
-      "nome": "Norte Mato-grossense",
-      "preco": 135.13,
-      "var": -0.2,
+      "nome": "Sudeste MT",
+      "preco": 143.31,
+      "var": 0.15,
       "data": "2026-11-19",
       "tipo": "Soja Disponível"
      },
@@ -27250,13 +26500,6 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Campo Verde",
-      "preco": 140.5,
-      "var": 0.75,
-      "data": "2026-11-19",
-      "tipo": "Soja FOB"
-     },
-     {
       "nome": "Campo Novo do Parecis",
       "preco": 136.47,
       "var": -0.18,
@@ -27264,16 +26507,9 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Lucas do Rio Verde",
-      "preco": 131.86,
-      "var": -2.26,
-      "data": "2026-11-19",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Nova Mutum",
-      "preco": 135.25,
-      "var": -0.44,
+      "nome": "Campo Verde",
+      "preco": 140.5,
+      "var": 0.75,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
@@ -27285,6 +26521,20 @@
       "tipo": "Soja FOB"
      },
      {
+      "nome": "Nova Mutum",
+      "preco": 135.25,
+      "var": -0.44,
+      "data": "2026-11-19",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Lucas do Rio Verde",
+      "preco": 131.86,
+      "var": -2.26,
+      "data": "2026-11-19",
+      "tipo": "Soja FOB"
+     },
+     {
       "nome": "Primavera do Leste",
       "preco": 139.08,
       "var": 1.46,
@@ -27292,16 +26542,9 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Sorriso",
-      "preco": 135.01,
-      "var": -0.33,
-      "data": "2026-11-19",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Querência",
-      "preco": 134.63,
-      "var": 0.12,
+      "nome": "Sinop",
+      "preco": 136.9,
+      "var": -1.25,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
@@ -27313,9 +26556,16 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Sinop",
-      "preco": 136.9,
-      "var": -1.25,
+      "nome": "Querência",
+      "preco": 134.63,
+      "var": 0.12,
+      "data": "2026-11-19",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Sorriso",
+      "preco": 135.01,
+      "var": -0.33,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      }
@@ -27341,13 +26591,6 @@
     ],
     "cidades": [
      {
-      "nome": "Chapadão do Sul",
-      "preco": 147.92,
-      "var": 1.41,
-      "data": "2026-11-19",
-      "tipo": "Soja FOB"
-     },
-     {
       "nome": "Ponta Porã",
       "preco": 150.54,
       "var": 1.37,
@@ -27358,6 +26601,13 @@
       "nome": "Maracaju",
       "preco": 150.83,
       "var": 1.34,
+      "data": "2026-11-19",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Chapadão do Sul",
+      "preco": 147.92,
+      "var": 1.41,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
@@ -27397,23 +26647,9 @@
     ],
     "cidades": [
      {
-      "nome": "Patos de Minas",
-      "preco": 147.63,
-      "var": 0.56,
-      "data": "2026-11-19",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Uberlândia",
-      "preco": 145.51,
-      "var": -0.77,
-      "data": "2026-11-19",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Frutal",
-      "preco": 148.0,
-      "var": 1.14,
+      "nome": "Capinópolis",
+      "preco": 141.07,
+      "var": -0.61,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
@@ -27425,9 +26661,16 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Capinópolis",
-      "preco": 141.07,
-      "var": -0.61,
+      "nome": "Patos de Minas",
+      "preco": 147.63,
+      "var": 0.56,
+      "data": "2026-11-19",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Frutal",
+      "preco": 148.0,
+      "var": 1.14,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
@@ -27439,16 +26682,23 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Unaí",
-      "preco": 147.08,
-      "var": 0.36,
+      "nome": "Uberaba",
+      "preco": 149.09,
+      "var": 1.46,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Uberaba",
-      "preco": 149.09,
-      "var": 1.46,
+      "nome": "Uberlândia",
+      "preco": 145.51,
+      "var": -0.77,
+      "data": "2026-11-19",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Unaí",
+      "preco": 147.08,
+      "var": 0.36,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      }
@@ -27491,16 +26741,16 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Guarapuava",
-      "preco": 156.03,
-      "var": 0.9,
+      "nome": "Londrina",
+      "preco": 156.71,
+      "var": 1.38,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Londrina",
-      "preco": 156.71,
-      "var": 1.38,
+      "nome": "Guarapuava",
+      "preco": 156.03,
+      "var": 0.9,
       "data": "2026-11-19",
       "tipo": "Soja FOB"
      },
@@ -51540,10 +50790,12 @@
    "ma|sao-domingos-do-azeitao": "2026-11-20",
    "mg|sacramento": "2026-11-20",
    "mt|nova-maringa": "2026-11-20",
-   "go|goias": "2026-11-20"
+   "go|goias": "2026-11-20",
+   "to|barra-do-ouro": "2026-11-20",
+   "to|goiatins": "2026-11-20"
   },
   "varredura": {
-   "pos": 160,
+   "pos": 180,
    "voltas": 0,
    "dia": "2026-11-20"
   }
