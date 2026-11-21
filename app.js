@@ -930,8 +930,14 @@ function renderCorretor(){
   $('formLogin').hidden=!!TAB; $('areaCorretor').hidden=!TAB;
   if(!TAB){ prepararLogin(); return; }
   const emps=TAB.empreendimentos;
-  if(!emps.some(e=>e.id===cEmp)) cEmp=emps[0].id;
-  $('cEmp').innerHTML=emps.map(e=>`<option value="${e.id}"${e.id===cEmp?' selected':''}>${e.nome}${e.cidade?' · '+e.cidade:''}</option>`).join('');
+  // nome no filtro (21/11, pedido do Santiago): empreendimentos da All Wert aparecem como "All Wert - Tennis", "All Wert - Golf"...
+  // e a lista vai em ordem alfabética. Só muda o filtro: o PDF e a vitrine continuam com o nome oficial (e.nome).
+  const rotuloEmp=e=>/all\s*wert/i.test(e.incorporadora||'')||/^allresort-/.test(e.id)
+    ? 'All Wert - '+e.nome.replace(/^porto belo\s+/i,'').replace(/\s+residence$/i,'')
+    : e.nome+(e.cidade?' · '+e.cidade:'');
+  const lista=[...emps].sort((a,b)=>rotuloEmp(a).localeCompare(rotuloEmp(b),'pt'));
+  if(!emps.some(e=>e.id===cEmp)) cEmp=lista[0].id;
+  $('cEmp').innerHTML=lista.map(e=>`<option value="${e.id}"${e.id===cEmp?' selected':''}>${rotuloEmp(e)}</option>`).join('');
   const e=emps.find(x=>x.id===cEmp);
   const lote=e.tipo==='loteamento', pv=u=>lote?(u.quadra??''):(u.pavimento??'');   // loteamento: agrupa por quadra
   const pavs=[...new Set(e.unidades.map(u=>`${u.torre||''}|${pv(u)}`))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
