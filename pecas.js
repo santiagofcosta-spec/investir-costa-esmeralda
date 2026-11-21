@@ -78,7 +78,7 @@
       <p><button class="btn mini" type="button" id="pecaCar5">${L('Baixar as 5 imagens','Descargar las 5 imágenes')}</button> <span class="note">${L('Publique as 5 juntas, na ordem 1 a 5.','Publique las 5 juntas, en el orden 1 a 5.')}</span></p>`:''}
       ${temLeg?`<h3 class="camp-h">${L('Legendas','Textos')}</h3>
       <div class="seg" role="group" aria-label="${L('Legenda','Texto')}">${LEG.map(([c,n])=>`<button type="button" data-leg="${c}" aria-pressed="${c===leg}">${n}</button>`).join('')}</div>
-      <div class="camp-bloco"><div class="camp-copia"><b>${L('Legenda do post (filme e carrossel)','Texto del post (película y carrusel)')}</b><button class="btn ghost mini" type="button" data-copiar="${esc(lt.post||'')}">${L('Copiar','Copiar')}</button></div>
+      <div class="camp-bloco"><div class="camp-copia"><b>${car.length?L('Legenda do post (filme e carrossel)','Texto del post (película y carrusel)'):L('Legenda do post (Reels ou feed)','Texto del post (Reels o feed)')}</b><button class="btn ghost mini" type="button" data-copiar="${esc(lt.post||'')}">${L('Copiar','Copiar')}</button></div>
         <p class="peca-texto">${esc(lt.post||'')}</p></div>
       <div class="camp-bloco"><b>${L('Textos curtos para os Stories','Textos cortos para las Historias')}</b>
         ${(lt.stories||[]).map(s=>`<div class="camp-copia"><span>${esc(s)}</span><button class="btn ghost mini" type="button" data-copiar="${esc(s.replace(/^[^:]+:\s*/,'').replace(/^"|"$/g,''))}">${L('Copiar','Copiar')}</button></div>`).join('')}</div>`:''}`;
