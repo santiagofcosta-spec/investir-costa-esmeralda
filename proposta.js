@@ -255,6 +255,13 @@
     if(b) out.push({v:b[1].v,nome:b[0],tipo:'bairro',nota:L(`Média do m² de apartamentos à venda em ${b[0]} (${cid[0]}): ${brl(b[1].v)}/m² (${VB.fonte.pt}, ${b[1].n} anúncios).`,`Promedio del m² de departamentos en venta en ${b[0]} (${cid[0]}): ${brl(b[1].v)}/m² (${VB.fonte.es}, ${b[1].n} anuncios).`)});
     return out;
   }
+  /* Nome do cliente em destaque na capa (22/11/2026, pedido do Santiago): "preparada exclusivamente para" + nome em
+     Playfair itálico com fios dourados dos lados. escuro=true nas capas Prisma (fundo escuro). */
+  function paraCliente(escuro){
+    if(!P.cliente||!P.cliente.trim()) return '';
+    return `<div class="pp-para${escuro?' pp-para-esc':''}"><span class="pp-para-k">${escuro?L('Proposta reservada para','Propuesta reservada para'):L('Proposta preparada exclusivamente para','Propuesta preparada exclusivamente para')}</span>
+      <span class="pp-para-n"><i></i><b>${esc(P.cliente.trim())}</b><i></i></span></div>`;
+  }
   /* Cliente do agro (22/11/2026, pedido do Santiago): o mesmo fluxo em sacas de soja, só como referência.
      Preço líquido da cidade escolhida na aba Agro (Grão Direto menos Fethab, Funrural e frete); o pagamento é em reais. */
   function caixaSoja(a,m){
@@ -581,9 +588,10 @@
     const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
     const ficha=[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('de terreno','de terreno')}`:'',u.quadra?`${L('Quadra','Manzana')} ${String(u.quadra).padStart(2,'0')}`:''].filter(Boolean).join(' · ');
     return `<div class="pp-pag">
-      <div class="pp-cab"><div><div class="pp-kick">${L('Proposta','Propuesta')}${P.cliente?` · ${L('para','para')} ${esc(P.cliente)}`:''}</div>
+      <div class="pp-cab"><div><div class="pp-kick">${L('Proposta','Propuesta')}</div>
         <h1>${e.nome}</h1><p>${[e.endereco,e.cidade?e.cidade+' / SC':''].filter(Boolean).join(' · ')}</p></div>
         <div class="pp-uni"><span>${L('Lote','Lote')}</span><b>${u.unidade}</b></div></div>
+      ${paraCliente()}
       <div class="pp-dupla">${cap?`<img src="${cap}" alt="">`:''}
         <div><p class="pp-ficha">${ficha}</p>
           ${e.fase?`<p>${e.fase}</p>`:''}
@@ -768,7 +776,7 @@
     return `<div class="pp-pag pz-escura pz-capa">
       ${cap?`<div class="pz-hero" style="background-image:url('${cap}')"><div class="pz-hero-grad"></div></div>`:''}
       <div class="pz-capa-txt">
-        <div class="pz-kick">${L('Proposta reservada','Propuesta reservada')}${P.cliente?` · ${L('para','para')} ${esc(P.cliente)}`:''}</div>
+        ${P.cliente&&P.cliente.trim()?paraCliente(true):`<div class="pz-kick">${L('Proposta reservada','Propuesta reservada')}</div>`}
         <h1 class="pz-h1">${e.nome}</h1>
         <p class="pz-sub">${e.marca?`${e.marca} · `:''}${e.cidade} · Santa Catarina</p>
         <div class="pz-ficha">
@@ -869,7 +877,7 @@
     return `<div class="pp-pag pz-escura pz-capa">
       ${cap?`<div class="pz-hero" style="background-image:url('${cap}')"><div class="pz-hero-grad"></div></div>`:''}
       <div class="pz-capa-txt">
-        <div class="pz-kick">${L('Proposta reservada','Propuesta reservada')}${P.cliente?` · ${L('para','para')} ${esc(P.cliente)}`:''}</div>
+        ${P.cliente&&P.cliente.trim()?paraCliente(true):`<div class="pz-kick">${L('Proposta reservada','Propuesta reservada')}</div>`}
         <h1 class="pz-h1">${e.nome}</h1>
         <p class="pz-sub">${[u.casa,u.torre,`${e.bairro?e.bairro+', ':''}${e.cidade} · Santa Catarina`].filter(Boolean).join(' · ')}</p>
         <div class="pz-ficha">
@@ -990,9 +998,10 @@
     const hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
     const ficha=[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('privativos','privados')}`:'',u.vagas?`${u.vagas} ${u.vagas==1?L('vaga','cochera'):L('vagas','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ');
     out.innerHTML=`<div class="pp-pag">
-      <div class="pp-cab"><div><div class="pp-kick">${L('Proposta','Propuesta')}${P.cliente?` · ${L('para','para')} ${esc(P.cliente)}`:''}</div>
+      <div class="pp-cab"><div><div class="pp-kick">${L('Proposta','Propuesta')}</div>
         <h1>${e.nome}</h1><p>${[e.endereco,e.bairro,e.cidade?e.cidade+' / SC':''].filter(Boolean).join(' · ')}</p></div>
         <div class="pp-uni"><span>${L('Unidade','Unidad')}</span><b>${u.unidade}</b></div></div>
+      ${paraCliente()}
       <div class="pp-dupla">${cap?`<img src="${cap}" alt="">`:''}
         <div><p class="pp-ficha">${ficha}</p>
           <p>${[e.fase,e.pronto?L('<b>Pronto: chaves na assinatura, já pode gerar renda</b>','<b>Listo: llaves a la firma, ya puede generar renta</b>'):e.entrega?L('Entrega prevista ','Entrega prevista ')+fmtMesAno(e.entrega):''].filter(Boolean).join(' · ')}</p>
