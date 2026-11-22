@@ -462,6 +462,22 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
   body.print-proposta .pp{display:block}
   html:has(body.print-proposta),body.print-proposta{background:#fff!important;padding:0!important}
 }
+.destaque{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;margin:18px 0 6px;border-radius:20px;overflow:hidden;
+  border:1px solid rgba(212,175,55,.45);background:linear-gradient(135deg,#0F161C,#121A21 60%,#0D1E1B);text-decoration:none;color:#F4F4F5;
+  box-shadow:0 24px 50px -28px rgba(0,0,0,.8);transition:transform .25s,box-shadow .25s}
+.destaque:hover{transform:translateY(-2px);box-shadow:0 30px 60px -26px rgba(212,175,55,.35)}
+.destaque .dq-foto{display:block;min-height:220px;overflow:hidden}
+.destaque .dq-foto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s}
+.destaque:hover .dq-foto img{transform:scale(1.04)}
+.destaque .dq-tx{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:22px 24px}
+.destaque .dq-k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#D4AF37}
+.destaque .dq-t{font:600 clamp(26px,3.4vw,36px)/1.1 "Playfair Display",Georgia,serif}
+.destaque .dq-t i{font-style:italic;background:linear-gradient(135deg,#F5E6B3,#D4AF37 50%,#A67C2E);-webkit-background-clip:text;background-clip:text;color:transparent}
+.destaque .dq-l{font-size:13px;color:#A1A1AA}
+.destaque .dq-p{font-size:14.5px;color:#d4d4d8;margin-top:4px}
+.destaque .dq-b{align-self:flex-start;margin-top:10px;padding:11px 18px;border-radius:12px;font-weight:700;font-size:14.5px;color:#0B1015;
+  background:linear-gradient(135deg,#F5E6B3 0%,#D4AF37 50%,#A67C2E 100%);box-shadow:0 10px 24px -12px rgba(212,175,55,.7)}
+@media (max-width:720px){.destaque{grid-template-columns:1fr}.destaque .dq-foto{min-height:0;aspect-ratio:16/9}.destaque .dq-tx{padding:16px 18px 20px}}
 </style>
 <style>html{color-scheme:light} body{margin:0} [hidden]{display:none!important} img{max-width:100%}</style>
 <style>
@@ -925,6 +941,18 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
       </div>
     </div>
   </header>
+
+  <!-- Empreendimento em destaque (22/11/2026): vitrine pública. Para trocar o destaque, mude o link, a foto e os textos. -->
+  <a class="destaque no-print" id="destaqueVit" href="vitrine.html?e=oceanhill">
+    <span class="dq-foto"><img src="img/oceanhill/capa.jpg" alt="Ocean Hill Residence, Meia Praia, Itapema" loading="eager"></span>
+    <span class="dq-tx">
+      <span class="dq-k" data-es="Emprendimiento destacado">Empreendimento em destaque</span>
+      <span class="dq-t">Ocean Hill <i>Residence</i></span>
+      <span class="dq-l" data-es="Meia Praia · Itapema · a orillas del Río Perequê">Meia Praia · Itapema · às margens do Rio Perequê</span>
+      <span class="dq-p" data-es="Elija el piso en la fachada, vea la vista real de cada altura y suba en el ascensor panorámico. (Página en portugués.)">Escolha o andar na fachada, veja a vista real de cada altura e suba no elevador panorâmico.</span>
+      <span class="dq-b"><span data-es="Explorar el emprendimiento">Explorar o empreendimento</span> <b aria-hidden="true">→</b></span>
+    </span>
+  </a>
 
   <!-- v3: porta de entrada por objetivo -->
   <section class="porta no-print" id="porta" aria-labelledby="portaTit">
@@ -1644,7 +1672,7 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 </a>
 <script src="dados/dados.js"></script>
 <script src="dados/referencias.js?v=20261118h"></script>
-<script src="app.js?v=20261122b"></script>
+<script src="app.js?v=20261122c"></script>
 <script src="v3.js?v=20261118h"></script>
 <script src="avisos.js?v=20261118h"></script>
 <script src="proposta.js?v=20261122d"></script>

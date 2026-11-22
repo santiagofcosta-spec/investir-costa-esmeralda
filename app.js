@@ -995,7 +995,8 @@ function renderVitrineLink(e,u){
   box.hidden=!ok; if(!ok) return;
   box.innerHTML=`<div class="ph" style="margin-top:14px"><h3 style="margin:0">${L('Link da vitrine com preço','Enlace de la vitrina con precio')}</h3></div>
     <p class="note">${L('O cliente abre a vitrine direto nesta unidade, já com o valor de tabela e o simulador em reais. O link só mostra o preço desta unidade; as outras continuam sem preço. O botão de WhatsApp da vitrine chama você.','El cliente abre la vitrina directo en esta unidad, con el precio y el simulador en reales. El enlace solo muestra el precio de esta unidad. El botón de WhatsApp lo llama a usted.')}</p>
-    <div class="actions"><button class="btn" type="button" id="btnVitGerar">🔗 ${L('Gerar link com preço','Generar enlace con precio')}</button></div>
+    <div class="actions"><a class="btn" href="vitrine.html?e=${encodeURIComponent(e.id)}${USUARIO?'&cor='+encodeURIComponent(USUARIO.id):''}" target="_blank" rel="noopener">${L('Abrir a vitrine (sem preço)','Abrir la vitrina (sin precio)')}</a>
+      <button class="btn" type="button" id="btnVitGerar">🔗 ${L('Gerar link com preço','Generar enlace con precio')}</button></div>
     <div id="vitOut" hidden style="margin-top:8px"><input id="vitUrl" readonly style="width:100%;font-size:12px" onclick="this.select()">
       <div class="actions" style="margin-top:6px"><button class="btn" type="button" id="btnVitCopiar">${L('Copiar','Copiar')}</button>
       <a class="btn" id="btnVitWa" target="_blank" rel="noopener">${L('Enviar no WhatsApp','Enviar por WhatsApp')}</a>
@@ -1693,5 +1694,6 @@ contato(); setModo('temporada');
 const abaLink=aplicarLink();
 initV2(); initAuto();
 waves(); hero(); show(abaLink||(ANCORA_ABA[location.hash.slice(1)])||'why'); rotaHash();
+{ const dv=document.getElementById('destaqueVit'), c=URLQ.get('cor'); if(dv&&c&&/^[a-z0-9_-]{1,40}$/i.test(c)) dv.href+='&cor='+encodeURIComponent(c); }
 if(URLQ.get('cor')) lerEnc().then(e=>{ const u=(e.usuarios||[]).find(x=>x.id===URLQ.get('cor')); if(u){ aplicarContato(u); show(tab); } }).catch(()=>{});
 bcbAoVivoCarregar();
