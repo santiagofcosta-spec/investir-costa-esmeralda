@@ -872,6 +872,8 @@ function renderProjAgro(liq,n,c){
    e as tabelas abertas ficam só na memória desta aba (somem ao recarregar ou ao clicar em Sair). */
 let TAB=null, cEmp=null, cPav='*', cUni=null, ENC=null, USUARIO=null;
 let CHAVE_TAB=null;   // chave das tabelas (formato 2), só na memória desta página; abre também as praças (campanhas.js)
+let CHAVE_VIT=null;   // HMAC com a mesma chave: gera a chave de UMA unidade para o link da vitrine com preço (vitrine_precos.py)
+const VITRINES={oceanhill:1};   // empreendimentos com vitrine pública (vitrine.html?e=<id>)
 const b64=s=>Uint8Array.from(atob(s),ch=>ch.charCodeAt(0));
 const utf8=s=>new TextEncoder().encode(s);
 // formato 2 (18/11/2026): tabelas cifradas com uma chave aleatória; a chave vai cifrada uma vez por corretor (com a senha dele).
@@ -902,6 +904,7 @@ async function abrirTabelas(senha,email){
     const k=await crypto.subtle.importKey('raw',bruta,'AES-GCM',false,['decrypt']);
     claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv),additionalData:utf8('tabelas-v2')},k,b64(e.ct));
     USUARIO=u; CHAVE_TAB=k;
+    try{ CHAVE_VIT=await crypto.subtle.importKey('raw',bruta,{name:'HMAC',hash:'SHA-256'},false,['sign']); }catch{ CHAVE_VIT=null; }
     // empreendimentos exclusivos (só o Santiago): 2ª chave, embrulhada só para quem tem u.x; os outros nem a recebem
     if(e.exc&&u.x){
       try{
@@ -916,7 +919,7 @@ async function abrirTabelas(senha,email){
   }else{
     const chave=await chaveDaSenha(senha,e.salt,e.iter);
     try{ claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},chave,b64(e.ct)); }catch{ throw new Error('senha'); }
-    USUARIO=null; CHAVE_TAB=null;
+    USUARIO=null; CHAVE_TAB=null; CHAVE_VIT=null;
   }
   return limparTextos(JSON.parse(new TextDecoder().decode(claro)));
 }
@@ -966,6 +969,7 @@ function renderCorretor(){
 function renderUnidade(){
   const e=TAB?.empreendimentos.find(x=>x.id===cEmp), u=e?.unidades[cUni];
   $('cUniBox').hidden=!u; if(!u) return;
+  renderVitrineLink(e,u);
   const fx=u.fluxo||e.fluxo||{}, m2=u.area?u.valor/u.area:null;
   $('cUniTit').textContent=`${e.nome} · ${u.torre?u.torre+'-':''}${u.unidade??''}`.replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&quot;/g,'"').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
   $('cUniSub').textContent=L('Valores já enviados para as simulações','Valores ya enviados a las simulaciones');
@@ -975,6 +979,33 @@ function renderUnidade(){
     [L('Entrega','Entrega'),fmtMesAno(e.entrega),e.cidade||''],
     [L('Fluxo','Plan de pagos'),fx.entrada!=null?`${fx.entrada}/${fx.mensais}/${fx.reforcos}/${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}`:'—',L('entrada / mensais / reforços / chaves (%)','anticipo / cuotas / refuerzos / entrega (%)')],
   ]);
+}
+/* Link da vitrine com preço (22/11/2026): só a unidade escolhida abre o preço; o WhatsApp da vitrine vira o de quem gerou. */
+const idVitrine=u=>(u.torre==='Hill Tower'?'HT':'OT')+'-'+u.unidade;
+async function linkVitrine(e,u){
+  const uid=idVitrine(u);
+  const sig=new Uint8Array(await crypto.subtle.sign('HMAC',CHAVE_VIT,utf8(`vitrine-link:${e.id}:${uid}`)));
+  const k=btoa(String.fromCharCode(...sig)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  const base=location.href.replace(/[?#].*$/,'').replace(/[^/]*$/,'');
+  return `${base}vitrine.html?e=${encodeURIComponent(e.id)}&u=${encodeURIComponent(uid)}${USUARIO?'&cor='+encodeURIComponent(USUARIO.id):''}#k=${k}`;
+}
+function renderVitrineLink(e,u){
+  const box=$('cUniVit'); if(!box) return;
+  const ok=VITRINES[e.id]&&CHAVE_VIT&&u&&(u.status||'disponivel')==='disponivel';
+  box.hidden=!ok; if(!ok) return;
+  box.innerHTML=`<div class="ph" style="margin-top:14px"><h3 style="margin:0">${L('Link da vitrine com preço','Enlace de la vitrina con precio')}</h3></div>
+    <p class="note">${L('O cliente abre a vitrine direto nesta unidade, já com o valor de tabela e o simulador em reais. O link só mostra o preço desta unidade; as outras continuam sem preço. O botão de WhatsApp da vitrine chama você.','El cliente abre la vitrina directo en esta unidad, con el precio y el simulador en reales. El enlace solo muestra el precio de esta unidad. El botón de WhatsApp lo llama a usted.')}</p>
+    <div class="actions"><button class="btn" type="button" id="btnVitGerar">🔗 ${L('Gerar link com preço','Generar enlace con precio')}</button></div>
+    <div id="vitOut" hidden style="margin-top:8px"><input id="vitUrl" readonly style="width:100%;font-size:12px" onclick="this.select()">
+      <div class="actions" style="margin-top:6px"><button class="btn" type="button" id="btnVitCopiar">${L('Copiar','Copiar')}</button>
+      <a class="btn" id="btnVitWa" target="_blank" rel="noopener">${L('Enviar no WhatsApp','Enviar por WhatsApp')}</a>
+      <a class="btn" id="btnVitAbrir" target="_blank" rel="noopener">${L('Abrir','Abrir')}</a></div></div>`;
+  $('btnVitGerar').onclick=async()=>{ try{
+      const url=await linkVitrine(e,u), nome=String(e.nome||'').replace(/&amp;/g,'&');
+      $('vitUrl').value=url; $('btnVitAbrir').href=url; $('vitOut').hidden=false;
+      $('btnVitWa').href='https://wa.me/?text='+encodeURIComponent(L(`Segue a unidade ${u.unidade} do ${nome} com o valor e as condições: ${url}`,`Le envío la unidad ${u.unidade} de ${nome} con el precio y las condiciones: ${url}`));
+    }catch{ $('vitOut').hidden=false; $('vitUrl').value=L('Não consegui gerar o link. Saia e entre de novo na Área restrita.','No pude generar el enlace. Salga y vuelva a entrar.'); } };
+  $('btnVitCopiar').onclick=async()=>{ try{ await navigator.clipboard.writeText($('vitUrl').value); $('btnVitCopiar').textContent=L('Copiado ✓','Copiado ✓'); }catch{ $('vitUrl').select(); } };
 }
 function usarUnidade(i){
   cUni=i; const e=TAB.empreendimentos.find(x=>x.id===cEmp), u=e.unidades[i], fx=u.fluxo||e.fluxo||{};
@@ -1626,7 +1657,7 @@ $('formLogin').addEventListener('submit',e=>{ e.preventDefault(); entrarCorretor
 $('cEmp').addEventListener('change',e=>{ cEmp=e.target.value; cPav='*'; cUni=null; renderCorretor(); });
 $('cPav').addEventListener('change',e=>{ cPav=e.target.value; renderCorretor(); });
 $('tblUnidades').addEventListener('click',e=>{ const tr=e.target.closest('tr[data-i]'); if(tr) usarUnidade(+tr.dataset.i); });
-$('btnSair').addEventListener('click',()=>{ TAB=null; cUni=null; USUARIO=null; ENC=null; CHAVE_TAB=null; aplicarContato(null); $('loginMsg').textContent=L('Você saiu. As tabelas foram apagadas desta tela.','Usted salió. Las tablas se borraron de esta pantalla.'); renderCorretor(); });
+$('btnSair').addEventListener('click',()=>{ TAB=null; cUni=null; USUARIO=null; ENC=null; CHAVE_TAB=null; CHAVE_VIT=null; aplicarContato(null); $('loginMsg').textContent=L('Você saiu. As tabelas foram apagadas desta tela.','Usted salió. Las tablas se borraron de esta pantalla.'); renderCorretor(); });
 document.querySelectorAll('[data-ir]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.ir)));
 $('sUF').addEventListener('change',e=>{ const uf=e.target.value, est=D.soja.estados?.[uf], det=detalhadas().find(c=>c.uf===uf);
   const nome=det?.nome||est?.cidades?.[0]?.nome||munUF(uf)[0]?.[0]||''; selecionarCidade(uf,nome); });

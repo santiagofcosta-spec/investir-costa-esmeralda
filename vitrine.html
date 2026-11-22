@@ -204,6 +204,10 @@ h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;back
 .deco button.g{grid-column:1/-1}
 .deco img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .deco button:hover img{transform:scale(1.04)}
+.preco{margin:12px 0 4px;padding:12px 14px;border-radius:14px;border:1px solid var(--gold);background:linear-gradient(135deg,rgba(212,175,55,.18),rgba(212,175,55,.04))}
+.preco span{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.preco b{display:block;font:600 30px/1.15 var(--f-d);color:var(--gold-lt);margin:2px 0}
+.preco small{color:var(--muted);font-size:12px}
 footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--muted);font-size:12px}
 footer b{color:var(--ink)}
 </style>
@@ -276,11 +280,35 @@ footer b{color:var(--ink)}
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const IMG=s=>/^img\/[a-z0-9_\/-]+\.(jpg|png|webp)$/i.test(String(s||''))?s:'';
   const m2=a=>a?(+a).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+' m²':'';
+  const brl=v=>(+v).toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
   const pc=v=>(+v).toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';
   const CORES=['#D4AF37','#34D399','#60A5FA','#E07A5F'];
   let D, filtroTorre='', sel=null, cond='c16', alt=false;
 
-  fetch(`dados/vitrine-${ID}.json?v=20261122h`).then(r=>{if(!r.ok) throw 0; return r.json();}).then(d=>{D=d; iniciar();})
+  /* Preço por link (opção b): vitrine.html?e=<emp>&u=<unidade>&cor=<corretor>#k=<chave da unidade>.
+     A chave fica depois do # (não vai ao servidor) e só abre o preço DESSA unidade (dados/vitrine-<emp>-precos.json).
+     ?cor= troca o contato pelo do corretor que gerou o link (nome e WhatsApp públicos de dados/tabelas.enc.json). */
+  let PRECO=null;
+  const QS=new URLSearchParams(location.search), HK=new URLSearchParams(location.hash.slice(1));
+  const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+  const b64ud=s=>b64d(s.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((s.length+3)%4));
+  async function carregarPreco(){
+    const uid=QS.get('u'), k=HK.get('k'); if(!uid||!k) return;
+    try{
+      const P=await (await fetch(`dados/vitrine-${ID}-precos.json?v=${Date.now()}`,{cache:'no-store'})).json(), c=P.u&&P.u[uid]; if(!c) return;
+      const key=await crypto.subtle.importKey('raw',b64ud(k),'AES-GCM',false,['decrypt']);
+      const claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(c.iv),additionalData:new TextEncoder().encode(`vitrine:${ID}:${uid}`)},key,b64d(c.ct));
+      const x=JSON.parse(new TextDecoder().decode(claro)); if(x.id===uid&&+x.valor>0) PRECO={id:uid,valor:+x.valor,tabela:x.tabela||P.tabela||''};
+    }catch(e){}   // link errado ou unidade vendida: segue sem preço
+  }
+  async function carregarContato(){
+    const cor=QS.get('cor'); if(!cor||!/^[a-z0-9_-]{1,40}$/i.test(cor)) return;
+    try{ const E=await (await fetch('dados/tabelas.enc.json',{cache:'no-store'})).json(), c=(E.usuarios||[]).find(x=>x.id===cor);
+      if(c&&/^\d{12,13}$/.test(c.whatsapp||'')){ CFG.nome=c.nome||CFG.nome; CFG.primeiro=String(c.nome||'').trim().split(/\s+/)[0]||CFG.primeiro;
+        CFG.whatsapp=c.whatsapp; CFG.whatsappTxt=c.whatsappTxt||c.whatsapp; } }catch(e){}
+  }
+  Promise.all([fetch(`dados/vitrine-${ID}.json?v=20261122i`).then(r=>{if(!r.ok) throw 0; return r.json();}),carregarPreco(),carregarContato()])
+    .then(([d])=>{D=d; iniciar();})
     .catch(()=>{ $('tit').textContent='Vitrine indisponível'; });
 
   function iniciar(){
@@ -413,6 +441,7 @@ footer b{color:var(--ink)}
     $('pn').innerHTML=`<button class="voltar" id="volt">← ${u.andar}º andar · ${esc(u.torre)}</button>
       <div class="kick">${esc(u.torre)} · Unidade ${esc(u.unidade)}</div><h2>${esc(casa)}</h2>
       <p class="desc">${esc(txt)}</p>
+      ${PRECO&&PRECO.id===u.id?`<div class="preco"><span>Valor de tabela</span><b>${brl(PRECO.valor)}</b><small>Tabela da incorporadora de ${esc(dataBR(PRECO.tabela))} · preço liberado por ${esc(CFG.primeiro)} para você</small></div>`:''}
       <div class="specs"><div><b>${esc(u.suites)}</b><span>suítes</span></div><div><b>${m2(u.area).replace(' m²','')}</b><span>m² privativos</span></div>
         <div><b>${u.vagas}</b><span>vagas</span></div><div><b>${u.andar}º</b><span>andar</span></div></div>
       ${IMG(u.planta)?`<button class="planta" id="pl" type="button" aria-label="Ampliar a planta"><img src="${IMG(u.planta)}" alt="Planta ${esc(casa)}"></button>`:''}
@@ -430,7 +459,8 @@ footer b{color:var(--ink)}
       <div class="conds" id="conds">${D.condicoes.map(c=>`<button class="cd" data-c="${c.id}" aria-pressed="${c.id===cond}">${esc(c.nome)}<small>${c.desc?`<span class="dsc">−${c.desc}%</span> · `:''}${esc(c.sub)}</small></button>`).join('')}</div>
       <div id="sim"></div>
       <a class="cta" id="cta" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.7-.1 1.2z"/></svg>Solicitar o preço desta unidade</a>
-      <span class="cta2">A mensagem já vai pronta com a unidade e a condição escolhida.</span>`;
+      <span class="cta2">${PRECO&&PRECO.id===u.id?'Fale direto com '+esc(CFG.primeiro)+' sobre esta unidade e a condição escolhida.':'A mensagem já vai pronta com a unidade e a condição escolhida.'}</span>`;
+    if(PRECO&&PRECO.id===u.id) $('cta').lastChild.textContent='Quero avançar com esta unidade';
     $('volt').onclick=()=>abrirAndar(u.torre,u.andar,false);
     $('elevUni').onclick=()=>Elevador.abrir(abrev(u.torre)+'-'+posDe(u.unidade),u.andar);
     const pl=$('pl'); if(pl) pl.onclick=()=>zoom(IMG(u.planta));
@@ -446,13 +476,19 @@ footer b{color:var(--ink)}
     const pago=100-(c.desc||0);
     $('sim').innerHTML=`${c.alt?`<div class="alt"><button class="chip" data-a="0" aria-pressed="${!alt}">${esc(c.partes[c.partes.length-1][0])}</button><button class="chip" data-a="1" aria-pressed="${alt}">${esc(c.alt.rotulo)}</button></div>`:''}
       <div class="barra">${partes.map((p,i)=>`<span style="width:${p[1]}%;background:${CORES[i%4]}"></span>`).join('')}</div>
-      <div class="linhas">${partes.map((p,i)=>`<div class="ln"><i style="background:${CORES[i%4]}"></i><span>${esc(p[0])}</span><em>${esc(p[2])}</em><b>${pc(p[1])}</b></div>`).join('')}</div>
-      <div class="res">${c.desc?`Desconto de <b>${c.desc}%</b> sobre o valor de tabela: você paga <b>${pago}%</b> do valor. Os percentuais acima são sobre o valor já com desconto.`
-        :'Percentuais sobre o valor de tabela da unidade.'}</div>
+      ${(()=>{ const comP=PRECO&&PRECO.id===u.id, V=comP?PRECO.valor:0, Pv=V*pago/100;
+        const linhas=partes.map((p,i)=>{ const n=+((/^(\d+)\s*×/.exec(p[2])||[])[1]||1), tot=Pv*p[1]/100;
+          return `<div class="ln"><i style="background:${CORES[i%4]}"></i><span>${esc(p[0])}</span><em>${comP?(n>1?`${n} × ${brl(tot/n)}`:'1 pagamento')+` · ${pc(p[1])}`:esc(p[2])}</em><b>${comP?brl(tot):pc(p[1])}</b></div>`; }).join('');
+        const res=comP?(c.desc?`Com o desconto de <b>${c.desc}%</b>, a unidade sai por <b>${brl(Pv)}</b> (tabela ${brl(V)}).`:`Valor de tabela: <b>${brl(V)}</b>.`)
+          :(c.desc?`Desconto de <b>${c.desc}%</b> sobre o valor de tabela: você paga <b>${pago}%</b> do valor. Os percentuais acima são sobre o valor já com desconto.`:'Percentuais sobre o valor de tabela da unidade.');
+        return `<div class="linhas">${linhas}</div><div class="res">${res}</div>`; })()}
       <p class="nota">${esc(D.correcao)}</p>`;
     const a=$('sim').querySelector('.alt'); if(a) a.onclick=e=>{const b=e.target.closest('[data-a]'); if(!b) return; alt=b.dataset.a==='1'; simular(u);};
     const nomeCond=`${c.nome} (${partes.map(p=>p[0].toLowerCase()==='entrada no ato'||p[0]==='Entrada'?`${pc(p[1])} de entrada`:`${p[2]}`).join(' + ')})`;
-    const msg=`Olá, ${CFG.primeiro}! Vi a vitrine do ${D.nome} e gostaria de receber o preço da unidade ${u.unidade} da ${u.torre} `+
+    const comP=PRECO&&PRECO.id===u.id, Pv=comP?PRECO.valor*pago/100:0;
+    const msg=comP?`Olá, ${CFG.primeiro}! Vi a unidade ${u.unidade} da ${u.torre} do ${D.nome} (${u.casa} · ${u.suites} suítes · ${m2(u.area)}) `+
+        `com o valor que você me enviou. Tenho interesse na condição ${nomeCond}${c.desc?`, por ${brl(Pv)}`:''}. Podemos conversar sobre a proposta?`
+      :`Olá, ${CFG.primeiro}! Vi a vitrine do ${D.nome} e gostaria de receber o preço da unidade ${u.unidade} da ${u.torre} `+
       `(${u.casa} · ${u.suites} suítes · ${m2(u.area)} · ${u.andar}º andar), na condição ${nomeCond}.`;
     $('cta').href=`https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}`;
   }
