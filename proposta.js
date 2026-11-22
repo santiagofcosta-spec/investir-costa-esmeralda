@@ -222,7 +222,11 @@
   function rendaAcum(liqAno,g,mChaves,H){ let s=0; for(let k=Math.max(1,mChaves+1);k<=H*12;k++) s+=liqAno/12*Math.pow(1+g,k/12); return s; }
 
   // fotos do lazer para a página 2 (até 6, sem as de fachada), com legenda tirada do nome do arquivo
-  const LEG={piscinas:['Piscinas','Piscinas'],piscina:['Piscina','Piscina'],academia:['Academia','Gimnasio'],'salao-jogos':['Salão de jogos','Sala de juegos'],
+  const LEG={'piscina-hidro':['Piscina com hidromassagem','Piscina con hidromasaje'],'praca-fogo':['Praça de fogo','Fogón'],'lounge-gourmet':['Lounge gourmet','Lounge gourmet'],
+    'salao-festas':['Salão de festas','Salón de fiestas'],'sala-games':['Sala de games','Sala de videojuegos'],'mini-mercado':['Mini mercado Empório Seletto','Minimercado Empório Seletto'],
+    lavanderia:['Lavanderia compartilhada OMO','Lavandería compartida OMO'],'apto-living':['Apartamento decorado: living','Departamento decorado: living'],
+    'apto-cozinha':['Apartamento decorado: cozinha e jantar','Departamento decorado: cocina y comedor'],'apto-suite':['Apartamento decorado: suíte','Departamento decorado: suite'],
+    piscinas:['Piscinas','Piscinas'],piscina:['Piscina','Piscina'],academia:['Academia','Gimnasio'],'salao-jogos':['Salão de jogos','Sala de juegos'],
     'terraco-jogos':['Terraço de jogos','Terraza de juegos'],quiosque:['Quiosque','Quincho'],playground:['Playground','Juegos infantiles'],
     brinquedoteca:['Brinquedoteca','Sala infantil'],'sala-jogos':['Sala de jogos','Sala de juegos'],'piscina-aquecida':['Piscina aquecida','Piscina climatizada'],'fire-place':['Fire place','Fogón exterior'],'espaco-pet':['Espaço pet','Espacio pet'],solarium:['Solário','Solárium'],'planta-lazer':['Planta do lazer','Planta de amenities'],'praia-pereque':['Praia do Perequê','Playa del Perequê'],pereque:['Balneário Perequê','Balneário Perequê'],'ilha-porto-belo':['Ilha de Porto Belo','Isla de Porto Belo'],enseada:['Enseada de Porto Belo','Ensenada de Porto Belo'],'localizacao-aerea':['Vista aérea do terreno','Vista aérea del terreno'],'salao-festas':['Salão de festas','Salón de fiestas'],'espaco-zen':['Espaço zen','Espacio zen'],
     'parque-aereo':['Parque das Flores','Parque das Flores'],'parque-das-flores':['Parque das Flores: padel e beach tennis','Parque das Flores: pádel y beach tennis'],'quadras-coloridas':['Quadras poliesportivas','Canchas polideportivas'],'urbanismo-aereo':['Entrada, rotatória e lotes prontos','Entrada, rotonda y lotes listos'],'estacao-esgoto':['Estação própria de tratamento de esgoto','Planta propia de tratamiento cloacal'],
@@ -1020,7 +1024,7 @@
     ${pagOrla(e)}
     <div class="pp-pag">
       ${e.lazer?`<h2>${L('Lazer','Áreas comunes')}</h2><p>${e.lazer}</p>`:''}
-      ${gal.length?`<div class="pp-gal">${gal.map(s=>`<img src="${s}" alt="">`).join('')}</div>`:''}
+      ${gal.length?`${usadas.length?`<p class="pp-gal-k">${L('Outros espaços do prédio (as demais fotos do lazer estão na página 2)','Otros espacios del edificio (las demás fotos están en la página 2)')}</p>`:''}<div class="pp-gal">${gal.map(s=>`<figure><img src="${s}" alt=""><figcaption>${legenda(s)}</figcaption></figure>`).join('')}</div>`:''}
       ${mapa||mapaRua?`<h2>${L('Localização','Ubicación')}</h2>
         <p><b>${[e.endereco,e.bairro,e.cidade?e.cidade+' / SC':''].filter(Boolean).join(' · ')}</b>${e.distanciaMar?` · ${L(`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m do mar em linha reta`,`≈ ${Math.round(e.distanciaMar).toLocaleString('pt-BR')} m del mar en línea recta`)}${e.praia?` (${e.praia})`:''}`:''}</p>
         <div class="pp-loc"><img src="${mapaRua||mapa}" alt=""></div>`:''}
