@@ -54,6 +54,15 @@ h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;back
 .tlab{font:600 26px var(--f-d);fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:5px;pointer-events:none}
 .tip{position:absolute;pointer-events:none;background:rgba(11,16,21,.92);border:1px solid var(--gold);border-radius:10px;padding:6px 10px;font-size:13px;white-space:nowrap;opacity:0;transition:opacity .12s;z-index:5}
 .tip b{color:var(--gold-lt)}
+.tip{display:flex;gap:12px;align-items:center;padding:10px 12px;white-space:normal;max-width:300px}
+.tdig{font:700 34px/1 "Courier New",ui-monospace,monospace;color:#F5C26B;text-shadow:0 0 10px rgba(245,194,107,.7);letter-spacing:.04em;
+  min-width:64px;text-align:center;padding:6px 4px;background:#0b0b0b;border-radius:8px;border:1px solid #2b2b2b;flex:none}
+.tdig small{display:block;font:500 8.5px "Plus Jakarta Sans",system-ui,sans-serif;letter-spacing:.2em;color:#9a7b45;text-shadow:none;margin-top:3px}
+.ttx{display:flex;flex-direction:column;gap:1px;font-size:12.5px;line-height:1.35}
+.ttx b{font:600 15px var(--f-d)}
+.ttx .ok{color:var(--ok);font-weight:600}
+.ttx small{color:#d4d4d8;font-size:11.5px;margin-top:2px}
+.ttx em{font-style:normal;color:var(--muted);font-size:11px;margin-top:3px}
 .tip.com-foto{white-space:normal;width:340px;padding:0;overflow:hidden}
 .tip.com-foto img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
 .tip.com-foto .tx{padding:7px 10px;font-size:12.5px;line-height:1.35}
@@ -367,7 +376,14 @@ footer b{color:var(--ink)}
     const i=vs.reduce((a,b,k)=>Math.abs(vs[k].andar-n)<Math.abs(vs[a].andar-n)?k:a,0), u=(disp.length?disp:us)[i];
     return {...vs[i],casa:nomePos(torre,posDe(u.unidade))}; }
   // pré-carrega as miniaturas para o hover não piscar
-  setTimeout(()=>{ if(D&&D.elevador) Object.values(D.elevador).forEach(s=>s.andares.forEach(v=>{ const i=new Image(); i.src=IMG(v[1].replace(/\.jpg$/,'-p.jpg')); })); },1500);
+
+
+  /* ---------- número do painel (hover) ---------- */
+  let tipN=0, tipT=0;
+  function contarAte(alvo){ clearInterval(tipT);
+    const pinta=()=>{ const el=document.getElementById('tdig'); if(el) el.firstChild.nodeValue=String(tipN).padStart(2,'0'); };
+    if(!tipN){ tipN=alvo; pinta(); return; }
+    tipT=setInterval(()=>{ if(tipN===alvo){ clearInterval(tipT); return; } tipN+=tipN<alvo?1:-1; pinta(); },45); }
 
   /* ---------- fachada ---------- */
   function andarDe(t,n){ // duplex: o andar de cima abre o de baixo
@@ -400,13 +416,20 @@ footer b{color:var(--ink)}
     const tip=$('tip'), box=$('fach');
     svg.onmousemove=e=>{ const r=e.target.closest('.fl'); if(!r||r.classList.contains('dim')){tip.style.opacity=0;return;}
       const b=box.getBoundingClientRect(), d=+r.dataset.d;
-      const v=vistaDoAndar(r.dataset.t,+r.dataset.n), info=`<b>${r.dataset.r}º andar</b> · ${esc(r.dataset.t)}<br>${d?d+(d>1?' disponíveis':' disponível'):'sem unidade disponível'}`;
-      tip.classList.toggle('com-foto',!!v);
-      tip.innerHTML=v?`<img src="${v.mini}" alt=""><div class="tx">${info}<small>${esc(v.rot)} · ${esc(legAndar(v,+r.dataset.r))}</small></div>`:info;
+      // painel no estilo do elevador: número digital que sobe/desce até o andar + descrição curta (22/11, pedido do Santiago)
+      const tor=D.torres.find(t=>t.nome===r.dataset.t), n=+r.dataset.n, dup=tor&&tor.duplex&&n===tor.duplex[0];
+      const disp=unsDoAndar(r.dataset.t,n).filter(u=>u.status==='disponivel');
+      const casas=[...new Set(disp.map(u=>u.casa+(u.casa==='Penthouse'||u.casa==='Mansão Suspensa'?'':` · ${u.suites} suítes`)))];
+      if(tip.dataset.k!==r.dataset.t+r.dataset.r){ tip.dataset.k=r.dataset.t+r.dataset.r;
+        tip.innerHTML=`<div class="tdig" id="tdig">${String(tipN||+r.dataset.r).padStart(2,'0')}<small>ANDAR</small></div>
+          <div class="ttx"><b>${esc(r.dataset.t)}</b>${dup?'<span>Coberturas duplex</span>':''}
+          <span class="${d?'ok':''}">${d?d+(d>1?' unidades disponíveis':' unidade disponível'):'Sem unidade disponível'}</span>
+          ${casas.length?`<small>${casas.map(esc).join('<br>')}</small>`:''}${d?'<em>clique para ver</em>':''}</div>`;
+        contarAte(+r.dataset.r); }
       const x=e.clientX-b.left, y=e.clientY-b.top, w=tip.offsetWidth, h=tip.offsetHeight;
       tip.style.left=Math.min(Math.max(x,w/2+6),b.width-w/2-6)+'px'; tip.style.top=y+'px';
       tip.style.transform=y<h+24?'translate(-50%,22px)':'translate(-50%,calc(-100% - 16px))'; tip.style.opacity=1; };
-    svg.onmouseleave=()=>tip.style.opacity=0;
+    svg.onmouseleave=()=>{ tip.style.opacity=0; tip.dataset.k=''; };
   }
 
   /* ---------- painel ---------- */
