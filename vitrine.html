@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ocean Hill Residence · Vitrine</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#0B1015; --bg2:#121A21; --card:rgba(18,25,33,.86); --ink:#F4F4F5; --muted:#A1A1AA; --line:rgba(212,175,55,.18);
+  --gold:#D4AF37; --gold-lt:#F5E6B3; --gold-2:#A67C2E; --ok:#34D399; --ok-bg:rgba(52,211,153,.14); --off:#71717A;
+  --f-d:"Playfair Display",Georgia,serif; --f-b:"Plus Jakarta Sans",system-ui,sans-serif;
+  --metal:linear-gradient(135deg,#F5E6B3 0%,#D4AF37 50%,#A67C2E 100%);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:linear-gradient(145deg,#0B1015 0%,#121A21 55%,#0D1E1B 100%) fixed #0B1015}
+body{margin:0;color:var(--ink);font:15px/1.5 var(--f-b);background:transparent;font-variant-numeric:tabular-nums}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+header.top{padding:22px 0 8px;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.kick{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+h1{font:600 clamp(28px,5vw,44px)/1.1 var(--f-d);margin:4px 0 2px}
+h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);font-size:14px}
+.placar{display:flex;gap:10px;flex-wrap:wrap}
+.pl{border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--card);min-width:120px}
+.pl b{display:block;font:600 22px var(--f-d);color:var(--gold-lt)}
+.pl span{font-size:12px;color:var(--muted)}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:22px;margin:16px 0 28px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+
+/* fachada */
+.fach{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:#0d1a2a;box-shadow:0 30px 60px -30px #000}
+.fach svg{display:block;width:100%;height:auto}
+.fl{fill:transparent;stroke:transparent;transition:fill .18s,stroke .18s;cursor:pointer}
+.fl.tem{fill:rgba(52,211,153,.10)}
+.fl:hover,.fl:focus{fill:rgba(212,175,55,.38);stroke:var(--gold);stroke-width:2;outline:none}
+.fl.sel{fill:rgba(212,175,55,.55);stroke:var(--gold-lt);stroke-width:3}
+.fl.zero{cursor:pointer}
+.fl.dim{fill:rgba(11,16,21,.35)}
+.mk{fill:var(--ok);pointer-events:none}
+.lz{fill:transparent;cursor:pointer;transition:fill .18s}
+.lz:hover{fill:rgba(212,175,55,.22);stroke:var(--gold);stroke-width:2}
+.fn{font:300 15px var(--f-b);fill:rgba(255,255,255,.62);letter-spacing:.04em;pointer-events:none;paint-order:stroke;stroke:rgba(10,25,45,.35);stroke-width:2px}
+.fn.on{fill:var(--gold-lt);font-weight:600}
+.ft{stroke:rgba(255,255,255,.28);stroke-width:1;pointer-events:none}
+.ft.on{stroke:var(--gold)}
+.tlab{font:600 26px var(--f-d);fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.55);stroke-width:5px;pointer-events:none}
+.tip{position:absolute;pointer-events:none;background:rgba(11,16,21,.92);border:1px solid var(--gold);border-radius:10px;padding:6px 10px;font-size:13px;white-space:nowrap;opacity:0;transition:opacity .12s;z-index:5}
+.tip b{color:var(--gold-lt)}
+.tip.com-foto{white-space:normal;width:340px;padding:0;overflow:hidden}
+.tip.com-foto img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.tip.com-foto .tx{padding:7px 10px;font-size:12.5px;line-height:1.35}
+.tip.com-foto small{display:block;color:var(--muted);font-size:11px}
+.vistas{display:grid;gap:10px}
+.vista{margin:0;position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);cursor:zoom-in}
+.vista img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.vista figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;background:linear-gradient(transparent,rgba(5,8,11,.88));font-size:12.5px;line-height:1.35}
+.vista figcaption b{color:var(--gold-lt)}
+.pano{margin:0;position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000}
+.pano-sc{overflow-x:auto;overflow-y:hidden;cursor:grab;scrollbar-width:thin;scrollbar-color:var(--gold) transparent;outline:none}
+.pano-sc.arr{cursor:grabbing}
+.pano-sc img{display:block;height:min(430px,78vw);width:auto;max-width:none;user-select:none}
+.pano-dica{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:rgba(5,8,11,.7);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:11.5px;pointer-events:none}
+.pano figcaption{padding:9px 12px;font-size:12.5px;line-height:1.35}
+.pano figcaption b{color:var(--gold-lt)}
+.pano figcaption small{display:block;color:var(--muted);font-size:11px}
+.vista figcaption small{display:block;color:#c4c4c8;font-size:11px}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);padding:10px 14px;border-top:1px solid var(--line);background:rgba(11,16,21,.85)}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.ir{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin:0 0 10px}
+.ir select{flex:1;max-width:320px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit}
+.filtro{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--metal);color:#0B1015;border-color:transparent;font-weight:700}
+
+/* painel */
+.pn{position:sticky;top:14px;border:1px solid var(--line);border-radius:18px;background:var(--card);backdrop-filter:blur(10px);padding:18px;min-height:300px}
+@media (max-width:860px){.pn{position:static}}
+.pn h2{font:600 26px/1.15 var(--f-d);margin:2px 0 6px}
+.pn h3{font:600 17px var(--f-d);margin:18px 0 8px;color:var(--gold-lt)}
+.voltar{background:none;border:0;color:var(--gold);padding:0;font-size:13px;margin-bottom:6px}
+.vazio p{color:var(--muted)}
+.passos{counter-reset:p;list-style:none;padding:0;margin:12px 0}
+.passos li{counter-increment:p;padding:8px 0 8px 40px;position:relative;border-bottom:1px solid var(--line)}
+.passos li::before{content:counter(p);position:absolute;left:0;top:7px;width:28px;height:28px;border-radius:50%;background:var(--metal);color:#0B1015;font-weight:700;display:grid;place-items:center;font-size:13px}
+.uns{display:grid;gap:10px}
+.un{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:rgba(11,16,21,.55);text-align:left;width:100%}
+.un:not([disabled]):hover{border-color:var(--gold)}
+.un[disabled]{opacity:.5;cursor:default}
+.un b{font:600 18px var(--f-d)}
+.un small{display:block;color:var(--muted);font-size:12.5px}
+.st{font-size:11.5px;border-radius:999px;padding:4px 10px;white-space:nowrap;font-weight:600}
+.st.ok{background:var(--ok-bg);color:var(--ok)}
+.st.no{background:rgba(113,113,122,.2);color:#A1A1AA}
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+@media (max-width:420px){.specs{grid-template-columns:repeat(2,1fr)}}
+.specs div{border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.specs b{display:block;font:600 18px var(--f-d);color:var(--gold-lt)}
+.specs span{font-size:11.5px;color:var(--muted)}
+.desc{color:#d4d4d8;font-size:14px;margin:6px 0 0}
+.planta{display:block;width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:zoom-in;padding:0}
+.planta img{display:block;width:100%;border-radius:12px}
+
+/* simulador */
+.conds{display:flex;gap:6px;flex-wrap:wrap}
+.cd{border:1px solid var(--line);background:rgba(11,16,21,.55);border-radius:12px;padding:7px 11px;text-align:left;font-size:13px;line-height:1.2}
+.cd small{display:block;font-size:11px;color:var(--muted)}
+.cd[aria-pressed="true"]{border-color:var(--gold);background:rgba(212,175,55,.16)}
+.cd .dsc{color:var(--ok);font-weight:700}
+.alt{display:flex;gap:6px;margin:10px 0 0}
+.barra{display:flex;height:16px;border-radius:999px;overflow:hidden;margin:14px 0 8px;border:1px solid var(--line)}
+.barra span{display:block;height:100%}
+.linhas{display:grid;gap:6px;margin-top:6px}
+.ln{display:grid;grid-template-columns:14px 1fr auto auto;gap:10px;align-items:center;font-size:14px}
+.ln i{width:12px;height:12px;border-radius:3px}
+.ln em{font-style:normal;color:var(--muted);font-size:12.5px}
+.ln b{font:600 17px var(--f-d);color:var(--gold-lt);min-width:58px;text-align:right}
+.res{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);font-size:13.5px}
+.nota{font-size:12px;color:var(--muted);margin-top:8px}
+.cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:16px;padding:15px;border:0;border-radius:14px;background:var(--metal);color:#0B1015;font-weight:700;font-size:15.5px;text-decoration:none;box-shadow:0 12px 30px -12px rgba(212,175,55,.6)}
+.cta svg{width:20px;height:20px}
+.cta2{display:block;text-align:center;margin-top:8px;font-size:12.5px;color:var(--muted)}
+
+/* galeria e modal */
+.sec{margin:8px 0 40px}
+.sec h2{font:600 30px var(--f-d);margin:0 0 4px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:14px}
+.gal button{border:0;padding:0;border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:#111}
+.gal img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.gal button:hover img{transform:scale(1.05)}
+.mod{position:fixed;inset:0;background:rgba(5,8,11,.94);display:grid;place-items:center;z-index:50;padding:16px}
+.mod img{max-width:100%;max-height:88vh;border-radius:10px;background:#fff}
+.mod img[src*='/vistas/']{background:none}
+.mod button{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:14px;background:var(--card);border:1px solid var(--line);border-radius:999px;width:42px;height:42px;font-size:20px}
+/* ---------- elevador panorâmico ---------- */
+.btn-elev{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold);background:linear-gradient(135deg,rgba(212,175,55,.22),rgba(212,175,55,.06));color:var(--gold-lt);border-radius:14px;padding:11px 16px;font-weight:700;font-size:14px;margin:0 0 12px;text-align:left}
+.btn-elev:hover{background:rgba(212,175,55,.3)}
+.btn-elev svg{width:22px;height:22px;flex:none}
+.elev{position:fixed;inset:0;z-index:60;background:#05080B;overflow:hidden;touch-action:none;user-select:none}
+.elev-cena{position:absolute;inset:0;cursor:grab}
+.elev-cena.arr{cursor:grabbing}
+.elev-l{position:absolute;top:50%;left:0;height:112%;will-change:transform,opacity}
+.elev-l img{height:100%;width:auto;max-width:none;display:block;pointer-events:none}
+.elev-vidro{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(10,14,18,.92) 0,rgba(10,14,18,.92) 46px,transparent 46px,transparent calc(100% - 64px),rgba(10,14,18,.94) calc(100% - 64px)),
+             linear-gradient(115deg,transparent 0 38%,rgba(255,255,255,.05) 40%,transparent 46%,transparent 70%,rgba(255,255,255,.04) 72%,transparent 76%)}
+.elev-vidro::before,.elev-vidro::after{content:"";position:absolute;top:46px;bottom:64px;width:7px;background:linear-gradient(90deg,#2a2f35,#6b6f75 45%,#22262b);box-shadow:0 0 12px rgba(0,0,0,.6)}
+.elev-vidro::before{left:33.3%}.elev-vidro::after{left:66.6%}
+.elev-corr{position:absolute;left:0;right:0;bottom:64px;height:5px;background:linear-gradient(#8a8e94,#3a3e44);pointer-events:none}
+.elev-top{position:absolute;top:calc(4px + env(safe-area-inset-top,0px));left:14px;right:14px;height:40px;display:flex;justify-content:space-between;align-items:center;gap:10px;z-index:3}
+.elev-top .t{font:600 15px var(--f-d);color:var(--gold-lt)}
+.elev-top .t small{display:block;font:400 11px var(--f-b);color:var(--muted)}
+.elev-x{background:rgba(18,25,33,.9);border:1px solid var(--line);border-radius:999px;width:38px;height:38px;font-size:17px}
+.elev-pn{position:absolute;right:16px;top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:8px;background:rgba(10,14,18,.86);border:1px solid var(--line);border-radius:18px;padding:12px 10px;backdrop-filter:blur(8px)}
+.elev-dig{font:700 42px/1 "Courier New",ui-monospace,monospace;color:#F5C26B;text-shadow:0 0 10px rgba(245,194,107,.7);letter-spacing:.04em;min-width:76px;text-align:center;padding:6px 4px;background:#0b0b0b;border-radius:8px;border:1px solid #2b2b2b}
+.elev-dig small{display:block;font:500 9px var(--f-b);letter-spacing:.2em;color:#9a7b45;text-shadow:none;margin-top:4px}
+.elev-b{width:52px;height:52px;border-radius:50%;border:1px solid #6b6f75;background:radial-gradient(circle at 35% 30%,#4a4f56,#1b1e22);font-size:18px;color:#F5E6B3}
+.elev-b:active{box-shadow:0 0 0 3px rgba(245,194,107,.5),inset 0 0 12px rgba(245,194,107,.5)}
+.elev-r{writing-mode:vertical-lr;direction:rtl;height:min(30vh,220px);width:28px;accent-color:#D4AF37}
+.elev-topo{font-size:11px;border:1px solid var(--line);background:none;border-radius:999px;padding:5px 9px;color:var(--gold-lt)}
+.elev-base{position:absolute;left:0;right:0;bottom:0;height:64px;z-index:3;display:flex;align-items:center;gap:8px;padding:0 14px env(safe-area-inset-bottom,0px);overflow-x:auto}
+.elev-base .chip{white-space:nowrap;font-size:12.5px;padding:6px 12px}
+.elev-base .chip.modo{border-color:var(--gold);color:var(--gold-lt);background:rgba(212,175,55,.14)}
+.elev-info{position:absolute;left:16px;top:56px;z-index:3;max-width:min(360px,60vw);background:rgba(10,14,18,.82);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.4}
+.elev-info b{color:var(--gold-lt)}
+.elev-info small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.elev-info button{margin-top:8px;border:0;border-radius:10px;padding:7px 11px;background:var(--metal);color:#0B1015;font-weight:700;font-size:12.5px}
+.elev-dica{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;background:rgba(5,8,11,.72);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:13px;pointer-events:none;transition:opacity .6s;white-space:nowrap}
+@media (max-width:600px){.elev-pn{right:8px;padding:10px 7px}.elev-dig{font-size:30px;min-width:56px}.elev-b{width:44px;height:44px}.elev-info{left:8px}.elev-dica{white-space:normal;width:80%;text-align:center}}
+/* marcação da garagem náutica nos panoramas */
+.nau{position:absolute;transform:translate(-50%,-100%);pointer-events:auto;cursor:pointer;display:flex;flex-direction:column;align-items:center;z-index:1;background:none;border:0;padding:0;font:inherit;color:inherit}
+.nau:hover span,.nau:focus-visible span{background:rgba(212,175,55,.95);color:#0B1015}
+.nau:hover small,.nau:focus-visible small{color:#2a2a2a}
+.nau span{background:rgba(10,14,18,.88);border:1px solid var(--gold);border-radius:10px;padding:5px 10px;font-size:12px;font-weight:700;color:var(--gold-lt);white-space:nowrap;text-align:center;box-shadow:0 8px 20px -8px #000}
+.nau small{display:block;color:#d4d4d8;font-size:10.5px;font-weight:400}
+.nau b{display:block;width:1.5px;height:28px;background:linear-gradient(var(--gold),rgba(212,175,55,.3))}
+.nau i{display:block;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(212,175,55,.7);animation:nauP 1.8s infinite;margin-bottom:-6px}
+@keyframes nauP{0%{box-shadow:0 0 0 0 rgba(212,175,55,.7)}70%{box-shadow:0 0 0 14px rgba(212,175,55,0)}100%{box-shadow:0 0 0 0 rgba(212,175,55,0)}}
+.pano-in{position:relative;display:inline-block}
+.elev-nau{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.elev-nau .nau{transition:opacity .3s}
+.nmod{position:fixed;inset:0;z-index:70;background:rgba(5,8,11,.86);display:grid;place-items:center;padding:16px}
+.nbox{position:relative;width:min(980px,100%);max-height:94vh;overflow:auto;background:#0f161c;border:1px solid var(--gold);border-radius:18px;box-shadow:0 30px 80px -20px #000}
+.nfoto{position:relative;background:#000}
+.nfoto img{display:block;width:100%;max-height:68vh;object-fit:contain}
+.nseta{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(10,14,18,.8);font-size:26px;line-height:1}
+.nseta.e{left:10px}.nseta.d{right:10px}
+.npts{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.npts i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.4)}.npts i.on{background:var(--gold)}
+.ntx{padding:14px 18px 18px}
+.ntx h3{font:600 22px var(--f-d);margin:2px 0 6px;color:var(--gold-lt)}
+.ntx p{margin:0;font-size:14px;color:#d4d4d8}
+.ntx p.nota{font-size:12px;color:var(--muted);margin-top:8px}
+.nx{position:absolute;top:10px;right:10px;z-index:2;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:rgba(10,14,18,.85);font-size:18px}
+.deco{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.deco button{border:0;padding:0;border-radius:12px;overflow:hidden;aspect-ratio:16/10;background:#111;cursor:zoom-in}
+.deco button.g{grid-column:1/-1}
+.deco img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.deco button:hover img{transform:scale(1.04)}
+footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--muted);font-size:12px}
+footer b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="kick" id="kInc">Vitrine</div>
+      <h1 id="tit">Carregando…</h1>
+      <div class="sub" id="sLoc"></div>
+    </div>
+    <div class="placar" id="placar"></div>
+  </header>
+
+  <div class="grid">
+    <div>
+      <button type="button" class="btn-elev" id="abrirElev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="2.5" width="16" height="19" rx="2"/><path d="M12 2.5v19M8.5 9.5 10 8l1.5 1.5M12.5 14.5 14 16l1.5-1.5"/></svg>Elevador panorâmico: suba do 7º ao topo vendo a vista 180°</button>
+      <div class="filtro" id="filtro"></div>
+      <label class="ir"><span>Ou vá direto ao andar:</span> <select id="ir"></select></label>
+      <div class="fach" id="fach">
+        <svg id="svg" role="img" aria-label="Fachada com os andares clicáveis"></svg>
+        <div class="tip" id="tip"></div>
+        <div class="leg"><span><i style="background:rgba(52,211,153,.55)"></i>Andar com unidade disponível</span><span><i style="background:var(--gold)"></i>Andar selecionado</span><span>Toque no pódio para ver o lazer</span></div>
+      </div>
+    </div>
+    <aside class="pn" id="pn" aria-live="polite"></aside>
+  </div>
+
+  <section class="sec" id="secLazer">
+    <div class="kick">Lazer e convivência</div>
+    <h2>4.265 m² para viver o resort em casa</h2>
+    <p class="sub" id="lzTxt"></p>
+    <div class="gal" id="gal"></div>
+  </section>
+
+  <footer id="rod"></footer>
+</div>
+
+<div class="elev" id="elev" hidden role="dialog" aria-label="Elevador panorâmico">
+  <div class="elev-cena" id="elevCena"><div class="elev-l" id="elevA"><img alt=""></div><div class="elev-l" id="elevB"><img alt=""></div></div>
+  <div class="elev-vidro"></div><div class="elev-corr"></div><div class="elev-nau"><div class="elev-l" id="elevN"></div></div>
+  <div class="elev-dica" id="elevDica">⟷ arraste para olhar em volta · ▲ ▼ para subir e descer</div>
+  <div class="elev-top"><div class="t" id="elevTit"></div><button type="button" class="elev-x" id="elevX" aria-label="Sair do elevador">✕</button></div>
+  <div class="elev-info" id="elevInfo"></div>
+  <div class="elev-pn">
+    <button type="button" class="elev-topo" id="elevTopo">topo</button>
+    <button type="button" class="elev-b" id="elevUp" aria-label="Subir um andar">▲</button>
+    <div class="elev-dig" id="elevDig">07<small>ANDAR</small></div>
+    <button type="button" class="elev-b" id="elevDn" aria-label="Descer um andar">▼</button>
+    <input type="range" class="elev-r" id="elevR" min="7" max="40" step="1" value="7" aria-label="Andar">
+  </div>
+  <div class="elev-base" id="elevBase"></div>
+</div>
+<div class="nmod" id="nmod" hidden role="dialog" aria-label="Garagem náutica e atracadouro">
+  <div class="nbox">
+    <button type="button" class="nx" id="nmodX" aria-label="Fechar">✕</button>
+    <div class="nfoto"><img id="nImg" alt=""><button type="button" class="nseta e" id="nAnt" aria-label="Foto anterior">‹</button><button type="button" class="nseta d" id="nProx" aria-label="Próxima foto">›</button><div class="npts" id="nPts"></div></div>
+    <div class="ntx"><div class="kick">Vida náutica</div><h3>Garagem náutica e atracadouro</h3><p id="nTxt"></p><p class="nota" id="nNota"></p></div>
+  </div>
+</div>
+<div class="mod" id="mod" hidden><button type="button" aria-label="Fechar" id="modX">✕</button><img id="modImg" alt=""></div>
+
+<script>
+(function(){
+  'use strict';
+  const CFG={nome:'Santiago Fernandes Costa',primeiro:'Santiago',empresa:'Goya Investimentos Imobiliários',whatsapp:'5547992176060',whatsappTxt:'(47) 99217-6060'};
+  const ID=(new URLSearchParams(location.search).get('e')||'oceanhill').replace(/[^a-z0-9-]/g,'');
+  const $=s=>document.getElementById(s);
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const IMG=s=>/^img\/[a-z0-9_\/-]+\.(jpg|png|webp)$/i.test(String(s||''))?s:'';
+  const m2=a=>a?(+a).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+' m²':'';
+  const pc=v=>(+v).toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';
+  const CORES=['#D4AF37','#34D399','#60A5FA','#E07A5F'];
+  let D, filtroTorre='', sel=null, cond='c16', alt=false;
+
+  fetch(`dados/vitrine-${ID}.json?v=20261122h`).then(r=>{if(!r.ok) throw 0; return r.json();}).then(d=>{D=d; iniciar();})
+    .catch(()=>{ $('tit').textContent='Vitrine indisponível'; });
+
+  function iniciar(){
+    document.title=`${D.nome} · Vitrine`;
+    $('kInc').textContent=D.incorporadora;
+    $('tit').innerHTML=esc(D.nome).replace(/(\S+)$/,'<i>$1</i>');
+    $('sLoc').textContent=`${D.local} · ${D.entrega}`;
+    const disp=D.unidades.filter(u=>u.status==='disponivel');
+    $('placar').innerHTML=D.torres.map(t=>`<div class="pl"><b>${disp.filter(u=>u.torre===t.nome).length}</b><span>disponíveis · ${esc(t.nome)}</span></div>`).join('');
+    $('filtro').innerHTML=[['','As duas torres'],...D.torres.map(t=>[t.nome,t.nome])].map(([v,r])=>`<button class="chip" data-t="${esc(v)}" aria-pressed="${v===filtroTorre}">${esc(r)}</button>`).join('');
+    $('filtro').onclick=e=>{const b=e.target.closest('.chip'); if(!b) return; filtroTorre=b.dataset.t; [...$('filtro').children].forEach(c=>c.setAttribute('aria-pressed',c===b)); desenhar();};
+    $('lzTxt').textContent=D.lazerTexto||'';
+    $('gal').innerHTML=(D.galeria||[]).map(IMG).filter(Boolean).map(s=>`<button type="button" data-z="${s}"><img loading="lazy" src="${s}" alt=""></button>`).join('');
+    $('gal').onclick=e=>{const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
+    $('rod').innerHTML=`<b>${esc(CFG.nome)}</b> · ${esc(CFG.empresa)} · WhatsApp ${esc(CFG.whatsappTxt)}<br>
+      Disponibilidade conforme a tabela da incorporadora de ${esc(dataBR(D.tabela))}, sujeita a alteração sem aviso. Imagens ilustrativas.
+      Condições em percentual, de referência; preço, correção e condições finais são confirmados na proposta.`;
+    // link direto para uma unidade: vitrine.html?e=oceanhill&u=HT-2101
+    const u=new URLSearchParams(location.search).get('u');
+    $('ir').innerHTML='<option value="">Escolha…</option>'+D.torres.map(t=>`<optgroup label="${esc(t.nome)}">`+
+      [...new Set(t.andares.map(a=>andarDe(t,a.n)))].map(n=>{const d=unsDoAndar(t.nome,n).filter(u=>u.status==='disponivel').length;
+        const r=t.duplex&&n===t.duplex[0]?`Coberturas ${t.duplex[0]}º/${t.duplex[1]}º`:`${n}º andar`;
+        return `<option value="${esc(t.nome)}|${n}">${r} · ${d?d+(d>1?' disponíveis':' disponível'):'indisponível'}</option>`;}).join('')+'</optgroup>').join('');
+    $('ir').onchange=e=>{const [t,n]=e.target.value.split('|'); if(t) abrirAndar(t,+n,true);};
+    desenhar();
+    const un=u&&D.unidades.find(x=>x.id===u);
+    if(un){ abrirAndar(un.torre,un.andar,false); abrirUnidade(un.id); } else inicio();
+  }
+  const dataBR=s=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||''); return m?`${m[3]}/${m[2]}/${m[1]}`:s;};
+
+  /* ---------- vistas reais (drone na altura do andar) ---------- */
+  const abrev=t=>t==='Hill Tower'?'HT':'OT';
+  const posDe=num=>String(num).split('+')[0].slice(-2);
+  function vistasDe(torre,pos,andar){
+    const V=D.vistas||{}, out=[];
+    [pos,pos+'b'].forEach(p=>{ const l=V[abrev(torre)+'-'+p]; if(!l||!l.length) return;
+      const m=l.reduce((a,b)=>Math.abs(b[0]-andar)<Math.abs(a[0]-andar)?b:a); out.push({andar:m[0],src:IMG(m[1]),mini:IMG(m[2]),nau:m[3]||null}); });
+    return out.filter(v=>v.src);
+  }
+  const legVista=(v,andar)=>v.andar===andar?`Foto real de drone na altura do ${v.andar}º andar`:`Foto real de drone na altura do ${v.andar}º andar (a mais próxima do ${andar}º)`;
+  const marcaNau=n=>n&&D.nautica?`<button type="button" class="nau" data-nau="1" style="left:${(+n[0]*100).toFixed(1)}%;top:${(+n[1]*100).toFixed(1)}%" aria-label="Ver a garagem náutica"><span>Garagem náutica e atracadouro<small>do Ocean Hill, no Rio Perequê · toque para ver</small></span><b></b><i></i></button>`:'';
+  const nomePos=(torre,pos)=>({'HT-01':'Casa Itália','HT-02':'Casa do Chef','HT-03':'Casa do Sul','OT-01':'Casa Alemã','OT-02':'Casa Brasil'})[abrev(torre)+'-'+pos]||'';
+  // fotos reais andar a andar (subida dos vídeos de planta): conjuntos por posição; a final 01 da Ocean tem mar e rio
+  const setsDaPos=(torre,pos)=>{ const k=abrev(torre)+'-'+pos; return [k,k+'b'].filter(x=>D.elevador&&D.elevador[x]); };
+  function fotoAndar(k,andar){ const l=((D.elevador||{})[k]||{}).andares||[]; if(!l.length) return null;
+    const m=l.reduce((a,b)=>Math.abs(b[0]-andar)<Math.abs(a[0]-andar)?b:a);
+    return {andar:m[0],src:IMG(m[1]),mini:IMG(m[1].replace(/\.jpg$/,'-p.jpg')),rot:D.elevador[k].rotulo}; }
+  const legAndar=(f,andar)=>f.andar===andar?`Foto real de drone na altura do ${andar}º andar`:`Foto real de drone na altura do ${f.andar}º andar (a mais próxima do ${andar}º)`;
+  function vistaDoAndar(torre,n){ // mouse sobre o andar: foto real do andar, da posição com unidade disponível (senão a final 01)
+    const us=unsDoAndar(torre,n), u=us.find(x=>x.status==='disponivel')||us[0]; if(!u) return null;
+    const k=setsDaPos(torre,posDe(u.unidade))[0]; const f=k&&fotoAndar(k,n); return f&&f.src?f:null; }
+  function vistaDoAndarPano(torre,n){ // (antigo) panorama mais próximo
+    const us=unsDoAndar(torre,n), disp=us.filter(x=>x.status==='disponivel');
+    const vs=(disp.length?disp:us).map(u=>vistasDe(torre,posDe(u.unidade),n)[0]).filter(Boolean);
+    if(!vs.length) return null;
+    const i=vs.reduce((a,b,k)=>Math.abs(vs[k].andar-n)<Math.abs(vs[a].andar-n)?k:a,0), u=(disp.length?disp:us)[i];
+    return {...vs[i],casa:nomePos(torre,posDe(u.unidade))}; }
+  // pré-carrega as miniaturas para o hover não piscar
+  setTimeout(()=>{ if(D&&D.elevador) Object.values(D.elevador).forEach(s=>s.andares.forEach(v=>{ const i=new Image(); i.src=IMG(v[1].replace(/\.jpg$/,'-p.jpg')); })); },1500);
+
+  /* ---------- fachada ---------- */
+  function andarDe(t,n){ // duplex: o andar de cima abre o de baixo
+    return t.duplex&&n===t.duplex[1]?t.duplex[0]:n; }
+  function unsDoAndar(torre,n){ return D.unidades.filter(u=>u.torre===torre&&u.andar===n); }
+  function desenhar(){
+    const im=D.imagem, tz=filtroTorre&&D.torres.find(t=>t.nome===filtroTorre);
+    const vb=tz?[tz.x0-90,tz.andares[0].y0-60,(tz.x1-tz.x0)+180,(tz.andares[tz.andares.length-1].y1-tz.andares[0].y0)+130]:[200,150,900,1640];
+    let s=`<image href="${IMG(im.src)}" x="0" y="0" width="${im.w}" height="${im.h}"/>`;
+    D.torres.forEach(t=>{
+      const fora=filtroTorre&&filtroTorre!==t.nome;
+      t.andares.forEach(a=>{
+        const n=andarDe(t,a.n), us=unsDoAndar(t.nome,n), d=us.filter(u=>u.status==='disponivel').length;
+        const ehSel=sel&&sel.torre===t.nome&&sel.andar===n;
+        s+=`<rect class="fl${d?' tem':''}${fora?' dim':''}${ehSel?' sel':''}" tabindex="${fora?-1:0}" data-t="${esc(t.nome)}" data-n="${n}" data-d="${d}" data-r="${a.n}"
+          x="${t.x0}" y="${a.y0}" width="${t.x1-t.x0}" height="${a.y1-a.y0}"><title>${a.n}º andar · ${esc(t.nome)}</title></rect>`;
+        if(d&&!fora) s+=`<circle class="mk" cx="${t.x1-9}" cy="${(a.y0+a.y1)/2}" r="5"/>`;
+        if(!fora){ const esq=t===D.torres[0], cy=(a.y0+a.y1)/2, on=ehSel?' on':'';
+          const xb=esq?t.x0-4:t.x1+4, xl=esq?t.x0-14:t.x1+14;
+          s+=`<line class="ft${on}" x1="${xb}" x2="${esq?xb-7:xb+7}" y1="${cy}" y2="${cy}"/>`+
+             `<text class="fn${on}" x="${xl}" y="${cy+5}" text-anchor="${esq?'end':'start'}">${String(a.n).padStart(2,'0')}º</text>`; }
+      });
+      s+=`<text class="tlab" x="${(t.x0+t.x1)/2}" y="${t.andares[0].y0-22}" text-anchor="middle">${esc(t.nome)}</text>`;
+    });
+    const L=D.lazer; s+=`<rect class="lz" id="lz" x="${L.x0}" y="${L.y0}" width="${L.x1-L.x0}" height="${L.y1-L.y0}" rx="8"><title>Lazer</title></rect>`;
+    const svg=$('svg'); svg.setAttribute('viewBox',vb.join(' ')); svg.innerHTML=s;
+    svg.onclick=e=>{ const r=e.target.closest('.fl'); if(r&&!r.classList.contains('dim')) return abrirAndar(r.dataset.t,+r.dataset.n,true);
+      if(e.target.id==='lz') $('secLazer').scrollIntoView({behavior:'smooth'}); };
+    svg.onkeydown=e=>{ if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('fl')){e.preventDefault(); abrirAndar(e.target.dataset.t,+e.target.dataset.n,true);} };
+    const tip=$('tip'), box=$('fach');
+    svg.onmousemove=e=>{ const r=e.target.closest('.fl'); if(!r||r.classList.contains('dim')){tip.style.opacity=0;return;}
+      const b=box.getBoundingClientRect(), d=+r.dataset.d;
+      const v=vistaDoAndar(r.dataset.t,+r.dataset.n), info=`<b>${r.dataset.r}º andar</b> · ${esc(r.dataset.t)}<br>${d?d+(d>1?' disponíveis':' disponível'):'sem unidade disponível'}`;
+      tip.classList.toggle('com-foto',!!v);
+      tip.innerHTML=v?`<img src="${v.mini}" alt=""><div class="tx">${info}<small>${esc(v.rot)} · ${esc(legAndar(v,+r.dataset.r))}</small></div>`:info;
+      const x=e.clientX-b.left, y=e.clientY-b.top, w=tip.offsetWidth, h=tip.offsetHeight;
+      tip.style.left=Math.min(Math.max(x,w/2+6),b.width-w/2-6)+'px'; tip.style.top=y+'px';
+      tip.style.transform=y<h+24?'translate(-50%,22px)':'translate(-50%,calc(-100% - 16px))'; tip.style.opacity=1; };
+    svg.onmouseleave=()=>tip.style.opacity=0;
+  }
+
+  /* ---------- painel ---------- */
+  function inicio(){
+    sel=null; desenhar();
+    const n=D.unidades.filter(u=>u.status==='disponivel').length;
+    $('pn').innerHTML=`<div class="vazio"><div class="kick">Escolha o seu andar</div><h2>${n} residências disponíveis</h2>
+      <p>Duas torres às margens do Rio Perequê: a <b>Hill Tower</b>, voltada para as montanhas, e a <b>Ocean Tower</b>, voltada para o mar.</p>
+      <ol class="passos"><li>Toque num andar da fachada. Os marcados em verde têm unidade disponível.</li>
+      <li>Escolha a unidade e veja a planta, a metragem e as suítes.</li>
+      <li>Compare as condições de pagamento e peça o preço: a mensagem chega direto no WhatsApp do ${esc(CFG.primeiro)}.</li></ol></div>`;
+  }
+  function abrirAndar(torre,n,rolar){
+    sel={torre,andar:n}; desenhar();
+    const t=D.torres.find(x=>x.nome===torre), us=unsDoAndar(torre,n);
+    const dup=t.duplex&&n===t.duplex[0];
+    $('pn').innerHTML=`<button class="voltar" id="volt">← Todas as torres</button>
+      <div class="kick">${esc(torre)} · ${esc(t.lado)}</div><h2>${dup?`Coberturas duplex · ${t.duplex[0]}º e ${t.duplex[1]}º`:`${n}º andar`}</h2>
+      <div class="uns">${us.map(u=>{ const ok=u.status==='disponivel';
+        return `<button class="un" data-u="${esc(u.id)}" ${ok?'':'disabled'}><span><b>${esc(u.unidade)}</b><small>${esc(u.casa)}${ok?` · ${esc(u.suites)} suítes · ${m2(u.area)}`:''}</small></span>
+          <span class="st ${ok?'ok':'no'}">${ok?'Disponível':'Indisponível'}</span></button>`; }).join('')}</div>
+      ${us.some(u=>u.status==='disponivel')?'':`<p class="nota">Este andar não tem unidade disponível agora. Escolha outro andar, ou peça ao ${esc(CFG.primeiro)} para avisar se alguma voltar à venda.</p>`}`;
+    $('volt').onclick=inicio;
+    $('pn').querySelector('.uns').onclick=e=>{const b=e.target.closest('.un'); if(b&&!b.disabled) abrirUnidade(b.dataset.u);};
+    if(rolar&&matchMedia('(max-width:860px)').matches) $('pn').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function abrirUnidade(id){
+    const u=D.unidades.find(x=>x.id===id); if(!u) return;
+    sel={torre:u.torre,andar:u.andar}; desenhar();
+    const casa=u.casa==='Mansão Suspensa'||u.casa==='Penthouse'?u.casa:u.casa;
+    const txt=(D.residencias||{})[u.casa]||'';
+    $('pn').innerHTML=`<button class="voltar" id="volt">← ${u.andar}º andar · ${esc(u.torre)}</button>
+      <div class="kick">${esc(u.torre)} · Unidade ${esc(u.unidade)}</div><h2>${esc(casa)}</h2>
+      <p class="desc">${esc(txt)}</p>
+      <div class="specs"><div><b>${esc(u.suites)}</b><span>suítes</span></div><div><b>${m2(u.area).replace(' m²','')}</b><span>m² privativos</span></div>
+        <div><b>${u.vagas}</b><span>vagas</span></div><div><b>${u.andar}º</b><span>andar</span></div></div>
+      ${IMG(u.planta)?`<button class="planta" id="pl" type="button" aria-label="Ampliar a planta"><img src="${IMG(u.planta)}" alt="Planta ${esc(casa)}"></button>`:''}
+      ${(()=>{ const vs=vistasDe(u.torre,posDe(u.unidade),u.andar), fs=setsDaPos(u.torre,posDe(u.unidade)).map(k=>fotoAndar(k,u.andar)).filter(f=>f&&f.src);
+        const ph=IMG((D.vistaPenthouse||{})[abrev(u.torre)+'-'+String(u.unidade).split('+')[0]]); if(ph) fs.unshift({andar:u.andar,src:ph,rot:'Vista da penthouse',oficial:1});
+        if(!vs.length&&!fs.length) return '';
+        return `<h3>A vista</h3><div class="vistas">${fs.map(f=>`<figure class="vista" data-z="${f.src}"><img src="${f.src}" alt="${esc(f.rot)}" loading="lazy"><figcaption><b>${esc(f.rot)}</b><small>${f.oficial?'Foto oficial do catálogo da incorporadora':esc(legAndar(f,u.andar))+' · vídeo oficial da incorporadora'}</small></figcaption></figure>`).join('')}${vs.map(v=>`<figure class="pano"><div class="pano-sc" tabindex="0" aria-label="Panorama: arraste para os lados"><div class="pano-in"><img src="${v.src}" alt="Panorama 180° da vista" draggable="false">${marcaNau(v.nau)}</div></div><span class="pano-dica">⟷ arraste para olhar em volta</span><figcaption><b>Panorama 180° da janela da ${esc(nomePos(u.torre,posDe(u.unidade))||u.casa)}</b><small>${esc(legVista(v,u.andar))} · foto oficial da incorporadora</small></figcaption></figure>`).join('')}
+          </div>`; })()}
+      ${(()=>{ const chave=u.casa==='Mansão Suspensa'?'Mansão Suspensa · '+u.torre:u.casa, l=((D.ambientes||{})[chave]||[]).map(IMG).filter(Boolean);
+        if(!l.length) return u.casa==='Penthouse'?`<h3>O apartamento decorado</h3><p class="nota" style="margin:0">A incorporadora ainda não divulgou imagens decoradas das coberturas duplex: o material oficial traz a planta dos dois pavimentos e a vista, acima. Peça ao ${esc(CFG.primeiro)} a apresentação completa da cobertura.</p>`:'';
+        return `<h3>O apartamento decorado</h3><p class="nota" style="margin:0 0 8px">${u.casa==='Mansão Suspensa'?'Ambientes das duas plantas que formam a mansão. ':''}Imagens ilustrativas da incorporadora, com sugestão de decoração.</p>
+          <div class="deco">${l.map((src,i)=>`<button type="button" class="${i===0||(i===l.length-1&&l.length%2===0)?'g':''}" data-z="${src}"><img src="${src}" alt="Ambiente decorado" loading="lazy"></button>`).join('')}</div>`; })()}
+      <button type="button" class="btn-elev" id="elevUni" style="margin-top:12px">Subir no elevador panorâmico com a vista da ${esc(nomePos(u.torre,posDe(u.unidade))||u.casa)}</button>
+      <h3>Condições de pagamento</h3>
+      <div class="conds" id="conds">${D.condicoes.map(c=>`<button class="cd" data-c="${c.id}" aria-pressed="${c.id===cond}">${esc(c.nome)}<small>${c.desc?`<span class="dsc">−${c.desc}%</span> · `:''}${esc(c.sub)}</small></button>`).join('')}</div>
+      <div id="sim"></div>
+      <a class="cta" id="cta" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.5-.4.4c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.7-.1 1.2z"/></svg>Solicitar o preço desta unidade</a>
+      <span class="cta2">A mensagem já vai pronta com a unidade e a condição escolhida.</span>`;
+    $('volt').onclick=()=>abrirAndar(u.torre,u.andar,false);
+    $('elevUni').onclick=()=>Elevador.abrir(abrev(u.torre)+'-'+posDe(u.unidade),u.andar);
+    const pl=$('pl'); if(pl) pl.onclick=()=>zoom(IMG(u.planta));
+    $('pn').querySelectorAll('.vista,.deco [data-z]').forEach(f=>f.onclick=()=>zoom(f.dataset.z));
+    $('pn').querySelectorAll('.pano-sc').forEach(arrastavel);
+    $('conds').onclick=e=>{const b=e.target.closest('.cd'); if(!b) return; cond=b.dataset.c; alt=false;
+      [...$('conds').children].forEach(x=>x.setAttribute('aria-pressed',x===b)); simular(u);};
+    simular(u);
+  }
+  function simular(u){
+    const c=D.condicoes.find(x=>x.id===cond)||D.condicoes[0];
+    const partes=alt&&c.alt?c.alt.partes:c.partes;
+    const pago=100-(c.desc||0);
+    $('sim').innerHTML=`${c.alt?`<div class="alt"><button class="chip" data-a="0" aria-pressed="${!alt}">${esc(c.partes[c.partes.length-1][0])}</button><button class="chip" data-a="1" aria-pressed="${alt}">${esc(c.alt.rotulo)}</button></div>`:''}
+      <div class="barra">${partes.map((p,i)=>`<span style="width:${p[1]}%;background:${CORES[i%4]}"></span>`).join('')}</div>
+      <div class="linhas">${partes.map((p,i)=>`<div class="ln"><i style="background:${CORES[i%4]}"></i><span>${esc(p[0])}</span><em>${esc(p[2])}</em><b>${pc(p[1])}</b></div>`).join('')}</div>
+      <div class="res">${c.desc?`Desconto de <b>${c.desc}%</b> sobre o valor de tabela: você paga <b>${pago}%</b> do valor. Os percentuais acima são sobre o valor já com desconto.`
+        :'Percentuais sobre o valor de tabela da unidade.'}</div>
+      <p class="nota">${esc(D.correcao)}</p>`;
+    const a=$('sim').querySelector('.alt'); if(a) a.onclick=e=>{const b=e.target.closest('[data-a]'); if(!b) return; alt=b.dataset.a==='1'; simular(u);};
+    const nomeCond=`${c.nome} (${partes.map(p=>p[0].toLowerCase()==='entrada no ato'||p[0]==='Entrada'?`${pc(p[1])} de entrada`:`${p[2]}`).join(' + ')})`;
+    const msg=`Olá, ${CFG.primeiro}! Vi a vitrine do ${D.nome} e gostaria de receber o preço da unidade ${u.unidade} da ${u.torre} `+
+      `(${u.casa} · ${u.suites} suítes · ${m2(u.area)} · ${u.andar}º andar), na condição ${nomeCond}.`;
+    $('cta').href=`https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}`;
+  }
+
+  /* ---------- panorama: arrastar com o mouse (no celular o dedo já rola) ---------- */
+  function arrastavel(el){
+    const img=el.querySelector('img'), centro=()=>{ el.scrollLeft=(el.scrollWidth-el.clientWidth)/2; };
+    (img.decode?img.decode():Promise.resolve()).then(()=>requestAnimationFrame(centro)).catch(()=>{});
+    let x0=null, s0=0;
+    el.onpointerdown=e=>{ if(e.pointerType!=='mouse') return; x0=e.clientX; s0=el.scrollLeft; el.setPointerCapture(e.pointerId); el.classList.add('arr'); };
+    el.onpointermove=e=>{ if(x0!==null) el.scrollLeft=s0-(e.clientX-x0); };
+    el.onpointerup=el.onpointercancel=()=>{ x0=null; el.classList.remove('arr'); };
+    el.onkeydown=e=>{ if(e.key==='ArrowLeft') el.scrollLeft-=80; if(e.key==='ArrowRight') el.scrollLeft+=80; };
+  }
+
+  /* ---------- elevador panorâmico ----------
+     Panoramas 180° oficiais (andares 7, 13, 19, 25, 31, 37) de uma planta. Entre duas alturas fotografadas as duas fotos se
+     misturam e a paisagem "desce" conforme sobe (sensação de subida). Acima do 37º fica a foto do 37º (dito na tela). */
+  const Elevador=(()=>{
+    let set=null, lista=[], andar=7, alvo=7, maxA=40, px=.5, raf=0, x0=null, px0=0, dicaT=0, movendo=false, modo='andar';
+    const A=$('elevA'), B=$('elevB'), cena=$('elevCena');
+    const SETS=[['OT-01','Ocean · Casa Alemã (mar)'],['OT-01b','Ocean · Casa Alemã (rio)'],['OT-02','Ocean · Casa Brasil'],['HT-01','Hill · Casa Itália'],['HT-02','Hill · Casa do Chef'],['HT-03','Hill · Casa do Sul']];
+    const panoDe=k=>k.replace(/b$/,'');
+    const torreDe=k=>k.startsWith('HT')?D.torres[0]:D.torres[1];
+    const largura=el=>{ const img=el.firstChild; return img.naturalWidth?img.naturalWidth*(el.offsetHeight/img.naturalHeight):el.offsetHeight*2.76; };
+    function escolher(k){
+      set=k;
+      lista=(modo==='andar'&&D.elevador&&D.elevador[k]?D.elevador[k].andares.map(v=>({a:v[0],src:IMG(v[1]),nau:null}))
+             :(D.vistas[panoDe(k)]||[]).map(v=>({a:v[0],src:IMG(v[1]),nau:v[3]||null}))).filter(v=>v.src).sort((x,y)=>x.a-y.a);
+      lista.forEach(v=>{const i=new Image(); i.src=v.src;});
+      const t=torreDe(k); maxA=t.andares[0].n; $('elevR').max=maxA;
+      andar=alvo=Math.min(andar,maxA);
+      $('elevBase').innerHTML=`<button class="chip modo" data-m="1">${modo==='andar'?'◐ Ver panorama 180°':'◑ Ver andar a andar'}</button>`+
+        SETS.filter(([kk])=>modo==='andar'?(D.elevador||{})[kk]:(D.vistas[kk]&&!kk.endsWith('b'))).map(([kk,r])=>`<button class="chip" data-k="${kk}" aria-pressed="${kk===k}">${esc(modo==='andar'?r:r.replace(' (mar)',''))}</button>`).join('');
+      $('elevTit').innerHTML=modo==='andar'?'Elevador panorâmico<small>Fotos reais de drone, andar a andar · vídeos oficiais da incorporadora</small>'
+        :'Elevador panorâmico<small>Panoramas 180° oficiais (a cada 6 andares) · arraste para olhar em volta</small>';
+      pintar();
+    }
+    function camadas(){
+      const l=lista; if(!l.length) return null;
+      if(andar<=l[0].a) return [l[0],l[0],0];
+      for(let i=0;i<l.length-1;i++) if(andar<=l[i+1].a) return [l[i],l[i+1],(andar-l[i].a)/(l[i+1].a-l[i].a)];
+      return [l[l.length-1],l[l.length-1],0];
+    }
+    function por(el,v,op){
+      if(el.dataset.src!==v.src){ el.dataset.src=v.src; el.firstChild.src=v.src; }
+      const x=-(largura(el)-cena.clientWidth)*px, dy=(andar-v.a)*7;   // paisagem desce ~7 px por andar subido
+      el.style.transform=`translate(${x}px,calc(-50% + ${dy}px))`; el.style.opacity=op;
+    }
+    function pintar(){
+      const c=camadas(); if(!c) return;
+      const [a,b,t]=c, e=movendo?t*t*(3-2*t):(t<.5?0:1);   // parado: só a foto mais próxima, nítida
+      B.style.transition=movendo?'none':'opacity .45s';
+      por(A,a,1); por(B,b,e);
+      const N=$('elevN'), v=e<.5?a:b, L=e<.5?A:B;   // marcação na camada da frente (acima do vidro), presa à foto dominante
+      if(N.dataset.src!==v.src){ N.dataset.src=v.src; N.innerHTML=marcaNau(v.nau); }
+      N.style.width=largura(L)+'px'; N.style.transform=L.style.transform;
+      const m=N.firstChild; if(m) m.style.opacity=movendo?.35:1;
+      const n=Math.round(andar);
+      $('elevDig').innerHTML=`${String(n).padStart(2,'0')}<small>ANDAR</small>`; $('elevR').value=n;
+      const tor=torreDe(set), na=tor.duplex&&n===tor.duplex[1]?tor.duplex[0]:n;
+      const us=D.unidades.filter(u=>u.torre===tor.nome&&u.andar===na&&u.status==='disponivel');
+      const fa=e<.5?a.a:b.a, nome=modo==='andar'?'Foto real de drone':'Panorama 180° oficial';
+      const nota=fa===n?`${nome} na altura deste andar.`:`${nome} do ${fa}º andar, a mais próxima${modo==='andar'?'':' (há panoramas a cada 6 andares)'}.`;
+      $('elevInfo').innerHTML=`<b>${n}º andar · ${esc(tor.nome)}</b> · ${us.length?us.length+(us.length>1?' unidades disponíveis':' unidade disponível'):'sem unidade disponível'}
+        <small>${nota}</small>${us.length?`<button type="button" id="elevVer">Ver as unidades do ${n}º</button>`:''}`;
+      const vb=$('elevVer'); if(vb) vb.onclick=()=>{ fechar(); abrirAndar(tor.nome,na,true); };
+    }
+    function animar(){ cancelAnimationFrame(raf);
+      movendo=true; const passo=()=>{ const d=alvo-andar; if(Math.abs(d)<.01){ andar=alvo; movendo=false; pintar(); return; }
+        andar+=Math.sign(d)*Math.min(Math.abs(d),Math.max(.04,Math.min(.3,Math.abs(d)*.07))); pintar(); raf=requestAnimationFrame(passo); };
+      raf=requestAnimationFrame(passo); }
+    const esconderDica=()=>{ clearTimeout(dicaT); $('elevDica').style.opacity=0; };
+    const ir=n=>{ alvo=Math.max(7,Math.min(maxA,n)); animar(); esconderDica(); };
+    function abrir(k,n){
+      if(!D.vistas) return;
+      andar=alvo=Math.max(7,n||7); px=.5; $('elev').hidden=false; document.body.style.overflow='hidden';
+      [A,B].forEach(el=>el.firstChild.onload=()=>pintar());
+      modo=D.elevador?'andar':'pano'; escolher((modo==='andar'?(D.elevador||{})[k]:D.vistas[k])?k:'OT-01');
+      $('elevDica').style.opacity=1; clearTimeout(dicaT); dicaT=setTimeout(esconderDica,4500);
+    }
+    function fechar(){ cancelAnimationFrame(raf); $('elev').hidden=true; document.body.style.overflow=''; }
+    $('elevX').onclick=fechar;
+    $('elevUp').onclick=()=>ir(Math.round(alvo)+1); $('elevDn').onclick=()=>ir(Math.round(alvo)-1);
+    $('elevTopo').onclick=()=>ir(alvo>=maxA?7:maxA);
+    $('elevR').oninput=e=>ir(+e.target.value);
+    $('elevBase').onclick=e=>{ if(e.target.closest('[data-m]')){ modo=modo==='andar'?'pano':'andar'; px=.5; escolher(modo==='pano'?panoDe(set):set); return; }
+      const b=e.target.closest('[data-k]'); if(b) escolher(b.dataset.k); };
+    $('elev').addEventListener('wheel',e=>{ e.preventDefault(); ir(Math.round(alvo)+(e.deltaY<0?1:-1)); },{passive:false});
+    cena.onpointerdown=e=>{ x0=e.clientX; px0=px; cena.setPointerCapture(e.pointerId); cena.classList.add('arr'); esconderDica(); };
+    cena.onpointermove=e=>{ if(x0===null) return; px=Math.max(0,Math.min(1,px0-(e.clientX-x0)/Math.max(1,largura(A)-cena.clientWidth))); pintar(); };
+    cena.onpointerup=cena.onpointercancel=()=>{ x0=null; cena.classList.remove('arr'); };
+    addEventListener('keydown',e=>{ if($('elev').hidden) return;
+      if(e.key==='Escape') fechar();
+      if(e.key==='ArrowUp'){e.preventDefault(); $('elevUp').click();} if(e.key==='ArrowDown'){e.preventDefault(); $('elevDn').click();}
+      if(e.key==='ArrowLeft'){px=Math.max(0,px-.05); pintar();} if(e.key==='ArrowRight'){px=Math.min(1,px+.05); pintar();} });
+    addEventListener('resize',()=>{ if(!$('elev').hidden) pintar(); });
+    return {abrir};
+  })();
+  $('abrirElev').onclick=()=>Elevador.abrir(sel?abrev(sel.torre)+'-01':'OT-01', sel?sel.andar:7);
+
+  /* ---------- janela da garagem náutica (aberta pelo pino) ---------- */
+  let nIdx=0;
+  function nauMostrar(){ const f=(D.nautica.fotos||[]).map(IMG).filter(Boolean); if(!f.length) return;
+    nIdx=(nIdx+f.length)%f.length; $('nImg').src=f[nIdx]; $('nPts').innerHTML=f.map((_,i)=>`<i class="${i===nIdx?'on':''}"></i>`).join('');
+    $('nAnt').hidden=$('nProx').hidden=f.length<2; }
+  function nauAbrir(){ if(!D.nautica) return; nIdx=0; $('nTxt').textContent=D.nautica.texto||''; $('nNota').textContent=D.nautica.nota||''; nauMostrar(); $('nmod').hidden=false; }
+  $('nAnt').onclick=()=>{nIdx--; nauMostrar();}; $('nProx').onclick=()=>{nIdx++; nauMostrar();};
+  $('nmodX').onclick=()=>{$('nmod').hidden=true;}; $('nmod').onclick=e=>{ if(e.target.id==='nmod') $('nmod').hidden=true; };
+  // um clique no pino (no elevador ou no panorama da ficha) abre a janela; arrastar não abre
+  document.addEventListener('click',e=>{ const b=e.target.closest('[data-nau]'); if(b){ e.preventDefault(); e.stopPropagation(); nauAbrir(); } },true);
+  ['pointerdown'].forEach(ev=>document.addEventListener(ev,e=>{ if(e.target.closest('[data-nau]')) e.stopPropagation(); },true));
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('nmod').hidden){ e.stopImmediatePropagation(); $('nmod').hidden=true; } },true);
+
+  /* ---------- zoom ---------- */
+  function zoom(src){ if(!IMG(src)) return; $('modImg').src=src; $('mod').hidden=false; }
+  $('modX').onclick=()=>{$('mod').hidden=true;}; $('mod').onclick=e=>{ if(e.target.id==='mod') $('mod').hidden=true; };
+  addEventListener('keydown',e=>{ if(e.key==='Escape') $('mod').hidden=true; });
+})();
+</script>
+</body>
+</html>
