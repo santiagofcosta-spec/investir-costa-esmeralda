@@ -297,7 +297,9 @@ footer b{color:var(--ink)}
   const brl=v=>(+v).toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
   const pc=v=>(+v).toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';
   const CORES=['#D4AF37','#34D399','#60A5FA','#E07A5F'];
-  let D, filtroTorre='', sel=null, cond='c16', alt=false;
+  /* &c=<condição> (22/11/2026): o link com preço já abre na condição que o cliente pediu; &c=agro_a = variante (ex.: Agro anuais). */
+  const C0=(new URLSearchParams(location.search).get('c')||'').match(/^([a-z0-9]{1,12})(_a)?$/);
+  let D, filtroTorre='', sel=null, cond=C0?C0[1]:'c16', alt=!!(C0&&C0[2]);
 
   /* Preço por link (opção b): vitrine.html?e=<emp>&u=<unidade>&cor=<corretor>#k=<chave da unidade>.
      A chave fica depois do # (não vai ao servidor) e só abre o preço DESSA unidade (dados/vitrine-<emp>-precos.json).
@@ -326,6 +328,7 @@ footer b{color:var(--ink)}
     .catch(()=>{ $('tit').textContent='Vitrine indisponível'; });
 
   function iniciar(){
+    { const c=D.condicoes.find(x=>x.id===cond); if(!c){ cond='c16'; alt=false; } else if(!c.alt) alt=false; }
     document.title=`${D.nome} · Vitrine`;
     $('kInc').textContent=D.incorporadora;
     $('tit').innerHTML=esc(D.nome).replace(/(\S+)$/,'<i>$1</i>');

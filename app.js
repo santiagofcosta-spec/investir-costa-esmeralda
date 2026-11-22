@@ -981,13 +981,21 @@ function renderUnidade(){
   ]);
 }
 /* Link da vitrine com preço (22/11/2026): só a unidade escolhida abre o preço; o WhatsApp da vitrine vira o de quem gerou. */
+/* Condições da vitrine (dados/vitrine-<id>.json) para o link já abrir na condição pedida pelo cliente (&c=). */
+const VIT_CONDS={};
+function condsVitrine(id){
+  return VIT_CONDS[id]||(VIT_CONDS[id]=fetch(`dados/vitrine-${id}.json`,{cache:'no-store'}).then(r=>r.json()).then(d=>{
+    const rot=(nome,ps)=>`${nome}: ${ps[0][1]}% ${L('de entrada','de anticipo')} + `+ps.slice(1).map(p=>`${p[2]} ${String(p[0]).toLowerCase()}`).join(' + ');
+    return (d.condicoes||[]).flatMap(c=>[[c.id,rot(c.nome,c.partes)],...(c.alt?[[c.id+'_a',rot(c.nome,c.alt.partes)]]:[])]);
+  }).catch(()=>{ delete VIT_CONDS[id]; return []; }));
+}
 const idVitrine=u=>(u.torre==='Hill Tower'?'HT':'OT')+'-'+u.unidade;
-async function linkVitrine(e,u){
+async function linkVitrine(e,u,cond){
   const uid=idVitrine(u);
   const sig=new Uint8Array(await crypto.subtle.sign('HMAC',CHAVE_VIT,utf8(`vitrine-link:${e.id}:${uid}`)));
   const k=btoa(String.fromCharCode(...sig)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   const base=location.href.replace(/[?#].*$/,'').replace(/[^/]*$/,'');
-  return `${base}vitrine.html?e=${encodeURIComponent(e.id)}&u=${encodeURIComponent(uid)}${USUARIO?'&cor='+encodeURIComponent(USUARIO.id):''}#k=${k}`;
+  return `${base}vitrine.html?e=${encodeURIComponent(e.id)}&u=${encodeURIComponent(uid)}${cond?'&c='+encodeURIComponent(cond):''}${USUARIO?'&cor='+encodeURIComponent(USUARIO.id):''}#k=${k}`;
 }
 function renderVitrineLink(e,u){
   const box=$('cUniVit'); if(!box) return;
@@ -996,15 +1004,21 @@ function renderVitrineLink(e,u){
   box.innerHTML=`<div class="ph" style="margin-top:14px"><h3 style="margin:0">${L('Link da vitrine com preço','Enlace de la vitrina con precio')}</h3></div>
     <p class="note">${L('O cliente abre a vitrine direto nesta unidade, já com o valor de tabela e o simulador em reais. O link só mostra o preço desta unidade; as outras continuam sem preço. O botão de WhatsApp da vitrine chama você.','El cliente abre la vitrina directo en esta unidad, con el precio y el simulador en reales. El enlace solo muestra el precio de esta unidad. El botón de WhatsApp lo llama a usted.')}</p>
     <div class="actions"><a class="btn" href="vitrine.html?e=${encodeURIComponent(e.id)}${USUARIO?'&cor='+encodeURIComponent(USUARIO.id):''}" target="_blank" rel="noopener">${L('Abrir a vitrine (sem preço)','Abrir la vitrina (sin precio)')}</a>
-      <button class="btn" type="button" id="btnVitGerar">🔗 ${L('Gerar link com preço','Generar enlace con precio')}</button></div>
+      </div>
+    <div class="f2" style="margin-top:8px"><label for="vitCond">${L('Abrir na condição','Abrir en la condición')}</label><div class="in"><select id="vitCond"><option value="">${L('Carregando…','Cargando…')}</option></select></div></div>
+    <div class="actions"><button class="btn" type="button" id="btnVitGerar">🔗 ${L('Gerar link com preço','Generar enlace con precio')}</button></div>
     <div id="vitOut" hidden style="margin-top:8px"><input id="vitUrl" readonly style="width:100%;font-size:12px" onclick="this.select()">
       <div class="actions" style="margin-top:6px"><button class="btn" type="button" id="btnVitCopiar">${L('Copiar','Copiar')}</button>
       <a class="btn" id="btnVitWa" target="_blank" rel="noopener">${L('Enviar no WhatsApp','Enviar por WhatsApp')}</a>
       <a class="btn" id="btnVitAbrir" target="_blank" rel="noopener">${L('Abrir','Abrir')}</a></div></div>`;
+  condsVitrine(e.id).then(cs=>{ const s=$('vitCond'); if(!s) return;
+    s.innerHTML=cs.length?cs.map(([v,r])=>`<option value="${v}"${v==='c16'?' selected':''}>${r}</option>`).join(''):`<option value="">${L('Padrão da vitrine','Estándar de la vitrina')}</option>`;
+    s.onchange=()=>{ $('vitOut').hidden=true; }; });
   $('btnVitGerar').onclick=async()=>{ try{
-      const url=await linkVitrine(e,u), nome=String(e.nome||'').replace(/&amp;/g,'&');
+      const sc=$('vitCond'), cond=sc?sc.value:'', cRot=cond&&sc.selectedOptions[0]?sc.selectedOptions[0].textContent:'';
+      const url=await linkVitrine(e,u,cond), nome=String(e.nome||'').replace(/&amp;/g,'&');
       $('vitUrl').value=url; $('btnVitAbrir').href=url; $('vitOut').hidden=false;
-      $('btnVitWa').href='https://wa.me/?text='+encodeURIComponent(L(`Segue a unidade ${u.unidade} do ${nome} com o valor e as condições: ${url}`,`Le envío la unidad ${u.unidade} de ${nome} con el precio y las condiciones: ${url}`));
+      $('btnVitWa').href='https://wa.me/?text='+encodeURIComponent(L(`Segue a unidade ${u.unidade} do ${nome} com o valor${cRot?` na condição ${cRot}`:' e as condições'}: ${url}`,`Le envío la unidad ${u.unidade} de ${nome} con el precio${cRot?` en la condición ${cRot}`:' y las condiciones'}: ${url}`));
     }catch{ $('vitOut').hidden=false; $('vitUrl').value=L('Não consegui gerar o link. Saia e entre de novo na Área restrita.','No pude generar el enlace. Salga y vuelva a entrar.'); } };
   $('btnVitCopiar').onclick=async()=>{ try{ await navigator.clipboard.writeText($('vitUrl').value); $('btnVitCopiar').textContent=L('Copiado ✓','Copiado ✓'); }catch{ $('vitUrl').select(); } };
 }
