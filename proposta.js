@@ -83,6 +83,10 @@
         <div class="f2"><label for="prBase">${L('Proposta inicial','Propuesta inicial')}</label><div class="in"><select id="prBase">${bases.map(k=>`<option value="${k}"${k===P.base?' selected':''}>${c[k].nome||k} · ${brl(metricasDe(copia(c[k])).total)}</option>`).join('')}</select></div></div>
         <div class="f2"><label for="prVal">${L('Válida até','Válida hasta')}</label><div class="in"><input id="prVal" type="date" value="${esc(P.validade)}"></div></div>
       </div>
+      <div class="prop-soja"><label><input id="prSojaOn" type="checkbox"${P.soja.on?' checked':''}> 🌱 ${L('Mostrar também em sacas de soja (cliente do agro)','Mostrar también en sacas de soja (cliente del agro)')}</label>
+        <div class="f2"><label for="prSojaCid">${L('Cidade','Ciudad')}</label><div class="in"><input id="prSojaCid" type="text" maxlength="40" value="${esc(P.soja.cidade)}" placeholder="Sorriso/MT" style="text-align:left"></div></div>
+        <div class="f2"><label for="prSojaLiq">${L('Saca líquida','Saca neta')}</label><div class="in"><span>R$</span><input id="prSojaLiq" type="text" inputmode="decimal" value="${P.soja.liq?P.soja.liq.toLocaleString('pt-BR',{minimumFractionDigits:2}):''}"></div></div>
+        <p class="note">${L('Escolha a cidade do cliente na aba Agro antes de abrir a proposta: o preço vem de lá, já sem Fethab, Funrural e frete. Só para referência; o pagamento continua em reais.','Elija la ciudad del cliente en la pestaña Agro antes de abrir la propuesta: el precio viene de allí, ya sin Fethab, Funrural y flete. Solo como referencia; el pago sigue en reales.')}</p></div>
       <div class="prop-cols">
         <div class="prop-ini"><h3 class="av-sub">${L('Proposta inicial (automática)','Propuesta inicial (automática)')}</h3>
           <ul class="prop-res">${resumo(P.ini).map(([k,v])=>`<li><span>${k}</span><b>${v}</b></li>`).join('')}</ul>
@@ -109,6 +113,9 @@
     box.querySelectorAll('.prop-aj input').forEach(i=>i.addEventListener('input',ler));
     box.querySelector('#prCliente').addEventListener('input',ev=>{P.cliente=ev.target.value;});
     box.querySelector('#prVal').addEventListener('input',ev=>{P.validade=ev.target.value;});
+    box.querySelector('#prSojaOn').addEventListener('change',ev=>{P.soja.on=ev.target.checked;});
+    box.querySelector('#prSojaCid').addEventListener('input',ev=>{P.soja.cidade=ev.target.value.trim();});
+    box.querySelector('#prSojaLiq').addEventListener('input',ev=>{P.soja.liq=r2(lerNum(ev.target.value));});
     box.querySelector('#prBase').addEventListener('change',ev=>{abrir(ev.target.value,P.u);});
     box.querySelector('#prUni').addEventListener('change',ev=>{abrir(P.base,P.e.unidades[+ev.target.value]);});
     box.querySelector('#prReset').addEventListener('click',()=>abrir(P.base,P.u));
@@ -149,7 +156,9 @@
     const e=TAB.empreendimentos.find(x=>x.id===cEmp), c=conds(e,u); if(!c) return;
     if(!c[base]) base=c.fluxo?'fluxo':Object.keys(c)[0];
     const ant=P;
-    P={e,u,base,ini:copia(c[base]),aj:copia(c[base]),cliente:ant?.cliente||'',validade:ant?.validade||e.validade||''};
+    // soja: começa desligada; cidade e preço líquido vêm da aba Agro (window.SOJA_REF, app.js) e podem ser editados
+    const sr=window.SOJA_REF, soja=ant?.soja||{on:false,cidade:sr?`${sr.cidade}/${sr.uf}`:'',liq:sr?Math.round(sr.liq*100)/100:0,data:sr?.data||''};
+    P={e,u,base,ini:copia(c[base]),aj:copia(c[base]),cliente:ant?.cliente||'',validade:ant?.validade||e.validade||'',soja};
     box.hidden=false; montar();
   }
 
@@ -246,6 +255,20 @@
     if(b) out.push({v:b[1].v,nome:b[0],tipo:'bairro',nota:L(`Média do m² de apartamentos à venda em ${b[0]} (${cid[0]}): ${brl(b[1].v)}/m² (${VB.fonte.pt}, ${b[1].n} anúncios).`,`Promedio del m² de departamentos en venta en ${b[0]} (${cid[0]}): ${brl(b[1].v)}/m² (${VB.fonte.es}, ${b[1].n} anuncios).`)});
     return out;
   }
+  /* Cliente do agro (22/11/2026, pedido do Santiago): o mesmo fluxo em sacas de soja, só como referência.
+     Preço líquido da cidade escolhida na aba Agro (Grão Direto menos Fethab, Funrural e frete); o pagamento é em reais. */
+  function caixaSoja(a,m){
+    const S=P.soja; if(!S||!S.on||!(S.liq>0)) return '';
+    const sc=v=>Math.ceil(v/S.liq).toLocaleString('pt-BR'), nE=Math.max(1,a.entradaVezes||1), lin=[];
+    if(a.entrada) lin.push(nE>1?L(`Entrada: ${nE} × ${sc(a.entrada/nE)} sc`,`Anticipo: ${nE} × ${sc(a.entrada/nE)} sc`):L(`Entrada: ${sc(a.entrada)} sc`,`Anticipo: ${sc(a.entrada)} sc`));
+    if(a.mensais.n&&a.mensais.valor) lin.push(L(`Mensais: ${a.mensais.n} × ${sc(a.mensais.valor)} sc`,`Cuotas: ${a.mensais.n} × ${sc(a.mensais.valor)} sc`));
+    if(a.baloes.n&&a.baloes.valor) lin.push(L(`Balões: ${a.baloes.n} × ${sc(a.baloes.valor)} sc`,`Refuerzos: ${a.baloes.n} × ${sc(a.baloes.valor)} sc`));
+    if(a.unico.valor) lin.push(L(`Saldo: ${sc(a.unico.valor)} sc`,`Saldo: ${sc(a.unico.valor)} sc`));
+    const dt=/^\d{4}-\d{2}-\d{2}$/.test(S.data||'')?S.data.split('-').reverse().join('/'):'';
+    return `<div class="pp-soja"><div class="pp-soja-top"><span>🌱 ${L('Em sacas de soja','En sacas de soja')}${S.cidade?` · ${esc(S.cidade)}`:''}</span><b>${sc(m.total)} ${L('sacas','sacas')}</b></div>
+      ${lin.length>1?`<p>${lin.join(' · ')}</p>`:''}
+      <small>${L(`Só para referência: o pagamento é em reais. Conversão pelo preço líquido de hoje, ${brl2(S.liq)} por saca de 60 kg${S.cidade?` em ${esc(S.cidade)}`:''} (Grão Direto${dt?`, ${dt}`:''}, já sem Fethab, Funrural e frete).`,`Solo como referencia: el pago es en reales. Conversión al precio neto de hoy, ${brl2(S.liq)} por saca de 60 kg${S.cidade?` en ${esc(S.cidade)}`:''} (Grão Direto${dt?`, ${dt}`:''}, ya sin Fethab, Funrural y flete).`)}</small></div>`;
+  }
   function caixaDestaque(e,u,m){
     const m2u=u.area?m.total/u.area:null, bases=baseM2(e);
     let alvo=null, ab=null;
@@ -255,7 +278,12 @@
     // condição especial: marcada na UNIDADE (ex.: unidade promocional do Monaco, fora da tabela) ou no empreendimento inteiro
     const porUnidade=u.condicaoEspecial!=null, especial=u.condicaoEspecial??e.condicaoEspecial??!!e.validade;   // sem a marcação: condição com prazo de validade (ex.: Beni) conta como especial
     // unidade promocional: compara com a unidade de MESMA metragem mais barata da tabela da construtora (mesmo prédio)
-    const irma=porUnidade&&especial?e.unidades.filter(x=>x!==u&&!x.condicaoEspecial&&x.area===u.area&&x.status!=='vendido'&&x.valor>m.total).sort((a,b)=>a.valor-b.valor)[0]:null;
+    // ou, quando a unidade traz o preço de tabela dela mesma (u.valorTabela, ex.: unidade de permutante do Hub 240), compara com ele
+    const irma=porUnidade&&especial?(+u.valorTabela>m.total?{valor:+u.valorTabela,propria:true}:e.unidades.filter(x=>x!==u&&!x.condicaoEspecial&&x.area===u.area&&x.status!=='vendido'&&x.valor>m.total).sort((a,b)=>a.valor-b.valor)[0]):null;
+    // por que a condição existe (ex.: 'permutante'); sem o campo, texto de pré-lançamento
+    const perm=(u.motivoCondicao||e.motivoCondicao)==='permutante';
+    // permutante: mostra também a média MAIOR (bairro, anúncios) quando ela dá um desconto bem maior que a conservadora
+    const maior=perm&&m2u&&bases.length>1?bases.reduce((a,b)=>(b.v>a.v?b:a)):null;
     if(especial&&(ab>0.03||irma)){
       const media=ab>0.03?alvo.v*u.area:0, eco=media-m.total;
       // nº de unidades na condição: no empreendimento inteiro, conta as unidades; numa unidade promocional, só se a tabela informar (unidadesNaCondicao)
@@ -263,6 +291,11 @@
       const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade||'')?P.validade.split('-').reverse().join('/'):'';
       if(irma){
         const dif=irma.valor-m.total;
+        if(irma.propria) return `<div class="pp-vip"><div class="selo">★ ${L('OPORTUNIDADE','OPORTUNIDAD')} ★</div>
+        <h3>${L(`${pct(dif/irma.valor,0)} abaixo da tabela da construtora`,`${pct(dif/irma.valor,0)} por debajo de la lista de la constructora`)}</h3>
+        <div class="vip-nums"><div><span>${L('Tabela da construtora','Lista de la constructora')}</span><s>${brl(irma.valor)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Você economiza','Usted ahorra')}</span><b>${brl(dif)}</b><em>${pct(dif/irma.valor,0)}</em></div></div>
+        <p class="vip-txt">${perm?L(`<b>Unidade de permutante</b>: o dono do terreno recebeu este apartamento na troca pelo terreno e vende abaixo da tabela da construtora`,`<b>Unidad de permutante</b>: el dueño del terreno recibió este departamento a cambio del terreno y lo vende por debajo de la lista de la constructora`):L('Condição especial, fora da tabela de vendas','Condición especial, fuera de la lista de ventas')}${nUn?L(`: <b>${nUn===1?'a única unidade disponível nesta condição':`apenas ${nUn} unidades`}</b>`,`: <b>${nUn===1?'la única unidad disponible en esta condición':`solo ${nUn} unidades`}</b>`):''}${val?L(`, válida até <b>${val}</b>`,`, válida hasta <b>${val}</b>`):''}.${ab>0.03?L(` E sai a ${brl(m2u)}/m², <b>${pct(ab,0)} abaixo da média ${deQuem(alvo)}</b>.`,` Y sale a ${brl(m2u)}/m², <b>${pct(ab,0)} por debajo del promedio ${deQuem(alvo)}</b>.`):''} ${L('Quem entra antes do mercado é quem leva a valorização.','Quien entra antes que el mercado es quien se lleva la valorización.')}</p>
+        <small>${L('Preço de tabela da construtora para esta unidade na data da proposta.','Precio de lista de la constructora para esta unidad en la fecha de la propuesta.')} ${ab>0.03?nota+' ':''}${L('As médias reúnem todos os padrões e localizações; são referência, não avaliação.','Los promedios reúnen todos los estándares y ubicaciones; son referencia, no tasación.')}</small></div>`;
         return `<div class="pp-vip"><div class="selo">★ ${L('UNIDADE PROMOCIONAL','UNIDAD PROMOCIONAL')} ★</div>
         <h3>${L(`Mesma planta, mesmo prédio: ${brl(dif)} abaixo da tabela da construtora`,`Misma planta, mismo edificio: ${brl(dif)} por debajo de la lista de la constructora`)}</h3>
         <div class="vip-nums"><div><span>${L(`Tabela da construtora (${u.area.toLocaleString('pt-BR')} m²)`,`Lista de la constructora (${u.area.toLocaleString('pt-BR')} m²)`)}</span><s>${brl(irma.valor)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Você economiza','Usted ahorra')}</span><b>${brl(dif)}</b><em>${pct(dif/irma.valor,0)}</em></div></div>
@@ -272,7 +305,7 @@
       return `<div class="pp-vip"><div class="selo">★ ${L('OPORTUNIDADE VIP','OPORTUNIDAD VIP')} ★</div>
         <h3>${L(`Você entra por ${brl(m2u)}/m²: ${pct(ab,0)} abaixo da média ${deQuem(alvo)}`,`Usted entra a ${brl(m2u)}/m²: ${pct(ab,0)} por debajo del promedio ${deQuem(alvo)}`)}</h3>
         <div class="vip-nums"><div><span>${L('Na média','Al promedio')}</span><s>${brl(media)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Você começa ganhando','Usted empieza ganando')}</span><b>${brl(eco)}</b></div></div>
-        <p class="vip-txt">${L(`Condição de pré-lançamento reservada para poucos investidores${nUn?`: <b>${nUn===1?'apenas 1 unidade':`apenas ${nUn} unidades`}</b> nesta condição`:''}${val?`, válida até <b>${val}</b>`:''}. Os melhores negócios da cidade não chegam aos portais: ficam com quem decide primeiro. Quem entra antes do mercado é quem leva a valorização.`,`Condición de prelanzamiento reservada para pocos inversores${nUn?`: <b>${nUn===1?'solo 1 unidad':`solo ${nUn} unidades`}</b> en esta condición`:''}${val?`, válida hasta <b>${val}</b>`:''}. Los mejores negocios de la ciudad no llegan a los portales: quedan para quien decide primero. Quien entra antes que el mercado es quien se lleva la valorización.`)}</p>
+        <p class="vip-txt">${perm?L(`<b>Unidade de permutante</b>, vendida pelo dono do terreno fora da tabela da construtora${nUn===1?': <b>a única unidade disponível nesta condição</b>':''}.${maior?` Comparando com os anúncios do bairro (${brl(maior.v)}/m² em ${maior.nome}), o valor fica <b>${pct(1-m2u/maior.v,0)} abaixo</b>: a unidade valeria cerca de ${brl(maior.v*u.area)}.`:''} Os melhores negócios da cidade não chegam aos portais: ficam com quem decide primeiro. Quem entra antes do mercado é quem leva a valorização.`,`<b>Unidad de permutante</b>, vendida por el dueño del terreno fuera de la lista de la constructora${nUn===1?': <b>la única unidad disponible en esta condición</b>':''}. Los mejores negocios de la ciudad no llegan a los portales: quedan para quien decide primero. Quien entra antes que el mercado es quien se lleva la valorización.`):L(`Condição de pré-lançamento reservada para poucos investidores${nUn?`: <b>${nUn===1?'apenas 1 unidade':`apenas ${nUn} unidades`}</b> nesta condição`:''}${val?`, válida até <b>${val}</b>`:''}. Os melhores negócios da cidade não chegam aos portais: ficam com quem decide primeiro. Quem entra antes do mercado é quem leva a valorização.`,`Condición de prelanzamiento reservada para pocos inversores${nUn?`: <b>${nUn===1?'solo 1 unidad':`solo ${nUn} unidades`}</b> en esta condición`:''}${val?`, válida hasta <b>${val}</b>`:''}. Los mejores negocios de la ciudad no llegan a los portales: quedan para quien decide primero. Quien entra antes que el mercado es quien se lleva la valorización.`)}</p>
         <small>${nota} ${L('As médias reúnem todos os padrões e localizações; são referência, não avaliação.','Los promedios reúnen todos los estándares y ubicaciones; son referencia, no tasación.')}</small></div>`;
     }
     if(ab>0.10){
@@ -555,6 +588,7 @@
           ${u.destaque?`<p class="pp-inc">📍 ${u.destaque}</p>`:''}
           <div class="pp-total"><span>${L('Valor do lote','Valor del lote')}</span><b>${brlc(u.valor)}</b></div>
           <table class="pp-tab"><tbody>${resumo(a).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
+          ${caixaSoja(a,metricas(a))}
           <p class="pp-obs">${a.correcao?(anual(a.correcao)?L(`As parcelas não são fixas: a cada 12 meses são reajustadas pelo ${esc(a.correcao)}.`,`Las cuotas no son fijas: cada 12 meses se reajustan por el ${esc(a.correcao)}.`):L(`Parcelas corrigidas pelo ${esc(a.correcao)}.`,`Cuotas ajustadas por ${esc(a.correcao)}.`)):''} ${a.amortizacao?esc(a.amortizacao)+'.':''} ${val?L(`<b>Proposta válida até ${val}</b>, sujeita à disponibilidade do lote e à aprovação da loteadora.`,`<b>Propuesta válida hasta ${val}</b>, sujeta a disponibilidad del lote y aprobación del desarrollador.`):L('Sujeita à disponibilidade do lote e à aprovação da loteadora.','Sujeta a disponibilidad del lote y aprobación del desarrollador.')}</p>
         </div></div>
       ${pl?`<div class="pp-planta"><h2>${L('Onde fica o seu lote','Dónde está su lote')}</h2><img class="larga" src="${pl}" alt=""><p class="pp-obs">${L('Ilustração da loteadora. Medidas e confrontações oficiais estão na planta do loteamento e na matrícula do lote.','Ilustración del desarrollador. Medidas oficiales en el plano del loteo y en la matrícula del lote.')}</p></div>`:''}
@@ -582,6 +616,7 @@
         <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo+1} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
       </div>
       ${caixa}
+      ${PRISMA(e)?caixaSoja(a,m):''}
       <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
       ${calendario(e,a,m)}
       <p class="pp-obs">${anual(a.correcao)?L(`<b>As parcelas não são fixas até o final:</b> a cada 12 meses de contrato elas são reajustadas pelo IPCA acumulado no período. Os valores acima estimam esse reajuste com o IPCA dos últimos 12 meses (${pct(taxaCorr(a.correcao),1)} ao ano); o valor real depende do IPCA de cada ano.`,`<b>Las cuotas no son fijas hasta el final:</b> cada 12 meses de contrato se reajustan por el IPCA acumulado. Los valores estiman ese reajuste con el IPCA de los últimos 12 meses (${pct(taxaCorr(a.correcao),1)} anual).`):a.correcao?L(`Parcelas corrigidas pelo ${esc(a.correcao)}; a última coluna estima a correção pelo ${nomeIdx(a.correcao)} (${pct(taxaCorr(a.correcao),1)} ao ano).`,`Cuotas ajustadas por ${esc(a.correcao)}; la última columna estima el ajuste con el ${nomeIdx(a.correcao)} (${pct(taxaCorr(a.correcao),1)} anual).`):''} ${a.juros?L(`As parcelas já incluem os juros do parcelamento (${pj(a.juros)} ao mês). Detalhes na próxima página.`,`Las cuotas ya incluyen el interés de la financiación (${pj(a.juros)} mensual). Detalles en la página siguiente.`):''}</p>
@@ -877,6 +912,7 @@
         <div><span>${bal&&!a.mensais.n?L('Semestrais','Semestrales'):L('Parcela mensal','Cuota mensual')}</span><b>${a.mensais.n?brlc(a.mensais.valor):bal?brlc(bal.valor):'—'}</b><small>${a.mensais.n?`${a.mensais.n}× · ${L('1ª em','1ª en')} ${mesRot(a.mensais.inicio)}`:bal?`${bal.n}× · ${L('a cada','cada')} ${bal.cada} ${L('meses','meses')}`:''}</small></div>
         <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo+1} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
       </div>
+      ${caixaSoja(a,m)}
       ${bal&&a.mensais.n?`<p class="pp-lead">${L(`Mais ${bal.n} reforços de ${brlc(bal.valor)}, a cada ${bal.cada} meses (o 1º em ${mesRot(bal.inicio)}).`,`Más ${bal.n} refuerzos de ${brlc(bal.valor)}, cada ${bal.cada} meses (el 1º en ${mesRot(bal.inicio)}).`)}</p>`:''}
       <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
       ${calendario(e,a,m)}
@@ -961,6 +997,7 @@
           ${e.incorporacao?`<p class="pp-inc">${L('Registro de Incorporação nº','Registro de Incorporación nº')} ${e.incorporacao}</p>`:''}
           <div class="pp-total"><span>${L('Valor total','Valor total')}</span><b>${brl(m.total)}</b></div>
           <table class="pp-tab"><tbody>${resumo(a).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
+          ${caixaSoja(a,m)}
           <p class="pp-obs">${a.correcao?L(`Parcelas corrigidas mensalmente pelo ${esc(a.correcao)}.`,`Cuotas ajustadas mensualmente por ${esc(a.correcao)}.`):''} ${val?L(`<b>Proposta válida até ${val}</b>, sujeita à disponibilidade da unidade e à aprovação da incorporadora.`,`<b>Propuesta válida hasta ${val}</b>, sujeta a disponibilidad de la unidad y aprobación del desarrollador.`):L('Sujeita à disponibilidade da unidade e à aprovação da incorporadora.','Sujeta a disponibilidad de la unidad y aprobación del desarrollador.')}</p>
         </div></div>
       ${pl?`<div class="pp-planta"><h2>${L('Planta','Planta')} · ${u.area?u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})+' m²':''}</h2><img src="${pl}" alt=""></div>`:''}

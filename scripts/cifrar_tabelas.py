@@ -30,6 +30,10 @@ RAIZ = Path(__file__).resolve().parent.parent
 PRIV = RAIZ.parent / "costa-esmeralda-docs" / "privado"
 PRIVADO = PRIV / "tabelas.json"
 CHAVE = PRIV / "chave-tabelas.bin"
+# empreendimentos com "exclusivo": true (22/11/2026, Hub 240 só do Santiago): cifrados à parte com esta 2ª chave,
+# que só é embrulhada para quem tem "eu": true em corretores.json (opção 4 do CADASTRAR-CORRETORES). Os outros
+# corretores nem recebem a chave: o bloco exclusivo fica ilegível para eles.
+CHAVE_X = PRIV / "chave-exclusivos.bin"
 ACESSOS = PRIV / "acessos.json"
 SAIDA = RAIZ / "dados" / "tabelas.enc.json"
 ITER = 600_000
@@ -75,13 +79,33 @@ def gravar_acessos(a: dict):
     ACESSOS.write_text(json.dumps(a, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def cifrar_v2(dados: bytes, chave: bytes, acessos: dict) -> dict:
+def chave_x() -> bytes:
+    """2ª chave (empreendimentos exclusivos do Santiago); criada na primeira vez."""
+    if not CHAVE_X.exists():
+        CHAVE_X.write_bytes(os.urandom(32))
+    return CHAVE_X.read_bytes()
+
+
+def separar(d: dict):
+    """(tabelas de todos, tabelas exclusivas ou None)."""
+    emps = d["empreendimentos"]
+    exc = [e for e in emps if e.get("exclusivo")]
+    if not exc:
+        return d, None
+    return dict(d, empreendimentos=[e for e in emps if not e.get("exclusivo")]), {"empreendimentos": exc}
+
+
+def cifrar_v2(dados: bytes, chave: bytes, acessos: dict, exclusivos: bytes = None, chave_exc: bytes = None) -> dict:
     iv = os.urandom(12)
     ct = AESGCM(chave).encrypt(iv, dados, b"tabelas-v2")
-    publico = ("id", "login", "nome", "creci", "whatsapp", "whatsappTxt", "iter", "salt", "iv", "ck")
+    publico = ("id", "login", "nome", "creci", "whatsapp", "whatsappTxt", "iter", "salt", "iv", "ck", "x")
     us = sorted(acessos["usuarios"], key=lambda u: u["nome"].lower())
-    return {"v": 2, "kdf": "PBKDF2-SHA256", "iv": b64(iv), "ct": b64(ct),
-            "usuarios": [{k: u[k] for k in publico if k in u} for u in us]}
+    out = {"v": 2, "kdf": "PBKDF2-SHA256", "iv": b64(iv), "ct": b64(ct),
+           "usuarios": [{k: u[k] for k in publico if k in u} for u in us]}
+    if exclusivos is not None:
+        ivx = os.urandom(12)
+        out["exc"] = {"iv": b64(ivx), "ct": b64(AESGCM(chave_exc).encrypt(ivx, exclusivos, b"tabelas-exclusivas"))}
+    return out
 
 
 def validar(d):
@@ -121,9 +145,16 @@ def gerar_v2(publica=True, msg=None):
     if not a["usuarios"]:
         print("Nenhum corretor com acesso. Rode o CADASTRAR-CORRETORES.bat primeiro.")
         return False
-    dados = json.dumps(d, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    SAIDA.write_text(json.dumps(cifrar_v2(dados, CHAVE.read_bytes(), a)), encoding="utf-8")
+    todos, exc = separar(d)
+    js = lambda x: json.dumps(x, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    SAIDA.write_text(json.dumps(cifrar_v2(js(todos), CHAVE.read_bytes(), a,
+                                          js(exc) if exc else None, chave_x() if exc else None)), encoding="utf-8")
     print(f"Tabelas cifradas: {ne} empreendimento(s), {nu} unidade(s), {len(a['usuarios'])} pessoa(s) com acesso.")
+    if exc:
+        nomes = ", ".join(e["nome"] for e in exc["empreendimentos"])
+        quem = [u["nome"] for u in a["usuarios"] if u.get("x")]
+        print(f"Só para você (exclusivos): {nomes}. " + (f"Acesso: {', '.join(quem)}." if quem else
+              "ATENÇÃO: ninguém abre ainda. Rode o CADASTRAR-CORRETORES.bat, opção 4, e digite a sua senha."))
     if publica and "--sem-publicar" not in sys.argv:
         publicar(msg or "Atualiza tabelas cifradas da Área do corretor")
     return True

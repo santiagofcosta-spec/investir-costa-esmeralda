@@ -172,7 +172,9 @@ def main():
         if getpass.getpass("Digite de novo: ") != s:
             print("As senhas não conferem. Nada foi alterado.")
             return 1
-        a["usuarios"] = [u for u in a["usuarios"] if u["id"] != eu["id"]] + [entrada(eu, s, chave)]
+        u = entrada(eu, s, chave)
+        u["x"] = ct.embrulhar(ct.chave_x(), eu["id"] + ":x", s)   # 2ª chave: empreendimentos exclusivos (só o Santiago)
+        a["usuarios"] = [x for x in a["usuarios"] if x["id"] != eu["id"]] + [u]
         salvar_e_publicar(a, "Área restrita: acesso do Santiago")
     elif op == "5":
         if input("Isto cria uma chave nova e senhas novas para TODOS os corretores (as antigas param de funcionar).\n"

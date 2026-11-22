@@ -772,9 +772,11 @@ let sojaOfertasAtuais=[];
 
 function renderCustos(o,c){
   // sem oferta (cidade sem preço publicado): limpa também a projeção e os cards, senão ficam os números da cidade anterior
-  if(!o){ $('tblCustos').innerHTML=''; $('sSacas').innerHTML=''; const rz0=$('sLiqResumo'); if(rz0) rz0.innerHTML=''; renderProjAgro(NaN,0,c); return; }
+  if(!o){ window.SOJA_REF=null; $('tblCustos').innerHTML=''; $('sSacas').innerHTML=''; const rz0=$('sLiqResumo'); if(rz0) rz0.innerHTML=''; renderProjAgro(NaN,0,c); return; }
   const p=o.preco, fet=num('sFethab'), fun=p*num('sFunrural')/100, fr=num('sFrete'), arm=num('sArmaz'), com=p*num('sComissao')/100, out=num('sOutros'), n=num('sProducao');
   const liq=p-fet-fun-fr-arm-com-out;
+  // a proposta (proposta.js) usa a cidade e o preço líquido escolhidos aqui para mostrar o valor em sacas de soja
+  window.SOJA_REF={liq,bruto:p,cidade:c.nome,uf:c.uf,data:(D.soja&&D.soja.atualizado||'').split(' ')[0]};
   const lin=(t,v,cls='neg')=>{ if(cls==='neg'&&Math.abs(v)<0.005) cls=''; return `<tr><td>${t}</td><td class="${cls}">${v<0?'−':''}${brl2(Math.abs(v))}</td><td class="${cls}">${v<0?'−':''}${brl(Math.abs(v)*n)}</td></tr>`; };
   $('sCustoCid').textContent=`${c.nome}/${c.uf} · ${o.rot||fmtEntrega(o.entrega)+' · '+(o.fob?'FOB':'CIF')}`;
   $('tblCustos').innerHTML=`<thead><tr><th></th><th>${L('Por saca','Por saca')}</th><th>${L(`Em ${n.toLocaleString('pt-BR')} sacas`,`En ${n.toLocaleString('pt-BR')} sacas`)}</th></tr></thead><tbody>`+
@@ -900,6 +902,17 @@ async function abrirTabelas(senha,email){
     const k=await crypto.subtle.importKey('raw',bruta,'AES-GCM',false,['decrypt']);
     claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv),additionalData:utf8('tabelas-v2')},k,b64(e.ct));
     USUARIO=u; CHAVE_TAB=k;
+    // empreendimentos exclusivos (só o Santiago): 2ª chave, embrulhada só para quem tem u.x; os outros nem a recebem
+    if(e.exc&&u.x){
+      try{
+        const bx=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(u.x.iv),additionalData:utf8(u.id+':x')},await chaveDaSenha(senha,u.x.salt,u.x.iter),b64(u.x.ck));
+        const kx=await crypto.subtle.importKey('raw',bx,'AES-GCM',false,['decrypt']);
+        const cx=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.exc.iv),additionalData:utf8('tabelas-exclusivas')},kx,b64(e.exc.ct));
+        const d=JSON.parse(new TextDecoder().decode(claro)), dx=JSON.parse(new TextDecoder().decode(cx));
+        d.empreendimentos=[...(d.empreendimentos||[]),...(dx.empreendimentos||[])];
+        claro=new TextEncoder().encode(JSON.stringify(d));
+      }catch{}   // sem a 2ª chave válida: segue só com as tabelas de todos
+    }
   }else{
     const chave=await chaveDaSenha(senha,e.salt,e.iter);
     try{ claro=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(e.iv)},chave,b64(e.ct)); }catch{ throw new Error('senha'); }

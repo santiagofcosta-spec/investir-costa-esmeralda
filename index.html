@@ -213,6 +213,15 @@ textarea{width:100%;min-height:170px;border:1px solid var(--line);border-radius:
 /* proposta para o cliente (Área restrita) */
 .prop-top{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px}
 .prop-top .f2 .in{min-width:0}
+.prop-soja{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 10px;align-items:end;margin:-4px 0 14px;padding:10px 12px;border:1px dashed rgba(212,175,55,.45);border-radius:10px}
+.prop-soja>label{grid-column:1/-1;display:flex;gap:8px;align-items:center;font-weight:600;cursor:pointer}
+.prop-soja .f2 .in{min-width:0}.prop-soja .note{grid-column:1/-1;margin:0}
+.pp-soja{margin:8px 0 6px;border:1.5px solid #6b8e23;border-radius:10px;padding:8px 12px;background:#f4f8ec}
+.pp .pp-soja .pp-soja-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.pp .pp-soja .pp-soja-top span{font-size:11px;color:#4a6b12;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.pp .pp-soja .pp-soja-top b{font-size:19px;color:#2f4a0a}
+.pp .pp-soja p{margin:3px 0 2px;font-size:11px;color:#2f4a0a}
+.pp .pp-soja small{display:block;font-size:8.8px;color:#5d6b52;line-height:1.35}
 .prop-cols{display:grid;grid-template-columns:1fr 1.3fr;gap:18px;align-items:start}
 @media (max-width:800px){.prop-cols{grid-template-columns:1fr}}
 .prop-res{list-style:none;margin:0 0 8px;padding:0}
@@ -1620,10 +1629,10 @@ tbody tr:hover td{background:rgba(212,175,55,.06)}
 </a>
 <script src="dados/dados.js"></script>
 <script src="dados/referencias.js?v=20261118h"></script>
-<script src="app.js?v=20261121a"></script>
+<script src="app.js?v=20261122a"></script>
 <script src="v3.js?v=20261118h"></script>
 <script src="avisos.js?v=20261118h"></script>
-<script src="proposta.js?v=20261121b"></script>
+<script src="proposta.js?v=20261122a"></script>
 <script src="vitrine.js?v=20261118h"></script>
 <script src="campanhas.js?v=20261120e"></script>
 <script src="pecas.js?v=20261121c"></script>
