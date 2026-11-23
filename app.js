@@ -986,7 +986,7 @@ const VIT_CONDS={};
 function condsVitrine(id){
   return VIT_CONDS[id]||(VIT_CONDS[id]=fetch(`dados/vitrine-${id}.json`,{cache:'no-store'}).then(r=>r.json()).then(d=>{
     const rot=(nome,ps)=>`${nome}: ${ps[0][1]}% ${L('de entrada','de anticipo')} + `+ps.slice(1).map(p=>`${p[2]} ${String(p[0]).toLowerCase()}`).join(' + ');
-    return (d.condicoes||[]).flatMap(c=>[[c.id,rot(c.nome,c.partes)],...(c.alt?[[c.id+'_a',rot(c.nome,c.alt.partes)]]:[])]);
+    return (d.condicoes||[]).filter(c=>/^[a-z0-9]{1,12}$/.test(c.id)&&Array.isArray(c.partes)&&c.partes.length).flatMap(c=>[[c.id,rot(c.nome,c.partes)],...(c.alt?[[c.id+'_a',rot(c.nome,c.alt.partes)]]:[])]);
   }).catch(()=>{ delete VIT_CONDS[id]; return []; }));
 }
 const idVitrine=u=>(u.torre==='Hill Tower'?'HT':'OT')+'-'+u.unidade;
@@ -1012,7 +1012,7 @@ function renderVitrineLink(e,u){
       <a class="btn" id="btnVitWa" target="_blank" rel="noopener">${L('Enviar no WhatsApp','Enviar por WhatsApp')}</a>
       <a class="btn" id="btnVitAbrir" target="_blank" rel="noopener">${L('Abrir','Abrir')}</a></div></div>`;
   condsVitrine(e.id).then(cs=>{ const s=$('vitCond'); if(!s) return;
-    s.innerHTML=cs.length?cs.map(([v,r])=>`<option value="${v}"${v==='c16'?' selected':''}>${r}</option>`).join(''):`<option value="">${L('Padrão da vitrine','Estándar de la vitrina')}</option>`;
+    s.replaceChildren(...(cs.length?cs.map(([v,r])=>new Option(r,v,v==='c16',v==='c16')):[new Option(L('Padrão da vitrine','Estándar de la vitrina'),'')]));
     s.onchange=()=>{ $('vitOut').hidden=true; }; });
   $('btnVitGerar').onclick=async()=>{ try{
       const sc=$('vitCond'), cond=sc?sc.value:'', cRot=cond&&sc.selectedOptions[0]?sc.selectedOptions[0].textContent:'';
