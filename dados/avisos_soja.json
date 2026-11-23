@@ -1936,12 +1936,12 @@
  "cidades": [
   "Vilhena/RO",
   "Comodoro/MT",
-  "Campo Novo do Parecis/MT"
+  "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-20 15:05",
- "lido": "2026-11-20 15:05",
+ "verificado": "2026-11-23 07:05",
+ "lido": "2026-11-23 07:05",
  "resumo": {
-  "dia": "2026-11-20",
+  "dia": "2026-11-23",
   "cidades": {
    "Vilhena/RO": {
     "2026": {
@@ -1958,27 +1958,23 @@
     }
    },
    "Comodoro/MT": {
-    "2026": {
-     "compra_max": 134.5,
-     "compra_abertura": 134.5
+    "2027": {
+     "compra_max": 140.0,
+     "compra_abertura": 140.0
     },
     "Disponível": {
      "compra_max": 145.0,
      "compra_abertura": 145.0
-    },
-    "2027": {
-     "compra_max": 122.35,
-     "compra_abertura": 122.35
     }
    },
-   "Campo Novo do Parecis/MT": {
+   "Campos de Júlio/MT": {
     "2026": {
      "compra_max": 134.5,
      "compra_abertura": 134.5
     },
     "2027": {
-     "compra_max": 119.5,
-     "compra_abertura": 119.5
+     "compra_max": 119.9,
+     "compra_abertura": 119.9
     },
     "Disponível": {
      "compra_max": 160.0,
