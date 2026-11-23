@@ -977,6 +977,7 @@ function renderUnidade(){
     [L('Valor de tabela','Precio de lista'),brl(u.valor),u.tipo||''],
     [L('Preço por m²','Precio por m²'),m2?brl(m2):'—',e.tipo==='loteamento'?L('m² de terreno','m² de terreno'):m2?L(`Itapema (FipeZap): ${brl(it[LAST])}/m²`,`Itapema (FipeZap): ${brl(it[LAST])}/m²`):''],
     [L('Entrega','Entrega'),fmtMesAno(e.entrega),e.cidade||''],
+    ...(u.condominio?[[L('Condomínio estimado','Expensas estimadas'),'≈ '+brl(u.condominio),L('por mês · previsão da administradora','por mes · previsión de la administración')]]:[]),
     [L('Fluxo','Plan de pagos'),fx.entrada!=null?`${fx.entrada}/${fx.mensais}/${fx.reforcos}/${Math.max(0,100-fx.entrada-fx.mensais-fx.reforcos)}`:'—',L('entrada / mensais / reforços / chaves (%)','anticipo / cuotas / refuerzos / entrega (%)')],
   ]);
 }

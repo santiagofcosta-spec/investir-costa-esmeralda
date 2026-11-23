@@ -21,7 +21,7 @@
   const copia=c=>({entrada:r2(c.entrada),entradaVezes:Math.max(1,n0(c.entradaVezes)||1),
     mensais:{n:n0(c.mensais?.n),valor:r2(c.mensais?.valor),inicio:Math.max(1,n0(c.mensais?.inicio)||1)},
     baloes:{n:n0(c.baloes?.n),valor:r2(c.baloes?.valor),cada:Math.max(1,n0(c.baloes?.cada)||12),inicio:Math.max(1,n0(c.baloes?.inicio)||12)},
-    unico:{valor:r2(c.unico?.valor),mes:Math.max(1,n0(c.unico?.mes)||1)},
+    unico:{valor:r2(c.unico?.valor),mes:Math.max(1,n0(c.unico?.mes)||1)},troca:r2(c.troca),
     correcao:c.correcao||'',juros:+c.juros||0,nome:c.nome||'',aConfirmar:!!c.aConfirmar,amortizacao:c.amortizacao||''});
   const mesesAte=k=>{ if(!k) return null; const h=new Date(), [y,m]=k.split('-').map(Number); return Math.max(0,(y-h.getFullYear())*12+(m-1-h.getMonth())); };
   const mesRot=m=>{ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+m); return `${NOMES_MES[d.getMonth()]}/${d.getFullYear()}`; };
@@ -45,6 +45,7 @@
     for(let i=0;i<p.mensais.n;i++) l.push([p.mensais.inicio+i,p.mensais.valor,'men']);
     for(let j=0;j<p.baloes.n;j++) l.push([p.baloes.inicio+j*p.baloes.cada,p.baloes.valor,'bal']);
     if(p.unico.valor) l.push([p.unico.mes,p.unico.valor,'uni']);
+    if(p.troca) l.push([0,p.troca,'tro']);          // imóvel do cliente na troca (permuta), na assinatura
     return l.filter(x=>x[1]>0);
   }
   function metricas(p){
@@ -67,6 +68,7 @@
     const it=[];
     const nE=Math.max(1,p.entradaVezes||1);
     if(p.entrada) it.push(nE>1?[L('Entrada','Anticipo'),`${brlc(p.entrada)} · ${nE} × ${brlc(Math.round(p.entrada/nE*100)/100)} (${mesRot(0)} ${L('a','a')} ${mesRot(nE-1)})`]:[L('Entrada (na assinatura)','Anticipo (a la firma)'),brlc(p.entrada)]);
+    if(p.troca) it.push([L('Imóvel na troca (permuta)','Inmueble en parte de pago'),`${brl(p.troca)} · ${L('avaliado e aprovado pela incorporadora','evaluado y aprobado por el desarrollador')}`]);
     if(p.mensais.n&&p.mensais.valor) it.push([L('Mensais','Cuotas'),`${p.mensais.n} × ${brlc(p.mensais.valor)} · ${L('a partir de','desde')} ${mesRot(p.mensais.inicio)}${anual(p.correcao)?L(', reajustadas pelo IPCA anual (a cada 12 meses)',', reajustadas por el IPCA anual (cada 12 meses)'):''}`]);
     if(p.juros) it.push([L('Juros do parcelamento','Interés de la financiación'),L(`${pj(p.juros)} ao mês fixos (Tabela Price), já incluídos nas parcelas${anual(p.correcao)?', + IPCA anual':''}`,`${pj(p.juros)} mensual (sistema francés), ya incluido en las cuotas`)]);
     if(p.baloes.n&&p.baloes.valor) it.push([L('Balões','Refuerzos'),`${p.baloes.n} × ${brlc(p.baloes.valor)} · ${p.baloes.cada===12?L('anuais','anuales'):L(`a cada ${p.baloes.cada} meses`,`cada ${p.baloes.cada} meses`)} · ${L('1º em','1º en')} ${mesRot(p.baloes.inicio)}`]);
@@ -96,6 +98,7 @@
           <div class="prop-g"><span>${L('Mensais','Cuotas')}</span>${campo('prMn',L('Quantidade','Cantidad'),a.mensais.n,'x')}${campo('prMv',L('Valor','Valor'),a.mensais.valor,'','R$')}${campo('prMi',L('1ª no mês','1ª en el mes'),a.mensais.inicio,'º')}</div>
           <div class="prop-g"><span>${L('Balões','Refuerzos')}</span>${campo('prBn',L('Quantidade','Cantidad'),a.baloes.n,'x')}${campo('prBv',L('Valor','Valor'),a.baloes.valor,'','R$')}${campo('prBc',L('A cada','Cada'),a.baloes.cada,L('meses','meses'))}${campo('prBi',L('1º no mês','1º en el mes'),a.baloes.inicio,'º')}</div>
           <div class="prop-g"><span>${P.base==='avista'?L('Saldo','Saldo'):L('Parcela única / chaves','Cuota única / entrega')}</span>${campo('prUv',L('Valor','Valor'),a.unico.valor,'','R$')}${campo('prUm',L('No mês','En el mes'),a.unico.mes,'º')}</div>
+          ${P.ini.troca?`<div class="prop-g"><span>${L('Imóvel na troca','Inmueble en parte de pago')}</span>${campo('prTr',L('Valor do imóvel','Valor del inmueble'),a.troca,'','R$')}</div>`:''}
           <p class="note">${L('Mês 1 = 30 dias depois da assinatura.','Mes 1 = 30 días después de la firma.')}</p>
         </div>
       </div>
@@ -109,7 +112,7 @@
     const ler=()=>{ const g=id=>n0(lerNum(document.getElementById(id).value)), gr=id=>r2(lerNum(document.getElementById(id).value));
       P.aj.entrada=gr('prEnt'); P.aj.entradaVezes=Math.max(1,g('prEv')); P.aj.mensais={n:g('prMn'),valor:gr('prMv'),inicio:Math.max(1,g('prMi'))};
       P.aj.baloes={n:g('prBn'),valor:gr('prBv'),cada:Math.max(1,g('prBc')),inicio:Math.max(1,g('prBi'))};
-      P.aj.unico={valor:gr('prUv'),mes:Math.max(1,g('prUm'))}; comparar(); };
+      P.aj.unico={valor:gr('prUv'),mes:Math.max(1,g('prUm'))}; if(document.getElementById('prTr')) P.aj.troca=gr('prTr'); comparar(); };
     box.querySelectorAll('.prop-aj input').forEach(i=>i.addEventListener('input',ler));
     box.querySelector('#prCliente').addEventListener('input',ev=>{P.cliente=ev.target.value;});
     box.querySelector('#prVal').addEventListener('input',ev=>{P.validade=ev.target.value;});
@@ -570,20 +573,20 @@
     for(const [mm,v,t] of pagamentos(a)){
       const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+mm); const y=d.getFullYear();
       const o=anos[y]||(anos[y]={ent:0,men:0,bal:0,out:0,tot:0,corr:0,n:0});
-      if(t==='ent') o.ent+=v; else if(t==='bal') o.bal+=v; else if(t==='men'){ o.men+=v; o.n++; } else o.out+=v;
+      if(t==='ent') o.ent+=v; else if(t==='bal') o.bal+=v; else if(t==='men'){ o.men+=v; o.n++; } else if(t==='tro') o.tro=(o.tro||0)+v; else o.out+=v;
       o.tot+=v; o.corr+=v*Math.pow(1+cub,mm/12);
     }
-    const ys=Object.keys(anos).sort(), z=v=>v?brl(v):'—', temBal=ys.some(y=>anos[y].bal), temOut=ys.some(y=>anos[y].out);
+    const ys=Object.keys(anos).sort(), z=v=>v?brl(v):'—', temBal=ys.some(y=>anos[y].bal), temOut=ys.some(y=>anos[y].out), temTro=ys.some(y=>anos[y].tro);
     // prazo longo (ex.: 180x = 16 anos): agrupa os anos iguais do meio numa linha só, para caber na página
     const linhas=[]; let i=0;
     while(i<ys.length){ let j=i; const o=anos[ys[i]];
-      while(j+1<ys.length&&!o.ent&&!o.bal&&!o.out&&o.n===12&&anos[ys[j+1]].n===12&&!anos[ys[j+1]].ent&&!anos[ys[j+1]].bal&&!anos[ys[j+1]].out) j++;
+      while(j+1<ys.length&&!o.ent&&!o.bal&&!o.out&&!o.tro&&o.n===12&&anos[ys[j+1]].n===12&&!anos[ys[j+1]].ent&&!anos[ys[j+1]].bal&&!anos[ys[j+1]].out) j++;
       if(j>i){ const g=ys.slice(i,j+1); linhas.push({rot:`${ys[i]} ${L('a','a')} ${ys[j]}`,k:g.length,o:{ent:0,men:o.men,bal:0,out:0,tot:o.tot,corr:g.reduce((s,y)=>s+anos[y].corr,0)/g.length},porAno:true}); }
       else linhas.push({rot:ys[i],k:1,o});
       i=j+1; }
-    return `<table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th><th>${L('Parcelas','Cuotas')}</th>${temBal?`<th>${L('Reforços','Refuerzos')}</th>`:''}${temOut?`<th>${L('Outros','Otros')}</th>`:''}<th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehINCC(a.correcao)?L('Com INCC estimado','Con INCC estimado'):ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
-      ${linhas.map(l=>`<tr><td>${l.rot}${l.porAno?`<small>${L('cada ano','cada año')}</small>`:''}</td><td>${z(l.o.ent)}</td><td>${z(l.o.men)}</td>${temBal?`<td>${z(l.o.bal)}</td>`:''}${temOut?`<td>${z(l.o.out)}</td>`:''}<td><b>${brl(l.o.tot)}</b></td>${cub?`<td>${brl(l.o.corr)}</td>`:''}</tr>`).join('')}
-      <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td>${temBal?`<td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td>`:''}${temOut?`<td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td>`:''}<td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
+    return `<table class="pp-grade"><thead><tr><th>${L('Ano','Año')}</th><th>${L('Entrada','Anticipo')}</th>${temTro?`<th>${L('Imóvel na troca','Inmueble en pago')}</th>`:''}<th>${L('Parcelas','Cuotas')}</th>${temBal?`<th>${L('Reforços','Refuerzos')}</th>`:''}${temOut?`<th>${L('Outros','Otros')}</th>`:''}<th>${L('Total do ano','Total del año')}</th>${cub?`<th>${ehINCC(a.correcao)?L('Com INCC estimado','Con INCC estimado'):ehIPCA(a.correcao)?L('Com IPCA estimado','Con IPCA estimado'):L('Com CUB estimado','Con CUB estimado')}</th>`:''}</tr></thead><tbody>
+      ${linhas.map(l=>`<tr><td>${l.rot}${l.porAno?`<small>${L('cada ano','cada año')}</small>`:''}</td><td>${z(l.o.ent)}</td>${temTro?`<td>${z(l.o.tro)}</td>`:''}<td>${z(l.o.men)}</td>${temBal?`<td>${z(l.o.bal)}</td>`:''}${temOut?`<td>${z(l.o.out)}</td>`:''}<td><b>${brl(l.o.tot)}</b></td>${cub?`<td>${brl(l.o.corr)}</td>`:''}</tr>`).join('')}
+      <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td>${temTro?`<td>${z(ys.reduce((s,y)=>s+(anos[y].tro||0),0))}</td>`:''}<td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td>${temBal?`<td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td>`:''}${temOut?`<td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td>`:''}<td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
     </tbody></table>`;
   }
 
@@ -902,6 +905,7 @@
       [L('Tipologia','Tipología'),u.tipo||''],[L('Área privativa','Área privada'),`${pzArea2(u.area)} m²`],
       u.areaTotal?[L('Área total aproximada','Área total aproximada'),`${pzArea2(u.areaTotal)} m²`]:null,
       u.suites?[L('Suítes','Suites'),u.suites]:null,u.vagas?[L('Vagas de garagem','Cocheras'),u.vagas]:null,
+      u.condominio?[L('Condomínio estimado','Expensas estimadas'),`≈ ${brl(u.condominio)} ${L('por mês','por mes')}`]:null,
       [L('Valor de tabela','Valor de lista'),brl(u.valor)],m2?[L('Valor por m² privativo','Valor por m² privado'),brl(m2)]:null,
       e.entrega?[L('Entrega prevista','Entrega prevista'),`${fmtMesAno(e.entrega)} ${L('(cronograma de obra)','(cronograma de obra)')}${e.entregaContratual?` · ${L('prazo contratual','plazo contractual')} ${e.entregaContratual}`:''}`]:null,e.incorporadora?[L('Incorporadora','Desarrollador'),e.incorporadora]:null].filter(Boolean);
     return `<div class="pp-pag pp-prisma">
@@ -910,6 +914,7 @@
       ${rs?`<p class="pp-lead">${rs}</p>`:''}
       ${pl?`<div class="pz-planta"><img src="${pl}" alt=""></div><p class="pp-obs">${L('Planta ilustrativa da incorporadora, com sugestão de decoração. Medidas e acabamentos oficiais estão no memorial descritivo e no contrato.','Planta ilustrativa del desarrollador. Medidas y terminaciones oficiales en el memorial descriptivo y en el contrato.')}</p>`:''}
       <table class="pz-tab"><tbody>${lin.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
+      ${u.condominio&&e.condominioFonte?`<p class="pp-obs">${L('Condomínio:','Expensas:')} ${e.condominioFonte}</p>`:''}
     </div>`;
   }
 
@@ -927,6 +932,7 @@
         <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo+1} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
       </div>
       ${caixaSoja(a,m)}
+      ${a.troca?`<p class="pp-lead">${L(`Na assinatura, além da entrada em dinheiro, entra <b>um imóvel seu, por ${brl(a.troca)}</b> (${pct(a.troca/m.total,0)} do valor), depois de avaliado e aprovado pela incorporadora.`,`A la firma, además del anticipo en efectivo, entra <b>un inmueble suyo, por ${brl(a.troca)}</b> (${pct(a.troca/m.total,0)} del valor), tras la evaluación y aprobación del desarrollador.`)}</p>`:''}
       ${bal&&a.mensais.n?`<p class="pp-lead">${L(`Mais ${bal.n} reforços de ${brlc(bal.valor)}, a cada ${bal.cada} meses (o 1º em ${mesRot(bal.inicio)}).`,`Más ${bal.n} refuerzos de ${brlc(bal.valor)}, cada ${bal.cada} meses (el 1º en ${mesRot(bal.inicio)}).`)}</p>`:''}
       <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
       ${calendario(e,a,m)}
@@ -936,10 +942,39 @@
     </div>`;
   }
 
+  /* Valorização até a entrega (23/11/2026, ideia aprovada pelo Santiago): 3 cenários com fonte declarada, sem prometer nada.
+     1) só o CUB/SC (piso: o custo de construir sobe e puxa o preço do novo); 2) o ritmo real do m² em Itapema (FipeZap,
+     média anual desde dez/2020); 3) a projeção da incorporadora (1% ao mês, planilha "Valorização" da Prointi&GD).
+     Comparação: CDI líquido de IR no mesmo prazo. */
+  function pagValorizacao(e,u,a,m){
+    const n=mesesAte(e.entrega); if(!n||n<6||!u.valor) return '';
+    const anos=n/12, cub=(typeof CUB!=='undefined'&&CUB.v12m)?CUB.v12m/100:0;
+    const fz=(typeof it!=='undefined'&&typeof anosPer!=='undefined'&&it[0]&&it[LAST])?Math.pow(it[LAST]/it[0],1/anosPer)-1:null;
+    const fz12=(typeof REG!=='undefined'&&REG.itapema&&REG.itapema.var)?REG.itapema.var.at(-1):null;
+    const inc=Math.pow(1.01,12)-1, cdi=CDI_LIQ();
+    const cen=[[L('Só a correção do custo de obra','Solo el ajuste del costo de obra'),cub,L(`CUB/SC dos últimos 12 meses (Sinduscon)`,`CUB/SC de los últimos 12 meses (Sinduscon)`)],
+      fz12!=null?[L('Itapema no ritmo dos últimos 12 meses','Itapema al ritmo de los últimos 12 meses'),fz12/100,L('FipeZap, variação do m² nos últimos 12 meses','FipeZap, variación del m² en los últimos 12 meses')]:null,
+      fz!=null?[L('Itapema no ritmo desde 2020','Itapema al ritmo desde 2020'),fz,L('FipeZap, média anual do m² desde dez/2020','FipeZap, promedio anual del m² desde dic/2020')]:null,
+      [L('Projeção da incorporadora','Proyección del desarrollador'),inc,L('1% ao mês, planilha de valorização da Prointi&GD (não é garantia)','1% mensual, planilla de valorización de Prointi&GD (no es garantía)')]].filter(Boolean);
+    const fut=r=>u.valor*Math.pow(1+r,anos), mx=Math.max(...cen.map(c=>fut(c[1])),m.total);
+    const barra=(v,cl)=>`<div class="pv-bar ${cl}"><i style="width:${Math.max(4,Math.round(v/mx*100))}%"></i></div>`;
+    const cdiF=Math.pow(1+cdi,anos)-1;
+    return `<div class="pp-pag pp-prisma">
+      <div class="pp-kick">${L('Potencial de valorização','Potencial de valorización')}</div>
+      <h1>${L(`Quanto pode valer na entrega (${fmtMesAno(e.entrega)})`,`Cuánto puede valer en la entrega (${fmtMesAno(e.entrega)})`)}</h1>
+      <p class="pp-lead">${L(`Três cenários para o valor de tabela de hoje (${brl(u.valor)}) daqui a ${Math.round(n)} meses, comparados com o preço desta proposta (${brl(m.total)}). Cada linha diz de onde vem a taxa.`,`Tres escenarios para el valor de lista de hoy (${brl(u.valor)}) dentro de ${Math.round(n)} meses, comparados con el precio de esta propuesta (${brl(m.total)}). Cada línea indica de dónde viene la tasa.`)}</p>
+      <table class="pp-grade pv-tab"><thead><tr><th>${L('Cenário','Escenario')}</th><th>${L('Ao ano','Anual')}</th><th>${L('Valor na entrega','Valor en la entrega')}</th><th>${L('Sobre o preço desta proposta','Sobre el precio de esta propuesta')}</th></tr></thead><tbody>
+        ${cen.map(([nm,r,f],i)=>{ const v=fut(r); return `<tr><td><b>${nm}</b><small>${f}</small>${barra(v,'c'+i)}</td><td>${pct(r,1)}</td><td><b>${brl(v)}</b></td><td>${v>=m.total?'+':''}${brl(v-m.total)}<small>${pct(v/m.total-1,0)}</small></td></tr>`; }).join('')}
+        <tr class="tot"><td>${L('Para comparar: CDI líquido de IR','Para comparar: CDI neto de impuesto')}<small>${L(`${pct(cdi,1)} ao ano (CDI de hoje, Banco Central, menos 15% de IR)`,`${pct(cdi,1)} anual (CDI de hoy, Banco Central, menos 15% de IR)`)}</small></td><td>${pct(cdi,1)}</td><td>—</td><td>+${pct(cdiF,0)}<small>${L('no mesmo prazo','en el mismo plazo')}</small></td></tr>
+      </tbody></table>
+      <p class="pp-obs">${L('Cenários ilustrativos, não são promessa de rentabilidade: o preço futuro depende do mercado. Conta simplificada: aplica a taxa ao valor de tabela de hoje e compara com o preço total desta proposta, sem descontar o que ainda será pago depois da entrega nem custos de venda e impostos. Na planta você paga aos poucos; no CDI, a comparação considera o valor todo aplicado hoje.','Escenarios ilustrativos, no son promesa de rentabilidad: el precio futuro depende del mercado. Cuenta simplificada: aplica la tasa al valor de lista de hoy y compara con el precio total de esta propuesta, sin descontar lo que se pague después de la entrega ni costos de venta e impuestos.')}</p>
+    </div>`;
+  }
+
   function pagCondicoesPrismaApto(e,u,a,m){
     const c=conds(e,u)||{}, ops=Object.keys(c).filter(k=>c[k]&&typeof c[k]==='object').map(k=>{ const p=copia(c[k]); return {k,p,m:metricas(p),camp:!!c[k].campanha,sel:k===P.base}; });
     const parc=p=>[p.mensais.n?`${p.mensais.n} × ${brlc(p.mensais.valor)}`:'',p.baloes.n?`${p.baloes.n} × ${brlc(p.baloes.valor)} <small>${L(`a cada ${p.baloes.cada} meses`,`cada ${p.baloes.cada} meses`)}</small>`:''].filter(Boolean).join('<br>')||'—';
-    const lin=o=>`<tr class="${o.sel?'dest':''}"><td style="text-align:left"><b>${esc(o.p.nome||'')}</b>${o.sel?`<small>${L('condição desta proposta','condición de esta propuesta')}</small>`:''}</td><td>${brl(o.m.total)}</td><td>${nEnt(o.p)>1?`${nEnt(o.p)} × ${brlc(Math.round(o.p.entrada/nEnt(o.p)*100)/100)}`:brlc(o.p.entrada)}</td><td>${parc(o.p)}<small>${L('prazo','plazo')} ${o.m.prazo+1} ${L('meses','meses')}</small></td></tr>`;
+    const lin=o=>`<tr class="${o.sel?'dest':''}"><td style="text-align:left"><b>${esc(o.p.nome||'')}</b>${o.sel?`<small>${L('condição desta proposta','condición de esta propuesta')}</small>`:''}</td><td>${brl(o.m.total)}</td><td>${nEnt(o.p)>1?`${nEnt(o.p)} × ${brlc(Math.round(o.p.entrada/nEnt(o.p)*100)/100)}`:brlc(o.p.entrada)}${o.p.troca?`<small>+ ${L('imóvel','inmueble')} ${brl(o.p.troca)}</small>`:''}</td><td>${parc(o.p)}<small>${L('prazo','plazo')} ${o.m.prazo+1} ${L('meses','meses')}</small></td></tr>`;
     return `<div class="pp-pag pp-prisma">
       <div class="pp-kick">${L('Transparência','Transparencia')}</div>
       <h1>${L('Todas as condições, lado a lado','Todas las condiciones, lado a lado')}</h1>
@@ -950,7 +985,7 @@
       <div class="pz-etapas">
         <div><span>1</span><b>${L('Até a entrega das chaves','Hasta la entrega de llaves')}</b><p>${L('Parcelas sem juros, corrigidas pelo CUB-SC (só quando o índice é positivo).','Cuotas sin interés, ajustadas por el CUB-SC (solo cuando el índice es positivo).')}</p></div>
         <div><span>2</span><b>${L('Depois da entrega','Después de la entrega')}</b><p>${L('O saldo que faltar passa a ser corrigido pelo <b>INPC + 0,89% ao mês</b>. Por isso, quanto mais você paga até as chaves, menor esse custo.','El saldo restante pasa a ajustarse por <b>INPC + 0,89% mensual</b>. Cuanto más pague hasta la entrega, menor ese costo.')}</p></div>
-        <div><span>3</span><b>${L('Usar um bem na negociação','Usar un bien en la negociación')}</b><p>${L('A incorporadora pode aceitar um bem aprovado por até 50% do valor, com a entrada de 20% em dinheiro. Sob consulta; não acumula com os descontos de campanha.','El desarrollador puede aceptar un bien aprobado hasta el 50% del valor, con anticipo del 20% en efectivo. Bajo consulta; no se acumula con los descuentos.')}</p></div>
+        <div><span>3</span><b>${L('Usar um bem na negociação','Usar un bien en la negociación')}</b><p>${L('Condição oficial "com troca": um imóvel aprovado pela incorporadora vale até 50% do valor, com 20% de entrada em dinheiro e o resto em 50 mensais ou 6 semestrais. O imóvel não conta como entrada e a troca não acumula com os descontos de campanha.','Condición oficial "con permuta": un inmueble aprobado por el desarrollador vale hasta el 50% del valor, con 20% de anticipo en efectivo y el resto en 50 cuotas mensuales o 6 semestrales. El inmueble no cuenta como anticipo y no se acumula con los descuentos.')}</p></div>
       </div>
       ${e.marinha?`<div class="pz-quote"><b>${L('Terreno de marinha','Terreno de marina')}</b><span>${e.marinha}</span></div>`:''}
       <p class="pp-obs">${L(`Valores da tabela oficial da incorporadora de ${fmtDataBR(e.atualizado)}, sujeitos a disponibilidade, à simulação oficial e à aprovação da incorporadora. Os preços são atualizados todo mês.`,`Valores de la tabla oficial del desarrollador del ${fmtDataBR(e.atualizado)}, sujetos a disponibilidad, simulación oficial y aprobación del desarrollador. Los precios se actualizan cada mes.`)}</p>
@@ -975,7 +1010,7 @@
 
   function pdfPrismaApto(){
     const {e,u}=P, a=P.aj, m=metricas(a), hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
-    out.innerHTML=capaPrismaApto(e,u)+pagEcossistema(e)+pagResidencia(e,u)+pagPagamentoPrisma(e,u,a,m)+pagCondicoesPrismaApto(e,u,a,m)+pagLocalPrismaApto(e,hoje);
+    out.innerHTML=capaPrismaApto(e,u)+pagEcossistema(e)+pagResidencia(e,u)+pagPagamentoPrisma(e,u,a,m)+pagValorizacao(e,u,a,m)+pagCondicoesPrismaApto(e,u,a,m)+pagLocalPrismaApto(e,hoje);
     marcarPaginas(out,hoje);
     const agora=new Date(), hora=`${String(agora.getDate()).padStart(2,'0')}-${String(agora.getMonth()+1).padStart(2,'0')} ${String(agora.getHours()).padStart(2,'0')}h${String(agora.getMinutes()).padStart(2,'0')}`;
     const nome=(`Proposta ${txt(e.nome)} ${pzUni(u)} ${u.torre||''}${P.cliente?' - '+P.cliente:''} ${hora}`.replace(/[\\/:*?"<>|\u0000-\u001f\u007f]+/g,'').replace(/\s+/g,' ').replace(/^[.\s]+/,'').trim().slice(0,90)||'Proposta')+'.pdf';

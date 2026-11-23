@@ -116,6 +116,7 @@ h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;back
 .specs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
 @media (max-width:420px){.specs{grid-template-columns:repeat(2,1fr)}}
 .specs div{border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.condo{font-size:13px;color:#d4d4d8;margin:-4px 0 8px}.condo b{color:var(--gold-lt);font-weight:600}.condo small{display:block;color:var(--off);font-size:11px;margin-top:2px}
 .specs b{display:block;font:600 18px var(--f-d);color:var(--gold-lt)}
 .specs span{font-size:11.5px;color:var(--muted)}
 .desc{color:#d4d4d8;font-size:14px;margin:6px 0 0}
@@ -485,6 +486,7 @@ footer b{color:var(--ink)}
       ${PRECO&&PRECO.id===u.id?`<div class="preco"><span>Valor de tabela</span><b>${brl(PRECO.valor)}</b><small>Tabela da incorporadora de ${esc(dataBR(PRECO.tabela))} · preço liberado por ${esc(CFG.primeiro)} para você</small></div>`:''}
       <div class="specs"><div><b>${esc(u.suites)}</b><span>suítes</span></div><div><b>${m2(u.area).replace(' m²','')}</b><span>m² privativos</span></div>
         <div><b>${u.vagas}</b><span>vagas</span></div><div><b>${u.andar}º</b><span>andar</span></div></div>
+      ${u.condominio?`<p class="condo">Condomínio estimado: <b>≈ ${brl(u.condominio)} por mês</b><small>${esc(D.condominioFonte||'')}</small></p>`:''}
       ${IMG(u.planta)?`<button class="planta" id="pl" type="button" aria-label="Ampliar a planta"><img src="${IMG(u.planta)}" alt="Planta ${esc(casa)}"></button>`:''}
       ${(()=>{ const vs=vistasDe(u.torre,posDe(u.unidade),u.andar), fs=setsDaPos(u.torre,posDe(u.unidade)).map(k=>fotoAndar(k,u.andar)).filter(f=>f&&f.src);
         const ph=IMG((D.vistaPenthouse||{})[abrev(u.torre)+'-'+String(u.unidade).split('+')[0]]); if(ph) fs.unshift({andar:u.andar,src:ph,rot:'Vista da penthouse',oficial:1});

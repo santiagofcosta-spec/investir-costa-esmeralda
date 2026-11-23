@@ -55,7 +55,7 @@
     const mn=c.mensais||{}, bl=c.baloes||{}, un=c.unico||{};
     const n=n0(mn.n), mv=r2(mn.valor), nb=n0(bl.n), bv=r2(bl.valor), cada=Math.max(1,n0(bl.cada)||12);
     const uv=r2(un.valor), um=Math.max(1,n0(un.mes)||1), ent=r2(c.entrada);
-    const total=ent+n*mv+nb*bv+uv, agora=ent+(um<=1?uv:0), depois=um>1?uv:0, balAno=bv*12/cada;
+    const total=ent+n*mv+nb*bv+uv+r2(c.troca), agora=ent+(um<=1?uv:0), depois=um>1?uv:0, balAno=bv*12/cada;
     const r={total,agora,mensal:mv,balAno,n,nb,cada};
     if(!n&&!nb){                                            // à vista: tudo em até 30 dias (+ saldo posterior, se houver)
       r.tipo='avista'; r.ok=X.e>=total-depois; r.falta=Math.max(0,total-depois-X.e); return r;
@@ -83,6 +83,7 @@
       for(const [c,idx] of grupos){
         const us=idx.map(i=>e.unidades[i]), rotU=us.map(u=>`${nomeUni(u)}${u.area?' ('+area(u.area)+')':''}`).join(L(' ou ',' o '));
         for(const k of Object.keys(c).filter(k=>c[k]&&typeof c[k]==='object')){
+          if(c[k].troca) continue;                          // condição com imóvel na troca: não se mede só com dinheiro
           const r=analisar(c[k]), nm=c[k].nome||k;
           let selo, corpo='', btn='';
           if(r.tipo==='avista'){
@@ -140,6 +141,7 @@
       e.unidades.forEach(u=>{ const c=conds(e,u); if(!c||vis.has(c)) return; vis.add(c);
         for(const kk of Object.keys(c).filter(x=>c[x]&&typeof c[x]==='object')){ const p=c[kk], r=analisar(p), mn=p.mensais||{}, bl=p.baloes||{}, un=p.unico||{};
           const it=[[L('Entrada','Anticipo'),brl(n0(p.entrada))],
+            n0(p.troca)?[L('Imóvel na troca','Inmueble en parte de pago'),brl(n0(p.troca))]:null,
             n0(mn.n)?[L('Mensais','Cuotas'),`${mn.n} × ${brl(n0(mn.valor))}`]:null,
             n0(bl.n)?[L('Balões','Refuerzos'),`${bl.n} × ${brl(n0(bl.valor))}${n0(bl.cada)===12?' '+L('anuais','anuales'):''}`]:null,
             n0(un.valor)?[n0(un.mes)<=1?L('Saldo em 30 dias','Saldo en 30 días'):L('Parcela única','Cuota única'),brl(n0(un.valor))]:null].filter(Boolean);
