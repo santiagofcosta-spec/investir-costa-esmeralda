@@ -225,7 +225,11 @@
   function rendaAcum(liqAno,g,mChaves,H){ let s=0; for(let k=Math.max(1,mChaves+1);k<=H*12;k++) s+=liqAno/12*Math.pow(1+g,k/12); return s; }
 
   // fotos do lazer para a página 2 (até 6, sem as de fachada), com legenda tirada do nome do arquivo
-  const LEG={'mob-sala':['Sala mobiliada','Sala amueblada'],'mob-cozinha':['Cozinha planejada','Cocina planificada'],'mob-jantar':['Mesa de jantar','Comedor'],
+  const LEG={'ap-garden':['Área garden do térreo','Área garden de planta baja'],'ap-sala':['Sala de TV','Sala de TV'],'ap-sacada-vista':['Sacada com churrasqueira','Balcón con parrilla'],
+    'ap-cozinha':['Cozinha integrada com a sala','Cocina integrada con la sala'],'ap-quarto-casal':['Dormitório de casal','Dormitorio principal'],'ap-quarto-2':['2º dormitório','2º dormitorio'],
+    'ap-banheiro':['Banheiro social','Baño social'],'ap-sacada':['Churrasqueira da sacada','Parrilla del balcón'],'ap-servico':['Área de serviço','Lavadero'],
+    'cond-piscina':['Piscina','Piscina'],'cond-playground':['Playground','Playground'],'cond-blocos':['Condomínio','Condominio'],
+'mob-sala':['Sala mobiliada','Sala amueblada'],'mob-cozinha':['Cozinha planejada','Cocina planificada'],'mob-jantar':['Mesa de jantar','Comedor'],
     'mob-quarto-casal':['Quarto de casal','Dormitorio principal'],'mob-quarto':['2º quarto','2º dormitorio'],'mob-sacada':['Sacada com churrasqueira elétrica','Balcón con parrilla eléctrica'],
     'vista-janela':['Vista da janela','Vista desde la ventana'],'mercado-interno':['Mercado interno','Mercado interno'],'condominio-playground':['Playground','Playground'],
 'fachada-2':['Fachada','Fachada'],'entrada-predio':['Entrada do prédio','Entrada del edificio'],'apto-cozinha-vista':['Cozinha com vista','Cocina con vista'],
