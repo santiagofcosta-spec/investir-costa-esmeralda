@@ -75,6 +75,8 @@ h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;back
 .vistas{display:grid;gap:10px}
 .vista{margin:0;position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);cursor:zoom-in}
 .vista img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover}
+.filme{display:block;width:100%;border-radius:12px;border:1px solid var(--line);background:#050c0a}   /* 23/11: filme da penthouse */
+.filme.v{max-height:78vh;width:auto;max-width:100%;margin:0 auto}
 .vista figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 12px 9px;background:linear-gradient(transparent,rgba(5,8,11,.88));font-size:12.5px;line-height:1.35}
 .vista figcaption b{color:var(--gold-lt)}
 .pano{margin:0;position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000}
@@ -326,6 +328,7 @@ footer b{color:var(--ink)}
   const $=s=>document.getElementById(s);
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const IMG=s=>/^img\/[a-z0-9_\/-]+\.(jpg|png|webp)$/i.test(String(s||''))?s:'';
+  const VID=s=>/^img\/[a-z0-9_\/-]+\.mp4$/i.test(String(s||''))?s:'';
   const m2=a=>a?(+a).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+' m²':'';
   const brl=v=>(+v).toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:2});
   const pc=v=>(+v).toLocaleString('pt-BR',{maximumFractionDigits:2})+'%';
@@ -356,7 +359,7 @@ footer b{color:var(--ink)}
       if(c&&/^\d{12,13}$/.test(c.whatsapp||'')){ CFG.nome=c.nome||CFG.nome; CFG.primeiro=String(c.nome||'').trim().split(/\s+/)[0]||CFG.primeiro;
         CFG.whatsapp=c.whatsapp; CFG.whatsappTxt=c.whatsappTxt||c.whatsapp; } }catch(e){}
   }
-  Promise.all([fetch(`dados/vitrine-${ID}.json?v=20261122i`).then(r=>{if(!r.ok) throw 0; return r.json();}),carregarPreco(),carregarContato()])
+  Promise.all([fetch(`dados/vitrine-${ID}.json?v=20261123a`).then(r=>{if(!r.ok) throw 0; return r.json();}),carregarPreco(),carregarContato()])
     .then(([d])=>{D=d; iniciar();})
     .catch(()=>{ $('tit').textContent='Vitrine indisponível'; });
 
@@ -548,6 +551,10 @@ footer b{color:var(--ink)}
         return `<h3>A vista</h3><div class="vistas">${fs.map(f=>`<figure class="vista" data-z="${f.src}"><img src="${f.src}" alt="${esc(f.rot)}" loading="lazy"><figcaption><b>${esc(f.rot)}</b><small>${f.oficial?'Foto oficial do catálogo da incorporadora':esc(legAndar(f,u.andar))+' · vídeo oficial da incorporadora'}</small></figcaption></figure>`).join('')}${vs.map(v=>`<figure class="pano"><div class="pano-sc" tabindex="0" aria-label="Panorama: arraste para os lados"><div class="pano-in"><img src="${v.src}" alt="Panorama 180° da vista" draggable="false">${marcaNau(v.nau)}</div></div><span class="pano-dica">⟷ arraste para olhar em volta</span><figcaption><b>Panorama 180° da janela da ${esc(nomePos(u.torre,posDe(u.unidade))||u.casa)}</b><small>${esc(legVista(v,u.andar))} · foto oficial da incorporadora</small></figcaption></figure>`).join('')}
           </div>`; })()}
       ${(()=>{ const chave=u.casa==='Mansão Suspensa'?'Mansão Suspensa · '+u.torre:u.casa, l=((D.ambientes||{})[chave]||[]).map(IMG).filter(Boolean);
+        const fp=u.casa==='Penthouse'?(D.filmePenthouse||{})[abrev(u.torre)+'-'+String(u.unidade).split('+')[0]]:null;
+        if(fp){ const o=matchMedia('(max-width:860px)').matches?'v':'h', src=VID(fp[o]), capa=IMG(fp['capa'+o]);   // celular: vertical; computador: horizontal
+          if(src) return `<h3>Conheça a penthouse</h3><video class="filme ${o}" src="${src}"${capa?` poster="${capa}"`:''} controls playsinline preload="none"></video>
+            <p class="nota" style="margin:6px 0 0">Do lazer à vista, passando pela subida real de drone até o andar da cobertura. Imagens ilustrativas da incorporadora; subida e vista: vídeo oficial de drone.</p>`; }
         if(!l.length) return u.casa==='Penthouse'?`<h3>O apartamento decorado</h3><p class="nota" style="margin:0">A incorporadora ainda não divulgou imagens decoradas das coberturas duplex: o material oficial traz a planta dos dois pavimentos e a vista, acima. Peça ao ${esc(CFG.primeiro)} a apresentação completa da cobertura.</p>`:'';
         return `<h3>O apartamento decorado</h3><p class="nota" style="margin:0 0 8px">${u.casa==='Mansão Suspensa'?'Ambientes das duas plantas que formam a mansão. ':''}Imagens ilustrativas da incorporadora, com sugestão de decoração.</p>
           <div class="deco">${l.map((src,i)=>`<button type="button" class="${i===0||(i===l.length-1&&l.length%2===0)?'g':''}" data-z="${src}"><img src="${src}" alt="Ambiente decorado" loading="lazy"></button>`).join('')}</div>`; })()}
