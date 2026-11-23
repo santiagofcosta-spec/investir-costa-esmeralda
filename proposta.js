@@ -22,7 +22,7 @@
     mensais:{n:n0(c.mensais?.n),valor:r2(c.mensais?.valor),inicio:Math.max(1,n0(c.mensais?.inicio)||1)},
     baloes:{n:n0(c.baloes?.n),valor:r2(c.baloes?.valor),cada:Math.max(1,n0(c.baloes?.cada)||12),inicio:Math.max(1,n0(c.baloes?.inicio)||12)},
     unico:{valor:r2(c.unico?.valor),mes:Math.max(1,n0(c.unico?.mes)||1)},troca:r2(c.troca),
-    correcao:c.correcao||'',juros:+c.juros||0,nome:c.nome||'',aConfirmar:!!c.aConfirmar,amortizacao:c.amortizacao||''});
+    correcao:c.correcao||'',juros:+c.juros||0,nome:c.nome||'',aConfirmar:!!c.aConfirmar,amortizacao:c.amortizacao||'',chaves:c.chaves||'',obs:c.obs||''});   // chaves/obs: texto da condição (23/11, Bella del Mare)
   const mesesAte=k=>{ if(!k) return null; const h=new Date(), [y,m]=k.split('-').map(Number); return Math.max(0,(y-h.getFullYear())*12+(m-1-h.getMonth())); };
   const mesRot=m=>{ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+m); return `${NOMES_MES[d.getMonth()]}/${d.getFullYear()}`; };
   const LOTE=e=>!!e&&e.tipo==='loteamento';
@@ -225,7 +225,9 @@
   function rendaAcum(liqAno,g,mChaves,H){ let s=0; for(let k=Math.max(1,mChaves+1);k<=H*12;k++) s+=liqAno/12*Math.pow(1+g,k/12); return s; }
 
   // fotos do lazer para a página 2 (até 6, sem as de fachada), com legenda tirada do nome do arquivo
-  const LEG={'piscina-hidro':['Piscina com hidromassagem','Piscina con hidromasaje'],'praca-fogo':['Praça de fogo','Fogón'],'lounge-gourmet':['Lounge gourmet','Lounge gourmet'],
+  const LEG={'fachada-2':['Fachada','Fachada'],'entrada-predio':['Entrada do prédio','Entrada del edificio'],'apto-cozinha-vista':['Cozinha com vista','Cocina con vista'],
+    'apto-quarto':['Quarto','Dormitorio'],'apto-quartos':['Suíte e dormitório','Suite y dormitorio'],'apto-living-integrado':['Living integrado','Living integrado'],'apto-living-janela':['Living','Living'],'apto-circulacao':['Circulação','Circulación'],
+'piscina-hidro':['Piscina com hidromassagem','Piscina con hidromasaje'],'praca-fogo':['Praça de fogo','Fogón'],'lounge-gourmet':['Lounge gourmet','Lounge gourmet'],
     'salao-festas':['Salão de festas','Salón de fiestas'],'sala-games':['Sala de games','Sala de videojuegos'],'mini-mercado':['Mini mercado Empório Seletto','Minimercado Empório Seletto'],
     lavanderia:['Lavanderia compartilhada OMO','Lavandería compartida OMO'],'apto-living':['Apartamento decorado: living','Departamento decorado: living'],
     'apto-cozinha':['Apartamento decorado: cozinha e jantar','Departamento decorado: cocina y comedor'],'apto-suite':['Apartamento decorado: suíte','Departamento decorado: suite'],
@@ -327,7 +329,7 @@
       return `<div class="pp-vip pp-abaixo"><div class="selo">${L('PREÇO ABAIXO DA MÉDIA','PRECIO POR DEBAJO DEL PROMEDIO')}</div>
         <h3>${L(`${brl(m2u)}/m²: ${pct(ab,0)} abaixo da média ${deQuem(alvo)}`,`${brl(m2u)}/m²: ${pct(ab,0)} por debajo del promedio ${deQuem(alvo)}`)}</h3>
         <div class="vip-nums"><div><span>${L('Na média','Al promedio')}</span><s>${brl(media)}</s></div><div><span>${L('Seu valor','Su valor')}</span><b>${brl(m.total)}</b></div><div class="eco"><span>${L('Diferença a seu favor','Diferencia a su favor')}</span><b>${brl(eco)}</b></div></div>
-        <p class="vip-txt">${L('Comprar na planta, pelo preço de lançamento, é entrar antes do mercado: o imóvel fica pronto valendo o preço de um imóvel novo da região.','Comprar en pozo, al precio de lanzamiento, es entrar antes que el mercado: el inmueble queda listo valiendo el precio de un inmueble nuevo de la zona.')}</p>
+        <p class="vip-txt">${e.pronto?L('Imóvel pronto, abaixo do preço médio da região: você compra hoje pagando menos que o mercado e já pode usar ou alugar, sem esperar obra.','Inmueble listo, por debajo del precio promedio de la zona: compra hoy pagando menos que el mercado y ya puede usarlo o alquilarlo, sin esperar obra.'):L('Comprar na planta, pelo preço de lançamento, é entrar antes do mercado: o imóvel fica pronto valendo o preço de um imóvel novo da região.','Comprar en pozo, al precio de lanzamiento, es entrar antes que el mercado: el inmueble queda listo valiendo el precio de un inmueble nuevo de la zona.')}</p>
         <small>${nota} ${L('Comparamos com a média mais alta para você, a que dá o menor desconto. As médias reúnem todos os padrões e localizações; são referência, não avaliação.','Comparamos con el promedio más alto para usted, el que da el menor descuento. Los promedios reúnen todos los estándares y ubicaciones; son referencia, no tasación.')}</small></div>`;
     }
     const a=P.aj; if(!a.mensais.n&&!a.baloes.n) return '';
@@ -361,7 +363,7 @@
       <div class="pp-kpis">
         <div><span>${L('Valor total','Valor total')}</span><b>${brl(m.total)}</b><small>${u.area?brl(m2u)+'/m²':''}</small></div>
         <div><span>${L('Entrada','Anticipo')}</span><b>${brl(m.entrada)}</b><small>${pct(pctEnt,0)} ${L('do total','del total')}</small></div>
-        ${e.pronto?`<div><span>${L('Chaves','Llaves')}</span><b>${L('Na assinatura','A la firma')}</b><small>${L('pronto: aluga desde o 1º mês','listo: alquila desde el 1er mes')}</small></div>`:e.entrega?`<div><span>${L('Até as chaves','Hasta la entrega')}</span><b>${brl(m.ateChaves)}</b><small>${pct(pctCh,0)} · ${fmtMesAno(e.entrega)}</small></div>`:`<div><span>${L('Entrega','Entrega')}</span><b>${L('a confirmar','a confirmar')}</b><small>${L('data com a construtora','fecha con la constructora')}</small></div>`}
+        ${e.pronto&&a.chaves?`<div><span>${L('Chaves','Llaves')}</span><b>${esc(a.chaves)}</b><small>${L('imóvel pronto','inmueble listo')}</small></div>`:e.pronto?`<div><span>${L('Chaves','Llaves')}</span><b>${L('Na assinatura','A la firma')}</b><small>${L('pronto: aluga desde o 1º mês','listo: alquila desde el 1er mes')}</small></div>`:e.entrega?`<div><span>${L('Até as chaves','Hasta la entrega')}</span><b>${brl(m.ateChaves)}</b><small>${pct(pctCh,0)} · ${fmtMesAno(e.entrega)}</small></div>`:`<div><span>${L('Entrega','Entrega')}</span><b>${L('a confirmar','a confirmar')}</b><small>${L('data com a construtora','fecha con la constructora')}</small></div>`}
         <div><span>${L('Prazo','Plazo')}</span><b>${m.prazo?`${m.prazo} ${L('meses','meses')}`:L('à vista','contado')}</b><small>${m.prazo?L(`última em ${mesRot(m.prazo)}`,`última en ${mesRot(m.prazo)}`):''}</small></div>
       </div>
       <h2>${L('Calendário de pagamentos, ano a ano','Calendario de pagos, año por año')}</h2>
@@ -369,7 +371,7 @@
         ${ys.map(y=>{const o=anos[y];return `<tr><td>${y}${chaves!=null&&+y===new Date(e.entrega+'-01T12:00').getFullYear()?' 🔑':''}</td><td>${z(o.ent)}</td><td>${z(o.men)}</td><td>${z(o.bal)}</td><td>${z(o.out)}</td><td><b>${brl(o.tot)}</b></td>${cub?`<td>${brl(o.corr)}</td>`:''}</tr>`;}).join('')}
         <tr class="tot"><td>${L('Total','Total')}</td><td>${z(m.entrada)}</td><td>${z(ys.reduce((s,y)=>s+anos[y].men,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].bal,0))}</td><td>${z(ys.reduce((s,y)=>s+anos[y].out,0))}</td><td>${brl(m.total)}</td>${cub?`<td>${brl(m.corr)}</td>`:''}</tr>
       </tbody></table>
-      <p class="pp-obs">${cub?L(`Os valores da tabela de vendas são corrigidos pelo ${esc(a.correcao)}. A última coluna estima a correção usando o ${nomeIdx(a.correcao)} (${pct(cub,1)} ao ano); o valor real depende do índice de cada período.`,`Los valores se ajustan por ${esc(a.correcao)}. La última columna estima el ajuste con el ${nomeIdx(a.correcao)} (${pct(cub,1)} anual).`):''} 🔑 = ${L('ano da entrega das chaves','año de entrega')}.</p>
+      <p class="pp-obs">${cub?L(`Os valores da tabela de vendas são corrigidos pelo ${esc(a.correcao)}. A última coluna estima a correção usando o ${nomeIdx(a.correcao)} (${pct(cub,1)} ao ano); o valor real depende do índice de cada período.`,`Los valores se ajustan por ${esc(a.correcao)}. La última columna estima el ajuste con el ${nomeIdx(a.correcao)} (${pct(cub,1)} anual).`):''} ${a.obs?`<b>${esc(a.obs)}</b>`:''} 🔑 = ${L('ano da entrega das chaves','año de entrega')}.</p>
       ${caixaDestaque(e,u,m)}
       <h2>${L('O que está incluído','Qué incluye')}</h2>
       <ul class="pp-lista">
@@ -450,12 +452,12 @@
     return `<div class="pp-pag">
       <div class="pp-kick">${L('Simulação','Simulación')}</div>
       <h1>${L('Quanto seu imóvel pode render','Cuánto puede rendir su inmueble')}</h1>
-      <p class="pp-lead">${L(`Duas formas de alugar ${e.pronto?'logo depois da assinatura (imóvel pronto, chaves no ato)':`a partir das chaves${e.entrega?` (${fmtMesAno(e.entrega)})`:''}`}, num imóvel de ${brl(V)}${loc?`, com os valores praticados em <b>${loc}</b>`:''}. Valores do primeiro ano de aluguel, em valor de hoje.`,`Dos formas de alquilar desde la entrega${e.entrega?` (${fmtMesAno(e.entrega)})`:''}, en un inmueble de ${brl(V)}${loc?`, con los valores de <b>${loc}</b>`:''}. Valores del primer año de alquiler, en valor de hoy.`)}</p>
+      <p class="pp-lead">${L(`Duas formas de alugar ${e.pronto&&!P?.aj?.chaves?'logo depois da assinatura (imóvel pronto, chaves no ato)':`a partir das chaves${e.entrega?` (${fmtMesAno(e.entrega)})`:''}`}, num imóvel de ${brl(V)}${loc?`, com os valores praticados em <b>${loc}</b>`:''}. Valores do primeiro ano de aluguel, em valor de hoje.`,`Dos formas de alquilar desde la entrega${e.entrega?` (${fmtMesAno(e.entrega)})`:''}, en un inmueble de ${brl(V)}${loc?`, con los valores de <b>${loc}</b>`:''}. Valores del primer año de alquiler, en valor de hoy.`)}</p>
       <div class="pp-dois">
         ${col(L('🏖️ Temporada','🏖️ Temporada'),T,subT)}
         ${col(L('🏠 Aluguel anual','🏠 Alquiler anual'),A,subA)}
       </div>
-      ${e.semMobilia?(()=>{ const mob=V*(typeof SITE_CONFIG!=='undefined'?SITE_CONFIG.mobiliaPadraoPct:8)/100, mT=T.mes>0?Math.ceil(mob/T.mes):0;
+      ${(u.semMobilia??e.semMobilia)?(()=>{ const mob=V*(typeof SITE_CONFIG!=='undefined'?SITE_CONFIG.mobiliaPadraoPct:8)/100, mT=T.mes>0?Math.ceil(mob/T.mes):0;
         return `<p class="pp-obs pp-mob">${L(`🛋️ <b>Entregue sem mobília.</b> Para a temporada é preciso mobiliar: estimativa de ${brl(mob)} (${p1(mob/V*100)} do valor, referência do site, não é orçamento)${mT?`, que a sobra da temporada paga em cerca de ${mT} meses`:''}. O aluguel anual pode ser feito sem mobília.`,`🛋️ <b>Se entrega sin muebles.</b> Para temporada hay que amueblar: estimación de ${brl(mob)} (${p1(mob/V*100)} del valor, referencia, no es presupuesto)${mT?`, que lo que queda de la temporada paga en unos ${mT} meses`:''}. El alquiler anual puede hacerse sin muebles.`)}</p>`; })():''}
       <h2>${L('Seu patrimônio somando imóvel + aluguel (cenário moderado)','Su patrimonio sumando inmueble + alquiler (escenario moderado)')}</h2>
       <table class="pp-grade"><thead><tr><th style="text-align:left"></th>${HORIZ.map(h=>`<th>${h} ${L('anos','años')}</th>`).join('')}</tr></thead><tbody>
@@ -1043,12 +1045,12 @@
       ${paraCliente()}
       <div class="pp-dupla">${cap?`<img src="${cap}" alt="">`:''}
         <div><p class="pp-ficha">${ficha}</p>
-          <p>${[e.fase,e.pronto?L('<b>Pronto: chaves na assinatura, já pode gerar renda</b>','<b>Listo: llaves a la firma, ya puede generar renta</b>'):e.entrega?L('Entrega prevista ','Entrega prevista ')+fmtMesAno(e.entrega):''].filter(Boolean).join(' · ')}</p>
+          <p>${[e.fase,e.pronto&&a.chaves?L(`<b>Pronto · chaves: ${esc(a.chaves)}</b>`,`<b>Listo · llaves: ${esc(a.chaves)}</b>`):e.pronto?L('<b>Pronto: chaves na assinatura, já pode gerar renda</b>','<b>Listo: llaves a la firma, ya puede generar renta</b>'):e.entrega?L('Entrega prevista ','Entrega prevista ')+fmtMesAno(e.entrega):''].filter(Boolean).join(' · ')}</p>
           ${e.incorporacao?`<p class="pp-inc">${L('Registro de Incorporação nº','Registro de Incorporación nº')} ${e.incorporacao}</p>`:''}
           <div class="pp-total"><span>${L('Valor total','Valor total')}</span><b>${brl(m.total)}</b></div>
           <table class="pp-tab"><tbody>${resumo(a).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('')}</tbody></table>
           ${caixaSoja(a,m)}
-          <p class="pp-obs">${a.correcao?L(`Parcelas corrigidas mensalmente pelo ${esc(a.correcao)}.`,`Cuotas ajustadas mensualmente por ${esc(a.correcao)}.`):''} ${val?L(`<b>Proposta válida até ${val}</b>, sujeita à disponibilidade da unidade e à aprovação da incorporadora.`,`<b>Propuesta válida hasta ${val}</b>, sujeta a disponibilidad de la unidad y aprobación del desarrollador.`):L('Sujeita à disponibilidade da unidade e à aprovação da incorporadora.','Sujeta a disponibilidad de la unidad y aprobación del desarrollador.')}</p>
+          <p class="pp-obs">${a.obs?`<b>${esc(a.obs)}</b> `:''}${a.correcao?L(`Parcelas corrigidas mensalmente pelo ${esc(a.correcao)}.`,`Cuotas ajustadas mensualmente por ${esc(a.correcao)}.`):''} ${val?L(`<b>Proposta válida até ${val}</b>, sujeita à disponibilidade da unidade e à aprovação ${e.proprietario?'do proprietário':'da incorporadora'}.`,`<b>Propuesta válida hasta ${val}</b>, sujeta a disponibilidad de la unidad y aprobación ${e.proprietario?'del propietario':'del desarrollador'}.`):L(`Sujeita à disponibilidade da unidade e à aprovação ${e.proprietario?'do proprietário':'da incorporadora'}.`,`Sujeta a disponibilidad de la unidad y aprobación ${e.proprietario?'del propietario':'del desarrollador'}.`)}</p>
         </div></div>
       ${pl?`<div class="pp-planta"><h2>${L('Planta','Planta')} · ${u.area?u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})+' m²':''}</h2><img src="${pl}" alt=""></div>`:''}
     </div>
