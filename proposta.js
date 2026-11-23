@@ -225,7 +225,10 @@
   function rendaAcum(liqAno,g,mChaves,H){ let s=0; for(let k=Math.max(1,mChaves+1);k<=H*12;k++) s+=liqAno/12*Math.pow(1+g,k/12); return s; }
 
   // fotos do lazer para a página 2 (até 6, sem as de fachada), com legenda tirada do nome do arquivo
-  const LEG={'fachada-2':['Fachada','Fachada'],'entrada-predio':['Entrada do prédio','Entrada del edificio'],'apto-cozinha-vista':['Cozinha com vista','Cocina con vista'],
+  const LEG={'mob-sala':['Sala mobiliada','Sala amueblada'],'mob-cozinha':['Cozinha planejada','Cocina planificada'],'mob-jantar':['Mesa de jantar','Comedor'],
+    'mob-quarto-casal':['Quarto de casal','Dormitorio principal'],'mob-quarto':['2º quarto','2º dormitorio'],'mob-sacada':['Sacada com churrasqueira elétrica','Balcón con parrilla eléctrica'],
+    'vista-janela':['Vista da janela','Vista desde la ventana'],'mercado-interno':['Mercado interno','Mercado interno'],'condominio-playground':['Playground','Playground'],
+'fachada-2':['Fachada','Fachada'],'entrada-predio':['Entrada do prédio','Entrada del edificio'],'apto-cozinha-vista':['Cozinha com vista','Cocina con vista'],
     'apto-quarto':['Quarto','Dormitorio'],'apto-quartos':['Suíte e dormitório','Suite y dormitorio'],'apto-living-integrado':['Living integrado','Living integrado'],'apto-living-janela':['Living','Living'],'apto-circulacao':['Circulação','Circulación'],
 'piscina-hidro':['Piscina com hidromassagem','Piscina con hidromasaje'],'praca-fogo':['Praça de fogo','Fogón'],'lounge-gourmet':['Lounge gourmet','Lounge gourmet'],
     'salao-festas':['Salão de festas','Salón de fiestas'],'sala-games':['Sala de games','Sala de videojuegos'],'mini-mercado':['Mini mercado Empório Seletto','Minimercado Empório Seletto'],
@@ -1034,7 +1037,8 @@
     if(LOTE(P.e)) return pdfLote();
     if(PRISMA(P.e)) return pdfPrismaApto();
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
-    const cap=IMG(f.capa), pl=IMG(u.planta), usadas=fotosLazer(e).map(x=>x[0]), gal=(f.galeria||[]).map(IMG).filter(s=>s&&!usadas.includes(s)).slice(0,6), mapa=IMG(f.mapa), mapaRua=IMG(f.mapaRua);
+    const cap=IMG(f.capa), pl=IMG(u.planta), dest=(f.destaque||[]).map(IMG).filter(Boolean).slice(0,2),   // sem planta: 2 fotos grandes na capa (23/11)
+       usadas=fotosLazer(e).map(x=>x[0]), gal=(f.galeria||[]).map(IMG).filter(s=>s&&!usadas.includes(s)).slice(0,6), mapa=IMG(f.mapa), mapaRua=IMG(f.mapaRua);
     const val=/^\d{4}-\d{2}-\d{2}$/.test(P.validade)?P.validade.split('-').reverse().join('/'):'';
     const hoje=new Date().toLocaleDateString(ES?'es-AR':'pt-BR');
     const ficha=[u.tipo,u.area?`${u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})} m² ${L('privativos','privados')}`:'',u.vagas?`${u.vagas} ${u.vagas==1?L('vaga','cochera'):L('vagas','cocheras')}`:'',u.pavimento?`${u.pavimento}º ${L('andar','piso')}`:''].filter(Boolean).join(' · ');
@@ -1052,7 +1056,7 @@
           ${caixaSoja(a,m)}
           <p class="pp-obs">${a.obs?`<b>${esc(a.obs)}</b> `:''}${a.correcao?L(`Parcelas corrigidas mensalmente pelo ${esc(a.correcao)}.`,`Cuotas ajustadas mensualmente por ${esc(a.correcao)}.`):''} ${val?L(`<b>Proposta válida até ${val}</b>, sujeita à disponibilidade da unidade e à aprovação ${e.proprietario?'do proprietário':'da incorporadora'}.`,`<b>Propuesta válida hasta ${val}</b>, sujeta a disponibilidad de la unidad y aprobación ${e.proprietario?'del propietario':'del desarrollador'}.`):L(`Sujeita à disponibilidade da unidade e à aprovação ${e.proprietario?'do proprietário':'da incorporadora'}.`,`Sujeta a disponibilidad de la unidad y aprobación ${e.proprietario?'del propietario':'del desarrollador'}.`)}</p>
         </div></div>
-      ${pl?`<div class="pp-planta"><h2>${L('Planta','Planta')} · ${u.area?u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})+' m²':''}</h2><img src="${pl}" alt=""></div>`:''}
+      ${pl?`<div class="pp-planta"><h2>${L('Planta','Planta')} · ${u.area?u.area.toLocaleString('pt-BR',{minimumFractionDigits:2})+' m²':''}</h2><img src="${pl}" alt=""></div>`:(dest.length?`<div class="pp-planta"><h2>${L('O apartamento','El departamento')}</h2><div class="pp-fotos pp-dest">${dest.map(s=>`<figure><img src="${s}" alt=""><figcaption>${legenda(s)}</figcaption></figure>`).join('')}</div></div>`:'')}
     </div>
     ${pagDetalhe(e,u,a,m)}
     ${pagValorizacao(m.total)}
