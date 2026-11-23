@@ -150,6 +150,12 @@ h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;back
 .gal button{border:0;padding:0;border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:#111}
 .gal img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .gal button:hover img{transform:scale(1.05)}
+.obra{display:flex;gap:10px;overflow-x:auto;padding:14px 2px 10px;scroll-snap-type:x mandatory}
+.obra button{flex:0 0 150px;border:0;padding:0;background:none;color:inherit;text-align:left;scroll-snap-align:start;cursor:zoom-in}
+.obra img{width:150px;aspect-ratio:9/16;object-fit:cover;border-radius:12px;display:block;border:1px solid var(--line)}
+.obra b{display:block;font:600 14px var(--f-d);color:var(--gold-lt);margin-top:6px}
+.obra span{display:block;font-size:12px;color:#d4d4d8;line-height:1.3}
+.nota-ob{font-size:11px;color:var(--off);margin:4px 0 0}
 .mod{position:fixed;inset:0;background:rgba(5,8,11,.94);display:grid;place-items:center;z-index:50;padding:16px}
 .mod img{max-width:100%;max-height:88vh;border-radius:10px;background:#fff}
 .mod img[src*='/vistas/']{background:none}
@@ -259,6 +265,14 @@ footer b{color:var(--ink)}
     <div class="gal" id="gal"></div>
   </section>
 
+  <section class="sec" id="secObra" hidden>
+    <div class="kick">Acompanhamento de obra</div>
+    <h2>A obra, mês a mês</h2>
+    <p class="sub" id="obTxt"></p>
+    <div class="obra" id="obra"></div>
+    <p class="nota-ob">Quadros dos vídeos oficiais de acompanhamento de obra da Prointi&amp;GD. Toque numa foto para ampliar.</p>
+  </section>
+
   <footer id="rod"></footer>
 </div>
 
@@ -341,6 +355,18 @@ footer b{color:var(--ink)}
     $('lzTxt').textContent=D.lazerTexto||'';
     $('gal').innerHTML=(D.galeria||[]).map(IMG).filter(Boolean).map(s=>`<button type="button" data-z="${s}"><img loading="lazy" src="${s}" alt=""></button>`).join('');
     $('gal').onclick=e=>{const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
+    // linha do tempo da obra: ritmo de lajes da Torre Ocean calculado das próprias datas
+    const ob=(D.obra||[]).filter(o=>IMG(o.img));
+    if(ob.length){
+      const MES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'], mr=d=>MES[+d.slice(5,7)-1]+'/'+d.slice(0,4);
+      const pv=ob.filter(o=>o.pav), a=pv[0], z=pv.at(-1);
+      const meses=a&&z?(new Date(z.data)-new Date(a.data))/(30.44*864e5):0, lajes=a&&z?z.pav-a.pav:0;
+      $('obTxt').textContent=`Do início das garagens (${mr(ob[0].data)}) ao ${z?z.pav+'º pavimento da Torre Ocean':'último registro'} (${mr(ob.at(-1).data)}).`+
+        (lajes>1?` Ritmo recente: ${lajes} lajes em ${Math.round(meses)} meses, cerca de uma a cada ${Math.round(meses/lajes*30.44/7)} semanas.`:'');
+      $('obra').innerHTML=ob.map(o=>`<button type="button" data-z="${IMG(o.img)}"><img loading="lazy" src="${IMG(o.img)}" alt="${esc(o.etapa)}"><b>${mr(o.data)}</b><span>${esc(o.etapa)}${o.torre&&o.torre!=='Ocean Hill'?' · '+esc(o.torre):''}</span></button>`).join('');
+      $('obra').onclick=e=>{const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
+      $('secObra').hidden=false;
+    }
     $('rod').innerHTML=`<b>${esc(CFG.nome)}</b> · ${esc(CFG.empresa)} · WhatsApp ${esc(CFG.whatsappTxt)}<br>
       Disponibilidade conforme a tabela da incorporadora de ${esc(dataBR(D.tabela))}, sujeita a alteração sem aviso. Imagens ilustrativas.
       Condições em percentual, de referência; preço, correção e condições finais são confirmados na proposta.`;
