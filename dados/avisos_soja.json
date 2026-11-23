@@ -2123,6 +2123,78 @@
    "entrega": "entrega 03/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-23 13:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 137.75,
+   "antes": 136.9,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-23 13:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 137.0,
+   "antes": 136.0,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-23 13:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 129.65,
+   "antes": 127.75,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-23 13:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 134.65,
+   "antes": 133.75,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-23 13:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 125.8,
+   "antes": 124.55,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-23 13:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 125.45,
+   "antes": 124.15,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -2130,8 +2202,8 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-23 12:08",
- "lido": "2026-11-23 12:08",
+ "verificado": "2026-11-23 13:05",
+ "lido": "2026-11-23 13:05",
  "resumo": {
   "dia": "2026-11-23",
   "cidades": {
@@ -2165,11 +2237,11 @@
    },
    "Campos de Júlio/MT": {
     "2026": {
-     "compra_max": 136.9,
+     "compra_max": 137.75,
      "compra_abertura": 134.5
     },
     "2027": {
-     "compra_max": 127.75,
+     "compra_max": 129.65,
      "compra_abertura": 119.9
     },
     "Disponível": {
