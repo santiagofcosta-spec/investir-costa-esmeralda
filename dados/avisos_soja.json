@@ -2886,8 +2886,8 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-24 15:05",
- "lido": "2026-11-24 15:05",
+ "verificado": "2026-11-24 16:05",
+ "lido": "2026-11-24 16:05",
  "resumo": {
   "dia": "2026-11-24",
   "cidades": {
@@ -2897,7 +2897,7 @@
      "compra_abertura": 135.5
     },
     "2027": {
-     "compra_max": 127.95,
+     "compra_max": 126.8,
      "compra_abertura": 126.85
     },
     "Disponível": {
@@ -2911,7 +2911,7 @@
      "compra_abertura": 136.55
     },
     "2027": {
-     "compra_max": 129.6,
+     "compra_max": 128.2,
      "compra_abertura": 121.5
     },
     "Disponível": {
@@ -2925,7 +2925,7 @@
      "compra_abertura": 136.55
     },
     "2027": {
-     "compra_max": 129.0,
+     "compra_max": 127.6,
      "compra_abertura": 126.55
     },
     "Disponível": {
