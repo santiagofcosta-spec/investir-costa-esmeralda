@@ -2075,6 +2075,54 @@
    "entrega": "entrega 12/26",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-24 10:11",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 133.65,
+   "antes": null,
+   "cidade": "Pontes e Lacerda",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 10:11",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 132.55,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 12/26",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 10:11",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.7,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 10:11",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.1,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -2082,8 +2130,8 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-24 09:05",
- "lido": "2026-11-24 09:05",
+ "verificado": "2026-11-24 10:11",
+ "lido": "2026-11-24 10:11",
  "resumo": {
   "dia": "2026-11-24",
   "cidades": {
@@ -2121,7 +2169,7 @@
      "compra_abertura": 136.55
     },
     "2027": {
-     "compra_max": 126.55,
+     "compra_max": 121.7,
      "compra_abertura": 126.55
     },
     "Disponível": {
