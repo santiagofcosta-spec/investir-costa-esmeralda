@@ -2123,6 +2123,330 @@
    "entrega": "entrega 03/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 135.7,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 130.55,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "disponível",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 134.6,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 138.2,
+   "antes": null,
+   "cidade": "São Miguel do Guaporé",
+   "uf": "RO",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 132.85,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "disponível",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 127.1,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 125.6,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.3,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.3,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 122.85,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 122.3,
+   "antes": null,
+   "cidade": "Vilhena",
+   "uf": "RO",
+   "entrega": "entrega 02/27",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 136.7,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 135.8,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 135.4,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 133.85,
+   "antes": null,
+   "cidade": "Pontes e Lacerda",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 133.45,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.4,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.15,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.1,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.65,
+   "antes": null,
+   "cidade": "Comodoro",
+   "uf": "MT",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 128.2,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 128.75,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 122.05,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.45,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.05,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.9,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-24 11:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 121.35,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 02/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -2130,8 +2454,8 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-24 10:11",
- "lido": "2026-11-24 10:11",
+ "verificado": "2026-11-24 11:05",
+ "lido": "2026-11-24 11:05",
  "resumo": {
   "dia": "2026-11-24",
   "cidades": {
@@ -2141,7 +2465,7 @@
      "compra_abertura": 135.5
     },
     "2027": {
-     "compra_max": 126.85,
+     "compra_max": 127.1,
      "compra_abertura": 126.85
     },
     "Disponível": {
@@ -2155,7 +2479,7 @@
      "compra_abertura": 136.55
     },
     "2027": {
-     "compra_max": 121.5,
+     "compra_max": 128.75,
      "compra_abertura": 121.5
     },
     "Disponível": {
@@ -2169,7 +2493,7 @@
      "compra_abertura": 136.55
     },
     "2027": {
-     "compra_max": 121.7,
+     "compra_max": 128.2,
      "compra_abertura": 126.55
     },
     "Disponível": {
