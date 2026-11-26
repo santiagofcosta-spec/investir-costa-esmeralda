@@ -2951,6 +2951,66 @@
    "entrega": "entrega 05/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-26 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 119.75,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-26 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 123.95,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-26 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.8,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-26 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.65,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-26 10:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 120.35,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -2958,8 +3018,8 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-26 09:05",
- "lido": "2026-11-26 09:05",
+ "verificado": "2026-11-26 10:05",
+ "lido": "2026-11-26 10:05",
  "resumo": {
   "dia": "2026-11-26",
   "cidades": {
@@ -2989,7 +3049,7 @@
    },
    "Campos de Júlio/MT": {
     "2027": {
-     "compra_max": 128.45,
+     "compra_max": 123.95,
      "compra_abertura": 128.45
     },
     "Disponível": {
