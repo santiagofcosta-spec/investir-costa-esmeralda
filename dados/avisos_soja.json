@@ -3486,14 +3486,14 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-26 16:05",
- "lido": "2026-11-26 16:05",
+ "verificado": "2026-11-26 17:05",
+ "lido": "2026-11-26 17:05",
  "resumo": {
   "dia": "2026-11-26",
   "cidades": {
    "Vilhena/RO": {
     "2027": {
-     "compra_max": 123.45,
+     "compra_max": 123.3,
      "compra_abertura": 128.25
     },
     "Disponível": {
@@ -3505,7 +3505,7 @@
    },
    "Comodoro/MT": {
     "2027": {
-     "compra_max": 123.6,
+     "compra_max": 123.45,
      "compra_abertura": 121.05
     },
     "Disponível": {
@@ -3517,7 +3517,7 @@
    },
    "Campos de Júlio/MT": {
     "2027": {
-     "compra_max": 123.55,
+     "compra_max": 123.45,
      "compra_abertura": 128.45
     },
     "Disponível": {
