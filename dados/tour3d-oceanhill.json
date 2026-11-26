@@ -108,6 +108,63 @@
     }
    ]
   },
+  "img/oceanhill/planta-casa-do-sul.jpg": {
+   "video": "img/oceanhill/tour3d/sul.mp4",
+   "poster": "img/oceanhill/tour3d/sul.jpg",
+   "nome": "Casa do Sul",
+   "dur": 53,
+   "pinos": [
+    {
+     "x": 85.12,
+     "y": 43.56,
+     "nome": "Jantar · churrasqueira",
+     "info": "24,29 m² · churrasqueira separada da cozinha",
+     "foto": "img/oceanhill/decorado/casa-do-sul-1.jpg"
+    },
+    {
+     "x": 75.75,
+     "y": 34.67,
+     "nome": "Cozinha",
+     "info": "14,39 m² · aberta para o jantar",
+     "foto": "img/oceanhill/decorado/casa-do-sul-2.jpg"
+    },
+    {
+     "x": 59.13,
+     "y": 66.22,
+     "nome": "Estar",
+     "info": "35,34 m² · a maior sala da torre",
+     "foto": ""
+    },
+    {
+     "x": 15.75,
+     "y": 53.11,
+     "nome": "Suíte master",
+     "info": "19,27 m²",
+     "foto": ""
+    },
+    {
+     "x": 24.38,
+     "y": 36.0,
+     "nome": "Suíte 02",
+     "info": "14,79 m²",
+     "foto": ""
+    },
+    {
+     "x": 34.88,
+     "y": 41.78,
+     "nome": "Suíte 03",
+     "info": "14,78 m²",
+     "foto": ""
+    },
+    {
+     "x": 53.87,
+     "y": 41.78,
+     "nome": "Suíte 04",
+     "info": "14,00 m²",
+     "foto": ""
+    }
+   ]
+  },
   "img/oceanhill/planta-casa-alema.jpg": {
    "video": "img/oceanhill/tour3d/alema.mp4",
    "poster": "img/oceanhill/tour3d/alema.jpg",
@@ -232,6 +289,219 @@
      "y": 38.67,
      "nome": "Suíte 04",
      "info": "14,12 m² · pode virar parte da sala",
+     "foto": ""
+    }
+   ]
+  },
+  "img/oceanhill/planta-casa-brasil-221.jpg": {
+   "video": "img/oceanhill/tour3d/brasil221.mp4",
+   "poster": "img/oceanhill/tour3d/brasil221.jpg",
+   "nome": "Casa Brasil",
+   "dur": 59,
+   "pinos": [
+    {
+     "x": 70.88,
+     "y": 38.89,
+     "nome": "Estar",
+     "info": "31,02 m² · integrado ao jantar",
+     "foto": "img/oceanhill/decorado/casa-brasil-2.jpg"
+    },
+    {
+     "x": 86.5,
+     "y": 43.33,
+     "nome": "Jantar",
+     "info": "28,15 m² · vista para o Rio Perequê",
+     "foto": "img/oceanhill/decorado/casa-brasil-1.jpg"
+    },
+    {
+     "x": 83.5,
+     "y": 73.78,
+     "nome": "Cozinha · churrasqueira",
+     "info": "25,68 m²",
+     "foto": "img/oceanhill/decorado/casa-brasil-3.jpg"
+    },
+    {
+     "x": 66.88,
+     "y": 57.78,
+     "nome": "Hall de entrada",
+     "info": "12,72 m²",
+     "foto": ""
+    },
+    {
+     "x": 57.63,
+     "y": 51.11,
+     "nome": "Home office",
+     "info": "6,95 m²",
+     "foto": ""
+    },
+    {
+     "x": 37.38,
+     "y": 36.67,
+     "nome": "Suíte master",
+     "info": "20,64 m²",
+     "foto": ""
+    },
+    {
+     "x": 31.5,
+     "y": 54.89,
+     "nome": "Suíte 02",
+     "info": "17,12 m²",
+     "foto": ""
+    },
+    {
+     "x": 49.88,
+     "y": 41.78,
+     "nome": "Suíte 03",
+     "info": "16,33 m²",
+     "foto": ""
+    }
+   ]
+  },
+  "img/oceanhill/planta-mansao-hill.jpg": {
+   "video": "img/oceanhill/tour3d/mansao-hill.mp4",
+   "poster": "img/oceanhill/tour3d/mansao-hill.jpg",
+   "nome": "Mansão Suspensa",
+   "dur": 65,
+   "pinos": [
+    {
+     "x": 80.0,
+     "y": 64.0,
+     "nome": "Living",
+     "info": "68,31 m² · vista para o Rio Perequê",
+     "foto": "img/oceanhill/decorado/casa-do-sul-1.jpg"
+    },
+    {
+     "x": 83.88,
+     "y": 34.22,
+     "nome": "Cozinha gourmet + jantar",
+     "info": "53,25 m²",
+     "foto": "img/oceanhill/decorado/casa-do-chef-2.jpg"
+    },
+    {
+     "x": 67.75,
+     "y": 45.56,
+     "nome": "Adega + bar",
+     "info": "32,00 m²",
+     "foto": "img/oceanhill/decorado/casa-do-chef-1.jpg"
+    },
+    {
+     "x": 38.25,
+     "y": 35.33,
+     "nome": "Suíte master",
+     "info": "33,82 m² · com banheira",
+     "foto": ""
+    },
+    {
+     "x": 50.75,
+     "y": 32.44,
+     "nome": "Suíte 02",
+     "info": "14,78 m²",
+     "foto": ""
+    },
+    {
+     "x": 65.38,
+     "y": 84.89,
+     "nome": "Suíte 03",
+     "info": "16,84 m²",
+     "foto": ""
+    },
+    {
+     "x": 71.75,
+     "y": 86.89,
+     "nome": "Suíte 04",
+     "info": "12,04 m²",
+     "foto": ""
+    },
+    {
+     "x": 86.17,
+     "y": 89.11,
+     "nome": "Suíte 05",
+     "info": "12,60 m²",
+     "foto": ""
+    },
+    {
+     "x": 90.62,
+     "y": 80.44,
+     "nome": "Suíte 06",
+     "info": "17,83 m² · vista para o Rio Perequê",
+     "foto": ""
+    }
+   ]
+  },
+  "img/oceanhill/planta-mansao-ocean.jpg": {
+   "video": "img/oceanhill/tour3d/mansao-ocean.mp4",
+   "poster": "img/oceanhill/tour3d/mansao-ocean.jpg",
+   "nome": "Mansão Suspensa",
+   "dur": 71,
+   "pinos": [
+    {
+     "x": 76.62,
+     "y": 29.56,
+     "nome": "Living",
+     "info": "59,54 m² · vista para o Rio Perequê",
+     "foto": "img/oceanhill/decorado/casa-brasil-3.jpg"
+    },
+    {
+     "x": 82.5,
+     "y": 43.11,
+     "nome": "Living lareira",
+     "info": "16,60 m²",
+     "foto": "img/oceanhill/decorado/casa-brasil-2.jpg"
+    },
+    {
+     "x": 81.0,
+     "y": 59.33,
+     "nome": "Adega + bar",
+     "info": "23,80 m²",
+     "foto": "img/oceanhill/decorado/casa-alema-2.jpg"
+    },
+    {
+     "x": 83.25,
+     "y": 82.44,
+     "nome": "Cozinha gourmet + jantar",
+     "info": "49,78 m² · vista para o Rio Perequê",
+     "foto": "img/oceanhill/decorado/casa-alema-1.jpg"
+    },
+    {
+     "x": 43.25,
+     "y": 33.33,
+     "nome": "Suíte master",
+     "info": "34,94 m² · com banheira",
+     "foto": ""
+    },
+    {
+     "x": 56.75,
+     "y": 30.22,
+     "nome": "Suíte 02",
+     "info": "17,04 m²",
+     "foto": ""
+    },
+    {
+     "x": 40.12,
+     "y": 66.22,
+     "nome": "Suíte 03",
+     "info": "19,21 m² · com varanda",
+     "foto": ""
+    },
+    {
+     "x": 38.75,
+     "y": 78.0,
+     "nome": "Suíte 04",
+     "info": "16,60 m²",
+     "foto": ""
+    },
+    {
+     "x": 41.38,
+     "y": 90.0,
+     "nome": "Suíte 05",
+     "info": "15,50 m²",
+     "foto": ""
+    },
+    {
+     "x": 52.38,
+     "y": 86.22,
+     "nome": "Suíte 06",
+     "info": "14,11 m²",
      "foto": ""
     }
    ]
