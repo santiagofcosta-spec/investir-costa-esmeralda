@@ -173,7 +173,9 @@
       "img/oceanhill/amb/lounge-externo.jpg"
      ]
     }
-   ]
+   ],
+   "video": "img/oceanhill/planta/lazer-3d.mp4",
+   "poster": "img/oceanhill/planta/lazer-3d.jpg"
   },
   {
    "id": "terreo",
@@ -258,7 +260,9 @@
       "img/oceanhill/nautica-4.jpg"
      ]
     }
-   ]
+   ],
+   "video": "img/oceanhill/planta/terreo-3d.mp4",
+   "poster": "img/oceanhill/planta/terreo-3d.jpg"
   }
  ]
 }

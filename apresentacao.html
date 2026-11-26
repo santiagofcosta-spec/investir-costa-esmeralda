@@ -332,7 +332,7 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
 
 </main>
 <div id="zoom" hidden><img alt=""></div>
-<script src="planta.js?v=20261124a"></script>
+<script src="planta.js?v=20261126b"></script>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
@@ -474,7 +474,7 @@ ph('ht-3701');
 /* lazer: planta interativa (planta.js), montada quando a tela aparece */
 let piOk=false;
 function montarLazer(){ if(piOk||!window.PlantaInterativa) return; piOk=true;
-  PlantaInterativa.montar($('piLazer'),'dados/planta-oceanhill.json?v=20261124a',{grande:true}).then(api=>{ if(api) window.__piAberto=api.aberto; }); }
+  PlantaInterativa.montar($('piLazer'),'dados/planta-oceanhill.json?v=20261126b',{grande:true}).then(api=>{ if(api) window.__piAberto=api.aberto; }); }
 
 /* vitrine leva o contato do Santiago adiante */
 const q=new URLSearchParams(location.search).get('cor'); if(q&&/^[a-z0-9-]{1,60}$/.test(q)) $('btnVitrine').href+='&cor='+q;

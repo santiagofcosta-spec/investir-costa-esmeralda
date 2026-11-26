@@ -4,6 +4,7 @@
 (function(){
   'use strict';
   const IMG=s=>/^img\/[a-z0-9_\/-]+\.(jpg|png|webp)$/i.test(String(s||''))?s:'';
+  const VID=s=>/^img\/[a-z0-9_\/-]+\.mp4$/i.test(String(s||''))?s:'';
   const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const CSS=`
 .pi{--pi-g:#D4AF37;--pi-gl:#F5E6B3;--pi-ink:#F4F4F5;--pi-mu:#A1A1AA;--pi-ln:rgba(212,175,55,.22);color:var(--pi-ink)}
@@ -53,6 +54,10 @@
   .pi-pin i{inset:5px}
   .pi-dica{display:none}
 }
+/* 26/11: tour em vídeo 3D (pavimento com "video" no JSON) */
+.pi-vid{position:fixed;inset:0;z-index:90;background:rgba(5,8,11,.95);display:flex;align-items:center;justify-content:center;padding:16px}
+.pi-vid video{width:min(100%,calc((100vh - 40px)*16/9));max-height:calc(100vh - 32px);border-radius:14px;background:#000;box-shadow:0 30px 80px -20px #000}
+.pi-vid button{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(10,14,18,.8);color:#fff;font-size:18px;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.pi-pin::before{animation:none}.pi-card{transition:opacity .2s}}`;
   function estilo(){ if(document.getElementById('piCss')) return; const s=document.createElement('style'); s.id='piCss'; s.textContent=CSS; document.head.appendChild(s); }
 
@@ -61,17 +66,26 @@
     let D=null, pv=0, at=-1, ft=0, tourT=0, ftT=0;
     el.classList.add('pi'); if(op.grande) el.classList.add('grande');
     const carregar=typeof fonte==='string'?fetch(fonte).then(r=>{if(!r.ok) throw 0; return r.json();}):Promise.resolve(fonte);
-    return carregar.then(d=>{ D=d; if(!D.pavimentos||!D.pavimentos.length) throw 0; desenhar(); return api; })
-      .catch(()=>{ el.innerHTML=''; el.hidden=true; return null; });
 
     function desenhar(){
       el.innerHTML=`<div class="pi-top"><div class="pi-tabs">${D.pavimentos.map((p,i)=>`<button type="button" class="pi-tab" data-i="${i}" aria-pressed="${i===pv}">${esc(p.nome)}</button>`).join('')}</div>
-        <button type="button" class="pi-tour" aria-pressed="false">▶ Tour guiado</button></div>
+        <button type="button" class="pi-tour" aria-pressed="false">${temVideo()?'▶ Tour em 3D':'▶ Tour guiado'}</button></div>
         <p class="pi-sub"></p><div class="pi-pal"></div>${D.nota?`<p class="pi-nota">${esc(D.nota)}</p>`:''}`;
       el.querySelector('.pi-tabs').onclick=e=>{const b=e.target.closest('.pi-tab'); if(b){ pararTour(); trocar(+b.dataset.i); }};
-      el.querySelector('.pi-tour').onclick=()=>tourT?pararTour():tour();
+      el.querySelector('.pi-tour').onclick=()=>VID(D.pavimentos[pv].video)?video(D.pavimentos[pv]):tourT?pararTour():tour();
       trocar(pv);
     }
+    const temVideo=()=>D.pavimentos.some(p=>VID(p.video));
+    let vidEl=null;
+    function video(p){   // tour em vídeo 3D, em tela cheia por cima da página
+      fechar(true); pararTour();
+      vidEl=document.createElement('div'); vidEl.className='pi-vid'; vidEl.setAttribute('role','dialog'); vidEl.setAttribute('aria-label','Tour em 3D · '+p.nome);
+      vidEl.innerHTML=`<video src="${VID(p.video)}" ${IMG(p.poster)?`poster="${IMG(p.poster)}"`:''} controls autoplay playsinline muted></video><button type="button" aria-label="Fechar">✕</button>`;
+      vidEl.onclick=e=>{ if(e.target===vidEl||e.target.closest('button')) fecharVideo(); };
+      document.body.appendChild(vidEl); const v=vidEl.querySelector('video'); v.play().catch(()=>{});
+      v.onended=fecharVideo;
+    }
+    function fecharVideo(){ if(!vidEl) return; const v=vidEl.querySelector('video'); v.pause(); v.removeAttribute('src'); v.load(); vidEl.remove(); vidEl=null; }
     function trocar(i){
       fechar(true); pv=i; const p=D.pavimentos[i];
       [...el.querySelectorAll('.pi-tab')].forEach((b,k)=>b.setAttribute('aria-pressed',k===i));
@@ -120,13 +134,17 @@
     function tour(){ const b=el.querySelector('.pi-tour'); b.setAttribute('aria-pressed','true'); b.textContent='❚❚ Pausar tour';
       let k=at<0?0:at; abrir(k);
       tourT=setInterval(()=>{ k++; if(k>=D.pavimentos[pv].pinos.length){ if(pv<D.pavimentos.length-1){ trocar(pv+1); k=0; } else { pararTour(); fechar(); return; } } abrir(k); },op.passo||5200); }
-    function pararTour(){ clearInterval(tourT); tourT=0; const b=el.querySelector('.pi-tour'); if(b){ b.setAttribute('aria-pressed','false'); b.textContent='▶ Tour guiado'; } }
-    function tecla(e){ if(at<0||!el.isConnected) return; const n=D.pavimentos[pv].pinos.length;
+    function pararTour(){ clearInterval(tourT); tourT=0; const b=el.querySelector('.pi-tour'); if(b){ b.setAttribute('aria-pressed','false'); b.textContent=temVideo()?'▶ Tour em 3D':'▶ Tour guiado'; } }
+    function tecla(e){ if(vidEl&&e.key==='Escape'){ fecharVideo(); e.preventDefault(); e.stopPropagation(); return; }
+      if(at<0||!el.isConnected) return; const n=D.pavimentos[pv].pinos.length;
       if(e.key==='Escape'){ pararTour(); fechar(); } else if(e.key==='ArrowRight'){ pararTour(); abrir((at+1)%n); } else if(e.key==='ArrowLeft'){ pararTour(); abrir((at-1+n)%n); } else return;
       e.preventDefault(); e.stopPropagation(); }
     document.addEventListener('keydown',tecla,true);
-    var api={trocar:i=>trocar(i), abrir:k=>abrir(k), fechar:()=>fechar(), tour:()=>tour(), parar:()=>pararTour(), aberto:()=>at>=0,
-      destruir:()=>{ pararTour(); clearInterval(ftT); document.removeEventListener('keydown',tecla,true); el.innerHTML=''; }};
+    var api={trocar:i=>trocar(i), video:()=>video(D.pavimentos[pv]), abrir:k=>abrir(k), fechar:()=>fechar(), tour:()=>tour(), parar:()=>pararTour(), aberto:()=>at>=0||!!vidEl,
+      destruir:()=>{ pararTour(); clearInterval(ftT); fecharVideo(); document.removeEventListener('keydown',tecla,true); el.innerHTML=''; }};
+    // 26/11: o return ficava no começo e o resto (teclado, api) nunca rodava; agora vem no fim
+    return carregar.then(d=>{ D=d; if(!D.pavimentos||!D.pavimentos.length) throw 0; desenhar(); return api; })
+      .catch(()=>{ el.innerHTML=''; el.hidden=true; return null; });
   }
   window.PlantaInterativa={montar};
 })();

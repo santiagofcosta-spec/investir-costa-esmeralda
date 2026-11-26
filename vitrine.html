@@ -327,7 +327,7 @@ footer b{color:var(--ink)}
 </div>
 <div class="mod" id="mod" hidden><button type="button" aria-label="Fechar" id="modX">✕</button><img id="modImg" alt=""><figure id="modFig" hidden><video id="modVid" controls playsinline muted preload="none"></video><figcaption id="modCap"></figcaption></figure></div>
 
-<script src="planta.js?v=20261124a"></script>
+<script src="planta.js?v=20261126b"></script>
 <script>
 (function(){
   'use strict';
@@ -385,7 +385,7 @@ footer b{color:var(--ink)}
     $('gal').innerHTML=(D.galeria||[]).map(IMG).filter(Boolean).map(s=>`<button type="button" data-z="${s}"><img loading="lazy" src="${s}" alt=""></button>`).join('');
     $('gal').onclick=e=>{const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
     // planta interativa (24/11/2026) no lugar da galeria; sem dados/planta-<emp>.json, volta a galeria
-    if(window.PlantaInterativa) PlantaInterativa.montar($('planta'),`dados/planta-${ID}.json?v=20261124a`).then(p=>{ if(!p) $('gal').hidden=false; });
+    if(window.PlantaInterativa) PlantaInterativa.montar($('planta'),`dados/planta-${ID}.json?v=20261126b`).then(p=>{ if(!p) $('gal').hidden=false; });
     else $('gal').hidden=false;
     // Itapema em transformação: obras de terceiros com situação e fonte (vitrine_oceanhill.py, TRANSFORMA)
     const tf=D.transforma&&D.transforma.itens||[], url=u=>/^https:\/\/[^\s"'<>]+$/.test(u)?u:'';
