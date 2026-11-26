@@ -1,0 +1,323 @@
+{
+ "_sobre": "Conteúdo da apresentação (apresentacao.html?e=<id>). Gerado em 27/11/2026 a partir da página; editar aqui. Ordem das telas = ordem desta lista (tirar da lista = esconder a tela). Textos aceitam só <i>, <b> e <br>. Números de mercado vêm de dados/dados.json e dados/referencias.json; o empreendimento, de \"dados\".",
+ "id": "oceanhill",
+ "contato": {
+  "nome": "Santiago Fernandes Costa",
+  "whatsapp": "5547992176060",
+  "msgConversa": "Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero conversar.",
+  "msgPresencial": "Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa PRESENCIAL. Qual dia e horário ficam bons para você?",
+  "msgVideo": "Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa por VIDEOCHAMADA. Qual dia e horário ficam bons para você?"
+ },
+ "vitrine": "vitrine.html?e=oceanhill&marca=0",
+ "dados": {
+  "vitrine": "dados/vitrine-oceanhill.json",
+  "tour3d": "dados/tour3d-oceanhill.json?v=20261126c",
+  "planta": "dados/planta-oceanhill.json?v=20261126b"
+ },
+ "telas": [
+  {
+   "id": "capa",
+   "rotulo": "Capa",
+   "img": "img/oceanhill/transforma/orla.jpg",
+   "k": "Itapema · Porto Belo · Bombinhas",
+   "titulo": "Costa <i>Esmeralda</i>",
+   "lead": "Por que investir no litoral que mais cresce em Santa Catarina: dos números da região às obras que estão mudando a orla, até chegar ao empreendimento.",
+   "nota": "Apresentação de <b>Santiago Fernandes Costa</b>"
+  },
+  {
+   "id": "populacao",
+   "rotulo": "Crescimento",
+   "k": "Uma região que não para de crescer",
+   "titulo": "Gente chegando para <i>morar</i>, não só para veranear",
+   "nota": "Fonte: IBGE, Censos 2010 e 2022 e estimativa populacional 2025. Mais moradores o ano inteiro significa demanda por compra e por aluguel fora da temporada."
+  },
+  {
+   "id": "localizacao",
+   "rotulo": "Localização",
+   "k": "Localização",
+   "titulo": "No eixo da <i>BR-101</i>, entre dois aeroportos internacionais",
+   "nota": "Distâncias aproximadas por estrada.",
+   "itens": [
+    [
+     "~10 km",
+     "Itapema, a partir de Porto Belo"
+    ],
+    [
+     "~12 km",
+     "Bombinhas"
+    ],
+    [
+     "~30 km",
+     "Balneário Camboriú"
+    ],
+    [
+     "~50 km",
+     "Aeroporto de Navegantes"
+    ],
+    [
+     "~70 km",
+     "Aeroporto de Florianópolis"
+    ]
+   ],
+   "mapa": "img/regiao/mapa-orla.jpg"
+  },
+  {
+   "id": "valorizacao",
+   "rotulo": "Valorização",
+   "k": "Valorização acumulada · base 100 em dez/2020",
+   "titulo": "Itapema valorizou mais que a <i>renda fixa</i>"
+  },
+  {
+   "id": "cub",
+   "rotulo": "Custo de construir",
+   "k": "CUB/SC · custo de construir",
+   "titulo": "Construir fica mais caro <i>todo mês</i>",
+   "lead": "O custo de erguer um prédio novo só sobe. Isso sustenta o preço de quem já comprou: o imóvel de amanhã vai custar mais para ser feito.",
+   "nota": "Fonte: Sinduscon (CUB/SC, residencial médio), série publicada mês a mês."
+  },
+  {
+   "id": "portobelo",
+   "rotulo": "Porto Belo",
+   "k": "Porto Belo · o próximo vetor",
+   "titulo": "Dinheiro entrando, e o m² ainda <i>abaixo</i> dos vizinhos",
+   "nota": "m²: plataforma DWV (imóveis novos vendidos), divulgado por Lance Porto Belo, NSC Total, Imobireport e Portas. Dinheiro em escrituras: ITBI declarado pela Prefeitura ao Tesouro Nacional (SICONFI) dividido pela alíquota de 2%; é um piso (compras na planta ainda sem escritura não entram)."
+  },
+  {
+   "id": "projetos",
+   "rotulo": "Grandes projetos",
+   "k": "Porto Belo em transformação",
+   "titulo": "Bilhões em projetos <i>às margens da BR-101</i>",
+   "nota": "Fontes: NSC Total, MySide, Panrotas, InfoMoney, Diário do Litoral. Projetos anunciados por incorporadoras e imprensa; prazos podem mudar.",
+   "cards": [
+    {
+     "l": "Recebendo moradores",
+     "v": "VivaPark",
+     "n": "Primeiro \"bairro parque\" planejado do Brasil (Vokkan), ~R$ 1 bilhão de investimento inicial, até 30 mil moradores previstos, selo LEED."
+    },
+    {
+     "l": "Golfe pronto · tênis em 2028",
+     "v": "All Resort",
+     "n": "VGV R$ 600 milhões (All Wert): o 1º campo de golfe totalmente iluminado da América do Sul e o 1º Rafa Nadal Tennis Center do continente."
+    },
+    {
+     "l": "Em licenciamento · previsão 2027",
+     "v": "Porto Belo Lagos",
+     "n": "Bairro inteligente da JTA, de ~1 milhão de m², com o complexo esportivo da família Neymar Jr. (~R$ 250 milhões)."
+    },
+    {
+     "l": "Em execução por etapas",
+     "v": "Orla do Perequê",
+     "n": "Masterplan da Prefeitura com a ACIP (construtoras de Porto Belo): 5 etapas em 36 meses."
+    }
+   ]
+  },
+  {
+   "id": "orlaPereque",
+   "rotulo": "Orla do Perequê",
+   "k": "Revitalização · Balneário Perequê, Porto Belo",
+   "titulo": "A nova orla do <i>Perequê</i>",
+   "lead": "O Masterplan do Perequê, da Prefeitura de Porto Belo com a associação das construtoras (ACIP), prevê os molhes dos rios Perequê e Perequezinho, a nova orla do Balneário Perequê e a revitalização das principais avenidas, em 5 etapas e 36 meses."
+  },
+  {
+   "id": "orlaItapema",
+   "rotulo": "Orla de Itapema",
+   "k": "Revitalização · Meia Praia, Itapema",
+   "titulo": "A Meia Praia ganha <i>nova orla</i> e mais areia"
+  },
+  {
+   "id": "passarela",
+   "rotulo": "Passarela",
+   "k": "Itapema ↔ Porto Belo",
+   "video": "img/oceanhill/transforma/passarela-3d.mp4",
+   "videoCapa": "img/apresentacao/passarela-3d.jpg",
+   "titulo": "A passarela sobre o <i>Rio Perequê</i>"
+  },
+  {
+   "id": "roda",
+   "rotulo": "It!Wheel",
+   "img": "img/oceanhill/transforma/roda.jpg",
+   "k": "Turismo o ano inteiro"
+  },
+  {
+   "id": "perfis",
+   "rotulo": "Microrregiões",
+   "k": "Guia para quem investe de fora",
+   "titulo": "Cada pedaço da costa, <i>um perfil</i>",
+   "nota": "Toque num perfil para ver a tese. Perfis qualitativos para orientar a conversa; não substituem a avaliação de cada imóvel.",
+   "fonteNumeros": "Preço pedido e aluguel: medianas de anúncios (A Corrida dos Bairros, nov/2026); temporada: AirROI, nov/2025 a out/2026. Valores de anúncio, não de venda fechada.",
+   "cards": [
+    {
+     "id": "pereque",
+     "l": "Balneário Perequê · Porto Belo",
+     "v": "Maior potencial",
+     "n": "Vetor de expansão, com novos empreendimentos frente-mar e quadra-mar e a orla em revitalização.",
+     "tese": "O bairro que mais muda na costa: masterplan da orla, molhes do Rio Perequê e a passarela para a Meia Praia. O m² pedido ainda fica abaixo do da Meia Praia, do outro lado do rio.",
+     "renda": "Aluguel anual de moradia e temporada. Mercado em formação: a liquidez cresce a cada obra entregue.",
+     "tipo": "Lançamentos frente-mar e quadra-mar, comprados na planta para capturar a valorização até as chaves.",
+     "venda": [
+      "Porto Belo",
+      "Balneário Perequê"
+     ],
+     "aluguel": [
+      "Porto Belo",
+      "Balneário Perequê"
+     ],
+     "temporada": {
+      "cidade": "Porto Belo"
+     }
+    },
+    {
+     "id": "vivapark",
+     "l": "VivaPark e planejados · Porto Belo",
+     "v": "Moradia o ano todo",
+     "n": "Urbanismo moderno, qualidade de vida e tecnologia, com forte demanda por moradia qualificada fora da temporada.",
+     "tese": "Bairros planejados às margens da BR-101 trazem quem vem morar de vez: famílias e profissionais que trabalham na região o ano inteiro.",
+     "renda": "Renda estável de aluguel anual, menos dependente do verão.",
+     "tipo": "Apartamentos e casas para morar, com parques e acesso rápido à BR-101.",
+     "venda": [
+      "Porto Belo",
+      "Vivapark",
+      "preço pedido no Vivapark"
+     ]
+    },
+    {
+     "id": "meiapraia",
+     "l": "Meia Praia · Itapema",
+     "v": "Alta liquidez",
+     "n": "Mercado maduro, serviços consolidados e revenda rápida; valorização puxada pela nova orla.",
+     "tese": "O mercado mais líquido da costa: muita oferta, muita procura e revenda rápida. A nova orla e o alargamento da faixa de areia sustentam a valorização da frente-mar.",
+     "renda": "Temporada forte no verão e aluguel anual no resto do ano.",
+     "tipo": "Frente-mar e quadra-mar de alto padrão, como o Ocean Hill, na divisa com Porto Belo.",
+     "venda": [
+      "Itapema",
+      "Meia Praia"
+     ],
+     "aluguel": [
+      "Itapema",
+      "Meia Praia"
+     ],
+     "temporada": {
+      "cidade": "Itapema",
+      "verao": true
+     }
+    },
+    {
+     "id": "bombinhas",
+     "l": "Bombinhas",
+     "v": "Escassez",
+     "n": "Península com pouco terreno disponível, vocação internacional e forte rentabilidade na temporada.",
+     "tese": "Pouco terreno para construir numa península: a oferta nova é pequena e o comprador é nacional e internacional.",
+     "renda": "Foco em temporada, com diárias altas no verão.",
+     "tipo": "Imóveis de temporada perto das praias, com pouca concorrência de lançamentos.",
+     "extras": [
+      [
+       "+75%",
+       "crescimento da população de Bombinhas entre os Censos de 2010 e 2022 (IBGE)"
+      ]
+     ],
+     "fonte": "Bombinhas não tem levantamento de preço por bairro nas fontes usadas neste site."
+    }
+   ]
+  },
+  {
+   "id": "empreendimento",
+   "rotulo": "Ocean Hill",
+   "img": "img/oceanhill/fachada-noturna.jpg",
+   "k": "Agora, o empreendimento",
+   "titulo": "Ocean <i>Hill</i> Residence",
+   "kpis": [
+    {
+     "l": "Torres",
+     "v": "2",
+     "n": "Hill Tower e Ocean Tower, até o 40º andar"
+    },
+    {
+     "l": "Lazer",
+     "v": "4.265 m²",
+     "n": "11 salões de eventos e 385 m² de espelho d'água"
+    },
+    {
+     "l": "Exclusivo",
+     "v": "Garagem náutica",
+     "n": "Jet skis e atracadouro no Rio Perequê",
+     "tam": 30
+    },
+    {
+     "l": "Entrega",
+     "auto": "entrega"
+    }
+   ],
+   "botao": "Explorar a vitrine interativa"
+  },
+  {
+   "id": "lazer",
+   "rotulo": "Lazer",
+   "k": "O lazer, ambiente por ambiente",
+   "titulo": "Um <i>resort</i> entre as duas torres",
+   "lead": "Toque nos pontos dourados para abrir cada ambiente, ou use o tour guiado."
+  },
+  {
+   "id": "nautica",
+   "rotulo": "Garagem náutica",
+   "k": "Exclusivo do condomínio",
+   "titulo": "Garagem náutica e <i>atracadouro</i> no rio"
+  },
+  {
+   "id": "obra",
+   "rotulo": "A obra",
+   "k": "A obra, de perto",
+   "titulo": "Obra em ritmo: <i>17ª laje</i> concretada",
+   "video": "img/apresentacao/obra-17pav.mp4",
+   "videoCapa": "img/apresentacao/obra-17pav.jpg",
+   "lead": "Acompanhamento oficial da Prointi&GD: concretagem da 17ª laje da Ocean Tower, em setembro de 2026. Da garagem (out/2024) ao 17º pavimento em menos de dois anos."
+  },
+  {
+   "id": "plantas",
+   "rotulo": "Plantas",
+   "k": "As residências",
+   "titulo": "Plantas pensadas para <i>cada estilo</i> de vida",
+   "nota": "Metragens privativas do catálogo oficial da Prointi&GD. Unidades disponíveis conforme a tabela da incorporadora usada na vitrine. Toque na planta para ampliar."
+  },
+  {
+   "id": "penthouses",
+   "rotulo": "Penthouses",
+   "k": "No topo das torres",
+   "titulo": "As <i>penthouses</i> duplex",
+   "itens": [
+    {
+     "id": "ht-3701",
+     "rotulo": "3701 · Hill"
+    },
+    {
+     "id": "ht-3702",
+     "rotulo": "3702 · Hill"
+    },
+    {
+     "id": "ot-3901",
+     "rotulo": "3901 · Ocean"
+    }
+   ],
+   "filme": "img/oceanhill/filmes/penthouse-{id}-{o}.mp4",
+   "filmeCapa": "img/oceanhill/filmes/penthouse-{id}-{o}.jpg"
+  },
+  {
+   "id": "unidades",
+   "rotulo": "Unidades",
+   "img": "img/oceanhill/fachada-montanhas.jpg",
+   "k": "Escolha o andar",
+   "titulo": "Cada andar, a <i>vista real</i> de drone",
+   "lead": "Na vitrine interativa, escolha a torre, o andar e a unidade: planta, metragem, suítes, a vista fotografada por drone naquela altura e o elevador panorâmico.",
+   "botao": "Abrir a vitrine do Ocean Hill"
+  },
+  {
+   "id": "contato",
+   "rotulo": "Contato",
+   "k": "Vamos conversar?",
+   "titulo": "Fale com <i>Santiago</i>",
+   "lead": "Tabelas, condições de pagamento, simulações e a unidade certa para cada cliente.",
+   "nota": "Imagens do empreendimento: material oficial da Prointi&GD, ilustrativas. Índices: Banco Central, FipeZap, Sinduscon, IBGE e Tesouro Nacional. Rentabilidade passada não garante rentabilidade futura.",
+   "botaoWA": "WhatsApp (47) 99217-6060",
+   "botaoVitrine": "Abrir a vitrine e o simulador"
+  }
+ ]
+}

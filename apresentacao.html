@@ -142,99 +142,99 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
 <main id="trilho">
 
 <!-- 1 · capa -->
-<section class="sl bgimg" style="--img:url(img/oceanhill/transforma/orla.jpg)" data-t="Capa">
-  <p class="k anim">Itapema · Porto Belo · Bombinhas</p>
-  <h1 class="anim d1">Costa <i>Esmeralda</i></h1>
+<section class="sl bgimg" style="--img:url(img/oceanhill/transforma/orla.jpg)" data-t="Capa" data-id="capa">
+  <p class="k anim" data-c="k">Itapema · Porto Belo · Bombinhas</p>
+  <h1 class="anim d1" data-c="titulo">Costa <i>Esmeralda</i></h1>
   <div class="fio anim d1"></div>
-  <p class="lead anim d2">Por que investir no litoral que mais cresce em Santa Catarina: dos números da região às obras que estão mudando a orla, até chegar ao empreendimento.</p>
-  <p class="nota anim d3" style="font-size:15px;color:#DCD6C8">Apresentação de <b id="nomeCapa">Santiago Fernandes Costa</b></p>
+  <p class="lead anim d2" data-c="lead">Por que investir no litoral que mais cresce em Santa Catarina: dos números da região às obras que estão mudando a orla, até chegar ao empreendimento.</p>
+  <p class="nota anim d3" style="font-size:15px;color:#DCD6C8" data-c="nota">Apresentação de <b id="nomeCapa">Santiago Fernandes Costa</b></p>
 </section>
 
 <!-- 2 · população -->
-<section class="sl" data-t="Crescimento">
-  <p class="k anim">Uma região que não para de crescer</p>
-  <h2 class="anim d1">Gente chegando para <i>morar</i>, não só para veranear</h2>
+<section class="sl" data-t="Crescimento" data-id="populacao">
+  <p class="k anim" data-c="k">Uma região que não para de crescer</p>
+  <h2 class="anim d1" data-c="titulo">Gente chegando para <i>morar</i>, não só para veranear</h2>
   <div class="grid g4 anim d2" id="popKpis"></div>
   <div class="ch anim d3"><canvas id="chPop"></canvas></div>
-  <p class="nota">Fonte: IBGE, Censos 2010 e 2022 e estimativa populacional 2025. Mais moradores o ano inteiro significa demanda por compra e por aluguel fora da temporada.</p>
+  <p class="nota" data-c="nota">Fonte: IBGE, Censos 2010 e 2022 e estimativa populacional 2025. Mais moradores o ano inteiro significa demanda por compra e por aluguel fora da temporada.</p>
 </section>
 
 <!-- 3 · localização -->
-<section class="sl" data-t="Localização">
+<section class="sl" data-t="Localização" data-id="localizacao">
   <div class="duo">
     <div>
-      <p class="k anim">Localização</p>
-      <h2 class="anim d1">No eixo da <i>BR-101</i>, entre dois aeroportos internacionais</h2>
-      <ul class="lista anim d2">
+      <p class="k anim" data-c="k">Localização</p>
+      <h2 class="anim d1" data-c="titulo">No eixo da <i>BR-101</i>, entre dois aeroportos internacionais</h2>
+      <ul class="lista anim d2" data-lista="itens">
         <li><b>~10 km</b> Itapema, a partir de Porto Belo</li>
         <li><b>~12 km</b> Bombinhas</li>
         <li><b>~30 km</b> Balneário Camboriú</li>
         <li><b>~50 km</b> Aeroporto de Navegantes</li>
         <li><b>~70 km</b> Aeroporto de Florianópolis</li>
       </ul>
-      <p class="nota">Distâncias aproximadas por estrada.</p>
+      <p class="nota" data-c="nota">Distâncias aproximadas por estrada.</p>
     </div>
-    <img class="anim d2" src="img/regiao/mapa-orla.jpg" alt="Mapa da orla da Costa Esmeralda" style="width:100%;border-radius:18px;border:1px solid var(--ln);cursor:zoom-in" data-zoom>
+    <img class="anim d2" data-src="mapa" src="img/regiao/mapa-orla.jpg" alt="Mapa da orla da Costa Esmeralda" style="width:100%;border-radius:18px;border:1px solid var(--ln);cursor:zoom-in" data-zoom>
   </div>
 </section>
 
 <!-- 4 · valorização -->
-<section class="sl" data-t="Valorização">
-  <p class="k anim">Valorização acumulada · base 100 em dez/2020</p>
-  <h2 class="anim d1">Itapema valorizou mais que a <i>renda fixa</i></h2>
+<section class="sl" data-t="Valorização" data-id="valorizacao">
+  <p class="k anim" data-c="k">Valorização acumulada · base 100 em dez/2020</p>
+  <h2 class="anim d1" data-c="titulo">Itapema valorizou mais que a <i>renda fixa</i></h2>
   <div class="grid g4 anim d2" id="valKpis"></div>
   <div class="ch anim d3"><canvas id="chVal"></canvas></div>
   <p class="nota" id="valNota"></p>
 </section>
 
 <!-- 5 · CUB -->
-<section class="sl" data-t="Custo de construir">
+<section class="sl" data-t="Custo de construir" data-id="cub">
   <div class="duo">
     <div>
-      <p class="k anim">CUB/SC · custo de construir</p>
-      <h2 class="anim d1">Construir fica mais caro <i>todo mês</i></h2>
+      <p class="k anim" data-c="k">CUB/SC · custo de construir</p>
+      <h2 class="anim d1" data-c="titulo">Construir fica mais caro <i>todo mês</i></h2>
       <div class="fio anim d1"></div>
-      <p class="lead anim d2">O custo de erguer um prédio novo só sobe. Isso sustenta o preço de quem já comprou: o imóvel de amanhã vai custar mais para ser feito.</p>
+      <p class="lead anim d2" data-c="lead">O custo de erguer um prédio novo só sobe. Isso sustenta o preço de quem já comprou: o imóvel de amanhã vai custar mais para ser feito.</p>
       <div class="grid g2 anim d3" id="cubKpis" style="margin-top:22px"></div>
     </div>
     <div class="ch anim d2" style="height:min(52vh,460px)"><canvas id="chCub"></canvas></div>
   </div>
-  <p class="nota">Fonte: Sinduscon (CUB/SC, residencial médio), série publicada mês a mês.</p>
+  <p class="nota" data-c="nota">Fonte: Sinduscon (CUB/SC, residencial médio), série publicada mês a mês.</p>
 </section>
 
 <!-- 6 · Porto Belo números -->
-<section class="sl" data-t="Porto Belo">
-  <p class="k anim">Porto Belo · o próximo vetor</p>
-  <h2 class="anim d1">Dinheiro entrando, e o m² ainda <i>abaixo</i> dos vizinhos</h2>
+<section class="sl" data-t="Porto Belo" data-id="portobelo">
+  <p class="k anim" data-c="k">Porto Belo · o próximo vetor</p>
+  <h2 class="anim d1" data-c="titulo">Dinheiro entrando, e o m² ainda <i>abaixo</i> dos vizinhos</h2>
   <div class="grid g3 anim d2" id="pbKpis"></div>
   <div class="grid g2 anim d3">
     <div class="ch" style="margin-top:0"><canvas id="chDWV"></canvas></div>
     <div class="ch" style="margin-top:0"><canvas id="chITBI"></canvas></div>
   </div>
-  <p class="nota">m²: plataforma DWV (imóveis novos vendidos), divulgado por Lance Porto Belo, NSC Total, Imobireport e Portas. Dinheiro em escrituras: ITBI declarado pela Prefeitura ao Tesouro Nacional (SICONFI) dividido pela alíquota de 2%; é um piso (compras na planta ainda sem escritura não entram).</p>
+  <p class="nota" data-c="nota">m²: plataforma DWV (imóveis novos vendidos), divulgado por Lance Porto Belo, NSC Total, Imobireport e Portas. Dinheiro em escrituras: ITBI declarado pela Prefeitura ao Tesouro Nacional (SICONFI) dividido pela alíquota de 2%; é um piso (compras na planta ainda sem escritura não entram).</p>
 </section>
 
 <!-- 7 · Porto Belo em transformação -->
-<section class="sl" data-t="Grandes projetos">
-  <p class="k anim">Porto Belo em transformação</p>
-  <h2 class="anim d1">Bilhões em projetos <i>às margens da BR-101</i></h2>
-  <div class="grid g4 anim d2">
+<section class="sl" data-t="Grandes projetos" data-id="projetos">
+  <p class="k anim" data-c="k">Porto Belo em transformação</p>
+  <h2 class="anim d1" data-c="titulo">Bilhões em projetos <i>às margens da BR-101</i></h2>
+  <div class="grid g4 anim d2" data-lista="cards">
     <div class="kpi"><div class="l">Recebendo moradores</div><div class="v">VivaPark</div><div class="n">Primeiro "bairro parque" planejado do Brasil (Vokkan), ~R$ 1 bilhão de investimento inicial, até 30 mil moradores previstos, selo LEED.</div></div>
     <div class="kpi"><div class="l">Golfe pronto · tênis em 2028</div><div class="v">All Resort</div><div class="n">VGV R$ 600 milhões (All Wert): o 1º campo de golfe totalmente iluminado da América do Sul e o 1º Rafa Nadal Tennis Center do continente.</div></div>
     <div class="kpi"><div class="l">Em licenciamento · previsão 2027</div><div class="v">Porto Belo Lagos</div><div class="n">Bairro inteligente da JTA, de ~1 milhão de m², com o complexo esportivo da família Neymar Jr. (~R$ 250 milhões).</div></div>
     <div class="kpi"><div class="l">Em execução por etapas</div><div class="v">Orla do Perequê</div><div class="n">Masterplan da Prefeitura com a ACIP (construtoras de Porto Belo): 5 etapas em 36 meses.</div></div>
   </div>
-  <p class="nota">Fontes: NSC Total, MySide, Panrotas, InfoMoney, Diário do Litoral. Projetos anunciados por incorporadoras e imprensa; prazos podem mudar.</p>
+  <p class="nota" data-c="nota">Fontes: NSC Total, MySide, Panrotas, InfoMoney, Diário do Litoral. Projetos anunciados por incorporadoras e imprensa; prazos podem mudar.</p>
 </section>
 
 <!-- 8 · orla do Perequê -->
-<section class="sl" data-t="Orla do Perequê">
+<section class="sl" data-t="Orla do Perequê" data-id="orlaPereque">
   <div class="duo">
     <div>
-      <p class="k anim">Revitalização · Balneário Perequê, Porto Belo</p>
-      <h2 class="anim d1">A nova orla do <i>Perequê</i></h2>
+      <p class="k anim" data-c="k">Revitalização · Balneário Perequê, Porto Belo</p>
+      <h2 class="anim d1" data-c="titulo">A nova orla do <i>Perequê</i></h2>
       <div class="fio anim d1"></div>
-      <p class="lead anim d2">O Masterplan do Perequê, da Prefeitura de Porto Belo com a associação das construtoras (ACIP), prevê os molhes dos rios Perequê e Perequezinho, a nova orla do Balneário Perequê e a revitalização das principais avenidas, em 5 etapas e 36 meses.</p>
+      <p class="lead anim d2" data-c="lead">O Masterplan do Perequê, da Prefeitura de Porto Belo com a associação das construtoras (ACIP), prevê os molhes dos rios Perequê e Perequezinho, a nova orla do Balneário Perequê e a revitalização das principais avenidas, em 5 etapas e 36 meses.</p>
       <div class="acoes anim d3"><span class="st obra" id="molheSt"></span></div>
     </div>
     <div class="card anim d2" id="molheCard"></div>
@@ -242,30 +242,30 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
 </section>
 
 <!-- 9 · orla de Itapema -->
-<section class="sl" data-t="Orla de Itapema">
-  <p class="k anim">Revitalização · Meia Praia, Itapema</p>
-  <h2 class="anim d1">A Meia Praia ganha <i>nova orla</i> e mais areia</h2>
+<section class="sl" data-t="Orla de Itapema" data-id="orlaItapema">
+  <p class="k anim" data-c="k">Revitalização · Meia Praia, Itapema</p>
+  <h2 class="anim d1" data-c="titulo">A Meia Praia ganha <i>nova orla</i> e mais areia</h2>
   <div class="grid g2 anim d2" id="itapemaCards"></div>
 </section>
 
 <!-- 10 · passarela -->
-<section class="sl" data-t="Passarela">
+<section class="sl" data-t="Passarela" data-id="passarela">
   <div class="duo v">
     <div>
-      <p class="k anim">Itapema ↔ Porto Belo</p>
-      <h2 class="anim d1" id="pasTit">A passarela sobre o <i>Rio Perequê</i></h2>
+      <p class="k anim" data-c="k">Itapema ↔ Porto Belo</p>
+      <h2 class="anim d1" id="pasTit" data-c="titulo">A passarela sobre o <i>Rio Perequê</i></h2>
       <div class="fio anim d1"></div>
       <p class="lead anim d2" id="pasTx"></p>
       <div class="acoes anim d3"><span class="st projeto" id="pasSt"></span></div>
       <p class="nota" id="pasFonte"></p>
     </div>
-    <video class="vvert anim d2" src="img/oceanhill/transforma/passarela-3d.mp4" poster="img/apresentacao/passarela-3d.jpg" controls playsinline muted loop preload="none" data-auto></video>
+    <video class="vvert anim d2" data-src="video" src="img/oceanhill/transforma/passarela-3d.mp4" poster="img/apresentacao/passarela-3d.jpg" controls playsinline muted loop preload="none" data-auto></video>
   </div>
 </section>
 
 <!-- 11 · It!Wheel -->
-<section class="sl bgimg" style="--img:url(img/oceanhill/transforma/roda.jpg)" data-t="It!Wheel">
-  <p class="k anim">Turismo o ano inteiro</p>
+<section class="sl bgimg" style="--img:url(img/oceanhill/transforma/roda.jpg)" data-t="It!Wheel" data-id="roda">
+  <p class="k anim" data-c="k">Turismo o ano inteiro</p>
   <h2 class="anim d1" id="rodaTit"></h2>
   <div class="fio anim d1"></div>
   <p class="lead anim d2" id="rodaTx"></p>
@@ -273,78 +273,78 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
 </section>
 
 <!-- 12 · microrregiões (26/11: cartões clicáveis com painel; números de dados/referencias.json) -->
-<section class="sl" data-t="Microrregiões">
-  <p class="k anim">Guia para quem investe de fora</p>
-  <h2 class="anim d1">Cada pedaço da costa, <i>um perfil</i></h2>
+<section class="sl" data-t="Microrregiões" data-id="perfis">
+  <p class="k anim" data-c="k">Guia para quem investe de fora</p>
+  <h2 class="anim d1" data-c="titulo">Cada pedaço da costa, <i>um perfil</i></h2>
   <div class="perfis anim d2" id="perfis"></div>
   <div id="perfilPainel" aria-live="polite" hidden></div>
-  <p class="nota">Toque num perfil para ver a tese. Perfis qualitativos para orientar a conversa; não substituem a avaliação de cada imóvel.</p>
+  <p class="nota" data-c="nota">Toque num perfil para ver a tese. Perfis qualitativos para orientar a conversa; não substituem a avaliação de cada imóvel.</p>
 </section>
 
 <!-- 13 · o empreendimento -->
-<section class="sl bgimg" style="--img:url(img/oceanhill/fachada-noturna.jpg)" data-t="Ocean Hill">
-  <p class="k anim">Agora, o empreendimento</p>
-  <h1 class="anim d1" style="font-size:clamp(40px,7vw,96px)">Ocean <i>Hill</i> Residence</h1>
+<section class="sl bgimg" style="--img:url(img/oceanhill/fachada-noturna.jpg)" data-t="Ocean Hill" data-id="empreendimento">
+  <p class="k anim" data-c="k">Agora, o empreendimento</p>
+  <h1 class="anim d1" style="font-size:clamp(40px,7vw,96px)" data-c="titulo">Ocean <i>Hill</i> Residence</h1>
   <div class="fio anim d1"></div>
   <p class="lead anim d2" id="ohLocal"></p>
-  <div class="grid g4 anim d3" style="max-width:1100px">
+  <div class="grid g4 anim d3" style="max-width:1100px" data-lista="kpis">
     <div class="kpi"><div class="l">Torres</div><div class="v">2</div><div class="n">Hill Tower e Ocean Tower, até o 40º andar</div></div>
     <div class="kpi"><div class="l">Lazer</div><div class="v">4.265 m²</div><div class="n">11 salões de eventos e 385 m² de espelho d'água</div></div>
     <div class="kpi"><div class="l">Exclusivo</div><div class="v" style="font-size:30px">Garagem náutica</div><div class="n">Jet skis e atracadouro no Rio Perequê</div></div>
     <div class="kpi"><div class="l">Entrega</div><div class="v" id="ohEntrega">jun/2030</div><div class="n" id="ohInc"></div></div>
   </div>
-  <div class="acoes anim d3"><a class="btn" id="btnVitrine2" href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Explorar a vitrine interativa</a></div>
+  <div class="acoes anim d3"><a class="btn" id="btnVitrine2" data-c="botao" data-vitrine href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Explorar a vitrine interativa</a></div>
 </section>
 
 <!-- 14 · lazer (planta interativa) -->
-<section class="sl" data-t="Lazer">
-  <p class="k anim">O lazer, ambiente por ambiente</p>
-  <h2 class="anim d1">Um <i>resort</i> entre as duas torres</h2>
-  <p class="lead anim d2" style="margin-top:14px">Toque nos pontos dourados para abrir cada ambiente, ou use o tour guiado.</p>
+<section class="sl" data-t="Lazer" data-id="lazer">
+  <p class="k anim" data-c="k">O lazer, ambiente por ambiente</p>
+  <h2 class="anim d1" data-c="titulo">Um <i>resort</i> entre as duas torres</h2>
+  <p class="lead anim d2" style="margin-top:14px" data-c="lead">Toque nos pontos dourados para abrir cada ambiente, ou use o tour guiado.</p>
   <div id="piLazer" class="anim d3"></div>
 </section>
 
 <!-- 15 · náutica -->
-<section class="sl" data-t="Garagem náutica">
-  <p class="k anim">Exclusivo do condomínio</p>
-  <h2 class="anim d1">Garagem náutica e <i>atracadouro</i> no rio</h2>
+<section class="sl" data-t="Garagem náutica" data-id="nautica">
+  <p class="k anim" data-c="k">Exclusivo do condomínio</p>
+  <h2 class="anim d1" data-c="titulo">Garagem náutica e <i>atracadouro</i> no rio</h2>
   <p class="lead anim d2" id="nauTx" style="margin-top:14px"></p>
   <div class="galeria anim d3" id="nauGal"></div>
   <p class="nota" id="nauNota"></p>
 </section>
 
 <!-- 16 · obra -->
-<section class="sl" data-t="A obra">
+<section class="sl" data-t="A obra" data-id="obra">
   <div class="duo v">
     <div>
-      <p class="k anim">A obra, de perto</p>
-      <h2 class="anim d1">Obra em ritmo: <i>17ª laje</i> concretada</h2>
+      <p class="k anim" data-c="k">A obra, de perto</p>
+      <h2 class="anim d1" data-c="titulo">Obra em ritmo: <i>17ª laje</i> concretada</h2>
       <div class="fio anim d1"></div>
-      <p class="lead anim d2" id="obraTx">Acompanhamento oficial da Prointi&amp;GD: concretagem da 17ª laje da Ocean Tower, em setembro de 2026. Da garagem (out/2024) ao 17º pavimento em menos de dois anos.</p>
+      <p class="lead anim d2" id="obraTx" data-c="lead">Acompanhamento oficial da Prointi&amp;GD: concretagem da 17ª laje da Ocean Tower, em setembro de 2026. Da garagem (out/2024) ao 17º pavimento em menos de dois anos.</p>
       <div class="grid g2 anim d3" id="obraKpis" style="margin-top:22px"></div>
       <div class="linha anim d3" id="obraLinha" aria-label="Linha do tempo da obra"></div>
     </div>
-    <video class="vvert anim d2" src="img/apresentacao/obra-17pav.mp4" poster="img/apresentacao/obra-17pav.jpg" controls playsinline muted preload="none" data-auto></video>
+    <video class="vvert anim d2" data-src="video" src="img/apresentacao/obra-17pav.mp4" poster="img/apresentacao/obra-17pav.jpg" controls playsinline muted preload="none" data-auto></video>
   </div>
 </section>
 
 <!-- 17 · plantas (26/11: catálogo com filtros + Tour em 3D de cada planta, dados/tour3d-oceanhill.json) -->
-<section class="sl" data-t="Plantas">
-  <p class="k anim">As residências</p>
-  <h2 class="anim d1">Plantas pensadas para <i>cada estilo</i> de vida</h2>
+<section class="sl" data-t="Plantas" data-id="plantas">
+  <p class="k anim" data-c="k">As residências</p>
+  <h2 class="anim d1" data-c="titulo">Plantas pensadas para <i>cada estilo</i> de vida</h2>
   <div class="filtros anim d2">
     <span>Suítes</span><div class="seg" id="fSuites"><button type="button" data-v="" aria-pressed="true">Todas</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="false">4</button><button type="button" data-v="6" aria-pressed="false">6 ou 7</button></div>
     <span>Metragem</span><div class="seg" id="fArea"><button type="button" data-v="" aria-pressed="true">Todas</button><button type="button" data-v="0-200" aria-pressed="false">até 200 m²</button><button type="button" data-v="200-300" aria-pressed="false">200 a 300 m²</button><button type="button" data-v="300-9999" aria-pressed="false">acima de 400 m²</button></div>
   </div>
   <div class="tipos anim d3" id="tipos"></div>
   <p id="tiposVazio" hidden>Nenhuma planta com essa combinação. Mude os filtros.</p>
-  <p class="nota">Metragens privativas do catálogo oficial da Prointi&amp;GD. Unidades disponíveis conforme a tabela da incorporadora usada na vitrine. Toque na planta para ampliar.</p>
+  <p class="nota" data-c="nota">Metragens privativas do catálogo oficial da Prointi&amp;GD. Unidades disponíveis conforme a tabela da incorporadora usada na vitrine. Toque na planta para ampliar.</p>
 </section>
 
 <!-- 18 · penthouses -->
-<section class="sl" data-t="Penthouses">
-  <p class="k anim">No topo das torres</p>
-  <h2 class="anim d1">As <i>penthouses</i> duplex</h2>
+<section class="sl" data-t="Penthouses" data-id="penthouses">
+  <p class="k anim" data-c="k">No topo das torres</p>
+  <h2 class="anim d1" data-c="titulo">As <i>penthouses</i> duplex</h2>
   <div class="seg anim d2" id="phSeg">
     <button type="button" data-ph="ht-3701" aria-pressed="true">3701 · Hill</button>
     <button type="button" data-ph="ht-3702" aria-pressed="false">3702 · Hill</button>
@@ -354,25 +354,25 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
 </section>
 
 <!-- 19 · escolher a unidade -->
-<section class="sl bgimg" style="--img:url(img/oceanhill/fachada-montanhas.jpg)" data-t="Unidades">
-  <p class="k anim">Escolha o andar</p>
-  <h2 class="anim d1">Cada andar, a <i>vista real</i> de drone</h2>
+<section class="sl bgimg" style="--img:url(img/oceanhill/fachada-montanhas.jpg)" data-t="Unidades" data-id="unidades">
+  <p class="k anim" data-c="k">Escolha o andar</p>
+  <h2 class="anim d1" data-c="titulo">Cada andar, a <i>vista real</i> de drone</h2>
   <div class="fio anim d1"></div>
-  <p class="lead anim d2">Na vitrine interativa, escolha a torre, o andar e a unidade: planta, metragem, suítes, a vista fotografada por drone naquela altura e o elevador panorâmico.</p>
-  <div class="acoes anim d3"><a class="btn" id="btnVitrine" href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Abrir a vitrine do Ocean Hill</a></div>
+  <p class="lead anim d2" data-c="lead">Na vitrine interativa, escolha a torre, o andar e a unidade: planta, metragem, suítes, a vista fotografada por drone naquela altura e o elevador panorâmico.</p>
+  <div class="acoes anim d3"><a class="btn" id="btnVitrine" data-c="botao" data-vitrine href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Abrir a vitrine do Ocean Hill</a></div>
 </section>
 
 <!-- 20 · contato -->
-<section class="sl" data-t="Contato" style="text-align:center;align-items:center">
-  <p class="k anim">Vamos conversar?</p>
-  <h1 class="anim d1" style="font-size:clamp(40px,7vw,96px)">Fale com <i>Santiago</i></h1>
+<section class="sl" data-t="Contato" data-id="contato" style="text-align:center;align-items:center">
+  <p class="k anim" data-c="k">Vamos conversar?</p>
+  <h1 class="anim d1" style="font-size:clamp(40px,7vw,96px)" data-c="titulo">Fale com <i>Santiago</i></h1>
   <div class="fio anim d1" style="margin:22px auto"></div>
-  <p class="lead anim d2" style="margin:0 auto">Tabelas, condições de pagamento, simulações e a unidade certa para cada cliente.</p>
-  <div class="acoes anim d3" style="justify-content:center"><a class="btn" id="btnWA" target="_blank" rel="noopener">WhatsApp (47) 99217-6060</a>
-    <a class="btn ghost" id="btnVitrine3" href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Abrir a vitrine e o simulador</a></div>
+  <p class="lead anim d2" style="margin:0 auto" data-c="lead">Tabelas, condições de pagamento, simulações e a unidade certa para cada cliente.</p>
+  <div class="acoes anim d3" style="justify-content:center"><a class="btn" id="btnWA" data-c="botaoWA" target="_blank" rel="noopener">WhatsApp (47) 99217-6060</a>
+    <a class="btn ghost" id="btnVitrine3" data-c="botaoVitrine" data-vitrine href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Abrir a vitrine e o simulador</a></div>
   <div class="acoes anim d3" style="justify-content:center;margin-top:14px"><span class="nota" style="margin:0;align-self:center">Agendar uma conversa:</span>
     <a class="btn ghost" id="agPres" target="_blank" rel="noopener">Presencial</a><a class="btn ghost" id="agVideo" target="_blank" rel="noopener">Por videochamada</a></div>
-  <p class="nota" style="margin:36px auto 0;text-align:center">Imagens do empreendimento: material oficial da Prointi&amp;GD, ilustrativas. Índices: Banco Central, FipeZap, Sinduscon, IBGE e Tesouro Nacional. Rentabilidade passada não garante rentabilidade futura.</p>
+  <p class="nota" style="margin:36px auto 0;text-align:center" data-c="nota">Imagens do empreendimento: material oficial da Prointi&amp;GD, ilustrativas. Índices: Banco Central, FipeZap, Sinduscon, IBGE e Tesouro Nacional. Rentabilidade passada não garante rentabilidade futura.</p>
 </section>
 
 </main>
@@ -387,29 +387,64 @@ const IMG=s=>/^img\/[a-z0-9_\/.-]+\.(jpg|png|webp)$/i.test(String(s||''))?s:'';
 const br=(v,d=0)=>v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const brl=v=>'R$ '+br(Math.round(v));
 const pc=(v,d=0)=>(v>=0?'+':'')+br(v,d)+'%';
-const CONTATO={nome:'Santiago Fernandes Costa',wa:'5547992176060'};
+/* ---------- conteúdo: dados/apresentacao-<emp>.json (Fase 2, 27/11/2026) ----------
+   A página é o modelo; o JSON traz ordem das telas, textos, listas, imagens, vídeos, contato e arquivos de dados.
+   Sem o JSON, ficam os textos escritos na página (versão do Ocean Hill). */
+const EMP=(new URLSearchParams(location.search).get('e')||'oceanhill').replace(/[^a-z0-9-]/g,'')||'oceanhill';
+let C=null;
+const CONTATO={nome:'Santiago Fernandes Costa',wa:'5547992176060',msgConversa:'Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero conversar.',
+  msgPresencial:'Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa PRESENCIAL. Qual dia e horário ficam bons para você?',
+  msgVideo:'Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa por VIDEOCHAMADA. Qual dia e horário ficam bons para você?'};
+const ARQ={vitrine:'dados/vitrine-oceanhill.json',tour3d:'dados/tour3d-oceanhill.json?v=20261126c',planta:'dados/planta-oceanhill.json?v=20261126b'};
 const wa=t=>`https://wa.me/${CONTATO.wa}?text=${encodeURIComponent(t)}`;
-$('btnWA').href=wa('Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero conversar.');
-$('agPres').href=wa('Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa PRESENCIAL. Qual dia e horário ficam bons para você?');
-$('agVideo').href=wa('Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa por VIDEOCHAMADA. Qual dia e horário ficam bons para você?');
+const tela=id=>(C&&C.telas||[]).find(t=>t.id===id)||{};
+const san=t=>esc(t).replace(/&lt;(\/?)(i|b|br)&gt;/g,'<$1$2>');      // texto do JSON: só <i>, <b> e <br>
+const ARQOK=s=>/^dados\/[a-z0-9_.-]+\.json(\?v=[0-9a-z]+)?$/i.test(String(s||''))?s:'';
+function aplicar(c){
+  C=c;
+  if(c.contato){ const k=c.contato; if(/^\d{12,13}$/.test(k.whatsapp||'')) CONTATO.wa=k.whatsapp;
+    ['nome','msgConversa','msgPresencial','msgVideo'].forEach(x=>{ if(typeof k[x]==='string') CONTATO[x]=k[x]; }); }
+  if(c.dados) Object.keys(ARQ).forEach(k=>{ if(ARQOK(c.dados[k])) ARQ[k]=c.dados[k]; });
+  const main=$('trilho'), secs={}; document.querySelectorAll('.sl').forEach(s=>secs[s.dataset.id]=s);
+  const ordem=(c.telas||[]).filter(t=>secs[t.id]);
+  if(ordem.length){ Object.values(secs).forEach(s=>s.remove()); ordem.forEach(t=>main.appendChild(secs[t.id])); }
+  ordem.forEach(t=>{ const s=secs[t.id]; if(t.rotulo) s.dataset.t=t.rotulo;
+    if(IMG(t.img)&&s.classList.contains('bgimg')) s.style.setProperty('--img',`url(${t.img})`);
+    s.querySelectorAll('[data-c]').forEach(el=>{ const v=t[el.dataset.c]; if(typeof v==='string') el.innerHTML=san(v); });
+    s.querySelectorAll('[data-lista]').forEach(el=>{ const L=t[el.dataset.lista]; if(!Array.isArray(L)) return;
+      el.innerHTML=el.dataset.lista==='itens'?L.map(([v,x])=>`<li><b>${san(v)}</b> ${san(x)}</li>`).join('')
+        :L.map(k=>k.auto==='entrega'?`<div class="kpi"><div class="l">${san(k.l)}</div><div class="v" id="ohEntrega"></div><div class="n" id="ohInc"></div></div>`
+          :`<div class="kpi"><div class="l">${san(k.l)}</div><div class="v"${+k.tam?` style="font-size:${+k.tam}px"`:''}>${san(k.v)}</div><div class="n">${san(k.n)}</div></div>`).join(''); });
+    s.querySelectorAll('video[data-src]').forEach(v=>{ const x=t[v.dataset.src]; if(VIDOK(x)) v.src=x; if(IMG(t[v.dataset.src+'Capa'])) v.poster=t[v.dataset.src+'Capa']; });
+    s.querySelectorAll('img[data-src]').forEach(i=>{ if(IMG(t[i.dataset.src])) i.src=t[i.dataset.src]; });
+  });
+  if(typeof c.vitrine==='string'&&/^vitrine\.html\?[a-z0-9=&_-]+$/i.test(c.vitrine)) document.querySelectorAll('[data-vitrine]').forEach(a=>a.href=c.vitrine);
+}
+function ligarContato(){
+  [['btnWA','msgConversa'],['agPres','msgPresencial'],['agVideo','msgVideo']].forEach(([id,k])=>{ if($(id)) $(id).href=wa(CONTATO[k]); });
+  const q=new URLSearchParams(location.search).get('cor'); if(q&&/^[a-z0-9-]{1,60}$/.test(q)) document.querySelectorAll('[data-vitrine]').forEach(a=>a.href+='&cor='+q);
+}
 const MES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const mesBR=k=>MES[+k.slice(5,7)-1]+'/'+k.slice(2,4);
 
 /* ---------- navegação ---------- */
-const S=[...document.querySelectorAll('.sl')], tr=$('trilho');
+let S=[], atual=0; const tr=$('trilho');
+function ir(i){ i=Math.max(0,Math.min(S.length-1,i)); S[i].scrollIntoView({behavior:'smooth'}); }
+function iniciarNav(){
+S=[...document.querySelectorAll('.sl')];
 $('nav').innerHTML=S.map((s,i)=>`<button type="button" aria-label="${esc(s.dataset.t)}" title="${esc(s.dataset.t)}" data-i="${i}"></button>`).join('');
 $('nav').onclick=e=>{const b=e.target.closest('button'); if(b) ir(+b.dataset.i);};
-let atual=0;
-function ir(i){ i=Math.max(0,Math.min(S.length-1,i)); S[i].scrollIntoView({behavior:'smooth'}); }
+
 const io=new IntersectionObserver(es=>es.forEach(en=>{
   if(en.isIntersecting&&en.intersectionRatio>.55){ const i=S.indexOf(en.target); atual=i; en.target.classList.add('vis');
     document.querySelectorAll('#nav button').forEach((b,k)=>b.setAttribute('aria-current',k===i));
     $('barra').style.width=(100*(i+1)/S.length)+'%'; $('cont').textContent=`${i+1} / ${S.length}`;
     // vídeos: toca o da tela atual (mudo), pausa os outros
     document.querySelectorAll('video').forEach(v=>{ if(en.target.contains(v)){ if(v.dataset.auto!==undefined){ v.preload='auto'; v.play().catch(()=>{}); } } else v.pause(); });
-    if(en.target.dataset.t==='Lazer') montarLazer();
+    if(en.target.dataset.id==='lazer') montarLazer();
   }}),{root:tr,threshold:[.55]});
 S.forEach(s=>io.observe(s));
+}
 addEventListener('keydown',e=>{
   if(e.target.closest('input,textarea,select')) return;
   if(window.__piAberto&&window.__piAberto()) return;
@@ -437,13 +472,15 @@ function desenha(id,cfg){ const el=$(id); if(!el||graf[id]) return;
 
 const POP={itapema:['Itapema',[45797,75940,86116]],portobelo:['Porto Belo',[16083,27688,31557]],bombinhas:['Bombinhas',[14293,25058,28738]],sc:['Santa Catarina',[6248436,7610361,8187029]],br:['Brasil',[190755799,203080756,213421037]]};
 const cr=k=>100*(POP[k][1][1]/POP[k][1][0]-1);
-$('popKpis').innerHTML=['portobelo','bombinhas','itapema','sc'].map(k=>`<div class="kpi"><div class="l">${POP[k][0]}</div><div class="v">${pc(cr(k))}</div><div class="n">${k==='sc'?'média do estado, para comparar':`${br(POP[k][1][0])} → ${br(POP[k][1][1])} moradores (2010 → 2022)`}</div></div>`).join('');
+if($('popKpis')) $('popKpis').innerHTML=['portobelo','bombinhas','itapema','sc'].map(k=>`<div class="kpi"><div class="l">${POP[k][0]}</div><div class="v">${pc(cr(k))}</div><div class="n">${k==='sc'?'média do estado, para comparar':`${br(POP[k][1][0])} → ${br(POP[k][1][1])} moradores (2010 → 2022)`}</div></div>`).join('');
 desenha('chPop',{type:'bar',data:{labels:Object.values(POP).map(p=>p[0]),datasets:[{label:'Crescimento da população 2010–2022',data:Object.keys(POP).map(cr),
   backgroundColor:['#D4AF37','#4FA3A5','#C98BB9','#8FA39B','#6b7570'],borderRadius:8}]},options:opt(v=>br(v)+'%',{plugins:{legend:{display:false}}})});
 
-Promise.all([fetch('dados/dados.json').then(r=>r.json()),fetch('dados/referencias.json').then(r=>r.json()),fetch('dados/vitrine-oceanhill.json').then(r=>r.json()),
-  fetch('dados/tour3d-oceanhill.json?v=20261126c').then(r=>r.ok?r.json():{}).catch(()=>({}))])
-.then(([D,R,V,T])=>{ indices(D); portoBelo(R); perfis(R); obras(V); empreendimento(V); linhaObra(V); tipologias(V,T); })
+fetch(`dados/apresentacao-${EMP}.json?v=20261127a`).then(r=>r.ok?r.json():null).catch(()=>null)
+.then(c=>{ if(c) aplicar(c); ligarContato(); iniciarNav(); phIniciar(); return Promise.all([fetch('dados/dados.json').then(r=>r.json()),fetch('dados/referencias.json').then(r=>r.json()),fetch(ARQ.vitrine).then(r=>r.json()),
+  fetch(ARQ.tour3d).then(r=>r.ok?r.json():{}).catch(()=>({}))]); })
+.then(([D,R,V,T])=>{   // cada parte independente: tela tirada da lista no JSON não derruba as outras
+  [()=>indices(D),()=>portoBelo(R),()=>perfis(R),()=>obras(V),()=>empreendimento(V),()=>linhaObra(V),()=>tipologias(V,T)].forEach(f=>{ try{ f(); }catch(e){ console.warn('apresentação:',e); } }); })
 .catch(()=>{ document.querySelectorAll('.ch').forEach(c=>c.innerHTML='<p class="nota">Não consegui carregar os dados. Verifique a internet.</p>'); });
 
 function indices(D){
@@ -512,40 +549,23 @@ function empreendimento(V){
 
 /* ---------- tela 12: perfis da costa (textos qualitativos + números de dados/referencias.json) ---------- */
 function perfis(R){
+  const T=tela('perfis'), P=T.cards||[]; if(!P.length) return;
   const VB=(R.vendaBairros||{}).cidades||{}, AL=(R.aluguelBairros||{}).cidades||{}, TP=(R.temporadaCidades||{}).cidades||{};
-  const m2=(c,b)=>((VB[c]||{}).bairros||{})[b]; const fmt=v=>'R$ '+br(Math.round(v));
-  const P=[
-   {id:'pereque',l:'Balneário Perequê · Porto Belo',v:'Maior potencial',n:'Vetor de expansão, com novos empreendimentos frente-mar e quadra-mar e a orla em revitalização.',
-    tese:'O bairro que mais muda na costa: masterplan da orla, molhes do Rio Perequê e a passarela para a Meia Praia. O m² pedido ainda fica abaixo do da Meia Praia, do outro lado do rio.',
-    renda:'Aluguel anual de moradia e temporada. Mercado em formação: a liquidez cresce a cada obra entregue.',
-    tipo:'Lançamentos frente-mar e quadra-mar, comprados na planta para capturar a valorização até as chaves.',
-    num:()=>{ const v=m2('Porto Belo','Balneário Perequê'), a=((AL['Porto Belo']||{}).bairros||{})['Balneário Perequê'], t=TP['Porto Belo'];
-      return [v&&[fmt(v.v)+'/m²',`preço pedido, ${br(v.n)} anúncios`], a&&['R$ '+br(a.ref)+'/mês',`aluguel anual de um apartamento de ~${a.areaRef} m²`], t&&['R$ '+br(t.diaria),`diária média de temporada em Porto Belo, ${t.ocup}% de ocupação`]]; }},
-   {id:'vivapark',l:'VivaPark e planejados · Porto Belo',v:'Moradia o ano todo',n:'Urbanismo moderno, qualidade de vida e tecnologia, com forte demanda por moradia qualificada fora da temporada.',
-    tese:'Bairros planejados às margens da BR-101 trazem quem vem morar de vez: famílias e profissionais que trabalham na região o ano inteiro.',
-    renda:'Renda estável de aluguel anual, menos dependente do verão.',
-    tipo:'Apartamentos e casas para morar, com parques e acesso rápido à BR-101.',
-    num:()=>{ const v=m2('Porto Belo','Vivapark'); return [v&&[fmt(v.v)+'/m²',`preço pedido no Vivapark, ${br(v.n)} anúncios`]]; }},
-   {id:'meiapraia',l:'Meia Praia · Itapema',v:'Alta liquidez',n:'Mercado maduro, serviços consolidados e revenda rápida; valorização puxada pela nova orla.',
-    tese:'O mercado mais líquido da costa: muita oferta, muita procura e revenda rápida. A nova orla e o alargamento da faixa de areia sustentam a valorização da frente-mar.',
-    renda:'Temporada forte no verão e aluguel anual no resto do ano.',
-    tipo:'Frente-mar e quadra-mar de alto padrão, como o Ocean Hill, na divisa com Porto Belo.',
-    num:()=>{ const v=m2('Itapema','Meia Praia'), a=((AL['Itapema']||{}).bairros||{})['Meia Praia'], t=TP['Itapema'];
-      return [v&&[fmt(v.v)+'/m²',`preço pedido, ${br(v.n)} anúncios`], a&&['R$ '+br(a.m2,1)+'/m²',`aluguel por mês, ${br(a.n)} anúncios`], t&&['R$ '+br(t.diaria),`diária média de temporada em Itapema, ${t.ocup}% de ocupação; no verão R$ ${br(t.alta.diaria)} e ${t.alta.ocup}%`]]; }},
-   {id:'bombinhas',l:'Bombinhas',v:'Escassez',n:'Península com pouco terreno disponível, vocação internacional e forte rentabilidade na temporada.',
-    tese:'Pouco terreno para construir numa península: a oferta nova é pequena e o comprador é nacional e internacional.',
-    renda:'Foco em temporada, com diárias altas no verão.',
-    tipo:'Imóveis de temporada perto das praias, com pouca concorrência de lançamentos.',
-    num:()=>[['+75%','crescimento da população de Bombinhas entre os Censos de 2010 e 2022 (IBGE)']]},
-  ];
-  $('perfis').innerHTML=P.map(p=>`<button type="button" class="kpi perfil" data-p="${p.id}" aria-pressed="false"><div class="l">${esc(p.l)}</div><div class="v" style="font-size:28px">${esc(p.v)}</div><div class="n">${esc(p.n)}</div><span class="mais">Ver a tese →</span></button>`).join('');
+  const fmt=v=>'R$ '+br(Math.round(v));
+  const nums=p=>{ const o=[];
+    if(p.venda){ const v=((VB[p.venda[0]]||{}).bairros||{})[p.venda[1]]; if(v) o.push([fmt(v.v)+'/m²',`${p.venda[2]||'preço pedido'}, ${br(v.n)} anúncios`]); }
+    if(p.aluguel){ const a=((AL[p.aluguel[0]]||{}).bairros||{})[p.aluguel[1]];
+      if(a&&a.ref) o.push(['R$ '+br(a.ref)+'/mês',`aluguel anual de um apartamento de ~${a.areaRef} m²`]); else if(a&&a.m2) o.push(['R$ '+br(a.m2,1)+'/m²',`aluguel por mês, ${br(a.n)} anúncios`]); }
+    if(p.temporada){ const t=TP[p.temporada.cidade]; if(t) o.push(['R$ '+br(t.diaria),`diária média de temporada em ${p.temporada.cidade}, ${t.ocup}% de ocupação`+(p.temporada.verao&&t.alta?`; no verão R$ ${br(t.alta.diaria)} e ${t.alta.ocup}%`:'')]); }
+    (p.extras||[]).forEach(x=>o.push(x)); return o; };
+  $('perfis').innerHTML=P.map(p=>`<button type="button" class="kpi perfil" data-p="${esc(p.id)}" aria-pressed="false"><div class="l">${san(p.l)}</div><div class="v" style="font-size:28px">${san(p.v)}</div><div class="n">${san(p.n)}</div><span class="mais">Ver a tese →</span></button>`).join('');
   $('perfis').onclick=e=>{ const b=e.target.closest('.perfil'); if(!b) return; const p=P.find(x=>x.id===b.dataset.p), aberto=b.getAttribute('aria-pressed')==='true';
     document.querySelectorAll('.perfil').forEach(x=>x.setAttribute('aria-pressed',!aberto&&x===b));
     const pn=$('perfilPainel'); if(aberto){ pn.hidden=true; return; }
-    const nums=(p.num()||[]).filter(Boolean);
-    pn.innerHTML=`<h3>${esc(p.l)}</h3><div class="bl"><b>Tese de valorização</b><p>${esc(p.tese)}</p></div><div class="bl"><b>Liquidez e renda</b><p>${esc(p.renda)}</p></div><div class="bl"><b>Imóvel indicado</b><p>${esc(p.tipo)}</p></div>
-      ${nums.length?`<div class="num">${nums.map(([v,t])=>`<span><b>${esc(v)}</b>${esc(t)}</span>`).join('')}</div>`:''}
-      ${p.id!=='bombinhas'?'<p class="fn">Preço pedido e aluguel: medianas de anúncios (A Corrida dos Bairros, nov/2026); temporada: AirROI, nov/2025 a out/2026. Valores de anúncio, não de venda fechada.</p>':'<p class="fn">Bombinhas não tem levantamento de preço por bairro nas fontes usadas neste site.</p>'}`;
+    const n=nums(p);
+    pn.innerHTML=`<h3>${san(p.l)}</h3><div class="bl"><b>Tese de valorização</b><p>${san(p.tese)}</p></div><div class="bl"><b>Liquidez e renda</b><p>${san(p.renda)}</p></div><div class="bl"><b>Imóvel indicado</b><p>${san(p.tipo)}</p></div>
+      ${n.length?`<div class="num">${n.map(([v,t])=>`<span><b>${esc(v)}</b>${esc(t)}</span>`).join('')}</div>`:''}
+      <p class="fn">${san(p.fonte||T.fonteNumeros||'')}</p>`;
     pn.hidden=false; };
 }
 
@@ -594,19 +614,23 @@ $('vmod').onclick=e=>{ if(e.target.id==='vmod'||e.target.closest('button')) fech
 addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('vmod').hidden) fecharVideo(); },true);
 
 /* penthouses: computador = horizontal, celular = vertical */
-function ph(id){ const h=matchMedia('(min-width:861px)').matches?'h':'v', v=$('phVid');
-  v.src=`img/oceanhill/filmes/penthouse-${id}-${h}.mp4`; v.poster=`img/oceanhill/filmes/penthouse-${id}-${h}.jpg`;
+function ph(id){ const h=matchMedia('(min-width:861px)').matches?'h':'v', v=$('phVid'), T=tela('penthouses');
+  const mod=(m,d)=>String(m||d).replace('{id}',id).replace('{o}',h);
+  const src=mod(T.filme,'img/oceanhill/filmes/penthouse-{id}-{o}.mp4'), cap=mod(T.filmeCapa,'img/oceanhill/filmes/penthouse-{id}-{o}.jpg');
+  if(VIDOK(src)) v.src=src; if(IMG(cap)) v.poster=cap;
   if(h==='v'){ v.classList.add('vvert'); } else v.classList.remove('vvert');
   document.querySelectorAll('#phSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.ph===id)); }
-$('phSeg').onclick=e=>{const b=e.target.closest('button'); if(b){ ph(b.dataset.ph); $('phVid').play().catch(()=>{}); }};
-ph('ht-3701');
+if($('phSeg')) $('phSeg').onclick=e=>{const b=e.target.closest('button'); if(b&&/^[a-z0-9-]+$/.test(b.dataset.ph)){ ph(b.dataset.ph); $('phVid').play().catch(()=>{}); }};
+function phIniciar(){ const T=tela('penthouses'); if(!$('phSeg')) return;
+  if(Array.isArray(T.itens)&&T.itens.length) $('phSeg').innerHTML=T.itens.map((x,i)=>`<button type="button" data-ph="${esc(x.id)}" aria-pressed="${!i}">${san(x.rotulo)}</button>`).join('');
+  const b=$('phSeg').querySelector('[data-ph]'); if(b&&/^[a-z0-9-]+$/.test(b.dataset.ph)) ph(b.dataset.ph); }
 
 /* lazer: planta interativa (planta.js), montada quando a tela aparece */
 let piOk=false;
 function montarLazer(){ if(piOk||!window.PlantaInterativa) return; piOk=true;
-  PlantaInterativa.montar($('piLazer'),'dados/planta-oceanhill.json?v=20261126b',{grande:true}).then(api=>{ if(api) window.__piAberto=api.aberto; }); }
+  PlantaInterativa.montar($('piLazer'),ARQ.planta,{grande:true}).then(api=>{ if(api) window.__piAberto=api.aberto; }); }
 
 /* vitrine leva o contato do Santiago adiante */
-const q=new URLSearchParams(location.search).get('cor'); if(q&&/^[a-z0-9-]{1,60}$/.test(q)) $('btnVitrine').href+='&cor='+q;
+
 </script>
 </body></html>
