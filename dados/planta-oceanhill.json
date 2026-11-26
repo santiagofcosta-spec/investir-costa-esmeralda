@@ -1,0 +1,264 @@
+{
+ "id": "oceanhill",
+ "nome": "Ocean Hill Residence",
+ "nota": "Plantas e imagens ilustrativas do catálogo oficial da Prointi&GD. Mobiliário e paisagismo são sugestões de decoração.",
+ "pavimentos": [
+  {
+   "id": "lazer",
+   "nome": "Pavimento Lazer",
+   "sub": "3.143,22 m² de lazer, entre as duas torres",
+   "planta": "img/oceanhill/planta/lazer.jpg",
+   "w": 13192,
+   "h": 9425,
+   "pinos": [
+    {
+     "id": "piscina-sol-da-manha",
+     "x": 68,
+     "y": 13,
+     "nome": "Piscina Sol da Manhã",
+     "info": "201,49 m²",
+     "fotos": [
+      "img/oceanhill/amb/piscina-sol-da-manha.jpg",
+      "img/oceanhill/amb/piscina-do-sol-da-manha-02.jpg"
+     ]
+    },
+    {
+     "id": "academia",
+     "x": 44.5,
+     "y": 27.5,
+     "nome": "Academia",
+     "info": "216,40 m² com pilates",
+     "fotos": [
+      "img/oceanhill/amb/academia.jpg"
+     ]
+    },
+    {
+     "id": "salao-de-festas-ocean-tower",
+     "x": 46.5,
+     "y": 39.5,
+     "nome": "Salão de Festas Ocean Tower",
+     "info": "92,64 m²",
+     "fotos": [
+      "img/oceanhill/amb/salao-de-festas-menor.jpg"
+     ]
+    },
+    {
+     "id": "estar-coberto-e-jogos",
+     "x": 52,
+     "y": 51,
+     "nome": "Estar coberto e jogos",
+     "info": "182,06 m²",
+     "fotos": [
+      "img/oceanhill/amb/sala-de-jogos.jpg"
+     ]
+    },
+    {
+     "id": "playground-e-minicampo",
+     "x": 39,
+     "y": 56,
+     "nome": "Playground e minicampo",
+     "info": "192,91 m²",
+     "fotos": [
+      "img/oceanhill/amb/playground.jpg"
+     ]
+    },
+    {
+     "id": "brinquedoteca",
+     "x": 46.5,
+     "y": 66.5,
+     "nome": "Brinquedoteca",
+     "info": "51,30 m²",
+     "fotos": [
+      "img/oceanhill/amb/brinquedoteca.jpg"
+     ]
+    },
+    {
+     "id": "bar-da-piscina-aquecida",
+     "x": 55.5,
+     "y": 64.5,
+     "nome": "Bar da piscina aquecida",
+     "info": "25,35 m²",
+     "fotos": [
+      "img/oceanhill/amb/bar-do-lazer.jpg"
+     ]
+    },
+    {
+     "id": "piscina-aquecida-adulto",
+     "x": 70,
+     "y": 66,
+     "nome": "Piscina aquecida adulto",
+     "info": "30,84 m², em ambiente fechado",
+     "fotos": [
+      "img/oceanhill/amb/piscina-aquecida.jpg"
+     ]
+    },
+    {
+     "id": "ofuros-e-hidroterapia",
+     "x": 64,
+     "y": 73.5,
+     "nome": "Ofurôs e hidroterapia",
+     "info": "124,85 m²",
+     "fotos": [
+      "img/oceanhill/amb/ofuros-e-hidroterapia.jpg"
+     ]
+    },
+    {
+     "id": "salao-de-festas-hill-tower",
+     "x": 40,
+     "y": 75.5,
+     "nome": "Salão de Festas Hill Tower",
+     "info": "125,52 m²",
+     "fotos": [
+      "img/oceanhill/amb/salao-de-festas-maior.jpg"
+     ]
+    },
+    {
+     "id": "bar-ingles-jogos",
+     "x": 42,
+     "y": 81,
+     "nome": "Bar Inglês · Jogos",
+     "info": "59,40 m²",
+     "fotos": [
+      "img/oceanhill/amb/bar-ingles.jpg"
+     ]
+    },
+    {
+     "id": "piscina-sol-da-tarde",
+     "x": 52,
+     "y": 90,
+     "nome": "Piscina Sol da Tarde",
+     "info": "89,09 m²",
+     "fotos": [
+      "img/oceanhill/amb/piscina-do-sol-da-tarde.jpg"
+     ]
+    },
+    {
+     "id": "pet-place",
+     "x": 20.5,
+     "y": 69,
+     "nome": "Pet Place",
+     "info": "60,71 m²",
+     "fotos": [
+      "img/oceanhill/amb/pet-place.jpg"
+     ]
+    },
+    {
+     "id": "floresta-e-redario",
+     "x": 26.5,
+     "y": 66.5,
+     "nome": "Floresta e redário",
+     "info": "Terraço descoberto · 273,65 m²",
+     "fotos": [
+      "img/oceanhill/amb/floresta-e-redario.jpg"
+     ]
+    },
+    {
+     "id": "salao-de-inverno",
+     "x": 21,
+     "y": 77,
+     "nome": "Salão de Inverno",
+     "info": "75,35 m²",
+     "fotos": [
+      "img/oceanhill/amb/salao-de-inverno.jpg"
+     ]
+    },
+    {
+     "id": "boulevard-com-aquecedores-e-fire-place",
+     "x": 24,
+     "y": 87,
+     "nome": "Boulevard com aquecedores e fire-place",
+     "info": "Coberto",
+     "fotos": [
+      "img/oceanhill/amb/boulevard-de-inverno.jpg",
+      "img/oceanhill/amb/lounge-externo.jpg"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "terreo",
+   "nome": "Pavimento Térreo",
+   "sub": "Recepção, convivência e a garagem náutica no Rio Perequê",
+   "planta": "img/oceanhill/planta/terreo.jpg",
+   "w": 13192,
+   "h": 9425,
+   "pinos": [
+    {
+     "id": "hall-de-acesso-principal",
+     "x": 39,
+     "y": 33.5,
+     "nome": "Hall de acesso principal",
+     "info": "80,40 m²",
+     "fotos": [
+      "img/oceanhill/amb/hall-principal.jpg",
+      "img/oceanhill/amb/hall-externo-principal.jpg"
+     ]
+    },
+    {
+     "id": "salao-de-festas-acustico",
+     "x": 43.5,
+     "y": 47.5,
+     "nome": "Salão de Festas acústico",
+     "info": "144,69 m² com palco e pista",
+     "fotos": [
+      "img/oceanhill/amb/boate.jpg"
+     ]
+    },
+    {
+     "id": "hall-ocean-tower",
+     "x": 52.5,
+     "y": 46,
+     "nome": "Hall Ocean Tower",
+     "info": "52,17 m²",
+     "fotos": [
+      "img/oceanhill/amb/hall-interno-ocean-tower.jpg"
+     ]
+    },
+    {
+     "id": "hall-hill-tower",
+     "x": 51,
+     "y": 65,
+     "nome": "Hall Hill Tower",
+     "info": "53,18 m²",
+     "fotos": [
+      "img/oceanhill/amb/hall-interno-hill-tower.jpg",
+      "img/oceanhill/amb/hall-externo-secundario.jpg"
+     ]
+    },
+    {
+     "id": "mercearia-take-away",
+     "x": 42.5,
+     "y": 72,
+     "nome": "Mercearia take away",
+     "info": "Conveniência · 33,43 m²",
+     "fotos": [
+      "img/oceanhill/amb/mercearia.jpg"
+     ]
+    },
+    {
+     "id": "garagem-nautica",
+     "x": 64,
+     "y": 60,
+     "nome": "Garagem náutica",
+     "info": "Vagas para jet skis",
+     "fotos": [
+      "img/oceanhill/amb/garagem-nautica.jpg",
+      "img/oceanhill/nautica-2.jpg",
+      "img/oceanhill/nautica-3.jpg"
+     ]
+    },
+    {
+     "id": "atracadouro-no-rio-pereque",
+     "x": 88,
+     "y": 35,
+     "nome": "Atracadouro no Rio Perequê",
+     "info": "Uso exclusivo do condomínio",
+     "fotos": [
+      "img/oceanhill/nautica-1.jpg",
+      "img/oceanhill/nautica-4.jpg"
+     ]
+    }
+   ]
+  }
+ ]
+}

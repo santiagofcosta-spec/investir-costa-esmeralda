@@ -170,6 +170,12 @@ h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;back
 .tf .fx{font-size:11px;color:var(--off);margin-top:auto}.tf .fx a{color:var(--gold-lt)}
 .mod{position:fixed;inset:0;background:rgba(5,8,11,.94);display:grid;place-items:center;z-index:50;padding:16px}
 .mod img{max-width:100%;max-height:88vh;border-radius:10px;background:#fff}
+.mod figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:8px;max-width:min(100%,520px)}
+.mod video{max-width:100%;max-height:80vh;border-radius:12px;background:#000;display:block}
+.mod figcaption{font-size:12px;color:var(--muted);text-align:center;line-height:1.45}
+.tf button.tv{position:relative;cursor:pointer}.tf button.tv img{object-position:50% 38%}
+.tf button.tv span{position:absolute;left:10px;bottom:10px;background:rgba(10,14,18,.82);border:1px solid var(--gold);color:var(--gold-lt);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600}
+.tf .av{font-size:11.5px;color:var(--muted);font-style:italic}
 .mod img[src*='/vistas/']{background:none}
 .mod button{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:14px;background:var(--card);border:1px solid var(--line);border-radius:999px;width:42px;height:42px;font-size:20px}
 /* ---------- elevador panorâmico ---------- */
@@ -274,7 +280,8 @@ footer b{color:var(--ink)}
     <div class="kick">Lazer e convivência</div>
     <h2>4.265 m² para viver o resort em casa</h2>
     <p class="sub" id="lzTxt"></p>
-    <div class="gal" id="gal"></div>
+    <div id="planta" style="margin-top:14px"></div>
+    <div class="gal" id="gal" hidden></div>
   </section>
 
   <section class="sec" id="secTransf" hidden>
@@ -318,8 +325,9 @@ footer b{color:var(--ink)}
     <div class="ntx"><div class="kick">Vida náutica</div><h3>Garagem náutica e atracadouro</h3><p id="nTxt"></p><p class="nota" id="nNota"></p></div>
   </div>
 </div>
-<div class="mod" id="mod" hidden><button type="button" aria-label="Fechar" id="modX">✕</button><img id="modImg" alt=""></div>
+<div class="mod" id="mod" hidden><button type="button" aria-label="Fechar" id="modX">✕</button><img id="modImg" alt=""><figure id="modFig" hidden><video id="modVid" controls playsinline muted preload="none"></video><figcaption id="modCap"></figcaption></figure></div>
 
+<script src="planta.js?v=20261124a"></script>
 <script>
 (function(){
   'use strict';
@@ -376,13 +384,17 @@ footer b{color:var(--ink)}
     $('lzTxt').textContent=D.lazerTexto||'';
     $('gal').innerHTML=(D.galeria||[]).map(IMG).filter(Boolean).map(s=>`<button type="button" data-z="${s}"><img loading="lazy" src="${s}" alt=""></button>`).join('');
     $('gal').onclick=e=>{const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
+    // planta interativa (24/11/2026) no lugar da galeria; sem dados/planta-<emp>.json, volta a galeria
+    if(window.PlantaInterativa) PlantaInterativa.montar($('planta'),`dados/planta-${ID}.json?v=20261124a`).then(p=>{ if(!p) $('gal').hidden=false; });
+    else $('gal').hidden=false;
     // Itapema em transformação: obras de terceiros com situação e fonte (vitrine_oceanhill.py, TRANSFORMA)
     const tf=D.transforma&&D.transforma.itens||[], url=u=>/^https:\/\/[^\s"'<>]+$/.test(u)?u:'';
     if(tf.length){
-      $('tf').innerHTML=tf.map(t=>`<article>${IMG(t.img)?`<button type="button" data-z="${IMG(t.img)}" aria-label="Ampliar"><img loading="lazy" src="${IMG(t.img)}" alt="${esc(t.titulo)}"></button>`:''}
-        <div class="cx"><span class="st ${/^(final|obra|licitacao|projeto)$/.test(t.fase)?t.fase:'projeto'}">${esc(t.situacao)}</span><h3>${esc(t.titulo)}</h3><span class="q">${esc(t.quem)}</span><p>${esc(t.texto)}</p>
+      $('tf').innerHTML=tf.map(t=>`<article>${VID(t.video)&&IMG(t.img)?`<button type="button" class="tv" data-v="${VID(t.video)}" data-p="${IMG(t.img)}" data-c="${esc(t.videoNota||'')}" aria-label="Ver o vídeo"><img loading="lazy" src="${IMG(t.img)}" alt="${esc(t.titulo)}"><span>▶ Ver o projeto em 3D</span></button>`
+        :IMG(t.img)?`<button type="button" data-z="${IMG(t.img)}" aria-label="Ampliar"><img loading="lazy" src="${IMG(t.img)}" alt="${esc(t.titulo)}"></button>`:''}
+        <div class="cx"><span class="st ${/^(final|obra|licitacao|projeto)$/.test(t.fase)?t.fase:'projeto'}">${esc(t.situacao)}</span><h3>${esc(t.titulo)}</h3><span class="q">${esc(t.quem)}</span><p>${esc(t.texto)}</p>${t.videoNota?`<span class="av">${esc(t.videoNota)}</span>`:''}
         <span class="fx">Fonte: ${(t.fontes||[]).filter(f=>url(f[1])).map(f=>`<a href="${url(f[1])}" target="_blank" rel="noopener">${esc(f[0])}</a>`).join(' · ')}</span></div></article>`).join('');
-      $('tf').onclick=e=>{const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
+      $('tf').onclick=e=>{const v=e.target.closest('[data-v]'); if(v){ video(v.dataset.v,v.dataset.p,v.dataset.c); return; } const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
       $('tfNota').textContent=`Situação conferida em notícias em ${dataBR(D.transforma.conferido)}; prazos de obras públicas e privadas podem mudar. Imagens: projetos apresentados no catálogo da Prointi&GD.`;
       $('secTransf').hidden=false;
     }
@@ -398,7 +410,9 @@ footer b{color:var(--ink)}
       $('obra').onclick=e=>{const b=e.target.closest('[data-z]'); if(b) zoom(b.dataset.z);};
       $('secObra').hidden=false;
     }
-    $('rod').innerHTML=`<b>${esc(CFG.nome)}</b> · ${esc(CFG.empresa)} · WhatsApp ${esc(CFG.whatsappTxt)}<br>
+    // &marca=0 (26/11): aberta pela apresentação do Santiago, sem o nome da imobiliária
+    const semMarca=new URLSearchParams(location.search).get('marca')==='0';
+    $('rod').innerHTML=`<b>${esc(CFG.nome)}</b>${semMarca?'':' · '+esc(CFG.empresa)} · WhatsApp ${esc(CFG.whatsappTxt)}<br>
       Disponibilidade conforme a tabela da incorporadora de ${esc(dataBR(D.tabela))}, sujeita a alteração sem aviso. Imagens ilustrativas.
       Condições em percentual, de referência; preço, correção e condições finais são confirmados na proposta.`;
     // link direto para uma unidade: vitrine.html?e=oceanhill&u=HT-2101
@@ -708,9 +722,12 @@ footer b{color:var(--ink)}
   addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('nmod').hidden){ e.stopImmediatePropagation(); $('nmod').hidden=true; } },true);
 
   /* ---------- zoom ---------- */
-  function zoom(src){ if(!IMG(src)) return; $('modImg').src=src; $('mod').hidden=false; }
-  $('modX').onclick=()=>{$('mod').hidden=true;}; $('mod').onclick=e=>{ if(e.target.id==='mod') $('mod').hidden=true; };
-  addEventListener('keydown',e=>{ if(e.key==='Escape') $('mod').hidden=true; });
+  function zoom(src){ if(!IMG(src)) return; fecharMod(); $('modImg').hidden=false; $('modImg').src=src; $('mod').hidden=false; }
+  function video(src,capa,cap){ if(!VID(src)) return; const v=$('modVid'); $('modImg').hidden=true; $('modFig').hidden=false;
+    v.poster=IMG(capa)||''; v.src=src; $('modCap').textContent=cap||''; $('mod').hidden=false; v.play().catch(()=>{}); }
+  function fecharMod(){ const v=$('modVid'); v.pause(); v.removeAttribute('src'); v.load(); $('modFig').hidden=true; $('mod').hidden=true; }
+  $('modX').onclick=fecharMod; $('mod').onclick=e=>{ if(e.target.id==='mod') fecharMod(); };
+  addEventListener('keydown',e=>{ if(e.key==='Escape') fecharMod(); });
 })();
 </script>
 </body>

@@ -944,6 +944,8 @@ const STATUS={disponivel:L('Disponível','Disponible'),reservado:L('Reservado','
 const fmtMesAno=k=>k?NOMES_MES[+k.slice(5,7)-1]+'/'+k.slice(0,4):'—';
 function renderCorretor(){
   $('formLogin').hidden=!!TAB; $('areaCorretor').hidden=!TAB;
+  // apresentação completa sem a marca Goya (26/11/2026): só no login do Santiago
+  { const ap=$('apresBox'); if(ap) ap.hidden=!(TAB&&USUARIO&&USUARIO.id==='santiago-fernandes-costa'); }
   if(!TAB){ prepararLogin(); return; }
   const emps=TAB.empreendimentos;
   // nome no filtro (21/11, pedido do Santiago): empreendimentos da All Wert aparecem como "All Wert - Tennis", "All Wert - Golf"...
@@ -1050,7 +1052,7 @@ async function entrarCorretor(){
 
 /* ---------- contato / WhatsApp ---------- */
 let ultimoResumoWA='';
-const assinatura=()=>`${CONTATO.nome}${CONTATO.empresa?(CONTATO.creci?' · CRECI '+CONTATO.creci:''):(CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:'')+' · '+CONTATO.imobiliaria} · WhatsApp ${CONTATO.whatsappTxt}`;
+const assinatura=()=>`${CONTATO.nome}${CONTATO.empresa?(CONTATO.creci?' · CRECI '+CONTATO.creci:''):(CONTATO.creci?L(' · Corretor de imóveis · CRECI ',' · Corredor inmobiliario · CRECI ')+CONTATO.creci:'')+(CONTATO.imobiliaria?' · '+CONTATO.imobiliaria:'')} · WhatsApp ${CONTATO.whatsappTxt}`;
 function pintarAssinatura(){
   $('assNome').textContent=CONTATO.nome;
   $('assCargo').textContent=CONTATO.empresa?L('Imobiliária','Inmobiliaria')+(CONTATO.creci?' · CRECI '+CONTATO.creci:''):(CONTATO.creci?L('Corretor de imóveis · CRECI ','Corredor inmobiliario · CRECI ')+CONTATO.creci+' · ':'')+CONTATO.imobiliaria;

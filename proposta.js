@@ -85,6 +85,7 @@
         <div class="f2"><label for="prBase">${L('Proposta inicial','Propuesta inicial')}</label><div class="in"><select id="prBase">${bases.map(k=>`<option value="${k}"${k===P.base?' selected':''}>${c[k].nome||k} · ${brl(metricasDe(copia(c[k])).total)}</option>`).join('')}</select></div></div>
         <div class="f2"><label for="prVal">${L('Válida até','Válida hasta')}</label><div class="in"><input id="prVal" type="date" value="${esc(P.validade)}"></div></div>
       </div>
+      ${podeSemMarca(e)?`<div class="prop-soja"><label><input id="prSemMarca" type="checkbox"${P.semMarca?' checked':''}> ${L('PDF sem a marca Goya (só o seu nome e WhatsApp) · visível só para você','PDF sin la marca Goya (solo su nombre y WhatsApp) · visible solo para usted')}</label></div>`:''}
       <div class="prop-soja"><label><input id="prSojaOn" type="checkbox"${P.soja.on?' checked':''}> 🌱 ${L('Mostrar também em sacas de soja (cliente do agro)','Mostrar también en sacas de soja (cliente del agro)')}</label>
         <div class="f2"><label for="prSojaCid">${L('Cidade','Ciudad')}</label><div class="in"><input id="prSojaCid" type="text" maxlength="40" value="${esc(P.soja.cidade)}" placeholder="Sorriso/MT" style="text-align:left"></div></div>
         <div class="f2"><label for="prSojaLiq">${L('Saca líquida','Saca neta')}</label><div class="in"><span>R$</span><input id="prSojaLiq" type="text" inputmode="decimal" value="${P.soja.liq?P.soja.liq.toLocaleString('pt-BR',{minimumFractionDigits:2}):''}"></div></div>
@@ -117,6 +118,7 @@
     box.querySelector('#prCliente').addEventListener('input',ev=>{P.cliente=ev.target.value;});
     box.querySelector('#prVal').addEventListener('input',ev=>{P.validade=ev.target.value;});
     box.querySelector('#prSojaOn').addEventListener('change',ev=>{P.soja.on=ev.target.checked;});
+    const sm=box.querySelector('#prSemMarca'); if(sm) sm.addEventListener('change',ev=>{P.semMarca=ev.target.checked;});
     box.querySelector('#prSojaCid').addEventListener('input',ev=>{P.soja.cidade=ev.target.value.trim();});
     box.querySelector('#prSojaLiq').addEventListener('input',ev=>{P.soja.liq=r2(lerNum(ev.target.value));});
     box.querySelector('#prBase').addEventListener('change',ev=>{abrir(ev.target.value,P.u);});
@@ -161,7 +163,7 @@
     const ant=P;
     // soja: começa desligada; cidade e preço líquido vêm da aba Agro (window.SOJA_REF, app.js) e podem ser editados
     const sr=window.SOJA_REF, soja=ant?.soja||{on:false,cidade:sr?`${sr.cidade}/${sr.uf}`:'',liq:sr?Math.round(sr.liq*100)/100:0,data:sr?.data||''};
-    P={e,u,base,ini:copia(c[base]),aj:copia(c[base]),cliente:ant?.cliente||'',validade:ant?.validade||e.validade||'',soja};
+    P={e,u,base,ini:copia(c[base]),aj:copia(c[base]),cliente:ant?.cliente||'',validade:ant?.validade||e.validade||'',soja,semMarca:!!ant?.semMarca};
     box.hidden=false; montar();
   }
 
@@ -783,7 +785,11 @@
      (pagamento, calendário, valorização) e troca a apresentação. Dados do empreendimento em e.resort. */
   const PRISMA=e=>!!e&&e.linha==='prisma';
   // escura=true: logo clara (o html2canvas não aplica filtro de cor, então a versão clara é um arquivo próprio)
-  const pzLogo=(escura)=>`<span class="pz-wm">Prisma <i>Esmeralda</i></span><span class="pz-fio"></span><img class="pz-goya" src="${escura?'img/goya/goya-horizontal-clara.png':GOYA.logo}" alt="Goya">`;
+  // 26/11 (Santiago): "PDF sem a marca Goya" nas propostas da Prointi, só no login dele -> no lugar da assinatura dupla, só o nome
+  const SANTIAGO_ID='santiago-fernandes-costa';
+  const podeSemMarca=e=>typeof USUARIO!=='undefined'&&USUARIO&&USUARIO.id===SANTIAGO_ID&&/prointi/i.test(String(e&&e.incorporadora||''));
+  const SEM_MARCA=()=>!!(P&&P.semMarca&&podeSemMarca(P.e));
+  const pzLogo=(escura)=>SEM_MARCA()?`<span class="pz-wm">${esc(CONTATO.nome)}</span>`:`<span class="pz-wm">Prisma <i>Esmeralda</i></span><span class="pz-fio"></span><img class="pz-goya" src="${escura?'img/goya/goya-horizontal-clara.png':GOYA.logo}" alt="Goya">`;
   const pzArea=u=>u.area?u.area.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
   const pzTipo=u=>(String(u.tipo||'').match(/tipologia\s+(\S+)/i)||[])[1]||'';
 
@@ -1038,6 +1044,10 @@
 
   /* ---------- PDF (só a proposta final) ---------- */
   function pdf(){
+    if(SEM_MARCA()){ const im=CONTATO.imobiliaria; CONTATO.imobiliaria=''; try{ return pdfMontar(); } finally{ CONTATO.imobiliaria=im; } }
+    return pdfMontar();
+  }
+  function pdfMontar(){
     if(LOTE(P.e)) return pdfLote();
     if(PRISMA(P.e)) return pdfPrismaApto();
     const {e,u}=P, a=P.aj, m=metricas(a), f=e.fotos||{};
@@ -1090,8 +1100,17 @@
   function marcarPaginas(raiz,hoje){
     const pags=[...raiz.querySelectorAll('.pp-pag')], n=pags.length;
     const prisma=PRISMA(P&&P.e);
+    const sem=SEM_MARCA();
     pags.forEach((p,i)=>{
       p.classList.add('pp-goya'); if(prisma) p.classList.add('pz');
+      if(sem){   // sem marca: sem logo, sem marca d'água; topo com o nome; rodapé sem a imobiliária
+        if(prisma&&p.classList.contains('pz-capa')) p.insertAdjacentHTML('afterbegin',`<div class="pz-topo-capa">${pzLogo(true)}</div>`);
+        else p.insertAdjacentHTML('afterbegin',prisma
+          ?`<div class="pp-topo pz-topo"><div class="pz-assin">${pzLogo(p.classList.contains('pz-escura'))}</div><span>${L('Página','Página')} ${i+1}/${n}</span></div>`
+          :`<div class="pp-topo"><b style="font-weight:600">${esc(CONTATO.nome)}</b><span>${L('Página','Página')} ${i+1}/${n}</span></div>`);
+        p.insertAdjacentHTML('beforeend',`<div class="pp-excl">${L(`Preparado por ${esc(CONTATO.nome)}${P.cliente?` para ${esc(P.cliente)}`:''} em ${hoje}. Uso exclusivo do destinatário.`,`Preparado por ${esc(CONTATO.nome)}${P.cliente?` para ${esc(P.cliente)}`:''} el ${hoje}. Uso exclusivo del destinatario.`)}</div>`);
+        return;
+      }
       if(prisma&&p.classList.contains('pz-capa'))   // capa Prisma: sem cabeçalho (a assinatura dupla vai no topo da foto)
         p.insertAdjacentHTML('afterbegin',`<div class="pz-topo-capa">${pzLogo(true)}</div>`);
       else p.insertAdjacentHTML('afterbegin',`<img class="pp-marca" src="${GOYA.marca}" alt="">`+(prisma
