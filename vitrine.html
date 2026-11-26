@@ -267,6 +267,36 @@ div.planta>img{position:relative;z-index:0}
 .preco small{color:var(--muted);font-size:12px}
 footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--muted);font-size:12px}
 footer b{color:var(--ink)}
+/* ---------- Fase 3 (27/11/2026): comparar unidades e favoritos ---------- */
+.acs{display:flex;gap:8px;margin:12px 0 0;flex-wrap:wrap}
+.acs button{flex:1;min-width:140px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:10px 14px;font:500 14px/1.2 inherit;cursor:pointer}
+.acs button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-lt);background:rgba(212,175,55,.12)}
+#dock{position:fixed;right:16px;bottom:16px;z-index:40;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+#dock[hidden]{display:none}
+#dock button{border:1px solid var(--gold);background:rgba(10,14,18,.92);color:var(--gold-lt);border-radius:999px;padding:11px 16px;font:600 14px/1 inherit;cursor:pointer;box-shadow:0 12px 30px -10px #000}
+#dock button[hidden]{display:none}
+#cmod{position:fixed;inset:0;z-index:60;background:rgba(5,8,11,.94);display:flex;align-items:center;justify-content:center;padding:16px}
+#cmod[hidden]{display:none}
+#cmod .cx{position:relative;width:min(100%,860px);max-height:calc(100vh - 32px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px}
+#cmod h3{margin:0 0 4px;font-size:22px}
+#cmod .fx{position:absolute;top:12px;right:12px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:18px;cursor:pointer}
+.tcmp{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+.tcmp th,.tcmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tcmp th{color:var(--muted);font-weight:500;width:26%}
+.tcmp td b{color:var(--gold-lt)}
+.tcmp thead td{font-size:16px}
+.tcmp .x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:12px;text-decoration:underline;padding:0;margin-left:6px}
+.favs{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.favs li{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.favs li span{flex:1}
+.favs li small{display:block;color:var(--muted)}
+.favs button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:7px 12px;cursor:pointer;font:500 13px inherit}
+.cmp-acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.cmp-acoes a,.cmp-acoes button{flex:1;min-width:200px;text-align:center;text-decoration:none;border:0;border-radius:12px;padding:13px 14px;font:600 15px/1.2 inherit;cursor:pointer;background:linear-gradient(135deg,#F5E6B3,#D4AF37 55%,#A67C2E);color:#14110a}
+.cmp-acoes .sec{background:transparent;border:1px solid var(--gold);color:var(--gold-lt)}
+.cmp-nota{font-size:12px;color:var(--muted);margin:10px 0 0}
+.tcmp{table-layout:fixed}
+@media (max-width:600px){#cmod{padding:8px}#cmod .cx{padding:18px 12px}.tcmp{font-size:12.5px}.tcmp th{width:27%}.tcmp th,.tcmp td{padding:8px 5px;overflow-wrap:anywhere}.tcmp thead td{font-size:14px}}
 </style>
 </head>
 <body>
@@ -345,6 +375,8 @@ footer b{color:var(--ink)}
 </div>
 <div class="mod" id="mod" hidden><button type="button" aria-label="Fechar" id="modX">✕</button><img id="modImg" alt=""><figure id="modFig" hidden><video id="modVid" controls playsinline muted preload="none"></video><figcaption id="modCap"></figcaption></figure></div>
 
+<div id="dock" hidden><button type="button" id="dCmp" hidden></button><button type="button" id="dFav" hidden></button></div>
+<div id="cmod" hidden role="dialog" aria-modal="true"><div class="cx" id="cmodCx"></div></div>
 <script src="planta.js?v=20261127a"></script>
 <script>
 (function(){
@@ -389,7 +421,7 @@ footer b{color:var(--ink)}
   let TOUR={};
   const carregarTour=()=>fetch(`dados/tour3d-${ID}.json?v=20261126c`).then(r=>r.ok?r.json():{}).then(j=>{ TOUR=j.plantas||{}; }).catch(()=>{});
   Promise.all([fetch(`dados/vitrine-${ID}.json?v=20261123a`).then(r=>{if(!r.ok) throw 0; return r.json();}),carregarPreco(),carregarContato(),carregarTour()])
-    .then(([d])=>{D=d; iniciar();})
+    .then(([d])=>{D=d; iniciar(); pintarDock();})
     .catch(()=>{ $('tit').textContent='Vitrine indisponível'; });
 
   function iniciar(){
@@ -578,6 +610,7 @@ footer b{color:var(--ink)}
       ${PRECO&&PRECO.id===u.id?`<div class="preco"><span>Valor de tabela</span><b>${brl(PRECO.valor)}</b><small>Tabela da incorporadora de ${esc(dataBR(PRECO.tabela))} · preço liberado por ${esc(CFG.primeiro)} para você</small></div>`:''}
       <div class="specs"><div><b>${esc(u.suites)}</b><span>suítes</span></div><div><b>${m2(u.area).replace(' m²','')}</b><span>m² privativos</span></div>
         <div><b>${u.vagas}</b><span>vagas</span></div><div><b>${u.andar}º</b><span>andar</span></div></div>
+      <div class="acs"><button type="button" id="bCmp" aria-pressed="${CMP.includes(u.id)}">${CMP.includes(u.id)?'✓ Na comparação':'⇄ Comparar'}</button><button type="button" id="bFav" aria-pressed="${FAV.includes(u.id)}">${FAV.includes(u.id)?'♥ Favorita':'♡ Favoritar'}</button></div>
       ${u.condominio?`<p class="condo">Condomínio estimado: <b>≈ ${brl(u.condominio)} por mês</b><small>${esc(D.condominioFonte||'')}</small></p>`:''}
       ${(()=>{ if(!IMG(u.planta)) return ''; const T=TOUR[u.planta];
         if(!T) return `<button class="planta" id="pl" type="button" aria-label="Ampliar a planta"><img src="${IMG(u.planta)}" alt="Planta ${esc(casa)}"></button>`;
@@ -606,6 +639,9 @@ footer b{color:var(--ink)}
       <span class="cta2">${PRECO&&PRECO.id===u.id?'Fale direto com '+esc(CFG.primeiro)+' sobre esta unidade e a condição escolhida.':'A mensagem já vai pronta com a unidade e a condição escolhida.'}</span>`;
     if(PRECO&&PRECO.id===u.id) $('cta').lastChild.textContent='Quero avançar com esta unidade';
     $('volt').onclick=()=>abrirAndar(u.torre,u.andar,false);
+    UATUAL=u;
+    $('bCmp').onclick=()=>{ alternaCmp(u.id); pintarBotoes(u); };
+    $('bFav').onclick=()=>{ alternaFav(u.id); pintarBotoes(u); };
     $('elevUni').onclick=()=>Elevador.abrir(abrev(u.torre)+'-'+posDe(u.unidade),u.andar);
     const pl=$('pl'), T=TOUR[u.planta];
     if(pl) pl.onclick=e=>{ const b=e.target.closest('.pp');
@@ -751,6 +787,80 @@ footer b{color:var(--ink)}
   document.addEventListener('click',e=>{ const b=e.target.closest('[data-nau]'); if(b){ e.preventDefault(); e.stopPropagation(); nauAbrir(); } },true);
   ['pointerdown'].forEach(ev=>document.addEventListener(ev,e=>{ if(e.target.closest('[data-nau]')) e.stopPropagation(); },true));
   addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('nmod').hidden){ e.stopImmediatePropagation(); $('nmod').hidden=true; } },true);
+
+  /* ---------- comparar unidades e favoritos (27/11/2026) ----------
+     Guardados só neste aparelho (localStorage, por empreendimento). "Me avise" e o comparativo vão para o WhatsApp
+     de quem atende (CFG): o site não tem servidor, então o acompanhamento é feito pela conversa. */
+  const KEY=k=>`vitrine-${ID}-${k}`;
+  const ler=k=>{ try{ const v=JSON.parse(localStorage.getItem(KEY(k))||'[]'); return Array.isArray(v)?v.filter(x=>typeof x==='string').slice(0,30):[]; }catch(e){ return []; } };
+  const gravar=(k,v)=>{ try{ localStorage.setItem(KEY(k),JSON.stringify(v)); }catch(e){} };
+  let CMP=ler('cmp').slice(0,2), FAV=ler('fav'), UATUAL=null;
+  const uni=id=>D&&D.unidades.find(x=>x.id===id&&x.status==='disponivel');
+  function alternaCmp(id){
+    if(CMP.includes(id)) CMP=CMP.filter(x=>x!==id); else { CMP.push(id); if(CMP.length>2) CMP.shift(); }
+    gravar('cmp',CMP); pintarDock(); if(CMP.length===2) abrirCmp();
+  }
+  function alternaFav(id){ FAV=FAV.includes(id)?FAV.filter(x=>x!==id):[...FAV,id]; gravar('fav',FAV); pintarDock(); }
+  function pintarBotoes(u){ const c=$('bCmp'), f=$('bFav'); if(!c) return;
+    c.setAttribute('aria-pressed',CMP.includes(u.id)); c.textContent=CMP.includes(u.id)?'✓ Na comparação':'⇄ Comparar';
+    f.setAttribute('aria-pressed',FAV.includes(u.id)); f.textContent=FAV.includes(u.id)?'♥ Favorita':'♡ Favoritar'; }
+  function pintarDock(){
+    if(!D) return; CMP=CMP.filter(uni); FAV=FAV.filter(uni);
+    $('dCmp').hidden=!CMP.length; $('dCmp').textContent=`⇄ Comparar (${CMP.length}/2)`;
+    $('dFav').hidden=!FAV.length; $('dFav').textContent=`♥ Favoritos (${FAV.length})`;
+    $('dock').hidden=!CMP.length&&!FAV.length;
+  }
+  const vistaTxt=u=>{ const f=setsDaPos(u.torre,posDe(u.unidade)).map(k=>fotoAndar(k,u.andar)).find(x=>x&&x.rot);
+    if(f) return String(f.rot).replace(/^[^·]*·\s*/,'');
+    const t=D.torres.find(x=>x.nome===u.torre); return t?t.lado:''; };
+  const condAtual=()=>{ const c=D.condicoes.find(x=>x.id===cond)||D.condicoes[0], partes=alt&&c.alt?c.alt.partes:c.partes;
+    return {c,txt:`${c.nome}${alt&&c.alt?' · '+c.alt.rotulo:''}`,det:partes.map(p=>`${p[0]}: ${pc(p[1])}`).join(' · ')}; };
+  const linhaUni=u=>`${u.unidade} · ${u.torre} · ${u.andar}º andar · ${u.casa} · ${u.suites} suítes · ${m2(u.area)}`;
+  function abrirCmp(){
+    const us=CMP.map(uni).filter(Boolean), cd=condAtual(), cx=$('cmodCx');
+    if(us.length<2){
+      cx.innerHTML=`<button class="fx" type="button" aria-label="Fechar">✕</button><h3>Comparar unidades</h3>
+        <p class="cmp-nota" style="font-size:14px">${us.length?`Já separada: <b>${esc(linhaUni(us[0]))}</b>. `:''}Abra outra unidade e toque em <b>⇄ Comparar</b> para ver as duas lado a lado.</p>`;
+    } else {
+      const L=[['Torre',u=>esc(u.torre)],['Andar',u=>u.andar+'º'],['Planta',u=>esc(u.casa)],['Área privativa',u=>`<b>${m2(u.area)}</b>`],['Suítes',u=>esc(u.suites)],
+        ['Vagas',u=>u.vagas],['Condomínio estimado',u=>u.condominio?`≈ ${brl(u.condominio)}/mês`:'—'],['Vista',u=>esc(vistaTxt(u))],
+        ['Preço',u=>PRECO&&PRECO.id===u.id?`<b>${brl(PRECO.valor)}</b>`:`sob consulta com ${esc(CFG.primeiro)}`]];
+      cx.innerHTML=`<button class="fx" type="button" aria-label="Fechar">✕</button><h3>Comparativo lado a lado</h3>
+        <p class="cmp-nota" style="margin:0">Condição escolhida: <b>${esc(cd.txt)}</b> · ${esc(cd.det)}</p>
+        <table class="tcmp"><thead><tr><th></th>${us.map(u=>`<td><b>Unidade ${esc(u.unidade)}</b><button class="x" type="button" data-tira="${esc(u.id)}">tirar</button></td>`).join('')}</tr></thead>
+        <tbody>${L.map(([n,fn])=>`<tr><th>${n}</th>${us.map(u=>`<td>${fn(u)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+        <div class="cmp-acoes"><a id="cmpWa" target="_blank" rel="noopener">Enviar o comparativo para ${esc(CFG.primeiro)}</a>
+          <button type="button" class="sec" data-abrir="${esc(us[0].id)}">Ver a ${esc(us[0].unidade)}</button><button type="button" class="sec" data-abrir="${esc(us[1].id)}">Ver a ${esc(us[1].unidade)}</button></div>
+        <p class="cmp-nota">Para mudar a condição, feche, escolha outra em "Condições de pagamento" e abra o comparativo de novo. Condomínio: estimativa da administradora; vista: foto real de drone na altura do andar.</p>`;
+      const msg=`Olá, ${CFG.primeiro}! Estou comparando duas unidades do ${D.nome}:\n`+us.map((u,i)=>`${i+1}) ${linhaUni(u)}${u.condominio?` · condomínio ≈ ${brl(u.condominio)}`:''}`).join('\n')+
+        `\nCondição: ${cd.txt}. Pode me enviar o preço das duas e me ajudar a decidir?`;
+      $('cmpWa').href=`https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}`;
+    }
+    $('cmod').hidden=false;
+  }
+  function abrirFav(){
+    const us=FAV.map(uni).filter(Boolean), cx=$('cmodCx');
+    cx.innerHTML=`<button class="fx" type="button" aria-label="Fechar">✕</button><h3>Suas favoritas</h3>
+      <p class="cmp-nota" style="margin:0">Guardadas só neste aparelho.</p>
+      <ul class="favs">${us.map(u=>`<li><span><b>${esc(u.unidade)} · ${esc(u.torre)}</b><small>${esc(u.casa)} · ${u.andar}º andar · ${esc(u.suites)} suítes · ${m2(u.area)}</small></span>
+        <button type="button" data-abrir="${esc(u.id)}">Ver</button><button type="button" data-tirafav="${esc(u.id)}" aria-label="Tirar dos favoritos">✕</button></li>`).join('')||'<li><span>Nenhuma unidade favorita.</span></li>'}</ul>
+      ${us.length?`<div class="cmp-acoes"><a id="favWa" target="_blank" rel="noopener">Me avise se mudar a tabela ou houver condição especial</a></div>
+      <p class="cmp-nota">A mensagem vai para o WhatsApp de ${esc(CFG.primeiro)} com a sua lista; ele acompanha as tabelas da incorporadora e avisa você por lá.</p>`:''}`;
+    if(us.length){ const msg=`Olá, ${CFG.primeiro}! Separei estas unidades do ${D.nome} como favoritas:\n`+us.map((u,i)=>`${i+1}) ${linhaUni(u)}`).join('\n')+
+      `\nPode me avisar se a tabela mudar ou se surgir alguma condição especial para elas?`;
+      $('favWa').href=`https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(msg)}`; }
+    $('cmod').hidden=false;
+  }
+  const fecharCmp=()=>{ $('cmod').hidden=true; };
+  $('dCmp').onclick=abrirCmp; $('dFav').onclick=abrirFav;
+  $('cmod').onclick=e=>{
+    if(e.target.id==='cmod'||e.target.closest('.fx')) return fecharCmp();
+    const a=e.target.closest('[data-abrir]'); if(a){ fecharCmp(); abrirUnidade(a.dataset.abrir); if(matchMedia('(max-width:860px)').matches) $('pn').scrollIntoView({behavior:'smooth',block:'start'}); return; }
+    const t=e.target.closest('[data-tira]'); if(t){ alternaCmp(t.dataset.tira); abrirCmp(); syncBotoes(); return; }
+    const tf=e.target.closest('[data-tirafav]'); if(tf){ alternaFav(tf.dataset.tirafav); abrirFav(); syncBotoes(); }
+  };
+  function syncBotoes(){ if(UATUAL&&$('bCmp')) pintarBotoes(UATUAL); }
+  addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('cmod').hidden){ e.stopImmediatePropagation(); fecharCmp(); } },true);
 
   /* ---------- zoom ---------- */
   function zoom(src){ if(!IMG(src)) return; fecharMod(); $('modImg').hidden=false; $('modImg').src=src; $('mod').hidden=false; }
