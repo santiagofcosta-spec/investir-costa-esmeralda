@@ -1,0 +1,62 @@
+{
+ "_sobre": "Gerado por privado/stories/planta3d/tour3d_publicar.py. Tour em 3D de cada planta + pontos dos cômodos.",
+ "plantas": {
+  "img/oceanhill/planta-casa-do-chef.jpg": {
+   "video": "img/oceanhill/tour3d/chef.mp4",
+   "poster": "img/oceanhill/tour3d/chef.jpg",
+   "nome": "Casa do Chef",
+   "dur": 53,
+   "pinos": [
+    {
+     "x": 52.15,
+     "y": 49.02,
+     "nome": "Estar",
+     "info": "34,50 m² · integrado à área social",
+     "foto": ""
+    },
+    {
+     "x": 84.5,
+     "y": 44.27,
+     "nome": "Jantar · churrasqueira",
+     "info": "30,76 m² · mesa para até 12 lugares",
+     "foto": "img/oceanhill/decorado/casa-do-chef-1.jpg"
+    },
+    {
+     "x": 68.55,
+     "y": 30.93,
+     "nome": "Cozinha",
+     "info": "10,90 m² · aberta, com ilha e churrasqueira",
+     "foto": "img/oceanhill/decorado/casa-do-chef-2.jpg"
+    },
+    {
+     "x": 86.05,
+     "y": 72.84,
+     "nome": "Suíte master",
+     "info": "17,83 m² · vista para o Rio Perequê",
+     "foto": ""
+    },
+    {
+     "x": 46.85,
+     "y": 77.42,
+     "nome": "Suíte 02",
+     "info": "16,84 m²",
+     "foto": ""
+    },
+    {
+     "x": 55.6,
+     "y": 81.07,
+     "nome": "Suíte 03",
+     "info": "12,04 m²",
+     "foto": ""
+    },
+    {
+     "x": 77.62,
+     "y": 82.18,
+     "nome": "Suíte 04",
+     "info": "12,60 m²",
+     "foto": ""
+    }
+   ]
+  }
+ }
+}

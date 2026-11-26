@@ -124,6 +124,24 @@ h1 i{font-style:italic;background:var(--metal);-webkit-background-clip:text;back
 .desc{color:#d4d4d8;font-size:14px;margin:6px 0 0}
 .planta{display:block;width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:zoom-in;padding:0}
 .planta img{display:block;width:100%;border-radius:12px}
+/* 26/11/2026: planta da unidade interativa (pontos nos cômodos) + Tour em 3D */
+div.planta{position:relative;isolation:isolate}
+div.planta>img{position:relative;z-index:0}
+.planta .pp{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border:0;padding:0;border-radius:50%;background:transparent;cursor:pointer;z-index:3}
+.planta .pp i{position:absolute;inset:7px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3c4,#D4AF37 45%,#8a6420);box-shadow:0 0 0 2px rgba(10,14,18,.85),0 3px 8px rgba(0,0,0,.5)}
+.planta .pp::before{content:"";position:absolute;inset:2px;border-radius:50%;border:2px solid rgba(212,175,55,.9);animation:ppPulso 2.4s ease-out infinite;animation-delay:var(--d,0s)}
+@keyframes ppPulso{0%{transform:scale(.6);opacity:.9}80%,100%{transform:scale(1.8);opacity:0}}
+.planta .pp span{position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);white-space:nowrap;background:rgba(10,14,18,.94);color:#F4F4F5;border:1px solid rgba(212,175,55,.5);border-radius:9px;padding:5px 9px;font-size:12px;line-height:1.35;opacity:0;pointer-events:none;transition:opacity .2s;text-align:center}
+.planta .pp span b{display:block;color:#F5E6B3;font-weight:600}
+.planta .pp:hover span,.planta .pp:focus-visible span,.planta .pp.on span{opacity:1}
+.planta .pp:hover,.planta .pp:focus-visible,.planta .pp.on{z-index:6}
+@media (max-width:600px){.planta .pp{width:24px;height:24px;margin:-12px 0 0 -12px}.planta .pp i{inset:5px}}
+.planta .pp.pfoto i::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px dashed rgba(255,255,255,.7)}
+.btn-tour{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:10px;border:0;border-radius:12px;padding:14px 16px;cursor:pointer;
+  font:600 15px/1.2 inherit;background:linear-gradient(135deg,#F5E6B3,#D4AF37 55%,#A67C2E);color:#14110a}
+.btn-tour small{font-weight:400;opacity:.75}
+.pl-dica{font-size:12px;color:var(--muted);margin:6px 0 0}
+@media (prefers-reduced-motion:reduce){.planta .pp::before{animation:none}}
 
 /* simulador */
 .conds{display:flex;gap:6px;flex-wrap:wrap}
@@ -367,7 +385,10 @@ footer b{color:var(--ink)}
       if(c&&/^\d{12,13}$/.test(c.whatsapp||'')){ CFG.nome=c.nome||CFG.nome; CFG.primeiro=String(c.nome||'').trim().split(/\s+/)[0]||CFG.primeiro;
         CFG.whatsapp=c.whatsapp; CFG.whatsappTxt=c.whatsappTxt||c.whatsapp; } }catch(e){}
   }
-  Promise.all([fetch(`dados/vitrine-${ID}.json?v=20261123a`).then(r=>{if(!r.ok) throw 0; return r.json();}),carregarPreco(),carregarContato()])
+  // tour em 3D das plantas (26/11/2026): opcional; sem o arquivo, a planta fica como era
+  let TOUR={};
+  const carregarTour=()=>fetch(`dados/tour3d-${ID}.json?v=20261126c`).then(r=>r.ok?r.json():{}).then(j=>{ TOUR=j.plantas||{}; }).catch(()=>{});
+  Promise.all([fetch(`dados/vitrine-${ID}.json?v=20261123a`).then(r=>{if(!r.ok) throw 0; return r.json();}),carregarPreco(),carregarContato(),carregarTour()])
     .then(([d])=>{D=d; iniciar();})
     .catch(()=>{ $('tit').textContent='Vitrine indisponível'; });
 
@@ -558,7 +579,12 @@ footer b{color:var(--ink)}
       <div class="specs"><div><b>${esc(u.suites)}</b><span>suítes</span></div><div><b>${m2(u.area).replace(' m²','')}</b><span>m² privativos</span></div>
         <div><b>${u.vagas}</b><span>vagas</span></div><div><b>${u.andar}º</b><span>andar</span></div></div>
       ${u.condominio?`<p class="condo">Condomínio estimado: <b>≈ ${brl(u.condominio)} por mês</b><small>${esc(D.condominioFonte||'')}</small></p>`:''}
-      ${IMG(u.planta)?`<button class="planta" id="pl" type="button" aria-label="Ampliar a planta"><img src="${IMG(u.planta)}" alt="Planta ${esc(casa)}"></button>`:''}
+      ${(()=>{ if(!IMG(u.planta)) return ''; const T=TOUR[u.planta];
+        if(!T) return `<button class="planta" id="pl" type="button" aria-label="Ampliar a planta"><img src="${IMG(u.planta)}" alt="Planta ${esc(casa)}"></button>`;
+        return `<div class="planta" id="pl" role="group" aria-label="Planta ${esc(casa)}"><img src="${IMG(u.planta)}" alt="Planta ${esc(casa)}">
+          ${(T.pinos||[]).map((p,i)=>`<button type="button" class="pp${IMG(p.foto)?' pfoto':''}" data-i="${i}" style="left:${+p.x}%;top:${+p.y}%;--d:${(i%5)*.45}s" aria-label="${esc(p.nome)}"><i></i><span><b>${esc(p.nome)}</b>${esc(p.info)}${IMG(p.foto)?'<br>toque para ver a imagem':''}</span></button>`).join('')}</div>
+          <p class="pl-dica">Toque nos pontos dourados para ver cada cômodo · toque na planta para ampliar</p>
+          ${VID(T.video)?`<button type="button" class="btn-tour" id="tour3d">▶ Tour em 3D desta planta <small>${+T.dur||''} s</small></button>`:''}`; })()}
       ${(()=>{ const vs=vistasDe(u.torre,posDe(u.unidade),u.andar), fs=setsDaPos(u.torre,posDe(u.unidade)).map(k=>fotoAndar(k,u.andar)).filter(f=>f&&f.src);
         const ph=IMG((D.vistaPenthouse||{})[abrev(u.torre)+'-'+String(u.unidade).split('+')[0]]); if(ph) fs.unshift({andar:u.andar,src:ph,rot:'Vista da penthouse',oficial:1});
         if(!vs.length&&!fs.length) return '';
@@ -581,7 +607,12 @@ footer b{color:var(--ink)}
     if(PRECO&&PRECO.id===u.id) $('cta').lastChild.textContent='Quero avançar com esta unidade';
     $('volt').onclick=()=>abrirAndar(u.torre,u.andar,false);
     $('elevUni').onclick=()=>Elevador.abrir(abrev(u.torre)+'-'+posDe(u.unidade),u.andar);
-    const pl=$('pl'); if(pl) pl.onclick=()=>zoom(IMG(u.planta));
+    const pl=$('pl'), T=TOUR[u.planta];
+    if(pl) pl.onclick=e=>{ const b=e.target.closest('.pp');
+      if(!b) return zoom(IMG(u.planta));
+      const p=T.pinos[+b.dataset.i]; if(IMG(p.foto)) return zoom(p.foto);
+      const on=!b.classList.contains('on'); pl.querySelectorAll('.pp.on').forEach(x=>x.classList.remove('on')); b.classList.toggle('on',on); };
+    const t3=$('tour3d'); if(t3) t3.onclick=()=>video(T.video,T.poster,`Tour em 3D · ${T.nome}. Planta e imagens ilustrativas do catálogo oficial da Prointi&GD; ao fundo, foto real de drone.`);
     $('pn').querySelectorAll('.vista,.deco [data-z]').forEach(f=>f.onclick=()=>zoom(f.dataset.z));
     $('pn').querySelectorAll('.pano-sc').forEach(arrastavel);
     $('conds').onclick=e=>{const b=e.target.closest('.cd'); if(!b) return; cond=b.dataset.c; alt=false;
