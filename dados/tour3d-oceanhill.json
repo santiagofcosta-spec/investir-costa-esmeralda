@@ -57,6 +57,120 @@
      "foto": ""
     }
    ]
+  },
+  "img/oceanhill/planta-casa-italia.jpg": {
+   "video": "img/oceanhill/tour3d/italia.mp4",
+   "poster": "img/oceanhill/tour3d/italia.jpg",
+   "nome": "Casa Itália",
+   "dur": 47,
+   "pinos": [
+    {
+     "x": 55.25,
+     "y": 47.33,
+     "nome": "Estar",
+     "info": "29,50 m² · vista para a Meia Praia",
+     "foto": "img/oceanhill/decorado/casa-italia-1.jpg"
+    },
+    {
+     "x": 81.0,
+     "y": 27.33,
+     "nome": "Cozinha · churrasqueira",
+     "info": "21,98 m² · o coração da casa",
+     "foto": ""
+    },
+    {
+     "x": 79.25,
+     "y": 48.44,
+     "nome": "Jantar",
+     "info": "17,30 m² · integrado ao estar",
+     "foto": "img/oceanhill/decorado/casa-italia-2.jpg"
+    },
+    {
+     "x": 54.75,
+     "y": 72.67,
+     "nome": "Suíte master",
+     "info": "17,65 m² · vista para a Meia Praia",
+     "foto": ""
+    },
+    {
+     "x": 78.75,
+     "y": 75.11,
+     "nome": "Suíte 02",
+     "info": "14,62 m²",
+     "foto": ""
+    },
+    {
+     "x": 64.12,
+     "y": 82.22,
+     "nome": "Suíte 03",
+     "info": "12,26 m²",
+     "foto": ""
+    }
+   ]
+  },
+  "img/oceanhill/planta-casa-alema.jpg": {
+   "video": "img/oceanhill/tour3d/alema.mp4",
+   "poster": "img/oceanhill/tour3d/alema.jpg",
+   "nome": "Casa Alemã",
+   "dur": 59,
+   "pinos": [
+    {
+     "x": 72.25,
+     "y": 87.33,
+     "nome": "Cozinha · churrasqueira",
+     "info": "22,83 m² · com vista para o mar",
+     "foto": "img/oceanhill/decorado/casa-alema-1.jpg"
+    },
+    {
+     "x": 72.25,
+     "y": 70.44,
+     "nome": "Jantar",
+     "info": "20,27 m² · vista para o Rio Perequê",
+     "foto": "img/oceanhill/decorado/casa-alema-2.jpg"
+    },
+    {
+     "x": 57.5,
+     "y": 70.22,
+     "nome": "Estar",
+     "info": "30,78 m²",
+     "foto": ""
+    },
+    {
+     "x": 53.0,
+     "y": 87.78,
+     "nome": "Área de serviço",
+     "info": "11,60 m² · ampla, pode virar despensa",
+     "foto": ""
+    },
+    {
+     "x": 17.38,
+     "y": 47.78,
+     "nome": "Suíte master",
+     "info": "21,11 m² · com varanda privativa",
+     "foto": ""
+    },
+    {
+     "x": 11.25,
+     "y": 72.22,
+     "nome": "Suíte 02",
+     "info": "16,60 m²",
+     "foto": ""
+    },
+    {
+     "x": 18.75,
+     "y": 87.78,
+     "nome": "Suíte 03",
+     "info": "15,50 m²",
+     "foto": ""
+    },
+    {
+     "x": 30.25,
+     "y": 83.33,
+     "nome": "Suíte 04",
+     "info": "14,11 m²",
+     "foto": ""
+    }
+   ]
   }
  }
 }
