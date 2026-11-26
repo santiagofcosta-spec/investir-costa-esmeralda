@@ -90,10 +90,54 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
 @media (prefers-reduced-motion:reduce){.anim{opacity:1;transform:none;transition:none}#trilho{scroll-behavior:auto}}
 .wa{background:linear-gradient(135deg,#F5E6B3,#D4AF37 55%,#A67C2E)}
 #piLazer{margin-top:22px}
+/* ---- Fase 1 (26/11/2026) ---- */
+#topo a{border:1px solid var(--ln);background:rgba(11,16,20,.7);color:var(--gl);border-radius:999px;padding:7px 13px;font:500 12.5px 'Plus Jakarta Sans',sans-serif;text-decoration:none}
+.perfis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin-top:26px}
+.perfil{text-align:left;cursor:pointer;font:inherit;color:inherit;transition:border-color .25s,transform .25s,background .25s}
+.perfil:hover{transform:translateY(-3px);border-color:rgba(212,175,55,.6)}
+.perfil[aria-pressed="true"]{border-color:var(--g);background:rgba(212,175,55,.1);box-shadow:0 0 0 1px var(--g)}
+.perfil .mais{display:block;margin-top:10px;font-size:12px;color:var(--g);letter-spacing:.08em}
+#perfilPainel{margin-top:18px;border:1px solid var(--g);border-radius:18px;padding:22px 24px;background:linear-gradient(160deg,rgba(212,175,55,.08),rgba(17,26,32,.9));display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:18px 26px}
+#perfilPainel[hidden]{display:none}
+#perfilPainel h3{grid-column:1/-1;margin:0;font:400 28px 'Playfair Display',serif;color:var(--gl)}
+#perfilPainel .bl b{display:block;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-bottom:6px}
+#perfilPainel .bl p{margin:0;color:#DCD6C8;font-size:15.5px;line-height:1.55}
+#perfilPainel .num{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap}
+#perfilPainel .num span{border:1px solid var(--ln);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--mu);max-width:320px}
+#perfilPainel .num span b{display:block;font:400 22px 'Playfair Display',serif;color:var(--gl)}
+#perfilPainel .fn{grid-column:1/-1;font-size:12px;color:var(--mu);margin:0}
+.linha{position:relative;margin-top:24px;padding-left:26px}
+.linha::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--g),rgba(212,175,55,.15))}
+.marco{position:relative;margin:0 0 14px}
+.marco::before{content:"";position:absolute;left:-25px;top:4px;width:12px;height:12px;border-radius:50%;background:#0B1014;border:2px solid var(--g)}
+.marco.atual::before{background:var(--g);box-shadow:0 0 0 5px rgba(212,175,55,.25)}
+.marco.futuro::before{border-style:dashed;border-color:var(--mu)}
+.marco small{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--g)}
+.marco.futuro small{color:var(--mu)}
+.marco b{font-weight:500;color:#EEE8DA;font-size:15.5px}
+.marco.atual b{color:var(--gl)}
+.marco .nota{font-size:13px;margin:0}
+.filtros{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin:20px 0 4px}
+.filtros>span{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--mu)}
+.filtros .seg{margin:0}
+.tipos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:12px;margin-top:14px}
+.tipo{border:1px solid var(--ln);border-radius:16px;overflow:hidden;background:var(--bg2);display:flex;flex-direction:column}
+.tipo img{display:block;width:100%;aspect-ratio:2/1;object-fit:cover;background:#fff;cursor:zoom-in}
+.tipo .tx{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px;flex:1}
+.tipo h3{margin:0;font:400 21px 'Playfair Display',serif;color:var(--gl)}
+.tipo .fc{font-size:13.5px;color:#CFC9BB}
+.tipo .dp{font-size:12px;color:var(--mu)}
+.tipo .btn{margin-top:10px;justify-content:center;padding:11px 14px;font-size:14px}
+.tipo[hidden]{display:none}
+#tiposVazio{color:var(--mu);font-size:14px}
+#vmod{position:fixed;inset:0;z-index:45;background:rgba(5,8,10,.95);display:flex;align-items:center;justify-content:center;padding:16px}
+#vmod[hidden]{display:none}
+#vmod video{max-width:100%;max-height:calc(100vh - 32px);border-radius:14px;background:#000}
+#vmod button{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(10,14,18,.8);color:#fff;font-size:18px;cursor:pointer}
 </style></head>
 <body>
 <div id="barra"></div>
-<div id="topo"><button type="button" id="btnFS">⛶ Tela cheia</button><span id="cont"></span></div>
+<div id="topo"><a href="index.html" id="btnSair">← Sair</a><button type="button" id="btnFS">⛶ Tela cheia</button><span id="cont"></span></div>
 <nav id="nav" aria-label="Telas"></nav>
 <main id="trilho">
 
@@ -228,16 +272,13 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
   <div class="acoes anim d3"><span class="st final" id="rodaSt"></span></div>
 </section>
 
-<!-- 12 · microrregiões -->
+<!-- 12 · microrregiões (26/11: cartões clicáveis com painel; números de dados/referencias.json) -->
 <section class="sl" data-t="Microrregiões">
   <p class="k anim">Guia para quem investe de fora</p>
   <h2 class="anim d1">Cada pedaço da costa, <i>um perfil</i></h2>
-  <div class="grid g4 anim d2">
-    <div class="kpi"><div class="l">Balneário Perequê · Porto Belo</div><div class="v" style="font-size:28px">Maior potencial</div><div class="n">Vetor de expansão, com novos empreendimentos frente-mar e quadra-mar e a orla em revitalização.</div></div>
-    <div class="kpi"><div class="l">VivaPark e planejados</div><div class="v" style="font-size:28px">Moradia o ano todo</div><div class="n">Urbanismo moderno e forte demanda por moradia qualificada fora da temporada.</div></div>
-    <div class="kpi"><div class="l">Meia Praia · Itapema</div><div class="v" style="font-size:28px">Alta liquidez</div><div class="n">Mercado maduro, serviços consolidados e revenda rápida; valorização puxada pela nova orla.</div></div>
-    <div class="kpi"><div class="l">Bombinhas</div><div class="v" style="font-size:28px">Escassez</div><div class="n">Península com pouco terreno disponível e vocação internacional, com forte rentabilidade na temporada.</div></div>
-  </div>
+  <div class="perfis anim d2" id="perfis"></div>
+  <div id="perfilPainel" aria-live="polite" hidden></div>
+  <p class="nota">Toque num perfil para ver a tese. Perfis qualitativos para orientar a conversa; não substituem a avaliação de cada imóvel.</p>
 </section>
 
 <!-- 13 · o empreendimento -->
@@ -252,6 +293,7 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
     <div class="kpi"><div class="l">Exclusivo</div><div class="v" style="font-size:30px">Garagem náutica</div><div class="n">Jet skis e atracadouro no Rio Perequê</div></div>
     <div class="kpi"><div class="l">Entrega</div><div class="v" id="ohEntrega">jun/2030</div><div class="n" id="ohInc"></div></div>
   </div>
+  <div class="acoes anim d3"><a class="btn" id="btnVitrine2" href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Explorar a vitrine interativa</a></div>
 </section>
 
 <!-- 14 · lazer (planta interativa) -->
@@ -280,23 +322,23 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
       <div class="fio anim d1"></div>
       <p class="lead anim d2" id="obraTx">Acompanhamento oficial da Prointi&amp;GD: concretagem da 17ª laje da Ocean Tower, em setembro de 2026. Da garagem (out/2024) ao 17º pavimento em menos de dois anos.</p>
       <div class="grid g2 anim d3" id="obraKpis" style="margin-top:22px"></div>
+      <div class="linha anim d3" id="obraLinha" aria-label="Linha do tempo da obra"></div>
     </div>
     <video class="vvert anim d2" src="img/apresentacao/obra-17pav.mp4" poster="img/apresentacao/obra-17pav.jpg" controls playsinline muted preload="none" data-auto></video>
   </div>
 </section>
 
-<!-- 17 · plantas -->
+<!-- 17 · plantas (26/11: catálogo com filtros + Tour em 3D de cada planta, dados/tour3d-oceanhill.json) -->
 <section class="sl" data-t="Plantas">
-  <div class="duo v">
-    <div>
-      <p class="k anim">As residências</p>
-      <h2 class="anim d1">Plantas pensadas para <i>cada estilo</i> de vida</h2>
-      <div class="fio anim d1"></div>
-      <p class="lead anim d2">No vídeo, a Casa do Chef cômodo por cômodo: 195,17 m², 4 suítes e mesa para até 12 lugares. Abaixo, todas as plantas (toque para ampliar).</p>
-      <div class="plantas anim d3" id="plantas"></div>
-    </div>
-    <video class="vvert anim d2" src="img/apresentacao/planta3d-chef.mp4" poster="img/apresentacao/planta3d-chef.jpg" controls playsinline muted preload="none" data-auto></video>
+  <p class="k anim">As residências</p>
+  <h2 class="anim d1">Plantas pensadas para <i>cada estilo</i> de vida</h2>
+  <div class="filtros anim d2">
+    <span>Suítes</span><div class="seg" id="fSuites"><button type="button" data-v="" aria-pressed="true">Todas</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="4" aria-pressed="false">4</button><button type="button" data-v="6" aria-pressed="false">6 ou 7</button></div>
+    <span>Metragem</span><div class="seg" id="fArea"><button type="button" data-v="" aria-pressed="true">Todas</button><button type="button" data-v="0-200" aria-pressed="false">até 200 m²</button><button type="button" data-v="200-300" aria-pressed="false">200 a 300 m²</button><button type="button" data-v="300-9999" aria-pressed="false">acima de 400 m²</button></div>
   </div>
+  <div class="tipos anim d3" id="tipos"></div>
+  <p id="tiposVazio" hidden>Nenhuma planta com essa combinação. Mude os filtros.</p>
+  <p class="nota">Metragens privativas do catálogo oficial da Prointi&amp;GD. Unidades disponíveis conforme a tabela da incorporadora usada na vitrine. Toque na planta para ampliar.</p>
 </section>
 
 <!-- 18 · penthouses -->
@@ -326,13 +368,17 @@ video{display:block;width:100%;border-radius:18px;border:1px solid var(--ln);bac
   <h1 class="anim d1" style="font-size:clamp(40px,7vw,96px)">Fale com <i>Santiago</i></h1>
   <div class="fio anim d1" style="margin:22px auto"></div>
   <p class="lead anim d2" style="margin:0 auto">Tabelas, condições de pagamento, simulações e a unidade certa para cada cliente.</p>
-  <div class="acoes anim d3" style="justify-content:center"><a class="btn" id="btnWA" target="_blank" rel="noopener">WhatsApp (47) 99217-6060</a></div>
+  <div class="acoes anim d3" style="justify-content:center"><a class="btn" id="btnWA" target="_blank" rel="noopener">WhatsApp (47) 99217-6060</a>
+    <a class="btn ghost" id="btnVitrine3" href="vitrine.html?e=oceanhill&marca=0" target="_blank" rel="noopener">Abrir a vitrine e o simulador</a></div>
+  <div class="acoes anim d3" style="justify-content:center;margin-top:14px"><span class="nota" style="margin:0;align-self:center">Agendar uma conversa:</span>
+    <a class="btn ghost" id="agPres" target="_blank" rel="noopener">Presencial</a><a class="btn ghost" id="agVideo" target="_blank" rel="noopener">Por videochamada</a></div>
   <p class="nota" style="margin:36px auto 0;text-align:center">Imagens do empreendimento: material oficial da Prointi&amp;GD, ilustrativas. Índices: Banco Central, FipeZap, Sinduscon, IBGE e Tesouro Nacional. Rentabilidade passada não garante rentabilidade futura.</p>
 </section>
 
 </main>
 <div id="zoom" hidden><img alt=""></div>
-<script src="planta.js?v=20261126b"></script>
+<div id="vmod" hidden role="dialog" aria-label="Tour em 3D"><video controls playsinline muted preload="metadata"></video><button type="button" aria-label="Fechar">✕</button></div>
+<script src="planta.js?v=20261127a"></script>
 <script>
 'use strict';
 const $=id=>document.getElementById(id);
@@ -342,7 +388,10 @@ const br=(v,d=0)=>v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFract
 const brl=v=>'R$ '+br(Math.round(v));
 const pc=(v,d=0)=>(v>=0?'+':'')+br(v,d)+'%';
 const CONTATO={nome:'Santiago Fernandes Costa',wa:'5547992176060'};
-$('btnWA').href=`https://wa.me/${CONTATO.wa}?text=${encodeURIComponent('Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero conversar.')}`;
+const wa=t=>`https://wa.me/${CONTATO.wa}?text=${encodeURIComponent(t)}`;
+$('btnWA').href=wa('Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero conversar.');
+$('agPres').href=wa('Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa PRESENCIAL. Qual dia e horário ficam bons para você?');
+$('agVideo').href=wa('Olá, Santiago! Vi a apresentação da Costa Esmeralda e quero agendar uma conversa por VIDEOCHAMADA. Qual dia e horário ficam bons para você?');
 const MES=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
 const mesBR=k=>MES[+k.slice(5,7)-1]+'/'+k.slice(2,4);
 
@@ -363,7 +412,8 @@ const io=new IntersectionObserver(es=>es.forEach(en=>{
 S.forEach(s=>io.observe(s));
 addEventListener('keydown',e=>{
   if(e.target.closest('input,textarea,select')) return;
-  if(window.__piAberto&&window.__piAberto()) return;           // planta interativa usa as setas quando um ambiente está aberto
+  if(window.__piAberto&&window.__piAberto()) return;
+  if(!$('vmod').hidden) return;           // planta interativa usa as setas quando um ambiente está aberto
   if(['ArrowDown','PageDown',' ','ArrowRight'].includes(e.key)){ e.preventDefault(); ir(atual+1); }
   else if(['ArrowUp','PageUp','ArrowLeft'].includes(e.key)){ e.preventDefault(); ir(atual-1); }
   else if(e.key==='Home'){ ir(0); } else if(e.key==='End'){ ir(S.length-1); }
@@ -391,8 +441,9 @@ $('popKpis').innerHTML=['portobelo','bombinhas','itapema','sc'].map(k=>`<div cla
 desenha('chPop',{type:'bar',data:{labels:Object.values(POP).map(p=>p[0]),datasets:[{label:'Crescimento da população 2010–2022',data:Object.keys(POP).map(cr),
   backgroundColor:['#D4AF37','#4FA3A5','#C98BB9','#8FA39B','#6b7570'],borderRadius:8}]},options:opt(v=>br(v)+'%',{plugins:{legend:{display:false}}})});
 
-Promise.all([fetch('dados/dados.json').then(r=>r.json()),fetch('dados/referencias.json').then(r=>r.json()),fetch('dados/vitrine-oceanhill.json').then(r=>r.json())])
-.then(([D,R,V])=>{ indices(D); portoBelo(R); obras(V); empreendimento(V); })
+Promise.all([fetch('dados/dados.json').then(r=>r.json()),fetch('dados/referencias.json').then(r=>r.json()),fetch('dados/vitrine-oceanhill.json').then(r=>r.json()),
+  fetch('dados/tour3d-oceanhill.json?v=20261126c').then(r=>r.ok?r.json():{}).catch(()=>({}))])
+.then(([D,R,V,T])=>{ indices(D); portoBelo(R); perfis(R); obras(V); empreendimento(V); linhaObra(V); tipologias(V,T); })
 .catch(()=>{ document.querySelectorAll('.ch').forEach(c=>c.innerHTML='<p class="nota">Não consegui carregar os dados. Verifique a internet.</p>'); });
 
 function indices(D){
@@ -457,11 +508,90 @@ function empreendimento(V){
   const O=(V.obra||[]); if(O.length){ const a=O[0].data, b=O.at(-1).data;
     $('obraKpis').innerHTML=`<div class="kpi"><div class="l">Registros oficiais</div><div class="v">${O.length}</div><div class="n">acompanhamentos de ${mesBR(a)} a ${mesBR(b)}</div></div>
       <div class="kpi"><div class="l">Última etapa</div><div class="v" style="font-size:26px">${esc(O.at(-1).etapa)}</div><div class="n">${esc(O.at(-1).torre||'')}</div></div>`; }
-  // plantas: uma por tipo
-  const vis=new Map(); (V.unidades||[]).forEach(u=>{ if(u.planta&&u.casa&&!vis.has(u.planta)) vis.set(u.planta,u.casa+(u.area?` · ${br(u.area,2)} m²`:'')); });
-  $('plantas').innerHTML=[...vis].filter(([p])=>IMG(p)&&!/penthouse/i.test(p)).map(([p,n])=>`<figure data-zoom data-zoom-src="${IMG(p)}"><img src="${IMG(p)}" alt="${esc(n)}" loading="lazy"><figcaption>${esc(n)}</figcaption></figure>`).join('');
-  document.querySelectorAll('.plantas figure').forEach(f=>f.addEventListener('click',()=>{ $('zoom').querySelector('img').src=f.dataset.zoomSrc; $('zoom').hidden=false; }));
 }
+
+/* ---------- tela 12: perfis da costa (textos qualitativos + números de dados/referencias.json) ---------- */
+function perfis(R){
+  const VB=(R.vendaBairros||{}).cidades||{}, AL=(R.aluguelBairros||{}).cidades||{}, TP=(R.temporadaCidades||{}).cidades||{};
+  const m2=(c,b)=>((VB[c]||{}).bairros||{})[b]; const fmt=v=>'R$ '+br(Math.round(v));
+  const P=[
+   {id:'pereque',l:'Balneário Perequê · Porto Belo',v:'Maior potencial',n:'Vetor de expansão, com novos empreendimentos frente-mar e quadra-mar e a orla em revitalização.',
+    tese:'O bairro que mais muda na costa: masterplan da orla, molhes do Rio Perequê e a passarela para a Meia Praia. O m² pedido ainda fica abaixo do da Meia Praia, do outro lado do rio.',
+    renda:'Aluguel anual de moradia e temporada. Mercado em formação: a liquidez cresce a cada obra entregue.',
+    tipo:'Lançamentos frente-mar e quadra-mar, comprados na planta para capturar a valorização até as chaves.',
+    num:()=>{ const v=m2('Porto Belo','Balneário Perequê'), a=((AL['Porto Belo']||{}).bairros||{})['Balneário Perequê'], t=TP['Porto Belo'];
+      return [v&&[fmt(v.v)+'/m²',`preço pedido, ${br(v.n)} anúncios`], a&&['R$ '+br(a.ref)+'/mês',`aluguel anual de um apartamento de ~${a.areaRef} m²`], t&&['R$ '+br(t.diaria),`diária média de temporada em Porto Belo, ${t.ocup}% de ocupação`]]; }},
+   {id:'vivapark',l:'VivaPark e planejados · Porto Belo',v:'Moradia o ano todo',n:'Urbanismo moderno, qualidade de vida e tecnologia, com forte demanda por moradia qualificada fora da temporada.',
+    tese:'Bairros planejados às margens da BR-101 trazem quem vem morar de vez: famílias e profissionais que trabalham na região o ano inteiro.',
+    renda:'Renda estável de aluguel anual, menos dependente do verão.',
+    tipo:'Apartamentos e casas para morar, com parques e acesso rápido à BR-101.',
+    num:()=>{ const v=m2('Porto Belo','Vivapark'); return [v&&[fmt(v.v)+'/m²',`preço pedido no Vivapark, ${br(v.n)} anúncios`]]; }},
+   {id:'meiapraia',l:'Meia Praia · Itapema',v:'Alta liquidez',n:'Mercado maduro, serviços consolidados e revenda rápida; valorização puxada pela nova orla.',
+    tese:'O mercado mais líquido da costa: muita oferta, muita procura e revenda rápida. A nova orla e o alargamento da faixa de areia sustentam a valorização da frente-mar.',
+    renda:'Temporada forte no verão e aluguel anual no resto do ano.',
+    tipo:'Frente-mar e quadra-mar de alto padrão, como o Ocean Hill, na divisa com Porto Belo.',
+    num:()=>{ const v=m2('Itapema','Meia Praia'), a=((AL['Itapema']||{}).bairros||{})['Meia Praia'], t=TP['Itapema'];
+      return [v&&[fmt(v.v)+'/m²',`preço pedido, ${br(v.n)} anúncios`], a&&['R$ '+br(a.m2,1)+'/m²',`aluguel por mês, ${br(a.n)} anúncios`], t&&['R$ '+br(t.diaria),`diária média de temporada em Itapema, ${t.ocup}% de ocupação; no verão R$ ${br(t.alta.diaria)} e ${t.alta.ocup}%`]]; }},
+   {id:'bombinhas',l:'Bombinhas',v:'Escassez',n:'Península com pouco terreno disponível, vocação internacional e forte rentabilidade na temporada.',
+    tese:'Pouco terreno para construir numa península: a oferta nova é pequena e o comprador é nacional e internacional.',
+    renda:'Foco em temporada, com diárias altas no verão.',
+    tipo:'Imóveis de temporada perto das praias, com pouca concorrência de lançamentos.',
+    num:()=>[['+75%','crescimento da população de Bombinhas entre os Censos de 2010 e 2022 (IBGE)']]},
+  ];
+  $('perfis').innerHTML=P.map(p=>`<button type="button" class="kpi perfil" data-p="${p.id}" aria-pressed="false"><div class="l">${esc(p.l)}</div><div class="v" style="font-size:28px">${esc(p.v)}</div><div class="n">${esc(p.n)}</div><span class="mais">Ver a tese →</span></button>`).join('');
+  $('perfis').onclick=e=>{ const b=e.target.closest('.perfil'); if(!b) return; const p=P.find(x=>x.id===b.dataset.p), aberto=b.getAttribute('aria-pressed')==='true';
+    document.querySelectorAll('.perfil').forEach(x=>x.setAttribute('aria-pressed',!aberto&&x===b));
+    const pn=$('perfilPainel'); if(aberto){ pn.hidden=true; return; }
+    const nums=(p.num()||[]).filter(Boolean);
+    pn.innerHTML=`<h3>${esc(p.l)}</h3><div class="bl"><b>Tese de valorização</b><p>${esc(p.tese)}</p></div><div class="bl"><b>Liquidez e renda</b><p>${esc(p.renda)}</p></div><div class="bl"><b>Imóvel indicado</b><p>${esc(p.tipo)}</p></div>
+      ${nums.length?`<div class="num">${nums.map(([v,t])=>`<span><b>${esc(v)}</b>${esc(t)}</span>`).join('')}</div>`:''}
+      ${p.id!=='bombinhas'?'<p class="fn">Preço pedido e aluguel: medianas de anúncios (A Corrida dos Bairros, nov/2026); temporada: AirROI, nov/2025 a out/2026. Valores de anúncio, não de venda fechada.</p>':'<p class="fn">Bombinhas não tem levantamento de preço por bairro nas fontes usadas neste site.</p>'}`;
+    pn.hidden=false; };
+}
+
+/* ---------- tela 16: linha do tempo da obra (dados/vitrine-oceanhill.json · obra) ---------- */
+function linhaObra(V){
+  const O=V.obra||[]; if(!O.length) return;
+  const um=(f,n)=>{ const o=O.find(f); return o?[n?n(o):o]:[]; };
+  const marcos=[[O[0].data,'Garagens em obra',O[0].etapa],
+    ...um(o=>/lazer/i.test(o.etapa),o=>[o.data,'Pavimento de lazer',o.torre]),
+    ...um(o=>/Funda/i.test(o.etapa),o=>[o.data,o.etapa,'início da segunda torre']),
+    ...um(o=>o.pav===7,o=>[o.data,'7º pavimento',o.torre+' · primeiro andar de apartamentos'])];
+  const ult=O[O.length-1], m=/(\w{3})\/(\d{4})/.exec(V.entrega||''), pc=/\((.*)\)/.exec(V.entrega||'');
+  $('obraKpis').style.display='none';
+  $('obraLinha').innerHTML=marcos.map(([dt,t,sub])=>`<div class="marco"><small>${mesBR(dt)}</small><b>${esc(t)}</b>${sub?`<p class="nota">${esc(sub)}</p>`:''}</div>`).join('')
+    +`<div class="marco atual"><small>${mesBR(ult.data)} · marco atual</small><b>${esc(ult.etapa)}</b><p class="nota">${esc(ult.torre||'')}</p></div>`
+    +(m?`<div class="marco futuro"><small>${m[1]}/${m[2]} · previsão</small><b>Conclusão da obra</b>${pc?`<p class="nota">${esc(pc[1])}</p>`:''}</div>`:'');
+}
+
+/* ---------- tela 17: catálogo de tipologias com filtros + Tour em 3D ---------- */
+function tipologias(V,T){
+  const TP=T.plantas||{}, grupos=new Map();
+  (V.unidades||[]).forEach(u=>{ if(!u.planta||!TP[u.planta]||u.casa==='Penthouse') return;
+    const g=grupos.get(u.planta)||{planta:u.planta,casa:u.casa,torre:u.torre,suites:'',vagas:new Set(),areas:new Set(),disp:0};
+    if(u.status==='disponivel'){ g.disp++; if(u.area) g.areas.add(u.area); if(u.vagas) g.vagas.add(u.vagas); g.suites=u.suites||g.suites; }
+    grupos.set(u.planta,g); });
+  const L=[...grupos.values()].filter(g=>g.areas.size).map(g=>{ const a=[...g.areas].sort((x,y)=>x-y), v=[...g.vagas].sort();
+    return Object.assign(g,{a0:a[0],area:a.length>1?`${br(a[0],2)} a ${br(a[a.length-1],2)} m²`:`${br(a[0],2)} m²`,vagasTx:v.join(' ou '),ns:parseInt(g.suites)||0,T:TP[g.planta]}); })
+    .sort((x,y)=>x.a0-y.a0);
+  $('tipos').innerHTML=L.map((g,i)=>`<article class="tipo" data-s="${g.ns}" data-a="${g.a0}"><img src="${IMG(g.planta)}" alt="Planta ${esc(g.casa)}" loading="lazy" data-zoom>
+    <div class="tx"><h3>${esc(g.casa)}</h3><div class="fc">${esc(g.area)} · ${esc(g.suites)} suítes · ${esc(g.vagasTx)} vagas</div>
+    <div class="dp">${esc(g.torre)} · ${g.disp} ${g.disp===1?'unidade disponível':'unidades disponíveis'}</div>
+    <button type="button" class="btn" data-v="${i}">▶ Tour em 3D · ${+g.T.dur||''} s</button></div></article>`).join('');
+  const filtrar=()=>{ const s=$('fSuites').querySelector('[aria-pressed="true"]').dataset.v, a=$('fArea').querySelector('[aria-pressed="true"]').dataset.v;
+    let n=0; document.querySelectorAll('.tipo').forEach(el=>{ const ns=+el.dataset.s, ar=+el.dataset.a;
+      const faixa=a?a.split('-').map(Number):null;
+      const ok=(!s||(s==='6'?ns>=6:ns===+s))&&(!faixa||(ar>=faixa[0]&&ar<faixa[1]));
+      el.hidden=!ok; if(ok) n++; }); $('tiposVazio').hidden=n>0; };
+  ['fSuites','fArea'].forEach(id=>$(id).onclick=e=>{ const b=e.target.closest('button'); if(!b) return;
+    $(id).querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b)); filtrar(); });
+  $('tipos').onclick=e=>{ const b=e.target.closest('[data-v]'); if(!b) return; const g=L[+b.dataset.v]; abrirVideo(g.T.video,g.T.poster); };
+}
+const VIDOK=s=>/^img\/[a-z0-9_\/.-]+\.mp4$/i.test(String(s||''))?s:'';
+function abrirVideo(src,poster){ if(!VIDOK(src)) return; const m=$('vmod'), v=m.querySelector('video'); v.poster=IMG(poster)||''; v.src=src; m.hidden=false; v.play().catch(()=>{}); }
+function fecharVideo(){ const m=$('vmod'), v=m.querySelector('video'); v.pause(); v.removeAttribute('src'); v.load(); m.hidden=true; }
+$('vmod').onclick=e=>{ if(e.target.id==='vmod'||e.target.closest('button')) fecharVideo(); };
+addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('vmod').hidden) fecharVideo(); },true);
 
 /* penthouses: computador = horizontal, celular = vertical */
 function ph(id){ const h=matchMedia('(min-width:861px)').matches?'h':'v', v=$('phVid');

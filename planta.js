@@ -14,6 +14,8 @@
 .pi-tab[aria-pressed="true"]{background:linear-gradient(135deg,#F5E6B3,#D4AF37 55%,#A67C2E);color:#14110a;border-color:transparent;font-weight:600}
 .pi-tour{border:1px solid var(--pi-g);background:transparent;color:var(--pi-gl);border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
 .pi-tour[aria-pressed="true"]{background:rgba(212,175,55,.16)}
+.pi-bts{display:flex;gap:8px;flex-wrap:wrap}
+.pi-3d{background:linear-gradient(135deg,#F5E6B3,#D4AF37 55%,#A67C2E);color:#14110a;border-color:transparent;font-weight:600}
 .pi-sub{color:var(--pi-mu);font-size:13px;margin:0 0 10px}
 .pi-pal{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--pi-ln);background:#0d1418;box-shadow:0 30px 60px -30px #000}
 .pi-pal>img{display:block;width:100%;height:auto;transition:filter .5s}
@@ -69,10 +71,11 @@
 
     function desenhar(){
       el.innerHTML=`<div class="pi-top"><div class="pi-tabs">${D.pavimentos.map((p,i)=>`<button type="button" class="pi-tab" data-i="${i}" aria-pressed="${i===pv}">${esc(p.nome)}</button>`).join('')}</div>
-        <button type="button" class="pi-tour" aria-pressed="false">${temVideo()?'▶ Tour em 3D':'▶ Tour guiado'}</button></div>
+        <div class="pi-bts"><button type="button" class="pi-tour" aria-pressed="false">▶ Tour guiado</button><button type="button" class="pi-tour pi-3d" hidden>◆ Ver em 3D</button></div></div>
         <p class="pi-sub"></p><div class="pi-pal"></div>${D.nota?`<p class="pi-nota">${esc(D.nota)}</p>`:''}`;
       el.querySelector('.pi-tabs').onclick=e=>{const b=e.target.closest('.pi-tab'); if(b){ pararTour(); trocar(+b.dataset.i); }};
-      el.querySelector('.pi-tour').onclick=()=>VID(D.pavimentos[pv].video)?video(D.pavimentos[pv]):tourT?pararTour():tour();
+      el.querySelector('.pi-tour:not(.pi-3d)').onclick=()=>tourT?pararTour():tour();
+      el.querySelector('.pi-3d').onclick=()=>{ if(VID(D.pavimentos[pv].video)) video(D.pavimentos[pv]); };
       trocar(pv);
     }
     const temVideo=()=>D.pavimentos.some(p=>VID(p.video));
@@ -90,6 +93,7 @@
       fechar(true); pv=i; const p=D.pavimentos[i];
       [...el.querySelectorAll('.pi-tab')].forEach((b,k)=>b.setAttribute('aria-pressed',k===i));
       el.querySelector('.pi-sub').textContent=p.sub||'';
+      el.querySelector('.pi-3d').hidden=!VID(p.video);   // botão 3D só no pavimento que tem vídeo
       const pal=el.querySelector('.pi-pal');
       pal.innerHTML=`<img src="${IMG(p.planta)}" alt="${esc(p.nome)}" width="${+p.w||2400}" height="${+p.h||1715}">
         ${p.pinos.map((q,k)=>`<button type="button" class="pi-pin" data-k="${k}" style="left:${+q.x}%;top:${+q.y}%;--d:${(k%5)*.45}s" aria-label="${esc(q.nome)}"><i></i></button>`).join('')}
@@ -131,10 +135,10 @@
     function fechar(sem){ clearInterval(ftT); at=-1; const pal=el.querySelector('.pi-pal'); if(!pal) return;
       pal.classList.remove('aberto'); pal.querySelectorAll('.pi-pin.on').forEach(b=>b.classList.remove('on'));
       const c=pal.querySelector('.pi-card'); if(c) c.classList.remove('v'); }
-    function tour(){ const b=el.querySelector('.pi-tour'); b.setAttribute('aria-pressed','true'); b.textContent='❚❚ Pausar tour';
+    function tour(){ const b=el.querySelector('.pi-tour:not(.pi-3d)'); b.setAttribute('aria-pressed','true'); b.textContent='❚❚ Pausar tour';
       let k=at<0?0:at; abrir(k);
       tourT=setInterval(()=>{ k++; if(k>=D.pavimentos[pv].pinos.length){ if(pv<D.pavimentos.length-1){ trocar(pv+1); k=0; } else { pararTour(); fechar(); return; } } abrir(k); },op.passo||5200); }
-    function pararTour(){ clearInterval(tourT); tourT=0; const b=el.querySelector('.pi-tour'); if(b){ b.setAttribute('aria-pressed','false'); b.textContent=temVideo()?'▶ Tour em 3D':'▶ Tour guiado'; } }
+    function pararTour(){ clearInterval(tourT); tourT=0; const b=el.querySelector('.pi-tour:not(.pi-3d)'); if(b){ b.setAttribute('aria-pressed','false'); b.textContent='▶ Tour guiado'; } }
     function tecla(e){ if(vidEl&&e.key==='Escape'){ fecharVideo(); e.preventDefault(); e.stopPropagation(); return; }
       if(at<0||!el.isConnected) return; const n=D.pavimentos[pv].pinos.length;
       if(e.key==='Escape'){ pararTour(); fechar(); } else if(e.key==='ArrowRight'){ pararTour(); abrir((at+1)%n); } else if(e.key==='ArrowLeft'){ pararTour(); abrir((at-1+n)%n); } else return;
