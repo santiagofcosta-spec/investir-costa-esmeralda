@@ -3047,6 +3047,138 @@
    "entrega": "entrega 03/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 126.35,
+   "antes": 124.95,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 125.8,
+   "antes": 124.4,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 124.4,
+   "antes": 123.05,
+   "cidade": "Pontes e Lacerda",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 124.1,
+   "antes": 122.8,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 118.15,
+   "antes": 113.4,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 114.6,
+   "antes": 113.3,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 118.05,
+   "antes": 116.95,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 115.2,
+   "antes": 114.1,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 01/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 114.95,
+   "antes": 113.85,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 114.9,
+   "antes": 113.85,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 12:05",
+   "lado": "compra",
+   "tipo": "subiu",
+   "preco": 113.25,
+   "antes": 112.0,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -3054,8 +3186,8 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-27 11:05",
- "lido": "2026-11-27 11:05",
+ "verificado": "2026-11-27 12:05",
+ "lido": "2026-11-27 12:05",
  "resumo": {
   "dia": "2026-11-27",
   "cidades": {
@@ -3091,7 +3223,7 @@
      "venda_abertura": 140.0
     },
     "2027": {
-     "compra_max": 116.95,
+     "compra_max": 118.05,
      "compra_abertura": 116.95
     }
    }
