@@ -3527,6 +3527,66 @@
    "entrega": "entrega 04/27",
    "fob": true,
    "sc": null
+  },
+  {
+   "t": "2026-11-27 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 130.2,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "disponível",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 124.15,
+   "antes": null,
+   "cidade": "São Miguel do Guaporé",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 115.05,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 113.75,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 16:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 113.2,
+   "antes": null,
+   "cidade": "Cerejeiras",
+   "uf": "RO",
+   "entrega": "entrega 04/27",
+   "fob": false,
+   "sc": null
   }
  ],
  "cidades": [
@@ -3534,20 +3594,20 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-27 15:05",
- "lido": "2026-11-27 15:05",
+ "verificado": "2026-11-27 16:05",
+ "lido": "2026-11-27 16:05",
  "resumo": {
   "dia": "2026-11-27",
   "cidades": {
    "Vilhena/RO": {
     "Disponível": {
-     "compra_max": 132.35,
+     "compra_max": 131.3,
      "compra_abertura": 135.0,
      "venda_min": 140.0,
      "venda_abertura": 140.0
     },
     "2027": {
-     "compra_max": 123.0,
+     "compra_max": 124.15,
      "compra_abertura": 118.1
     }
    },
@@ -3559,7 +3619,7 @@
      "venda_abertura": 140.0
     },
     "2027": {
-     "compra_max": 122.95,
+     "compra_max": 122.35,
      "compra_abertura": 116.95
     }
    },
@@ -3571,7 +3631,7 @@
      "venda_abertura": 140.0
     },
     "2027": {
-     "compra_max": 122.8,
+     "compra_max": 122.35,
      "compra_abertura": 116.95
     }
    }
