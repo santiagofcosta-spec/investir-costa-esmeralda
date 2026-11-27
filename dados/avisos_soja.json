@@ -4,78 +4,6 @@
    "t": "2026-11-20 14:05",
    "lado": "compra",
    "tipo": "nova",
-   "preco": 123.55,
-   "antes": null,
-   "cidade": "Vilhena",
-   "uf": "RO",
-   "entrega": "entrega 01/27",
-   "fob": true,
-   "sc": null
-  },
-  {
-   "t": "2026-11-20 14:05",
-   "lado": "compra",
-   "tipo": "nova",
-   "preco": 122.5,
-   "antes": null,
-   "cidade": "Vilhena",
-   "uf": "RO",
-   "entrega": "entrega 03/27",
-   "fob": true,
-   "sc": null
-  },
-  {
-   "t": "2026-11-20 14:05",
-   "lado": "compra",
-   "tipo": "nova",
-   "preco": 122.35,
-   "antes": null,
-   "cidade": "Vilhena",
-   "uf": "RO",
-   "entrega": "entrega 04/27",
-   "fob": true,
-   "sc": null
-  },
-  {
-   "t": "2026-11-20 14:05",
-   "lado": "compra",
-   "tipo": "nova",
-   "preco": 122.35,
-   "antes": null,
-   "cidade": "Comodoro",
-   "uf": "MT",
-   "entrega": "entrega 01/27",
-   "fob": true,
-   "sc": null
-  },
-  {
-   "t": "2026-11-20 14:05",
-   "lado": "compra",
-   "tipo": "nova",
-   "preco": 121.3,
-   "antes": null,
-   "cidade": "Comodoro",
-   "uf": "MT",
-   "entrega": "entrega 03/27",
-   "fob": true,
-   "sc": null
-  },
-  {
-   "t": "2026-11-20 14:05",
-   "lado": "compra",
-   "tipo": "nova",
-   "preco": 121.15,
-   "antes": null,
-   "cidade": "Comodoro",
-   "uf": "MT",
-   "entrega": "entrega 04/27",
-   "fob": true,
-   "sc": null
-  },
-  {
-   "t": "2026-11-20 14:05",
-   "lado": "compra",
-   "tipo": "nova",
    "preco": 119.8,
    "antes": null,
    "cidade": "Comodoro",
@@ -3587,6 +3515,90 @@
    "entrega": "entrega 04/27",
    "fob": false,
    "sc": null
+  },
+  {
+   "t": "2026-11-27 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 116.0,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 114.7,
+   "antes": null,
+   "cidade": "Sapezal",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 116.1,
+   "antes": null,
+   "cidade": "Campo Novo do Parecis",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 113.75,
+   "antes": null,
+   "cidade": "Pontes e Lacerda",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": true,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 113.25,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 04/27",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 111.95,
+   "antes": null,
+   "cidade": "Campos de Júlio",
+   "uf": "MT",
+   "entrega": "entrega 03/27",
+   "fob": false,
+   "sc": null
+  },
+  {
+   "t": "2026-11-27 17:05",
+   "lado": "compra",
+   "tipo": "nova",
+   "preco": 122.9,
+   "antes": null,
+   "cidade": "Nova Mutum",
+   "uf": "MT",
+   "entrega": "entrega 05/27",
+   "fob": true,
+   "sc": null
   }
  ],
  "cidades": [
@@ -3594,20 +3606,20 @@
   "Comodoro/MT",
   "Campos de Júlio/MT"
  ],
- "verificado": "2026-11-27 16:05",
- "lido": "2026-11-27 16:05",
+ "verificado": "2026-11-27 17:05",
+ "lido": "2026-11-27 17:05",
  "resumo": {
   "dia": "2026-11-27",
   "cidades": {
    "Vilhena/RO": {
     "Disponível": {
-     "compra_max": 131.3,
+     "compra_max": 130.75,
      "compra_abertura": 135.0,
      "venda_min": 140.0,
      "venda_abertura": 140.0
     },
     "2027": {
-     "compra_max": 124.15,
+     "compra_max": 123.65,
      "compra_abertura": 118.1
     }
    },
@@ -3619,7 +3631,7 @@
      "venda_abertura": 140.0
     },
     "2027": {
-     "compra_max": 122.35,
+     "compra_max": 116.6,
      "compra_abertura": 116.95
     }
    },
@@ -3631,7 +3643,7 @@
      "venda_abertura": 140.0
     },
     "2027": {
-     "compra_max": 122.35,
+     "compra_max": 122.9,
      "compra_abertura": 116.95
     }
    }
