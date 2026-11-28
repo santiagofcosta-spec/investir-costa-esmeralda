@@ -1,5 +1,5 @@
 {
- "atualizado": "2026-11-27",
+ "atualizado": "2026-11-28",
  "bcb": {
   "start": "2016-01",
   "series": {
@@ -133,7 +133,8 @@
     14.15,
     13.94,
     13.78,
-    13.65
+    13.65,
+    null
    ],
    "cdi": [
     1.05,
@@ -265,7 +266,8 @@
     1.22,
     1.09,
     1.08,
-    1.07
+    1.07,
+    null
    ],
    "ipca": [
     1.27,
@@ -397,7 +399,8 @@
     0.07,
     -0.32,
     0.82,
-    0.14
+    0.14,
+    null
    ],
    "igpm": [
     1.14,
@@ -529,7 +532,8 @@
     -1.16,
     -0.22,
     1.57,
-    1.47
+    1.47,
+    1.24
    ],
    "incc": [
     0.39,
@@ -661,7 +665,8 @@
     0.61,
     0.66,
     0.22,
-    0.37
+    0.37,
+    null
    ],
    "ivgr": [
     542.32,
@@ -793,6 +798,7 @@
     795.74,
     799.76,
     803.77,
+    null,
     null
    ],
    "usd": [
@@ -925,10 +931,11 @@
     5.1139,
     5.1532,
     5.1447,
-    5.1294
+    5.1294,
+    null
    ]
   },
-  "poup_m": 0.65908,
+  "poup_m": 0.6601049999999999,
   "selicMeta": 13.75,
   "cdiAA": 13.65
  },
@@ -1423,7 +1430,7 @@
     ]
    }
   ],
-  "atualizado": "2026-11-27 20:15",
+  "atualizado": "2026-11-28 00:42",
   "fonte": "Grão Direto (graodireto.com.br)",
   "cidades": {
    "comodoro": {
@@ -1688,21 +1695,21 @@
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 117.05,
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 135.0,
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 136.55,
@@ -1787,6 +1794,13 @@
      ],
      [
       "2026-11-27",
+      117.55,
+      123.39,
+      128.75,
+      4
+     ],
+     [
+      "2026-11-28",
       117.55,
       123.39,
       128.75,
@@ -1921,21 +1935,21 @@
       "cidade": "Cerejeiras",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 124.1,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 131.25,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 135.5,
@@ -1949,7 +1963,7 @@
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -2219,6 +2233,13 @@
       119.16,
       129.6,
       6
+     ],
+     [
+      "2026-11-28",
+      112.35,
+      119.16,
+      129.6,
+      6
      ]
     ],
     "slug": "campos-de-julio",
@@ -2229,7 +2250,7 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 136.55,
@@ -2243,21 +2264,21 @@
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 115.75,
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 123.45,
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 121.55,
@@ -2534,6 +2555,13 @@
       118.44,
       128.7,
       6
+     ],
+     [
+      "2026-11-28",
+      111.6,
+      118.44,
+      128.7,
+      6
      ]
     ],
     "slug": "sapezal",
@@ -2544,7 +2572,7 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 136.55,
@@ -2558,21 +2586,21 @@
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 115.15,
       "cidade": "Sapezal",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 123.45,
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 120.95,
@@ -2856,6 +2884,13 @@
       121.29,
       135.0,
       7
+     ],
+     [
+      "2026-11-28",
+      112.9,
+      121.29,
+      135.0,
+      7
      ]
     ],
     "slug": "campo-novo-do-parecis",
@@ -2866,7 +2901,7 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 135.65,
@@ -2880,21 +2915,21 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 115.25,
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 123.45,
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 121.4,
@@ -3157,6 +3192,13 @@
       122.3,
       122.3,
       1
+     ],
+     [
+      "2026-11-28",
+      122.3,
+      122.3,
+      122.3,
+      1
      ]
     ],
     "slug": "diamantino",
@@ -3167,7 +3209,7 @@
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 136.65,
@@ -3181,7 +3223,7 @@
       "cidade": "Campo Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.0,
@@ -3202,14 +3244,14 @@
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -3479,6 +3521,13 @@
       123.45,
       123.45,
       1
+     ],
+     [
+      "2026-11-28",
+      123.45,
+      123.45,
+      123.45,
+      1
      ]
     ],
     "slug": "nova-mutum",
@@ -3489,14 +3538,14 @@
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 125.15,
       "cidade": "Campo Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 139.05,
@@ -3510,7 +3559,7 @@
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.25,
@@ -3538,7 +3587,7 @@
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -3808,6 +3857,13 @@
       124.57,
       129.5,
       4
+     ],
+     [
+      "2026-11-28",
+      120.85,
+      124.57,
+      129.5,
+      4
      ]
     ],
     "slug": "lucas-do-rio-verde",
@@ -3818,7 +3874,7 @@
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 145.25,
@@ -3832,14 +3888,14 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 122.65,
@@ -3860,7 +3916,7 @@
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -4130,6 +4186,13 @@
       121.54,
       125.25,
       4
+     ],
+     [
+      "2026-11-28",
+      117.7,
+      121.54,
+      125.25,
+      4
      ]
     ],
     "slug": "sorriso",
@@ -4140,7 +4203,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -4154,7 +4217,7 @@
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 122.3,
@@ -4168,7 +4231,7 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 121.2,
@@ -4445,6 +4508,13 @@
       122.47,
       126.65,
       2
+     ],
+     [
+      "2026-11-28",
+      118.3,
+      122.47,
+      126.65,
+      2
      ]
     ],
     "slug": "sinop",
@@ -4462,21 +4532,21 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 138.6,
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 123.45,
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.5,
@@ -4695,6 +4765,13 @@
       120.75,
       121.3,
       2
+     ],
+     [
+      "2026-11-28",
+      120.2,
+      120.75,
+      121.3,
+      2
      ]
     ],
     "slug": "querencia",
@@ -4705,7 +4782,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 125.35,
@@ -4726,7 +4803,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 123.8,
@@ -4845,29 +4922,29 @@
      {
       "cidade": "Campo Verde",
       "uf": "MT",
-      "preco": 124.95,
-      "comFrete": 123.09,
+      "preco": 125.15,
+      "comFrete": 123.29,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-27 16:45"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Itiquira",
       "uf": "MT",
-      "preco": 127.55,
-      "comFrete": 122.58,
+      "preco": 127.75,
+      "comFrete": 122.78,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-27 16:45"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
-      "preco": 123.05,
-      "comFrete": 112.26,
+      "preco": 123.35,
+      "comFrete": 112.56,
       "entrega": "2027-06-30",
       "fob": false,
-      "atualizado": "2026-11-27 16:45"
+      "atualizado": "2026-11-27 17:45"
      }
     ],
     "historico": [
@@ -4929,21 +5006,21 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
-      "preco": 127.55,
+      "preco": 127.75,
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
-      "preco": 123.05,
+      "preco": 123.35,
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 127.15,
@@ -5174,14 +5251,14 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 127.75,
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 131.45,
@@ -5397,6 +5474,13 @@
       119.76,
       127.65,
       9
+     ],
+     [
+      "2026-11-28",
+      113.15,
+      119.76,
+      127.65,
+      9
      ]
     ],
     "slug": "cerejeiras",
@@ -5407,7 +5491,7 @@
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 134.4,
@@ -5428,14 +5512,14 @@
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 113.7,
       "cidade": "Cerejeiras",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -5612,21 +5696,21 @@
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 113.7,
       "cidade": "Cerejeiras",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 129.6,
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 121.55,
@@ -5640,7 +5724,7 @@
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -5831,14 +5915,14 @@
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 131.25,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 123.4,
@@ -5852,14 +5936,14 @@
       "cidade": "Cerejeiras",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 117.55,
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -5993,14 +6077,14 @@
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 131.25,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 121.5,
@@ -6014,14 +6098,14 @@
       "cidade": "Cerejeiras",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 117.55,
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     }
    },
@@ -6105,6 +6189,15 @@
     ],
     "ofertas": [
      {
+      "cidade": "Rio Verde de Mato Grosso",
+      "uf": "MS",
+      "preco": 140.0,
+      "comFrete": 136.49,
+      "entrega": null,
+      "fob": false,
+      "atualizado": "2026-11-27 21:29"
+     },
+     {
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "preco": 150.0,
@@ -6143,7 +6236,7 @@
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 126.35,
@@ -6157,10 +6250,18 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
-    "historico": [],
+    "historico": [
+     [
+      "2026-11-28",
+      140.0,
+      140.0,
+      140.0,
+      1
+     ]
+    ],
     "slug": "rio-verde-de-mato-grosso",
     "ordem": 99
    },
@@ -6280,7 +6381,7 @@
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 129.1,
@@ -6477,14 +6578,14 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 122.25,
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 141.9,
@@ -6560,6 +6661,13 @@
      ],
      [
       "2026-11-27",
+      121.15,
+      121.7,
+      122.25,
+      2
+     ],
+     [
+      "2026-11-28",
       121.15,
       121.7,
       122.25,
@@ -6749,7 +6857,7 @@
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 128.25,
@@ -6763,21 +6871,21 @@
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 115.65,
       "cidade": "Tangará da Serra",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 150.0,
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 128.25,
@@ -6853,6 +6961,13 @@
      ],
      [
       "2026-11-27",
+      125.15,
+      125.15,
+      125.15,
+      1
+     ],
+     [
+      "2026-11-28",
       125.15,
       125.15,
       125.15,
@@ -6989,14 +7104,14 @@
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 140.0,
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 131.1,
@@ -7017,7 +7132,7 @@
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -7058,6 +7173,13 @@
      ],
      [
       "2026-11-27",
+      140.0,
+      140.0,
+      140.0,
+      1
+     ],
+     [
+      "2026-11-28",
       140.0,
       140.0,
       140.0,
@@ -7171,29 +7293,29 @@
      {
       "cidade": "Itiquira",
       "uf": "MT",
-      "preco": 127.35,
-      "comFrete": 126.81,
+      "preco": 127.75,
+      "comFrete": 127.21,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-27 17:15"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Campo Verde",
       "uf": "MT",
-      "preco": 124.75,
-      "comFrete": 119.68,
+      "preco": 125.15,
+      "comFrete": 120.08,
       "entrega": "2027-05-31",
       "fob": true,
-      "atualizado": "2026-11-27 17:15"
+      "atualizado": "2026-11-27 17:45"
      }
     ],
     "ultimas": {
      "2027-05": {
-      "preco": 127.35,
+      "preco": 127.75,
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 131.35,
@@ -7221,7 +7343,7 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 129.55,
@@ -7293,6 +7415,13 @@
       127.35,
       127.35,
       127.35,
+      1
+     ],
+     [
+      "2026-11-28",
+      127.75,
+      127.75,
+      127.75,
       1
      ]
     ],
@@ -7497,7 +7626,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -7511,14 +7640,14 @@
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 122.45,
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 124.7,
@@ -7601,6 +7730,13 @@
      ],
      [
       "2026-11-27",
+      120.15,
+      129.7,
+      138.6,
+      4
+     ],
+     [
+      "2026-11-28",
       120.15,
       129.7,
       138.6,
@@ -7815,21 +7951,21 @@
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 115.75,
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 135.0,
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 119.15,
@@ -7905,6 +8041,13 @@
      ],
      [
       "2026-11-27",
+      112.9,
+      117.95,
+      126.75,
+      3
+     ],
+     [
+      "2026-11-28",
       112.9,
       117.95,
       126.75,
@@ -8112,14 +8255,14 @@
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 123.35,
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 139.05,
@@ -8133,7 +8276,7 @@
       "cidade": "Campo Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.55,
@@ -8154,7 +8297,7 @@
       "cidade": "Nova Ubiratã",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -8216,6 +8359,13 @@
      ],
      [
       "2026-11-27",
+      123.35,
+      123.35,
+      123.35,
+      1
+     ],
+     [
+      "2026-11-28",
       123.35,
       123.35,
       123.35,
@@ -8423,7 +8573,7 @@
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 136.55,
@@ -8437,21 +8587,21 @@
       "cidade": "Campo Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 116.55,
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 114.35,
       "cidade": "Tangará da Serra",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -8513,6 +8663,13 @@
      ],
      [
       "2026-11-27",
+      114.35,
+      123.4,
+      135.0,
+      4
+     ],
+     [
+      "2026-11-28",
       114.35,
       123.4,
       135.0,
@@ -8647,28 +8804,28 @@
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 113.7,
       "cidade": "Cerejeiras",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 131.25,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 117.55,
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -8787,28 +8944,28 @@
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 113.15,
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 134.6,
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 141.3,
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -9045,14 +9202,14 @@
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 113.15,
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 126.4,
@@ -9066,14 +9223,14 @@
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 111.85,
       "cidade": "Porto Velho",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -9139,6 +9296,13 @@
       125.22,
       141.3,
       8
+     ],
+     [
+      "2026-11-28",
+      111.85,
+      125.22,
+      141.3,
+      8
      ]
     ],
     "slug": "porto-velho",
@@ -9195,14 +9359,14 @@
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 131.25,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -9332,7 +9496,7 @@
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 123.15,
@@ -9353,14 +9517,14 @@
       "cidade": "Vilhena",
       "uf": "RO",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 131.25,
       "cidade": "São Miguel do Guaporé",
       "uf": "RO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -9422,6 +9586,13 @@
      ],
      [
       "2026-11-27",
+      124.1,
+      127.67,
+      131.25,
+      2
+     ],
+     [
+      "2026-11-28",
       124.1,
       127.67,
       131.25,
@@ -9636,14 +9807,14 @@
       "cidade": "Novo Horizonte do Norte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 135.0,
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 127.4,
@@ -9657,7 +9828,7 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 116.1,
@@ -9671,7 +9842,7 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -10100,7 +10271,7 @@
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 139.05,
@@ -10114,14 +10285,14 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 121.65,
@@ -10204,6 +10375,13 @@
      ],
      [
       "2026-11-27",
+      118.45,
+      119.2,
+      119.95,
+      2
+     ],
+     [
+      "2026-11-28",
       118.45,
       119.2,
       119.95,
@@ -10411,14 +10589,14 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 122.95,
       "cidade": "Novo Horizonte do Norte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 138.4,
@@ -10432,7 +10610,7 @@
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.45,
@@ -10446,7 +10624,7 @@
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 121.9,
@@ -10522,6 +10700,13 @@
      ],
      [
       "2026-11-27",
+      122.95,
+      122.95,
+      122.95,
+      1
+     ],
+     [
+      "2026-11-28",
       122.95,
       122.95,
       122.95,
@@ -10729,7 +10914,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 145.25,
@@ -10743,7 +10928,7 @@
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 122.65,
@@ -10757,7 +10942,7 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 120.9,
@@ -10778,7 +10963,7 @@
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -10840,6 +11025,13 @@
      ],
      [
       "2026-11-27",
+      116.55,
+      121.05,
+      125.4,
+      4
+     ],
+     [
+      "2026-11-28",
       116.55,
       121.05,
       125.4,
@@ -11047,7 +11239,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -11061,7 +11253,7 @@
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.0,
@@ -11075,7 +11267,7 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 121.5,
@@ -11151,6 +11343,13 @@
      ],
      [
       "2026-11-27",
+      117.65,
+      121.08,
+      124.4,
+      4
+     ],
+     [
+      "2026-11-28",
       117.65,
       121.08,
       124.4,
@@ -11358,7 +11557,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -11372,14 +11571,14 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 122.45,
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 124.2,
@@ -11836,7 +12035,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 147.45,
@@ -11850,7 +12049,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 124.7,
@@ -11864,7 +12063,7 @@
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 123.65,
@@ -12119,7 +12318,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -12140,7 +12339,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 125.4,
@@ -12409,7 +12608,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -12423,14 +12622,14 @@
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 122.45,
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.5,
@@ -12692,7 +12891,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 145.25,
@@ -12706,14 +12905,14 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 122.3,
@@ -12796,6 +12995,13 @@
      ],
      [
       "2026-11-27",
+      112.25,
+      118.96,
+      125.45,
+      4
+     ],
+     [
+      "2026-11-28",
       112.25,
       118.96,
       125.45,
@@ -13010,14 +13216,14 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 135.0,
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 126.3,
@@ -13031,7 +13237,7 @@
       "cidade": "Brasnorte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 119.4,
@@ -13052,7 +13258,7 @@
       "cidade": "Novo Horizonte do Norte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -13114,6 +13320,13 @@
      ],
      [
       "2026-11-27",
+      111.55,
+      116.95,
+      126.3,
+      6
+     ],
+     [
+      "2026-11-28",
       111.55,
       116.95,
       126.3,
@@ -13444,7 +13657,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.7,
@@ -13458,7 +13671,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 121.4,
@@ -13566,7 +13779,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.15,
@@ -13792,7 +14005,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.15,
@@ -13806,14 +14019,14 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.2,
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.6,
@@ -14067,7 +14280,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.15,
@@ -14081,7 +14294,7 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 142.7,
@@ -14335,7 +14548,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.15,
@@ -14349,7 +14562,7 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 142.4,
@@ -14617,7 +14830,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.85,
@@ -14631,14 +14844,14 @@
       "cidade": "Sarandi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.65,
       "cidade": "Erechim",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -14759,7 +14972,7 @@
       "cidade": "Paranaguá",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.9,
@@ -14978,21 +15191,21 @@
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 139.05,
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 134.7,
       "cidade": "Nonoai",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 139.3,
@@ -15006,7 +15219,7 @@
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 164.5,
@@ -15077,7 +15290,7 @@
       "cidade": "Paranaguá",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 171.7,
@@ -15146,6 +15359,13 @@
      ],
      [
       "2026-11-27",
+      163.6,
+      163.6,
+      163.6,
+      1
+     ],
+     [
+      "2026-11-28",
       163.6,
       163.6,
       163.6,
@@ -15317,7 +15537,7 @@
       "cidade": "Paranaguá",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 171.4,
@@ -15534,7 +15754,7 @@
       "cidade": "Paranaguá",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 171.4,
@@ -15787,14 +16007,14 @@
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 125.15,
       "cidade": "Campo Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 134.95,
@@ -15808,7 +16028,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 124.05,
@@ -15822,14 +16042,14 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 123.35,
       "cidade": "Santa Rita do Trivelato",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -16070,7 +16290,7 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 138.4,
@@ -16084,14 +16304,14 @@
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 120.2,
@@ -16112,7 +16332,7 @@
       "cidade": "Novo Horizonte do Norte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 117.55,
@@ -16360,14 +16580,14 @@
       "cidade": "Campo Novo do Parecis",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 120.85,
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 136.95,
@@ -16395,14 +16615,14 @@
       "cidade": "Novo Horizonte do Norte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -16585,7 +16805,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 142.25,
@@ -16599,7 +16819,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 125.55,
@@ -16796,7 +17016,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 123.15,
@@ -16810,7 +17030,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -16997,21 +17217,21 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 125.15,
       "cidade": "Campo Verde",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 121.15,
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 137.35,
@@ -17025,7 +17245,7 @@
       "cidade": "Água Boa",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 123.0,
@@ -17266,7 +17486,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -17287,7 +17507,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 121.4,
@@ -17315,7 +17535,7 @@
       "cidade": "Novo Horizonte do Norte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -17563,7 +17783,7 @@
       "cidade": "Lucas do Rio Verde",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 139.05,
@@ -17577,14 +17797,14 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 122.0,
@@ -17612,7 +17832,7 @@
       "cidade": "Novo Horizonte do Norte",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -17734,119 +17954,119 @@
      {
       "cidade": "Matupá",
       "uf": "MT",
-      "preco": 137.25,
-      "comFrete": 134.09,
+      "preco": 137.6,
+      "comFrete": 134.44,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Matupá",
       "uf": "MT",
-      "preco": 138.25,
-      "comFrete": 132.04,
+      "preco": 138.6,
+      "comFrete": 132.39,
       "entrega": null,
       "fob": false,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Sinop",
       "uf": "MT",
-      "preco": 126.25,
-      "comFrete": 120.58,
+      "preco": 126.65,
+      "comFrete": 120.98,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Sorriso",
       "uf": "MT",
-      "preco": 124.9,
-      "comFrete": 117.78,
+      "preco": 125.25,
+      "comFrete": 118.13,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Vera",
       "uf": "MT",
-      "preco": 124.05,
-      "comFrete": 117.19,
+      "preco": 124.4,
+      "comFrete": 117.54,
       "entrega": null,
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Vera",
+      "uf": "MT",
+      "preco": 122.8,
+      "comFrete": 112.51,
+      "entrega": null,
+      "fob": false,
+      "atualizado": "2026-11-27 17:45"
+     },
+     {
+      "cidade": "Matupá",
       "uf": "MT",
       "preco": 122.45,
-      "comFrete": 112.16,
-      "entrega": null,
-      "fob": false,
-      "atualizado": "2026-11-27 17:30"
-     },
-     {
-      "cidade": "Matupá",
-      "uf": "MT",
-      "preco": 122.1,
-      "comFrete": 118.94,
+      "comFrete": 119.29,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Matupá",
       "uf": "MT",
-      "preco": 119.85,
-      "comFrete": 113.64,
+      "preco": 120.15,
+      "comFrete": 113.94,
       "entrega": "2027-04-30",
       "fob": false,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Sinop",
       "uf": "MT",
-      "preco": 118.0,
-      "comFrete": 112.33,
+      "preco": 118.3,
+      "comFrete": 112.63,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Sorriso",
       "uf": "MT",
-      "preco": 119.6,
-      "comFrete": 112.48,
+      "preco": 119.9,
+      "comFrete": 112.78,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Vera",
       "uf": "MT",
-      "preco": 119.1,
-      "comFrete": 112.24,
+      "preco": 119.45,
+      "comFrete": 112.59,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Vera",
       "uf": "MT",
-      "preco": 117.35,
-      "comFrete": 107.06,
+      "preco": 117.65,
+      "comFrete": 107.36,
       "entrega": "2027-04-30",
       "fob": false,
-      "atualizado": "2026-11-27 17:30"
+      "atualizado": "2026-11-27 17:45"
      }
     ],
     "ultimas": {
      "disp": {
-      "preco": 138.25,
+      "preco": 138.6,
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -17863,11 +18083,11 @@
       "visto": "2026-11-25"
      },
      "2027-04": {
-      "preco": 122.1,
+      "preco": 122.45,
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 122.6,
@@ -18303,7 +18523,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 146.1,
@@ -18317,14 +18537,14 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 123.7,
@@ -18513,7 +18733,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.9,
@@ -18575,6 +18795,13 @@
      ],
      [
       "2026-11-27",
+      160.0,
+      160.0,
+      160.0,
+      1
+     ],
+     [
+      "2026-11-28",
       160.0,
       160.0,
       160.0,
@@ -18715,7 +18942,7 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 166.25,
@@ -18729,21 +18956,21 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.2,
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.9,
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -18791,6 +19018,13 @@
      ],
      [
       "2026-11-27",
+      135.9,
+      144.45,
+      154.25,
+      5
+     ],
+     [
+      "2026-11-28",
       135.9,
       144.45,
       154.25,
@@ -19001,28 +19235,28 @@
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 162.0,
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.0,
       "cidade": "Nonoai",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 134.7,
       "cidade": "Nonoai",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 163.9,
@@ -19077,6 +19311,13 @@
      ],
      [
       "2026-11-27",
+      134.7,
+      142.89,
+      152.45,
+      5
+     ],
+     [
+      "2026-11-28",
       134.7,
       142.89,
       152.45,
@@ -19276,28 +19517,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 142.5,
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.05,
       "cidade": "Palmeira das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.8,
       "cidade": "Palmeira das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 164.95,
@@ -19359,6 +19600,13 @@
      ],
      [
       "2026-11-27",
+      135.8,
+      144.31,
+      154.15,
+      5
+     ],
+     [
+      "2026-11-28",
       135.8,
       144.31,
       154.15,
@@ -19558,28 +19806,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 142.4,
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.65,
       "cidade": "Erechim",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.35,
       "cidade": "Erechim",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 163.45,
@@ -19641,6 +19889,13 @@
      ],
      [
       "2026-11-27",
+      135.35,
+      143.57,
+      153.2,
+      5
+     ],
+     [
+      "2026-11-28",
       135.35,
       143.57,
       153.2,
@@ -19840,28 +20095,28 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 141.45,
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.75,
       "cidade": "Tenente Portela",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.5,
       "cidade": "Tenente Portela",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 163.9,
@@ -19930,6 +20185,13 @@
      ],
      [
       "2026-11-27",
+      135.5,
+      143.46,
+      152.85,
+      5
+     ],
+     [
+      "2026-11-28",
       135.5,
       143.46,
       152.85,
@@ -20066,7 +20328,7 @@
       "cidade": "Paranaguá",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 151.15,
@@ -20362,7 +20624,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 147.75,
@@ -20376,7 +20638,7 @@
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 163.9,
@@ -20390,14 +20652,14 @@
       "cidade": "Sarandi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 136.05,
       "cidade": "Sarandi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -20438,6 +20700,13 @@
      ],
      [
       "2026-11-27",
+      136.05,
+      144.2,
+      153.75,
+      5
+     ],
+     [
+      "2026-11-28",
       136.05,
       144.2,
       153.75,
@@ -20648,21 +20917,21 @@
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.0,
       "cidade": "Tapejara",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 162.0,
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 163.75,
@@ -20676,7 +20945,7 @@
       "cidade": "Tapejara",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -20724,6 +20993,13 @@
      ],
      [
       "2026-11-27",
+      135.75,
+      143.94,
+      153.55,
+      5
+     ],
+     [
+      "2026-11-28",
       135.75,
       143.94,
       153.55,
@@ -20923,28 +21199,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.2,
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 139.05,
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.35,
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 165.45,
@@ -21006,6 +21282,13 @@
      ],
      [
       "2026-11-27",
+      138.35,
+      146.08,
+      155.65,
+      5
+     ],
+     [
+      "2026-11-28",
       138.35,
       146.08,
       155.65,
@@ -21205,7 +21488,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.25,
@@ -21219,14 +21502,14 @@
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.55,
       "cidade": "Carazinho",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 164.5,
@@ -21240,7 +21523,7 @@
       "cidade": "Carazinho",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -21281,6 +21564,13 @@
      ],
      [
       "2026-11-27",
+      136.25,
+      144.44,
+      154.0,
+      5
+     ],
+     [
+      "2026-11-28",
       136.25,
       144.44,
       154.0,
@@ -21410,7 +21700,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 149.15,
@@ -21424,7 +21714,7 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 142.1,
@@ -21692,28 +21982,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 143.6,
       "cidade": "Júlio de Castilhos",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 138.4,
       "cidade": "Panambi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 137.7,
       "cidade": "Panambi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.25,
@@ -21768,6 +22058,13 @@
      ],
      [
       "2026-11-27",
+      137.7,
+      145.42,
+      155.0,
+      5
+     ],
+     [
+      "2026-11-28",
       137.7,
       145.42,
       155.0,
@@ -21971,28 +22268,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.2,
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 138.1,
       "cidade": "Bozano",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 136.8,
       "cidade": "Bozano",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 167.45,
@@ -22047,6 +22344,13 @@
      ],
      [
       "2026-11-27",
+      136.8,
+      144.93,
+      154.65,
+      5
+     ],
+     [
+      "2026-11-28",
       136.8,
       144.93,
       154.65,
@@ -22250,28 +22554,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.2,
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 139.35,
       "cidade": "Júlio de Castilhos",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.05,
       "cidade": "Júlio de Castilhos",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 167.3,
@@ -22326,6 +22630,13 @@
      ],
      [
       "2026-11-27",
+      138.05,
+      146.47,
+      156.1,
+      5
+     ],
+     [
+      "2026-11-28",
       138.05,
       146.47,
       156.1,
@@ -22525,28 +22836,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 142.4,
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.85,
       "cidade": "Passo Fundo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 136.55,
       "cidade": "Passo Fundo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 164.5,
@@ -22608,6 +22919,13 @@
      ],
      [
       "2026-11-27",
+      136.55,
+      144.73,
+      154.3,
+      5
+     ],
+     [
+      "2026-11-28",
       136.55,
       144.73,
       154.3,
@@ -22818,28 +23136,28 @@
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.6,
       "cidade": "São João da Urtiga",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "disp": {
       "preco": 162.0,
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.3,
       "cidade": "São João da Urtiga",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 163.45,
@@ -22894,6 +23212,13 @@
      ],
      [
       "2026-11-27",
+      135.3,
+      143.76,
+      153.75,
+      5
+     ],
+     [
+      "2026-11-28",
       135.3,
       143.76,
       153.75,
@@ -23093,7 +23418,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.4,
@@ -23107,21 +23432,21 @@
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 138.75,
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 137.45,
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 166.3,
@@ -23169,6 +23494,13 @@
      ],
      [
       "2026-11-27",
+      137.45,
+      145.39,
+      154.6,
+      5
+     ],
+     [
+      "2026-11-28",
       137.45,
       145.39,
       154.6,
@@ -23372,7 +23704,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.75,
@@ -23386,7 +23718,7 @@
       "cidade": "Boa Vista das Missões",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 166.4,
@@ -23400,14 +23732,14 @@
       "cidade": "Coronel Bicaco",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 136.05,
       "cidade": "Coronel Bicaco",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -23455,6 +23787,13 @@
      ],
      [
       "2026-11-27",
+      136.05,
+      144.14,
+      153.75,
+      5
+     ],
+     [
+      "2026-11-28",
       136.05,
       144.14,
       153.75,
@@ -23658,7 +23997,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.25,
@@ -23672,21 +24011,21 @@
       "cidade": "Coronel Bicaco",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.9,
       "cidade": "Humaitá",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.6,
       "cidade": "Humaitá",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 167.35,
@@ -23741,6 +24080,13 @@
      ],
      [
       "2026-11-27",
+      135.6,
+      143.89,
+      153.75,
+      5
+     ],
+     [
+      "2026-11-28",
       135.6,
       143.89,
       153.75,
@@ -23940,7 +24286,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 145.55,
@@ -23954,14 +24300,14 @@
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.2,
       "cidade": "Campo Novo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 164.5,
@@ -23975,7 +24321,7 @@
       "cidade": "Campo Novo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -24023,6 +24369,13 @@
      ],
      [
       "2026-11-27",
+      135.9,
+      144.07,
+      153.75,
+      5
+     ],
+     [
+      "2026-11-28",
       135.9,
       144.07,
       153.75,
@@ -24233,7 +24586,7 @@
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 141.8,
@@ -24247,7 +24600,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 165.8,
@@ -24455,7 +24808,7 @@
       "cidade": "Itacurubi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 166.95,
@@ -24469,21 +24822,21 @@
       "cidade": "São Luiz Gonzaga",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.0,
       "cidade": "São Borja",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 134.7,
       "cidade": "São Borja",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -24538,6 +24891,13 @@
      ],
      [
       "2026-11-27",
+      134.7,
+      143.25,
+      153.05,
+      5
+     ],
+     [
+      "2026-11-28",
       134.7,
       143.25,
       153.05,
@@ -24741,28 +25101,28 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.2,
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 138.85,
       "cidade": "Tupanciretã",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 137.6,
       "cidade": "Tupanciretã",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 166.85,
@@ -24810,6 +25170,13 @@
      ],
      [
       "2026-11-27",
+      137.6,
+      146.01,
+      155.65,
+      5
+     ],
+     [
+      "2026-11-28",
       137.6,
       146.01,
       155.65,
@@ -25013,49 +25380,49 @@
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.2,
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 139.95,
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.65,
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -25110,6 +25477,13 @@
      ],
      [
       "2026-11-27",
+      138.65,
+      147.05,
+      156.65,
+      5
+     ],
+     [
+      "2026-11-28",
       138.65,
       147.05,
       156.65,
@@ -25309,7 +25683,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.25,
@@ -25323,21 +25697,21 @@
       "cidade": "Júlio de Castilhos",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 138.45,
       "cidade": "Ibirubá",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 137.75,
       "cidade": "Ibirubá",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 138.55,
@@ -25392,6 +25766,13 @@
      ],
      [
       "2026-11-27",
+      137.75,
+      145.48,
+      155.05,
+      5
+     ],
+     [
+      "2026-11-28",
       137.75,
       145.48,
       155.05,
@@ -25595,7 +25976,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.25,
@@ -25609,21 +25990,21 @@
       "cidade": "Júlio de Castilhos",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 138.1,
       "cidade": "Coronel Barros",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 137.4,
       "cidade": "Coronel Barros",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 138.55,
@@ -25678,6 +26059,13 @@
      ],
      [
       "2026-11-27",
+      137.4,
+      145.19,
+      154.85,
+      5
+     ],
+     [
+      "2026-11-28",
       137.4,
       145.19,
       154.85,
@@ -25881,7 +26269,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 148.25,
@@ -25895,21 +26283,21 @@
       "cidade": "Pantano Grande",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 138.15,
       "cidade": "Soledade",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 136.85,
       "cidade": "Soledade",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 138.55,
@@ -25964,6 +26352,13 @@
      ],
      [
       "2026-11-27",
+      136.85,
+      145.15,
+      154.9,
+      5
+     ],
+     [
+      "2026-11-28",
       136.85,
       145.15,
       154.9,
@@ -26163,35 +26558,35 @@
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 152.9,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 149.1,
@@ -26260,6 +26655,13 @@
      ],
      [
       "2026-11-27",
+      152.0,
+      161.79,
+      170.0,
+      12
+     ],
+     [
+      "2026-11-28",
       152.0,
       161.79,
       170.0,
@@ -26365,20 +26767,20 @@
      {
       "cidade": "Rio Grande",
       "uf": "RS",
-      "preco": 165.9,
-      "comFrete": 161.1,
+      "preco": 166.4,
+      "comFrete": 161.6,
       "entrega": null,
       "fob": false,
-      "atualizado": "2026-11-27 17:00"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Rio Grande",
       "uf": "RS",
-      "preco": 165.2,
-      "comFrete": 160.4,
+      "preco": 165.8,
+      "comFrete": 161.0,
       "entrega": null,
       "fob": false,
-      "atualizado": "2026-11-27 17:00"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Cachoeira do Sul",
@@ -26408,6 +26810,15 @@
       "atualizado": "2026-11-27 16:00"
      },
      {
+      "cidade": "Rio Grande",
+      "uf": "RS",
+      "preco": 158.2,
+      "comFrete": 153.4,
+      "entrega": "2027-07-31",
+      "fob": false,
+      "atualizado": "2026-11-27 17:45"
+     },
+     {
       "cidade": "Pelotas",
       "uf": "RS",
       "preco": 145.15,
@@ -26415,15 +26826,6 @@
       "entrega": "2027-04-30",
       "fob": true,
       "atualizado": "2026-11-27 16:00"
-     },
-     {
-      "cidade": "Rio Grande",
-      "uf": "RS",
-      "preco": 157.7,
-      "comFrete": 152.9,
-      "entrega": "2027-07-31",
-      "fob": false,
-      "atualizado": "2026-11-27 17:00"
      },
      {
       "cidade": "Pelotas",
@@ -26446,62 +26848,62 @@
      {
       "cidade": "Rio Grande",
       "uf": "RS",
-      "preco": 155.25,
-      "comFrete": 150.45,
+      "preco": 155.4,
+      "comFrete": 150.6,
       "entrega": "2027-06-30",
       "fob": false,
-      "atualizado": "2026-11-27 16:00"
+      "atualizado": "2026-11-27 17:45"
      }
     ],
     "ultimas": {
      "disp": {
-      "preco": 165.9,
+      "preco": 166.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
-      "preco": 157.7,
+      "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
-      "preco": 155.25,
+      "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 148.85,
       "cidade": "Pelotas",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 145.15,
       "cidade": "Pelotas",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 143.9,
       "cidade": "Pelotas",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -26542,6 +26944,13 @@
      ],
      [
       "2026-11-27",
+      143.9,
+      151.67,
+      160.65,
+      5
+     ],
+     [
+      "2026-11-28",
       143.9,
       151.67,
       160.65,
@@ -26741,49 +27150,49 @@
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.4,
       "cidade": "Bagé",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 140.4,
       "cidade": "Bagé",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 139.15,
       "cidade": "Bagé",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -26831,6 +27240,13 @@
      ],
      [
       "2026-11-27",
+      139.15,
+      147.44,
+      157.05,
+      5
+     ],
+     [
+      "2026-11-28",
       139.15,
       147.44,
       157.05,
@@ -27030,49 +27446,49 @@
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.15,
       "cidade": "Pantano Grande",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 140.2,
       "cidade": "Pantano Grande",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.9,
       "cidade": "Pantano Grande",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -27113,6 +27529,13 @@
      ],
      [
       "2026-11-27",
+      138.9,
+      147.44,
+      157.4,
+      5
+     ],
+     [
+      "2026-11-28",
       138.9,
       147.44,
       157.4,
@@ -27312,49 +27735,49 @@
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.15,
       "cidade": "Dom Pedrito",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 140.2,
       "cidade": "Dom Pedrito",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.9,
       "cidade": "Dom Pedrito",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -27409,6 +27832,13 @@
      ],
      [
       "2026-11-27",
+      138.9,
+      147.16,
+      156.7,
+      5
+     ],
+     [
+      "2026-11-28",
       138.9,
       147.16,
       156.7,
@@ -27612,49 +28042,49 @@
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 143.9,
       "cidade": "São Gabriel",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 139.65,
       "cidade": "São Gabriel",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.35,
       "cidade": "São Gabriel",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -27695,6 +28125,13 @@
      ],
      [
       "2026-11-27",
+      138.35,
+      146.77,
+      156.4,
+      5
+     ],
+     [
+      "2026-11-28",
       138.35,
       146.77,
       156.4,
@@ -28012,7 +28449,7 @@
       "cidade": "Monte Alegre de Minas",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 143.15,
@@ -28033,7 +28470,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -28074,6 +28511,13 @@
      ],
      [
       "2026-11-27",
+      140.0,
+      140.0,
+      140.0,
+      1
+     ],
+     [
+      "2026-11-28",
       140.0,
       140.0,
       140.0,
@@ -28232,7 +28676,7 @@
       "cidade": "Monte Alegre de Minas",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 144.7,
@@ -28260,7 +28704,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 146.55,
@@ -28308,6 +28752,13 @@
      ],
      [
       "2026-11-27",
+      147.0,
+      147.0,
+      147.0,
+      1
+     ],
+     [
+      "2026-11-28",
       147.0,
       147.0,
       147.0,
@@ -28448,7 +28899,7 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.25,
@@ -28531,6 +28982,13 @@
      ],
      [
       "2026-11-27",
+      135.0,
+      135.0,
+      135.0,
+      1
+     ],
+     [
+      "2026-11-28",
       135.0,
       135.0,
       135.0,
@@ -28680,7 +29138,7 @@
       "cidade": "Monte Alegre de Minas",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 137.8,
@@ -28850,7 +29308,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 139.5,
@@ -28871,7 +29329,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -29056,7 +29514,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 139.5,
@@ -29070,7 +29528,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 144.1,
@@ -29436,7 +29894,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 140.35,
@@ -29457,7 +29915,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 142.95,
@@ -29640,7 +30098,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 144.1,
@@ -29661,7 +30119,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 146.55,
@@ -29730,6 +30188,13 @@
      ],
      [
       "2026-11-27",
+      145.0,
+      145.0,
+      145.0,
+      1
+     ],
+     [
+      "2026-11-28",
       145.0,
       145.0,
       145.0,
@@ -29888,7 +30353,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 144.1,
@@ -29909,7 +30374,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 146.55,
@@ -29978,6 +30443,13 @@
      ],
      [
       "2026-11-27",
+      130.0,
+      130.0,
+      130.0,
+      1
+     ],
+     [
+      "2026-11-28",
       130.0,
       130.0,
       130.0,
@@ -30118,7 +30590,7 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.25,
@@ -30271,7 +30743,7 @@
       "cidade": "Ipaussu",
       "uf": "SP",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 150.25,
@@ -30292,7 +30764,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 144.1,
@@ -30395,7 +30867,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 142.95,
@@ -30416,7 +30888,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -30457,6 +30929,13 @@
      ],
      [
       "2026-11-27",
+      150.0,
+      150.0,
+      150.0,
+      1
+     ],
+     [
+      "2026-11-28",
       150.0,
       150.0,
       150.0,
@@ -30606,14 +31085,14 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 130.0,
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.9,
@@ -30795,7 +31274,7 @@
       "cidade": "Apucarana",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 153.4,
@@ -30857,6 +31336,13 @@
      ],
      [
       "2026-11-27",
+      160.0,
+      160.0,
+      160.0,
+      1
+     ],
+     [
+      "2026-11-28",
       160.0,
       160.0,
       160.0,
@@ -30993,7 +31479,7 @@
       "cidade": "Apucarana",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 145.05,
@@ -31028,7 +31514,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -31184,7 +31670,7 @@
       "cidade": "Paranaguá",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 151.8,
@@ -31470,7 +31956,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 146.9,
@@ -31484,21 +31970,21 @@
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.95,
       "cidade": "São Martinho",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.65,
       "cidade": "São Martinho",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 167.55,
@@ -31539,6 +32025,13 @@
      ],
      [
       "2026-11-27",
+      135.65,
+      143.82,
+      153.5,
+      5
+     ],
+     [
+      "2026-11-28",
       135.65,
       143.82,
       153.5,
@@ -31742,7 +32235,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 145.55,
@@ -31756,21 +32249,21 @@
       "cidade": "Júlio de Castilhos",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.65,
       "cidade": "Três de Maio",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.35,
       "cidade": "Três de Maio",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 167.7,
@@ -31818,6 +32311,13 @@
      ],
      [
       "2026-11-27",
+      135.35,
+      143.81,
+      153.8,
+      5
+     ],
+     [
+      "2026-11-28",
       135.35,
       143.81,
       153.8,
@@ -32017,7 +32517,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 166.3,
@@ -32031,21 +32531,21 @@
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 139.3,
       "cidade": "Nova Palma",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 138.0,
       "cidade": "Nova Palma",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -32093,6 +32593,13 @@
      ],
      [
       "2026-11-27",
+      138.0,
+      146.3,
+      155.75,
+      5
+     ],
+     [
+      "2026-11-28",
       138.0,
       146.3,
       155.75,
@@ -32296,7 +32803,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 161.75,
@@ -32310,21 +32817,21 @@
       "cidade": "Santa Maria",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.5,
       "cidade": "Itacurubi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 136.2,
       "cidade": "Itacurubi",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -32365,6 +32872,13 @@
      ],
      [
       "2026-11-27",
+      136.2,
+      144.33,
+      154.05,
+      5
+     ],
+     [
+      "2026-11-28",
       136.2,
       144.33,
       154.05,
@@ -32564,7 +33078,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 164.5,
@@ -32578,21 +33092,21 @@
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.95,
       "cidade": "São Luiz Gonzaga",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.65,
       "cidade": "São Luiz Gonzaga",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -32633,6 +33147,13 @@
      ],
      [
       "2026-11-27",
+      135.65,
+      144.2,
+      154.0,
+      5
+     ],
+     [
+      "2026-11-28",
       135.65,
       144.2,
       154.0,
@@ -32832,7 +33353,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 166.9,
@@ -32846,21 +33367,21 @@
       "cidade": "Júlio de Castilhos",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 137.2,
       "cidade": "Bossoroca",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.9,
       "cidade": "Bossoroca",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -32908,6 +33429,13 @@
      ],
      [
       "2026-11-27",
+      135.9,
+      144.15,
+      154.05,
+      5
+     ],
+     [
+      "2026-11-28",
       135.9,
       144.15,
       154.05,
@@ -33107,7 +33635,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 164.5,
@@ -33121,21 +33649,21 @@
       "cidade": "Cruz Alta",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.3,
       "cidade": "Rolador",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.0,
       "cidade": "Rolador",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -33183,6 +33711,13 @@
      ],
      [
       "2026-11-27",
+      135.0,
+      143.55,
+      153.35,
+      5
+     ],
+     [
+      "2026-11-28",
       135.0,
       143.55,
       153.35,
@@ -33382,7 +33917,7 @@
       "cidade": "Cachoeira do Sul",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 163.75,
@@ -33396,21 +33931,21 @@
       "cidade": "Tio Hugo",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 136.65,
       "cidade": "Sananduva",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 135.35,
       "cidade": "Sananduva",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 147.9,
@@ -33458,6 +33993,13 @@
      ],
      [
       "2026-11-27",
+      135.35,
+      143.74,
+      153.35,
+      5
+     ],
+     [
+      "2026-11-28",
       135.35,
       143.74,
       153.35,
@@ -33616,7 +34158,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 140.4,
@@ -33637,7 +34179,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 141.05,
@@ -33699,6 +34241,13 @@
      ],
      [
       "2026-11-27",
+      155.0,
+      155.0,
+      155.0,
+      1
+     ],
+     [
+      "2026-11-28",
       155.0,
       155.0,
       155.0,
@@ -33826,7 +34375,7 @@
       "cidade": "Apucarana",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.9,
@@ -34010,7 +34559,7 @@
       "cidade": "Apucarana",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 135.6,
@@ -34173,7 +34722,7 @@
       "cidade": "Paranaguá",
       "uf": "PR",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.9,
@@ -34515,7 +35064,7 @@
       "cidade": "Redenção",
       "uf": "PA",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -34600,7 +35149,7 @@
       "cidade": "Redenção",
       "uf": "PA",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -34657,7 +35206,7 @@
       "cidade": "Redenção",
       "uf": "PA",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 130.7,
@@ -34756,7 +35305,7 @@
       "cidade": "Redenção",
       "uf": "PA",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -35305,7 +35854,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 140.3,
@@ -35326,7 +35875,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 142.9,
@@ -35562,7 +36111,7 @@
       "cidade": "Cuiabá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 139.05,
@@ -35576,14 +36125,14 @@
       "cidade": "Nova Mutum",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 119.9,
       "cidade": "Sorriso",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -35661,6 +36210,15 @@
       "atualizado": "2026-11-24 12:19"
      },
      {
+      "cidade": "Barra do Garças",
+      "uf": "MT",
+      "preco": 140.0,
+      "comFrete": 135.68,
+      "entrega": null,
+      "fob": true,
+      "atualizado": "2026-11-27 22:05"
+     },
+     {
       "cidade": "Brasília",
       "uf": "DF",
       "preco": 120.0,
@@ -35676,7 +36234,7 @@
       "cidade": "Itumbiara",
       "uf": "GO",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 141.9,
@@ -35775,7 +36333,7 @@
       "cidade": "Redenção",
       "uf": "PA",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 130.15,
@@ -35967,14 +36525,14 @@
       "cidade": "Alto Araguaia",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 127.75,
       "cidade": "Itiquira",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 140.1,
@@ -36022,6 +36580,13 @@
      ],
      [
       "2026-11-27",
+      150.0,
+      150.0,
+      150.0,
+      1
+     ],
+     [
+      "2026-11-28",
       150.0,
       150.0,
       150.0,
@@ -36097,7 +36662,7 @@
       "cidade": "Paracatu",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -36124,6 +36689,13 @@
      ],
      [
       "2026-11-27",
+      135.0,
+      135.0,
+      135.0,
+      1
+     ],
+     [
+      "2026-11-28",
       135.0,
       135.0,
       135.0,
@@ -36266,7 +36838,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 139.5,
@@ -36287,7 +36859,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -36314,6 +36886,13 @@
      ],
      [
       "2026-11-27",
+      150.0,
+      150.0,
+      150.0,
+      1
+     ],
+     [
+      "2026-11-28",
       150.0,
       150.0,
       150.0,
@@ -36380,7 +36959,7 @@
       "cidade": "Paracatu",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -36407,6 +36986,13 @@
      ],
      [
       "2026-11-27",
+      120.0,
+      120.0,
+      120.0,
+      1
+     ],
+     [
+      "2026-11-28",
       120.0,
       120.0,
       120.0,
@@ -36546,20 +37132,20 @@
      {
       "cidade": "Querência",
       "uf": "MT",
-      "preco": 120.85,
-      "comFrete": 115.68,
+      "preco": 121.3,
+      "comFrete": 116.13,
       "entrega": "2027-04-30",
       "fob": true,
-      "atualizado": "2026-11-27 17:00"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Querência",
       "uf": "MT",
-      "preco": 119.75,
-      "comFrete": 114.58,
+      "preco": 120.2,
+      "comFrete": 115.03,
       "entrega": "2027-03-31",
       "fob": true,
-      "atualizado": "2026-11-27 17:00"
+      "atualizado": "2026-11-27 17:45"
      }
     ],
     "ultimas": {
@@ -36578,18 +37164,18 @@
       "visto": "2026-11-25"
      },
      "2027-04": {
-      "preco": 120.85,
+      "preco": 121.3,
       "cidade": "Querência",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
-      "preco": 119.75,
+      "preco": 120.2,
       "cidade": "Querência",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 120.1,
@@ -36684,7 +37270,7 @@
       "cidade": "Monte Alegre de Minas",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 141.65,
@@ -36746,6 +37332,13 @@
      ],
      [
       "2026-11-27",
+      141.0,
+      141.0,
+      141.0,
+      1
+     ],
+     [
+      "2026-11-28",
       141.0,
       141.0,
       141.0,
@@ -36884,7 +37477,7 @@
       "cidade": "Ibiá",
       "uf": "MG",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 144.1,
@@ -36905,7 +37498,7 @@
       "cidade": "Uberaba",
       "uf": "MG",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 146.55,
@@ -36946,6 +37539,13 @@
      ],
      [
       "2026-11-27",
+      148.0,
+      148.0,
+      148.0,
+      1
+     ],
+     [
+      "2026-11-28",
       148.0,
       148.0,
       148.0,
@@ -37053,7 +37653,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 152.9,
@@ -37101,6 +37701,13 @@
      ],
      [
       "2026-11-27",
+      158.0,
+      158.0,
+      158.0,
+      1
+     ],
+     [
+      "2026-11-28",
       158.0,
       158.0,
       158.0,
@@ -37186,20 +37793,20 @@
      {
       "cidade": "Rio Grande",
       "uf": "RS",
-      "preco": 166.15,
-      "comFrete": 156.51,
+      "preco": 166.4,
+      "comFrete": 156.76,
       "entrega": null,
       "fob": false,
-      "atualizado": "2026-11-27 16:45"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Rio Grande",
       "uf": "RS",
-      "preco": 165.5,
-      "comFrete": 155.86,
+      "preco": 165.8,
+      "comFrete": 156.16,
       "entrega": null,
       "fob": false,
-      "atualizado": "2026-11-27 16:45"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Pantano Grande",
@@ -37222,11 +37829,11 @@
      {
       "cidade": "Rio Grande",
       "uf": "RS",
-      "preco": 158.0,
-      "comFrete": 148.36,
+      "preco": 158.2,
+      "comFrete": 148.56,
       "entrega": "2027-07-31",
       "fob": false,
-      "atualizado": "2026-11-27 16:45"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Rio Grande",
@@ -37249,11 +37856,11 @@
      {
       "cidade": "Rio Grande",
       "uf": "RS",
-      "preco": 155.2,
-      "comFrete": 145.56,
+      "preco": 155.4,
+      "comFrete": 145.76,
       "entrega": "2027-06-30",
       "fob": false,
-      "atualizado": "2026-11-27 16:45"
+      "atualizado": "2026-11-27 17:45"
      },
      {
       "cidade": "Pantano Grande",
@@ -37276,39 +37883,39 @@
     ],
     "ultimas": {
      "disp": {
-      "preco": 166.15,
+      "preco": 166.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
-      "preco": 158.0,
+      "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
-      "preco": 155.25,
+      "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 148.85,
       "cidade": "Pelotas",
       "uf": "RS",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -37335,6 +37942,13 @@
      ],
      [
       "2026-11-27",
+      162.0,
+      162.0,
+      162.0,
+      1
+     ],
+     [
+      "2026-11-28",
       162.0,
       162.0,
       162.0,
@@ -37510,35 +38124,35 @@
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 152.9,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 145.3,
@@ -37558,6 +38172,13 @@
      ],
      [
       "2026-11-27",
+      160.0,
+      160.0,
+      160.0,
+      1
+     ],
+     [
+      "2026-11-28",
       160.0,
       160.0,
       160.0,
@@ -37687,35 +38308,35 @@
       "cidade": "Capivari do Sul",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-07": {
       "preco": 158.2,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-06": {
       "preco": 155.4,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2026-12": {
       "preco": 170.0,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 152.9,
       "cidade": "Rio Grande",
       "uf": "RS",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 150.4,
@@ -37735,6 +38356,13 @@
      ],
      [
       "2026-11-27",
+      160.0,
+      165.0,
+      170.0,
+      2
+     ],
+     [
+      "2026-11-28",
       160.0,
       165.0,
       170.0,
@@ -37795,7 +38423,7 @@
       "cidade": "Redenção",
       "uf": "PA",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -37808,6 +38436,13 @@
      ],
      [
       "2026-11-27",
+      140.0,
+      140.0,
+      140.0,
+      2
+     ],
+     [
+      "2026-11-28",
       140.0,
       140.0,
       140.0,
@@ -37883,7 +38518,7 @@
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-01": {
       "preco": 120.35,
@@ -37897,14 +38532,14 @@
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-04": {
       "preco": 117.05,
       "cidade": "Campos de Júlio",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-02": {
       "preco": 117.3,
@@ -37990,7 +38625,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": false,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-05": {
       "preco": 126.0,
@@ -38004,7 +38639,7 @@
       "cidade": "Matupá",
       "uf": "MT",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      },
      "2027-03": {
       "preco": 122.15,
@@ -38024,6 +38659,13 @@
      ],
      [
       "2026-11-27",
+      100.0,
+      100.0,
+      100.0,
+      1
+     ],
+     [
+      "2026-11-28",
       100.0,
       100.0,
       100.0,
@@ -38123,7 +38765,7 @@
       "cidade": "Campo Mourão",
       "uf": "PR",
       "fob": true,
-      "visto": "2026-11-27"
+      "visto": "2026-11-28"
      }
     },
     "historico": [
@@ -38136,6 +38778,13 @@
      ],
      [
       "2026-11-27",
+      155.0,
+      155.0,
+      155.0,
+      1
+     ],
+     [
+      "2026-11-28",
       155.0,
       155.0,
       155.0,
@@ -38223,6 +38872,13 @@
       "tipo": "Soja FOB"
      },
      {
+      "nome": "Catalão",
+      "preco": 149.81,
+      "var": 0.41,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
       "nome": "Chapadão do Céu",
       "preco": 151.52,
       "var": 0.52,
@@ -38230,9 +38886,9 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Catalão",
-      "preco": 149.81,
-      "var": 0.41,
+      "nome": "Cristalina",
+      "preco": 149.65,
+      "var": 0.47,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
@@ -38244,13 +38900,6 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Jataí",
-      "preco": 146.97,
-      "var": 2.17,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
       "nome": "Rio Verde",
       "preco": 146.98,
       "var": 1.01,
@@ -38258,9 +38907,9 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Cristalina",
-      "preco": 149.65,
-      "var": 0.47,
+      "nome": "Jataí",
+      "preco": 146.97,
+      "var": 2.17,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      }
@@ -38282,16 +38931,16 @@
       "tipo": "Soja Disponível"
      },
      {
-      "nome": "Norte Mato-grossense",
-      "preco": 138.17,
-      "var": 0.53,
+      "nome": "Sudeste MT",
+      "preco": 144.56,
+      "var": -0.39,
       "data": "2026-11-26",
       "tipo": "Soja Disponível"
      },
      {
-      "nome": "Sudeste MT",
-      "preco": 144.56,
-      "var": -0.39,
+      "nome": "Norte Mato-grossense",
+      "preco": 138.17,
+      "var": 0.53,
       "data": "2026-11-26",
       "tipo": "Soja Disponível"
      },
@@ -38305,30 +38954,9 @@
     ],
     "cidades": [
      {
-      "nome": "Pontes e Lacerda",
-      "preco": 137.94,
-      "var": 0.07,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
       "nome": "Água Boa",
       "preco": 143.82,
       "var": 0.27,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Campo Verde",
-      "preco": 145.19,
-      "var": 0.3,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Campo Novo do Parecis",
-      "preco": 139.42,
-      "var": 0.12,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
@@ -38340,9 +38968,30 @@
       "tipo": "Soja FOB"
      },
      {
+      "nome": "Campo Novo do Parecis",
+      "preco": 139.42,
+      "var": 0.12,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Campo Verde",
+      "preco": 145.19,
+      "var": 0.3,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
       "nome": "Lucas do Rio Verde",
       "preco": 140.06,
       "var": 1.61,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Pontes e Lacerda",
+      "preco": 137.94,
+      "var": 0.07,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
@@ -38361,13 +39010,6 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Querência",
-      "preco": 137.32,
-      "var": 0.18,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
       "nome": "Sinop",
       "preco": 138.43,
       "var": 0.07,
@@ -38375,16 +39017,23 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Rondonópolis",
-      "preco": 145.34,
-      "var": 0.04,
+      "nome": "Sorriso",
+      "preco": 137.97,
+      "var": 0.36,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Sorriso",
-      "preco": 137.97,
-      "var": 0.36,
+      "nome": "Querência",
+      "preco": 137.32,
+      "var": 0.18,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Rondonópolis",
+      "preco": 145.34,
+      "var": 0.04,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      }
@@ -38410,6 +39059,13 @@
     ],
     "cidades": [
      {
+      "nome": "Ponta Porã",
+      "preco": 153.52,
+      "var": 0.11,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
       "nome": "Chapadão do Sul",
       "preco": 150.93,
       "var": 0.77,
@@ -38420,13 +39076,6 @@
       "nome": "Maracaju",
       "preco": 153.49,
       "var": -0.2,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Ponta Porã",
-      "preco": 153.52,
-      "var": 0.11,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
@@ -38473,6 +39122,13 @@
       "tipo": "Soja FOB"
      },
      {
+      "nome": "Patos de Minas",
+      "preco": 154.3,
+      "var": 0.1,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
       "nome": "Frutal",
       "preco": 152.72,
       "var": 0.04,
@@ -38483,13 +39139,6 @@
       "nome": "Capinópolis",
       "preco": 144.87,
       "var": 0.69,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
-      "nome": "Patos de Minas",
-      "preco": 154.3,
-      "var": 0.1,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
@@ -38581,16 +39230,16 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Umuarama",
-      "preco": 157.06,
-      "var": 0.99,
+      "nome": "Ponta Grossa",
+      "preco": 165.96,
+      "var": 0.27,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Ponta Grossa",
-      "preco": 165.96,
-      "var": 0.27,
+      "nome": "Umuarama",
+      "preco": 157.06,
+      "var": 0.99,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      }
@@ -38679,13 +39328,6 @@
       "tipo": "Soja CIF"
      },
      {
-      "nome": "Assis",
-      "preco": 158.03,
-      "var": 0.43,
-      "data": "2026-11-25",
-      "tipo": "Soja FOB"
-     },
-     {
       "nome": "Itaberá",
       "preco": 162.72,
       "var": -0.05,
@@ -38693,9 +39335,9 @@
       "tipo": "Soja FOB"
      },
      {
-      "nome": "Itapeva",
-      "preco": 162.64,
-      "var": -0.22,
+      "nome": "Assis",
+      "preco": 158.03,
+      "var": 0.43,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
@@ -38703,6 +39345,13 @@
       "nome": "Paranapanema",
       "preco": 162.04,
       "var": -0.21,
+      "data": "2026-11-25",
+      "tipo": "Soja FOB"
+     },
+     {
+      "nome": "Itapeva",
+      "preco": 162.64,
+      "var": -0.22,
       "data": "2026-11-25",
       "tipo": "Soja FOB"
      },
@@ -63039,45 +63688,45 @@
    "mes": "2026-11"
   },
   "acompanhar": {
-   "ms|rio-verde-de-mato-grosso": "2026-11-16",
+   "ms|rio-verde-de-mato-grosso": "2026-11-28",
    "ms|sao-gabriel-do-oeste": "2026-11-26",
-   "mt|agua-boa": "2026-11-27",
-   "mt|campo-verde": "2026-11-27",
-   "mt|cuiaba": "2026-11-27",
-   "mt|itiquira": "2026-11-27",
-   "mt|matupa": "2026-11-27",
-   "mt|pontes-e-lacerda": "2026-11-27",
-   "mt|santa-rita-do-trivelato": "2026-11-27",
-   "mt|tangara-da-serra": "2026-11-27",
+   "mt|agua-boa": "2026-11-28",
+   "mt|campo-verde": "2026-11-28",
+   "mt|cuiaba": "2026-11-28",
+   "mt|itiquira": "2026-11-28",
+   "mt|matupa": "2026-11-28",
+   "mt|pontes-e-lacerda": "2026-11-28",
+   "mt|santa-rita-do-trivelato": "2026-11-28",
+   "mt|tangara-da-serra": "2026-11-28",
    "ro|cacoal": "2026-11-26",
    "ro|candeias-do-jamari": "2026-11-26",
    "ro|colorado-do-oeste": "2026-11-26",
-   "ro|porto-velho": "2026-11-27",
+   "ro|porto-velho": "2026-11-28",
    "ro|sao-francisco-do-guapore": "2026-11-26",
-   "ro|sao-miguel-do-guapore": "2026-11-27",
+   "ro|sao-miguel-do-guapore": "2026-11-28",
    "mt|juina": "2026-11-25",
    "mt|castanheira": "2026-11-26",
-   "mt|campos-de-julio": "2026-11-27",
-   "mt|sapezal": "2026-11-27",
-   "mt|campo-novo-do-parecis": "2026-11-27",
-   "mt|tapurah": "2026-11-27",
-   "mt|novo-horizonte-do-norte": "2026-11-27",
-   "mt|nova-mutum": "2026-11-27",
-   "mt|lucas-do-rio-verde": "2026-11-27",
-   "mt|sorriso": "2026-11-27",
-   "mt|nova-ubirata": "2026-11-27",
-   "mt|sinop": "2026-11-27",
-   "mt|vera": "2026-11-27",
+   "mt|campos-de-julio": "2026-11-28",
+   "mt|sapezal": "2026-11-28",
+   "mt|campo-novo-do-parecis": "2026-11-28",
+   "mt|tapurah": "2026-11-28",
+   "mt|novo-horizonte-do-norte": "2026-11-28",
+   "mt|nova-mutum": "2026-11-28",
+   "mt|lucas-do-rio-verde": "2026-11-28",
+   "mt|sorriso": "2026-11-28",
+   "mt|nova-ubirata": "2026-11-28",
+   "mt|sinop": "2026-11-28",
+   "mt|vera": "2026-11-28",
    "mt|claudia": "2026-11-26",
-   "mt|querencia": "2026-11-27",
-   "ro|vilhena": "2026-11-27",
-   "ro|cerejeiras": "2026-11-27",
+   "mt|querencia": "2026-11-28",
+   "ro|vilhena": "2026-11-28",
+   "ro|cerejeiras": "2026-11-28",
    "ms|maracaju": "2026-11-25",
    "mt|guaranta-do-norte": "2026-11-25",
    "mt|novo-mundo": "2026-11-26",
    "mt|nova-canaa-do-norte": "2026-11-25",
-   "mt|ipiranga-do-norte": "2026-11-27",
-   "mt|brasnorte": "2026-11-27",
+   "mt|ipiranga-do-norte": "2026-11-28",
+   "mt|brasnorte": "2026-11-28",
    "ms|amambai": "2026-11-26",
    "mt|paranaita": "2026-11-25",
    "pr|toledo": "2026-11-18",
@@ -63087,14 +63736,14 @@
    "pr|porto-barreiro": "2026-11-26",
    "pr|prudentopolis": "2026-11-25",
    "pr|renascenca": "2026-11-25",
-   "pr|paranagua": "2026-11-27",
+   "pr|paranagua": "2026-11-28",
    "pr|castro": "2026-11-26",
    "pr|arapoti": "2026-11-26",
    "mt|paranatinga": "2026-11-25",
    "mt|comodoro": "2026-11-25",
    "mt|porto-dos-gauchos": "2026-11-25",
    "mt|juara": "2026-11-26",
-   "mt|diamantino": "2026-11-27",
+   "mt|diamantino": "2026-11-28",
    "mt|rondonopolis": "2026-11-25",
    "ro|chupinguaia": "2026-11-26",
    "mt|nova-xavantina": "2026-11-26",
@@ -63105,44 +63754,44 @@
    "mt|alta-floresta": "2026-11-25",
    "mt|lambari-d-oeste": "2026-11-26",
    "mt|feliz-natal": "2026-11-26",
-   "pr|campo-mourao": "2026-11-27",
-   "rs|boa-vista-das-missoes": "2026-11-27",
-   "rs|nonoai": "2026-11-27",
-   "rs|palmeira-das-missoes": "2026-11-27",
-   "rs|erechim": "2026-11-27",
-   "rs|tenente-portela": "2026-11-27",
+   "pr|campo-mourao": "2026-11-28",
+   "rs|boa-vista-das-missoes": "2026-11-28",
+   "rs|nonoai": "2026-11-28",
+   "rs|palmeira-das-missoes": "2026-11-28",
+   "rs|erechim": "2026-11-28",
+   "rs|tenente-portela": "2026-11-28",
    "pr|ventania": "2026-11-26",
-   "rs|sarandi": "2026-11-27",
-   "rs|tapejara": "2026-11-27",
-   "rs|cruz-alta": "2026-11-27",
-   "rs|carazinho": "2026-11-27",
+   "rs|sarandi": "2026-11-28",
+   "rs|tapejara": "2026-11-28",
+   "rs|cruz-alta": "2026-11-28",
+   "rs|carazinho": "2026-11-28",
    "pr|vere": "2026-11-25",
-   "rs|panambi": "2026-11-27",
-   "rs|bozano": "2026-11-27",
-   "rs|julio-de-castilhos": "2026-11-27",
-   "rs|passo-fundo": "2026-11-27",
-   "rs|sao-joao-da-urtiga": "2026-11-27",
-   "rs|tio-hugo": "2026-11-27",
-   "rs|coronel-bicaco": "2026-11-27",
-   "rs|humaita": "2026-11-27",
-   "rs|campo-novo": "2026-11-27",
+   "rs|panambi": "2026-11-28",
+   "rs|bozano": "2026-11-28",
+   "rs|julio-de-castilhos": "2026-11-28",
+   "rs|passo-fundo": "2026-11-28",
+   "rs|sao-joao-da-urtiga": "2026-11-28",
+   "rs|tio-hugo": "2026-11-28",
+   "rs|coronel-bicaco": "2026-11-28",
+   "rs|humaita": "2026-11-28",
+   "rs|campo-novo": "2026-11-28",
    "rs|mato-castelhano": "2026-11-16",
-   "rs|sao-borja": "2026-11-27",
-   "rs|tupancireta": "2026-11-27",
-   "rs|santa-maria": "2026-11-27",
-   "rs|ibiruba": "2026-11-27",
-   "rs|coronel-barros": "2026-11-27",
-   "rs|soledade": "2026-11-27",
-   "rs|rio-grande": "2026-11-27",
-   "rs|pelotas": "2026-11-27",
-   "rs|bage": "2026-11-27",
-   "rs|pantano-grande": "2026-11-27",
-   "rs|dom-pedrito": "2026-11-27",
-   "rs|sao-gabriel": "2026-11-27",
+   "rs|sao-borja": "2026-11-28",
+   "rs|tupancireta": "2026-11-28",
+   "rs|santa-maria": "2026-11-28",
+   "rs|ibiruba": "2026-11-28",
+   "rs|coronel-barros": "2026-11-28",
+   "rs|soledade": "2026-11-28",
+   "rs|rio-grande": "2026-11-28",
+   "rs|pelotas": "2026-11-28",
+   "rs|bage": "2026-11-28",
+   "rs|pantano-grande": "2026-11-28",
+   "rs|dom-pedrito": "2026-11-28",
+   "rs|sao-gabriel": "2026-11-28",
    "go|silvania": "2026-11-16",
-   "go|rio-verde": "2026-11-27",
-   "go|catalao": "2026-11-27",
-   "go|itumbiara": "2026-11-27",
+   "go|rio-verde": "2026-11-28",
+   "go|catalao": "2026-11-28",
+   "go|itumbiara": "2026-11-28",
    "ba|luis-eduardo-magalhaes": "2026-11-25",
    "mg|uberlandia": "2026-11-20",
    "mg|coromandel": "2026-11-20",
@@ -63150,24 +63799,24 @@
    "ro|cabixi": "2026-11-26",
    "ba|barreiras": "2026-11-20",
    "mg|nova-ponte": "2026-11-20",
-   "mg|conceicao-das-alagoas": "2026-11-27",
-   "mg|uberaba": "2026-11-27",
+   "mg|conceicao-das-alagoas": "2026-11-28",
+   "mg|uberaba": "2026-11-28",
    "go|jatai": "2026-11-20",
    "sp|jaboticabal": "2026-11-26",
-   "mg|abaete": "2026-11-27",
+   "mg|abaete": "2026-11-28",
    "mg|frutal": "2026-11-20",
-   "pr|apucarana": "2026-11-27",
+   "pr|apucarana": "2026-11-28",
    "sp|macatuba": "2026-11-20",
    "pr|wenceslau-braz": "2026-11-26",
-   "rs|sao-martinho": "2026-11-27",
-   "rs|tres-de-maio": "2026-11-27",
-   "rs|nova-palma": "2026-11-27",
-   "rs|itacurubi": "2026-11-27",
-   "rs|sao-luiz-gonzaga": "2026-11-27",
-   "rs|bossoroca": "2026-11-27",
-   "rs|rolador": "2026-11-27",
-   "rs|sananduva": "2026-11-27",
-   "mg|ibia": "2026-11-27",
+   "rs|sao-martinho": "2026-11-28",
+   "rs|tres-de-maio": "2026-11-28",
+   "rs|nova-palma": "2026-11-28",
+   "rs|itacurubi": "2026-11-28",
+   "rs|sao-luiz-gonzaga": "2026-11-28",
+   "rs|bossoroca": "2026-11-28",
+   "rs|rolador": "2026-11-28",
+   "rs|sananduva": "2026-11-28",
+   "mg|ibia": "2026-11-28",
    "pr|santa-mariana": "2026-11-26",
    "ms|tres-lagoas": "2026-11-18",
    "pr|curiuva": "2026-11-25",
@@ -63188,27 +63837,27 @@
    "go|goias": "2026-11-26",
    "to|barra-do-ouro": "2026-11-26",
    "to|goiatins": "2026-11-26",
-   "mt|alto-araguaia": "2026-11-27",
-   "go|valparaiso-de-goias": "2026-11-27",
-   "mg|paracatu": "2026-11-27",
-   "df|brasilia": "2026-11-27",
+   "mt|alto-araguaia": "2026-11-28",
+   "go|valparaiso-de-goias": "2026-11-28",
+   "mg|paracatu": "2026-11-28",
+   "df|brasilia": "2026-11-28",
    "pi|urucui": "2026-11-25",
    "mt|confresa": "2026-11-25",
-   "go|goiania": "2026-11-27",
-   "mg|monte-alegre-de-minas": "2026-11-27",
-   "sp|ipaussu": "2026-11-27",
-   "rs|cachoeira-do-sul": "2026-11-27",
-   "rs|capao-do-leao": "2026-11-27",
-   "rs|capivari-do-sul": "2026-11-27",
-   "pa|redencao": "2026-11-27",
+   "go|goiania": "2026-11-28",
+   "mg|monte-alegre-de-minas": "2026-11-28",
+   "sp|ipaussu": "2026-11-28",
+   "rs|cachoeira-do-sul": "2026-11-28",
+   "rs|capao-do-leao": "2026-11-28",
+   "rs|capivari-do-sul": "2026-11-28",
+   "pa|redencao": "2026-11-28",
    "ro|pimenteiras-do-oeste": "2026-11-26",
-   "pa|novo-progresso": "2026-11-27",
-   "pr|ribeirao-claro": "2026-11-27"
+   "pa|novo-progresso": "2026-11-28",
+   "pr|ribeirao-claro": "2026-11-28"
   },
   "varredura": {
-   "pos": 320,
+   "pos": 340,
    "voltas": 0,
-   "dia": "2026-11-27"
+   "dia": "2026-11-28"
   }
  }
 }
